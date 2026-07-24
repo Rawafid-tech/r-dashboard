@@ -10,6 +10,8 @@ import dashboardAr from "./locales/ar/dashboard.json";
 import dashboardEn from "./locales/en/dashboard.json";
 import settingsAr from "./locales/ar/settings.json";
 import settingsEn from "./locales/en/settings.json";
+import billingAr from "./locales/ar/billing.json";
+import billingEn from "./locales/en/billing.json";
 
 const resources = {
   ar: {
@@ -17,12 +19,14 @@ const resources = {
     auth: authAr,
     dashboard: dashboardAr,
     settings: settingsAr,
+    billing: billingAr,
   },
   en: {
     common: commonEn,
     auth: authEn,
     dashboard: dashboardEn,
     settings: settingsEn,
+    billing: billingEn,
   },
 };
 
@@ -33,7 +37,7 @@ i18n
     resources,
     fallbackLng: "ar",
     defaultNS: "common",
-    ns: ["common", "auth", "dashboard", "settings"],
+    ns: ["common", "auth", "dashboard", "settings", "billing"],
     interpolation: {
       escapeValue: false,
     },

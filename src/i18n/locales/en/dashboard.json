@@ -22,7 +22,8 @@
       "validity": "Validity",
       "renewal": "Renews / expires",
       "openEnded": "No expiry",
-      "upgradeCta": "Upgrade plan — contact us"
+      "upgradeCta": "Upgrade plan — contact us",
+      "viewBillingCta": "View billing & plan"
     },
     "account": {
       "title": "Your account",

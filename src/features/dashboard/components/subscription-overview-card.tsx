@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import {
   Badge,
@@ -110,8 +111,8 @@ export function SubscriptionOverviewCard({
         </div>
       </CardContent>
       <CardFooter>
-        <Button type="button" fullWidth disabled>
-          {t("cards.subscription.upgradeCta")}
+        <Button type="button" fullWidth asChild>
+          <Link to="/billing">{t("cards.subscription.viewBillingCta")}</Link>
         </Button>
       </CardFooter>
     </Card>

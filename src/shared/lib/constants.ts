@@ -24,3 +24,6 @@ export const DEFAULT_LOCALE: SupportedLocale = "ar";
 
 export const DEFAULT_THEME = "dark" as const;
 export type DefaultTheme = typeof DEFAULT_THEME;
+
+/** Merchant billing upgrade / support contact. */
+export const SUPPORT_EMAIL = "support@rawafid.com";

@@ -161,15 +161,16 @@ export function MerchantSidebarPlanFooter({
 
   if (collapsed) {
     return withCollapsedTooltip(
-      <div
+      <NavLink
+        to="/billing"
         className={cn(
-          "mx-auto grid size-10 place-items-center rounded-lg bg-sidebar-accent text-[11px] font-bold uppercase text-sidebar-accent-foreground ring-1 ring-sidebar-border",
+          "mx-auto grid size-10 place-items-center rounded-lg bg-sidebar-accent text-[11px] font-bold uppercase text-sidebar-accent-foreground ring-1 ring-sidebar-border outline-none transition-colors hover:bg-sidebar-accent focus-visible:ring-3 focus-visible:ring-sidebar-ring/50",
           className,
         )}
         aria-label={planTooltip}
       >
         {collapsedPlanLabel}
-      </div>,
+      </NavLink>,
       planTooltip,
       true,
       tooltipSide,
@@ -177,16 +178,18 @@ export function MerchantSidebarPlanFooter({
   }
 
   return (
-    <div
+    <NavLink
+      to="/billing"
       className={cn(
-        "rounded-lg bg-sidebar-accent/70 px-3 py-2.5 ring-1 ring-sidebar-border",
+        "block rounded-lg bg-sidebar-accent/70 px-3 py-2.5 ring-1 ring-sidebar-border transition-colors outline-none hover:bg-sidebar-accent focus-visible:ring-3 focus-visible:ring-sidebar-ring/50",
         className,
       )}
+      aria-label={planTooltip}
     >
       <p className="text-xs text-muted-foreground">
         {t("dashboard:shell.currentPlan")}
       </p>
       <p className="mt-0.5 truncate text-sm font-semibold">{resolvedPlan}</p>
-    </div>
+    </NavLink>
   );
 }

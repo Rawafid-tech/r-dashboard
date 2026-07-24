@@ -1,0 +1,61 @@
+{
+  "metaTitle": "Billing & plan — Rawafid",
+  "metaDescription": "Review your current plan, subscription details, and upgrade options in Rawafid.",
+  "skipToContent": "Skip to main content",
+  "hero": {
+    "eyebrow": "Billing & subscription",
+    "title": "Your plan & subscription",
+    "description": "See your current plan details — shipment volume, price, and validity dates. Plan changes are handled by the Rawafid team until self-serve checkout is available."
+  },
+  "plan": {
+    "sectionTitle": "Current plan details",
+    "shipments": "Shipments / month",
+    "shipmentsHint": "Agreed limit on your plan",
+    "price": "Price",
+    "priceHint": "Price locked in at subscription time",
+    "freePrice": "Free",
+    "billingPeriod": "Billing cycle",
+    "validity": "Validity",
+    "renewal": "Renews / expires",
+    "openEnded": "No expiry",
+    "freeHint": "Free plan with no end date",
+    "renewalHint": "Expires on {{date}}",
+    "expiringSoon": "Expiring soon — {{date}}",
+    "startedAt": "Started on",
+    "validUntil": "Valid until",
+    "endsAt": "Ends / renews on"
+  },
+  "billingPeriod": {
+    "MONTHLY": "Monthly",
+    "YEARLY": "Yearly"
+  },
+  "subscriptionStatus": {
+    "ACTIVE": "Active",
+    "REPLACED": "Replaced",
+    "EXPIRED": "Expired"
+  },
+  "upgrade": {
+    "title": "Upgrade or change plan",
+    "freeTitle": "Ready to grow?",
+    "description": "Plan changes are currently handled by the Rawafid team. Reach out and we will help you pick the right shipment volume for your store.",
+    "freeDescription": "You are on the free plan. When your shipment volume grows, our team can move you to a paid tier that fits.",
+    "benefits": [
+      "Pick a shipment volume that matches your store",
+      "Monthly or yearly billing to suit your needs",
+      "Direct support from the Rawafid team"
+    ],
+    "contactCta": "Contact us to upgrade",
+    "supportEmail": "Or email us at {{email}}",
+    "mailSubject": "Plan upgrade request — Rawafid",
+    "mailBody": "Hi Rawafid team,\n\nI would like to upgrade my plan or discuss subscription options.\n\nThank you."
+  },
+  "notice": {
+    "title": "Snapshot of your current deal",
+    "description": "The prices and limits shown here reflect what was agreed when your subscription was activated. If platform plan pricing changes later, your details stay the same until your subscription is updated."
+  },
+  "errors": {
+    "loadFailed": "Could not load subscription data",
+    "loadFailedHint": "Check your connection and try again.",
+    "retry": "Try again"
+  }
+}

@@ -1,4 +1,5 @@
 import {
+  CreditCard,
   LayoutDashboard,
   Package,
   RefreshCcw,
@@ -17,6 +18,7 @@ export interface MerchantNavItem {
 
 export const MERCHANT_NAV_ITEMS: MerchantNavItem[] = [
   { key: "dashboard", href: "/", icon: LayoutDashboard, enabled: true },
+  { key: "billing", href: "/billing", icon: CreditCard, enabled: true },
   { key: "shipments", href: "/shipments", icon: Package, enabled: false },
   { key: "returns", href: "/returns", icon: RefreshCcw, enabled: false },
   { key: "products", href: "/products", icon: ShoppingBag, enabled: false },

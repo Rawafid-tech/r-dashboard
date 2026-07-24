@@ -5,6 +5,7 @@
   },
   "nav": {
     "dashboard": "لوحة التحكم",
+    "billing": "الفوترة والاشتراك",
     "shipments": "الشحنات",
     "returns": "المرتجعات",
     "products": "المنتجات",

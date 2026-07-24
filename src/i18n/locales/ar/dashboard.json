@@ -22,7 +22,8 @@
       "validity": "الصلاحية",
       "renewal": "التجديد / الانتهاء",
       "openEnded": "بدون انتهاء",
-      "upgradeCta": "ترقية الخطة — تواصل معنا"
+      "upgradeCta": "ترقية الخطة — تواصل معنا",
+      "viewBillingCta": "عرض الفوترة والاشتراك"
     },
     "account": {
       "title": "حسابك",
