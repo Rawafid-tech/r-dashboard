@@ -4,6 +4,7 @@ import { Toaster } from "sonner";
 import { Suspense } from "react";
 import { LoadingSpinner } from "@/shared/components/feedback/LoadingSpinner";
 import { UiPlayground } from "@/app/dev/UiPlayground";
+import { merchantRoutes } from "@/app/merchant/routes";
 import { publicRoutes } from "@/app/public/routes";
 import { ProtectedRoute } from "@/features/auth/components/protected-route";
 import { useLocaleStore } from "@/stores/locale.store";
@@ -49,7 +50,21 @@ export default function App() {
 
             {/* Auth-only app pages */}
             <Route element={<ProtectedRoute loginPath="/login" />}>
-              <Route path="/" element={<UiPlayground />} />
+              {merchantRoutes.map((route, index) => (
+                <Route
+                  key={route.path ?? `merchant-${index}`}
+                  element={route.element}
+                >
+                  {route.children?.map((child) => (
+                    <Route
+                      key={child.path ?? "index"}
+                      index={child.index}
+                      path={child.path}
+                      element={child.element}
+                    />
+                  ))}
+                </Route>
+              ))}
               <Route path="/ui" element={<UiPlayground />} />
             </Route>
 

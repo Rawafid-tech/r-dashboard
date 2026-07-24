@@ -1,0 +1,84 @@
+{
+  "metaTitle": "لوحة التحكم — روافد",
+  "metaDescription": "تابع حسابك، شركتك، واشتراكك في روافد — نظام تشغيل لوجستيات التجارة الإلكترونية.",
+  "skipToContent": "انتقل إلى المحتوى الرئيسي",
+  "hero": {
+    "eyebrow": "لوحة التاجر",
+    "greeting": "مرحباً، {{name}}",
+    "fallbackName": "تاجرنا",
+    "companyLabel": "{{company}} · حساب #{{identifier}}",
+    "description": "من هنا تتابع اشتراكك، بيانات حسابك، ومعلومات متجرك — ومع كل تحديث جديد ستجد الشحنات والمحفظة والمزيد في نفس المكان."
+  },
+  "overview": {
+    "title": "نظرة عامة",
+    "subtitle": "ملخص سريع لحسابك ومتجرك وخطتك الحالية."
+  },
+  "cards": {
+    "subscription": {
+      "title": "الاشتراك",
+      "plan": "الخطة الحالية",
+      "shipments": "شحنات/شهر",
+      "price": "السعر",
+      "validity": "الصلاحية",
+      "renewal": "التجديد / الانتهاء",
+      "openEnded": "بدون انتهاء",
+      "upgradeCta": "ترقية الخطة — تواصل معنا"
+    },
+    "account": {
+      "title": "حسابك",
+      "fullName": "الاسم",
+      "email": "البريد الإلكتروني",
+      "phone": "الهاتف",
+      "role": "الدور",
+      "verified": "موثّق",
+      "unverified": "غير موثّق"
+    },
+    "company": {
+      "title": "شركتك",
+      "name": "اسم المتجر",
+      "accountNumber": "رقم الحساب",
+      "shipFromCountry": "بلد الشحن",
+      "monthlyVolume": "حجم الشحن الشهري"
+    }
+  },
+  "billingPeriod": {
+    "MONTHLY": "شهري",
+    "YEARLY": "سنوي"
+  },
+  "subscriptionStatus": {
+    "ACTIVE": "نشط",
+    "REPLACED": "مستبدل",
+    "EXPIRED": "منتهي"
+  },
+  "roles": {
+    "OWNER": "مالك",
+    "AGENT": "وكيل"
+  },
+  "monthlyShipmentVolume": {
+    "VOL_0_50": "0 – 50",
+    "VOL_50_200": "50 – 200",
+    "VOL_200_500": "200 – 500",
+    "VOL_500_1000": "500 – 1,000",
+    "VOL_1000_PLUS": "1,000+"
+  },
+  "errors": {
+    "loadFailed": "تعذر تحميل بيانات لوحة التحكم",
+    "loadFailedHint": "تحقق من اتصالك وحاول مرة أخرى.",
+    "retry": "إعادة المحاولة"
+  },
+  "shell": {
+    "sidebarLabel": "التنقل الرئيسي",
+    "expandSidebar": "توسيع القائمة الجانبية",
+    "collapseSidebar": "طي القائمة الجانبية",
+    "openNavigation": "فتح القائمة",
+    "closeNavigation": "إغلاق القائمة",
+    "currentPlan": "خطتك الحالية",
+    "currentPlanValue": "الخطة: {{plan}}",
+    "userMenuLabel": "قائمة {{name}}",
+    "loggingOut": "جاري تسجيل الخروج...",
+    "menu": {
+      "account": "حسابي",
+      "settings": "الإعدادات"
+    }
+  }
+}

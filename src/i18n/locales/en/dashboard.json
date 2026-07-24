@@ -1,0 +1,84 @@
+{
+  "metaTitle": "Dashboard — Rawafid",
+  "metaDescription": "Track your account, company, and subscription in Rawafid — the operating system for e-commerce logistics.",
+  "skipToContent": "Skip to main content",
+  "hero": {
+    "eyebrow": "Merchant dashboard",
+    "greeting": "Welcome, {{name}}",
+    "fallbackName": "merchant",
+    "companyLabel": "{{company}} · Account #{{identifier}}",
+    "description": "Review your subscription, account, and store details here — shipments, wallet, and more will appear in the same workspace as they roll out."
+  },
+  "overview": {
+    "title": "Overview",
+    "subtitle": "A quick snapshot of your account, store, and current plan."
+  },
+  "cards": {
+    "subscription": {
+      "title": "Subscription",
+      "plan": "Current plan",
+      "shipments": "Shipments/month",
+      "price": "Price",
+      "validity": "Validity",
+      "renewal": "Renews / expires",
+      "openEnded": "No expiry",
+      "upgradeCta": "Upgrade plan — contact us"
+    },
+    "account": {
+      "title": "Your account",
+      "fullName": "Name",
+      "email": "Email",
+      "phone": "Phone",
+      "role": "Role",
+      "verified": "Verified",
+      "unverified": "Not verified"
+    },
+    "company": {
+      "title": "Your company",
+      "name": "Store name",
+      "accountNumber": "Account number",
+      "shipFromCountry": "Ship-from country",
+      "monthlyVolume": "Monthly shipment volume"
+    }
+  },
+  "billingPeriod": {
+    "MONTHLY": "Monthly",
+    "YEARLY": "Yearly"
+  },
+  "subscriptionStatus": {
+    "ACTIVE": "Active",
+    "REPLACED": "Replaced",
+    "EXPIRED": "Expired"
+  },
+  "roles": {
+    "OWNER": "Owner",
+    "AGENT": "Agent"
+  },
+  "monthlyShipmentVolume": {
+    "VOL_0_50": "0 – 50",
+    "VOL_50_200": "50 – 200",
+    "VOL_200_500": "200 – 500",
+    "VOL_500_1000": "500 – 1,000",
+    "VOL_1000_PLUS": "1,000+"
+  },
+  "errors": {
+    "loadFailed": "Could not load dashboard data",
+    "loadFailedHint": "Check your connection and try again.",
+    "retry": "Try again"
+  },
+  "shell": {
+    "sidebarLabel": "Main navigation",
+    "expandSidebar": "Expand sidebar",
+    "collapseSidebar": "Collapse sidebar",
+    "openNavigation": "Open navigation",
+    "closeNavigation": "Close navigation",
+    "currentPlan": "Current plan",
+    "currentPlanValue": "Plan: {{plan}}",
+    "userMenuLabel": "Menu for {{name}}",
+    "loggingOut": "Signing out...",
+    "menu": {
+      "account": "My account",
+      "settings": "Settings"
+    }
+  }
+}

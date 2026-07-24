@@ -8,6 +8,7 @@ export const STORAGE_KEYS = {
   REFRESH_TOKEN: "rawafid-refresh-token",
   THEME: "rawafid-theme",
   LOCALE: "rawafid-locale",
+  SIDEBAR_COLLAPSED: "rawafid-sidebar-collapsed",
 } as const;
 
 /** Access token TTL fallback when API omits `expiresIn` (15 minutes). */

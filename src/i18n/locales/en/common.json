@@ -42,6 +42,7 @@
     "date": "Date",
     "all": "All"
   },
+  "comingSoon": "Soon",
   "datePicker": {
     "placeholder": "Pick a date",
     "clear": "Clear date"

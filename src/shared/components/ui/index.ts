@@ -38,7 +38,50 @@ export {
   FieldContent,
   FieldTitle,
 } from "./field";
-export { DirectionProvider, useDirection } from "./direction";
+export {
+  Avatar,
+  AvatarBadge,
+  AvatarFallback,
+  AvatarGroup,
+  AvatarGroupCount,
+  AvatarImage,
+} from "./avatar";
+export { Collapsible, CollapsibleContent, CollapsibleTrigger } from "./collapsible";
+export {
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuPortal,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
+  DropdownMenuSeparator,
+  DropdownMenuShortcut,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
+  DropdownMenuTrigger,
+} from "./dropdown-menu";
+export { Skeleton } from "./skeleton";
+export {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetOverlay,
+  SheetPortal,
+  SheetTitle,
+  SheetTrigger,
+} from "./sheet";
+export {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "./tooltip";
 export {
   Popover,
   PopoverAnchor,
@@ -55,3 +98,4 @@ export {
   toISODate,
   type DatePickerProps,
 } from "./date-picker";
+export { DirectionProvider, useDirection } from "./direction";
