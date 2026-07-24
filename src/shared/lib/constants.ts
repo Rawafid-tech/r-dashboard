@@ -1,4 +1,7 @@
-export const API_BASE_URL = "https://rawafid.softizone.net";
+// In local Vite dev, use same-origin `/api` (proxied). In production builds, hit the API host.
+export const API_BASE_URL = import.meta.env.DEV
+  ? ""
+  : "https://rawafid.softizone.net";
 
 export const STORAGE_KEYS = {
   ACCESS_TOKEN: "rawafid-access-token",
@@ -11,3 +14,6 @@ export const SUPPORTED_LOCALES = ["ar", "en"] as const;
 export type SupportedLocale = (typeof SUPPORTED_LOCALES)[number];
 
 export const DEFAULT_LOCALE: SupportedLocale = "ar";
+
+export const DEFAULT_THEME = "dark" as const;
+export type DefaultTheme = typeof DEFAULT_THEME;

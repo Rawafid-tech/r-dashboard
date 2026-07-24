@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { STORAGE_KEYS, DEFAULT_LOCALE } from "@/shared/lib/constants";
 import type { SupportedLocale } from "@/shared/lib/constants";
+import i18n from "@/i18n/config";
 
 interface LocaleState {
   locale: SupportedLocale;
@@ -19,6 +20,7 @@ function applyLocale(locale: SupportedLocale) {
   document.documentElement.setAttribute("lang", locale);
   document.documentElement.setAttribute("dir", dir);
   localStorage.setItem(STORAGE_KEYS.LOCALE, locale);
+  void i18n.changeLanguage(locale);
 }
 
 const initialLocale = getInitialLocale();

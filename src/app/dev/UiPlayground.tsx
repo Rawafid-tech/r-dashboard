@@ -24,14 +24,23 @@ import {
   Separator,
   Textarea,
 } from "@/shared/components/ui";
+import { useNavigate } from "react-router-dom";
 import { useThemeStore } from "@/stores/theme.store";
 import { useLocaleStore } from "@/stores/locale.store";
+import { useAuthStore } from "@/stores/auth.store";
 
 export function UiPlayground() {
+  const navigate = useNavigate();
   const { theme, toggleTheme } = useThemeStore();
   const { locale, setLocale } = useLocaleStore();
+  const clearTokens = useAuthStore((state) => state.clearTokens);
   const [showPassword, setShowPassword] = useState(false);
   const [checked, setChecked] = useState(false);
+
+  function handleLogout() {
+    clearTokens();
+    navigate("/register", { replace: true });
+  }
 
   return (
     <div className="min-h-screen bg-background p-6 md:p-10">
@@ -55,6 +64,9 @@ export function UiPlayground() {
               onClick={() => setLocale(locale === "ar" ? "en" : "ar")}
             >
               Locale: {locale.toUpperCase()}
+            </Button>
+            <Button variant="destructive-outline" size="sm" onClick={handleLogout}>
+              Logout
             </Button>
           </div>
         </header>

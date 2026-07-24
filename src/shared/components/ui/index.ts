@@ -39,3 +39,19 @@ export {
   FieldTitle,
 } from "./field";
 export { DirectionProvider, useDirection } from "./direction";
+export {
+  Popover,
+  PopoverAnchor,
+  PopoverContent,
+  PopoverDescription,
+  PopoverHeader,
+  PopoverTitle,
+  PopoverTrigger,
+} from "./popover";
+export { Calendar, CalendarDayButton } from "./calendar";
+export {
+  DatePicker,
+  parseISODate,
+  toISODate,
+  type DatePickerProps,
+} from "./date-picker";

@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { STORAGE_KEYS } from "@/shared/lib/constants";
+import { DEFAULT_THEME, STORAGE_KEYS } from "@/shared/lib/constants";
 
 type ThemeMode = "light" | "dark";
 
@@ -12,11 +12,7 @@ interface ThemeState {
 function getInitialTheme(): ThemeMode {
   const stored = localStorage.getItem(STORAGE_KEYS.THEME) as ThemeMode | null;
   if (stored === "light" || stored === "dark") return stored;
-
-  if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
-    return "dark";
-  }
-  return "light";
+  return DEFAULT_THEME;
 }
 
 function applyTheme(theme: ThemeMode) {

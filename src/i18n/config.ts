@@ -4,10 +4,18 @@ import LanguageDetector from "i18next-browser-languagedetector";
 
 import commonAr from "./locales/ar/common.json";
 import commonEn from "./locales/en/common.json";
+import authAr from "./locales/ar/auth.json";
+import authEn from "./locales/en/auth.json";
 
 const resources = {
-  ar: { common: commonAr },
-  en: { common: commonEn },
+  ar: {
+    common: commonAr,
+    auth: authAr,
+  },
+  en: {
+    common: commonEn,
+    auth: authEn,
+  },
 };
 
 i18n
@@ -17,12 +25,13 @@ i18n
     resources,
     fallbackLng: "ar",
     defaultNS: "common",
-    ns: ["common"],
+    ns: ["common", "auth"],
     interpolation: {
       escapeValue: false,
     },
     detection: {
-      order: ["localStorage", "navigator"],
+      // Prefer stored choice; otherwise fall back to Arabic (not browser language)
+      order: ["localStorage"],
       lookupLocalStorage: "rawafid-locale",
       caches: ["localStorage"],
     },

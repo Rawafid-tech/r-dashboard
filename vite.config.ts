@@ -13,5 +13,13 @@ export default defineConfig({
   server: {
     port: 3000,
     open: true,
+    proxy: {
+      // Avoid browser CORS in local dev by proxying API through Vite
+      "/api": {
+        target: "https://rawafid.softizone.net",
+        changeOrigin: true,
+        secure: true,
+      },
+    },
   },
 });

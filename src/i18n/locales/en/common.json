@@ -42,6 +42,10 @@
     "date": "Date",
     "all": "All"
   },
+  "datePicker": {
+    "placeholder": "Pick a date",
+    "clear": "Clear date"
+  },
   "errors": {
     "networkError": "Unable to connect to the server. Please check your connection.",
     "unauthorized": "Please log in to continue.",

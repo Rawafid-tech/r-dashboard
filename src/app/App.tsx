@@ -4,6 +4,9 @@ import { Toaster } from "sonner";
 import { Suspense } from "react";
 import { LoadingSpinner } from "@/shared/components/feedback/LoadingSpinner";
 import { UiPlayground } from "@/app/dev/UiPlayground";
+import { publicRoutes } from "@/app/public/routes";
+import { ProtectedRoute } from "@/features/auth/components/protected-route";
+import { useLocaleStore } from "@/stores/locale.store";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -24,13 +27,32 @@ function FullPageLoader() {
 }
 
 export default function App() {
+  const dir = useLocaleStore((state) => state.dir);
+
   return (
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
         <Suspense fallback={<FullPageLoader />}>
           <Routes>
-            <Route path="/" element={<UiPlayground />} />
-            <Route path="/ui" element={<UiPlayground />} />
+            {/* Guest-only: register / login / pricing */}
+            {publicRoutes.map((route, index) => (
+              <Route key={route.path ?? `public-${index}`} element={route.element}>
+                {route.children?.map((child) => (
+                  <Route
+                    key={child.path}
+                    path={child.path}
+                    element={child.element}
+                  />
+                ))}
+              </Route>
+            ))}
+
+            {/* Auth-only app pages */}
+            <Route element={<ProtectedRoute loginPath="/register" />}>
+              <Route path="/" element={<UiPlayground />} />
+              <Route path="/ui" element={<UiPlayground />} />
+            </Route>
+
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </Suspense>
@@ -38,7 +60,7 @@ export default function App() {
       <Toaster
         position="top-center"
         richColors
-        dir="auto"
+        dir={dir}
         toastOptions={{
           style: {
             fontFamily: "var(--font-primary)",
