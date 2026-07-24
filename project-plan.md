@@ -25,6 +25,7 @@
 | Build tool           | Vite                                   |
 | UI framework         | React 19 + TypeScript                  |
 | Styling              | Tailwind CSS v4 + CSS Variables        |
+| UI components        | shadcn/ui (Radix Nova) — highly customizable |
 | Routing              | React Router v7                        |
 | Server state         | TanStack Query (React Query) v5        |
 | Client state         | Zustand                                |
@@ -158,7 +159,7 @@ src/
 │   │   └── types.ts              # PaginatedResponse<T>, ApiError
 │   │
 │   ├── components/               # Reusable UI components
-│   │   ├── ui/                   # Button, Input, Badge, Modal, Select...
+│   │   ├── ui/                   # shadcn/ui primitives (Button, Input, Label...)
 │   │   ├── layout/               # Sidebar, Topbar, PageHeader, PageShell
 │   │   ├── data-display/         # DataTable, StatusBadge, EmptyState
 │   │   └── feedback/             # Toast, LoadingSpinner, ErrorBoundary
@@ -290,10 +291,11 @@ Falls back to `prefers-color-scheme` when no stored choice exists.
 
 ### Phase 1: Foundation (current)
 - [x] Project setup (Vite + deps + folder structure)
-- [ ] Design system CSS + Tailwind config
-- [ ] API client + error handler
-- [ ] Theme provider + locale provider
-- [ ] Shared UI components (Button, Input, etc.)
+- [x] Design system CSS + Tailwind config
+- [x] API client + error handler
+- [x] Theme provider + locale provider
+- [x] shadcn/ui setup + core shared components (Button, Input, Label, Field...)
+- [ ] Login page (next)
 
 ### Phase 2: Auth pages
 - [ ] Login page (merchant)

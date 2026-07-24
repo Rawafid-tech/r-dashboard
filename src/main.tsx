@@ -4,10 +4,13 @@ import "@fontsource-variable/inter/wght.css";
 import "@fontsource-variable/cairo/wght.css";
 import "@/styles/global.css";
 import "@/i18n/config";
+import { AppProviders } from "@/app/providers";
 import App from "@/app/App";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <App />
+    <AppProviders>
+      <App />
+    </AppProviders>
   </StrictMode>,
 );

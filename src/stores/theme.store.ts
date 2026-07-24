@@ -20,7 +20,9 @@ function getInitialTheme(): ThemeMode {
 }
 
 function applyTheme(theme: ThemeMode) {
-  document.documentElement.setAttribute("data-theme", theme);
+  const root = document.documentElement;
+  root.setAttribute("data-theme", theme);
+  root.classList.toggle("dark", theme === "dark");
   localStorage.setItem(STORAGE_KEYS.THEME, theme);
 }
 
