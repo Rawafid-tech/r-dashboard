@@ -1,4 +1,5 @@
 import { Menu } from "lucide-react";
+import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import {
   Avatar,
@@ -106,11 +107,8 @@ export function MerchantHeader({
             </div>
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
-          <DropdownMenuItem disabled>
-            {t("dashboard:shell.menu.account")}
-          </DropdownMenuItem>
-          <DropdownMenuItem disabled>
-            {t("dashboard:shell.menu.settings")}
+          <DropdownMenuItem asChild>
+            <Link to="/settings">{t("dashboard:shell.menu.settings")}</Link>
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem

@@ -2,6 +2,7 @@ import {
   LayoutDashboard,
   Package,
   RefreshCcw,
+  Settings,
   ShoppingBag,
   Wallet,
   type LucideIcon,
@@ -20,4 +21,5 @@ export const MERCHANT_NAV_ITEMS: MerchantNavItem[] = [
   { key: "returns", href: "/returns", icon: RefreshCcw, enabled: false },
   { key: "products", href: "/products", icon: ShoppingBag, enabled: false },
   { key: "wallet", href: "/wallet", icon: Wallet, enabled: false },
+  { key: "settings", href: "/settings", icon: Settings, enabled: true },
 ];

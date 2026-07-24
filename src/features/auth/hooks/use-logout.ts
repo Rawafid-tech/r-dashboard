@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { logoutUser } from "@/features/account/api/account.api";
 import { accountQueryKeys } from "@/features/account/hooks/use-me";
+import { settingsQueryKeys } from "@/features/account/hooks/use-settings";
 import { companyQueryKeys } from "@/features/company/hooks/use-company";
 import { subscriptionQueryKeys } from "@/features/subscription/hooks/use-subscription";
 import { getRefreshToken } from "@/shared/lib/auth-tokens";
@@ -25,6 +26,7 @@ export function useLogout() {
     onSettled: () => {
       clearTokens();
       queryClient.removeQueries({ queryKey: accountQueryKeys.all });
+      queryClient.removeQueries({ queryKey: settingsQueryKeys.all });
       queryClient.removeQueries({ queryKey: companyQueryKeys.all });
       queryClient.removeQueries({ queryKey: subscriptionQueryKeys.all });
       navigate("/login", { replace: true });

@@ -1,0 +1,163 @@
+{
+  "metaTitle": "Settings — Rawafid",
+  "metaDescription": "Manage your profile, company, security, and display preferences in Rawafid.",
+  "skipToContent": "Skip to settings",
+  "hero": {
+    "eyebrow": "Workspace",
+    "title": "Settings",
+    "description": "Update your account, store details, password, and display preferences — everything you need to run your store in one place."
+  },
+  "nav": {
+    "label": "Settings sections",
+    "profile": "Profile",
+    "company": "Company",
+    "security": "Security",
+    "preferences": "Preferences"
+  },
+  "sections": {
+    "profile": {
+      "title": "Profile",
+      "description": "Your personal details — name and phone. Email is your login identifier and cannot be changed yet."
+    },
+    "company": {
+      "title": "Company",
+      "description": "Store information shown on your account and used by the Rawafid team to understand your logistics needs.",
+      "readOnlyHint": "Only the account owner can edit company details.",
+      "accountLabel": "Account number"
+    },
+    "security": {
+      "title": "Security",
+      "description": "Change your password. After saving you will be signed out everywhere — sign in again with your new password."
+    },
+    "preferences": {
+      "title": "Display preferences",
+      "description": "Appearance, timezone, and date format — saved to your account and applied in every session."
+    }
+  },
+  "fields": {
+    "firstName": "First name",
+    "lastName": "Last name",
+    "dateOfBirth": "Date of birth",
+    "email": "Email",
+    "phone": "Phone number",
+    "emailReadOnly": "Email cannot be changed yet",
+    "phoneResetHint": "Changing your phone resets its verification until the new number is confirmed.",
+    "companyName": "Store name",
+    "companySize": "Company size",
+    "industry": "Industry",
+    "website": "Website",
+    "shipFromCountry": "Ship-from country",
+    "monthlyShipmentVolume": "Monthly shipment volume",
+    "currentPassword": "Current password",
+    "newPassword": "New password",
+    "confirmNewPassword": "Confirm new password",
+    "theme": "Theme",
+    "fontScale": "Font size",
+    "defaultHomePage": "Default home page",
+    "timezone": "Timezone",
+    "dateFormat": "Date format",
+    "mapLat": "Latitude (optional)",
+    "mapLng": "Longitude (optional)",
+    "mapHint": "Default map starting point — leave empty to use system defaults.",
+    "country": "Country",
+    "currency": "Currency",
+    "optional": "Optional",
+    "notSet": "Not set"
+  },
+  "badges": {
+    "verified": "Verified",
+    "unverified": "Unverified"
+  },
+  "theme": {
+    "SYSTEM": "System",
+    "LIGHT": "Light",
+    "DARK": "Dark"
+  },
+  "dateFormat": {
+    "DD_MM_YYYY": "DD / MM / YYYY",
+    "MM_DD_YYYY": "MM / DD / YYYY",
+    "YYYY_MM_DD": "YYYY / MM / DD"
+  },
+  "fontScale": {
+    "80": "Extra small",
+    "90": "Small",
+    "100": "Default",
+    "110": "Large",
+    "120": "Extra large"
+  },
+  "homePage": {
+    "home": "Dashboard",
+    "shipments": "Shipments",
+    "returns": "Returns",
+    "products": "Products",
+    "wallet": "Wallet"
+  },
+  "companySize": {
+    "FROM_1_TO_10": "1 – 10",
+    "FROM_11_TO_50": "11 – 50",
+    "FROM_51_TO_200": "51 – 200",
+    "ABOVE_200": "200+"
+  },
+  "monthlyShipmentVolume": {
+    "VOL_0_50": "0 – 50",
+    "VOL_50_200": "50 – 200",
+    "VOL_200_500": "200 – 500",
+    "VOL_500_1000": "500 – 1,000",
+    "VOL_1000_PLUS": "1,000+"
+  },
+  "countries": {
+    "EG": "Egypt",
+    "SA": "Saudi Arabia",
+    "AE": "United Arab Emirates",
+    "KW": "Kuwait",
+    "QA": "Qatar",
+    "BH": "Bahrain",
+    "OM": "Oman",
+    "JO": "Jordan"
+  },
+  "profile": {
+    "success": "Profile saved.",
+    "error": "Could not save profile."
+  },
+  "company": {
+    "success": "Company details saved.",
+    "error": "Could not save company details."
+  },
+  "security": {
+    "success": "Password changed. Please sign in again.",
+    "error": "Could not change password.",
+    "submit": "Update password"
+  },
+  "preferences": {
+    "success": "Preferences saved.",
+    "error": "Could not save preferences.",
+    "derivedHint": "Derived from ship-from country — read only."
+  },
+  "validation": {
+    "required": "This field is required",
+    "phone": "Enter a valid phone number",
+    "dateOfBirthPast": "Date of birth must be in the past",
+    "passwordMin": "At least 8 characters",
+    "passwordMax": "Maximum 100 characters",
+    "passwordMismatch": "Passwords do not match",
+    "website": "URL must start with http:// or https://",
+    "country": "Select a valid country",
+    "timezone": "Select a valid timezone",
+    "mapLat": "Latitude must be between -90 and 90",
+    "mapLng": "Longitude must be between -180 and 180"
+  },
+  "actions": {
+    "save": "Save changes",
+    "saving": "Saving..."
+  },
+  "errors": {
+    "loadFailed": "Could not load settings",
+    "loadFailedHint": "Check your connection and try again.",
+    "retry": "Try again"
+  },
+  "loading": {
+    "label": "Loading settings..."
+  },
+  "showPassword": "Show password",
+  "hidePassword": "Hide password"
+}
