@@ -10,6 +10,12 @@ export const STORAGE_KEYS = {
   LOCALE: "rawafid-locale",
 } as const;
 
+/** Access token TTL fallback when API omits `expiresIn` (15 minutes). */
+export const DEFAULT_ACCESS_TOKEN_MAX_AGE_SECONDS = 900;
+
+/** Refresh token lifetime per API contract (7 days). */
+export const REFRESH_TOKEN_MAX_AGE_SECONDS = 7 * 24 * 60 * 60;
+
 export const SUPPORTED_LOCALES = ["ar", "en"] as const;
 export type SupportedLocale = (typeof SUPPORTED_LOCALES)[number];
 

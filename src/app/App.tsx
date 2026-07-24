@@ -48,7 +48,7 @@ export default function App() {
             ))}
 
             {/* Auth-only app pages */}
-            <Route element={<ProtectedRoute loginPath="/register" />}>
+            <Route element={<ProtectedRoute loginPath="/login" />}>
               <Route path="/" element={<UiPlayground />} />
               <Route path="/ui" element={<UiPlayground />} />
             </Route>

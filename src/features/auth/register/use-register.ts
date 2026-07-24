@@ -48,7 +48,7 @@ export function useRegister() {
       return loginUser({ email: payload.email, password: payload.password });
     },
     onSuccess: (tokens) => {
-      setTokens(tokens.accessToken, tokens.refreshToken);
+      setTokens(tokens.accessToken, tokens.refreshToken, tokens.expiresIn);
       toast.success(t("register.success"));
       navigate("/", { replace: true });
     },

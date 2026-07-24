@@ -1,6 +1,33 @@
 import axios from "axios";
+import {
+  getAccessToken,
+  getRefreshToken,
+  setAuthTokens,
+} from "@/shared/lib/auth-tokens";
 import { API_BASE_URL, STORAGE_KEYS } from "@/shared/lib/constants";
 import type { TokenResponse } from "@/shared/types/api";
+import { useAuthStore } from "@/stores/auth.store";
+
+/** Auth endpoints that must never trigger the token-refresh interceptor. */
+const NO_REFRESH_URLS = [
+  "/api/auth/login",
+  "/api/auth/register",
+  "/api/auth/refresh",
+  "/api/admin/auth/login",
+  "/api/admin/auth/refresh",
+] as const;
+
+/** Login/register — do not attach a stale Bearer token. */
+const PUBLIC_AUTH_URLS = [
+  "/api/auth/login",
+  "/api/auth/register",
+  "/api/admin/auth/login",
+] as const;
+
+function matchesUrl(url: string | undefined, paths: readonly string[]) {
+  if (!url) return false;
+  return paths.some((path) => url.includes(path));
+}
 
 export const apiClient = axios.create({
   baseURL: API_BASE_URL,
@@ -27,8 +54,8 @@ function processQueue(error: unknown, token: string | null = null) {
 }
 
 apiClient.interceptors.request.use((config) => {
-  const token = localStorage.getItem(STORAGE_KEYS.ACCESS_TOKEN);
-  if (token) {
+  const token = getAccessToken();
+  if (token && !matchesUrl(config.url, PUBLIC_AUTH_URLS)) {
     config.headers.Authorization = `Bearer ${token}`;
   }
 
@@ -43,7 +70,11 @@ apiClient.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
 
-    if (error.response?.status !== 401 || originalRequest._retry) {
+    if (
+      error.response?.status !== 401 ||
+      originalRequest._retry ||
+      matchesUrl(originalRequest.url, NO_REFRESH_URLS)
+    ) {
       return Promise.reject(error);
     }
 
@@ -59,7 +90,7 @@ apiClient.interceptors.response.use(
     originalRequest._retry = true;
     isRefreshing = true;
 
-    const refreshToken = localStorage.getItem(STORAGE_KEYS.REFRESH_TOKEN);
+    const refreshToken = getRefreshToken();
     if (!refreshToken) {
       isRefreshing = false;
       redirectToLogin();
@@ -77,8 +108,12 @@ apiClient.interceptors.response.use(
         { refreshToken },
       );
 
-      localStorage.setItem(STORAGE_KEYS.ACCESS_TOKEN, data.accessToken);
-      localStorage.setItem(STORAGE_KEYS.REFRESH_TOKEN, data.refreshToken);
+      setAuthTokens(data.accessToken, data.refreshToken, data.expiresIn);
+      useAuthStore.setState({
+        accessToken: data.accessToken,
+        refreshToken: data.refreshToken,
+        isAuthenticated: true,
+      });
 
       processQueue(null, data.accessToken);
 
@@ -95,9 +130,14 @@ apiClient.interceptors.response.use(
 );
 
 function redirectToLogin() {
-  localStorage.removeItem(STORAGE_KEYS.ACCESS_TOKEN);
-  localStorage.removeItem(STORAGE_KEYS.REFRESH_TOKEN);
+  useAuthStore.getState().clearTokens();
 
-  const isAdminPath = window.location.pathname.startsWith("/admin");
-  window.location.href = isAdminPath ? "/admin/login" : "/login";
+  const loginPath = window.location.pathname.startsWith("/admin")
+    ? "/admin/login"
+    : "/login";
+
+  // Already on a guest auth page — avoid a full reload that hides error toasts.
+  if (window.location.pathname === loginPath) return;
+
+  window.location.href = loginPath;
 }

@@ -1,28 +1,42 @@
 import { create } from "zustand";
-import { STORAGE_KEYS } from "@/shared/lib/constants";
+import {
+  clearAuthTokens,
+  getAccessToken,
+  getRefreshToken,
+  migrateLegacyTokenStorage,
+  setAuthTokens,
+} from "@/shared/lib/auth-tokens";
+
+migrateLegacyTokenStorage();
 
 interface AuthState {
   accessToken: string | null;
   refreshToken: string | null;
   isAuthenticated: boolean;
-  setTokens: (accessToken: string, refreshToken: string) => void;
+  setTokens: (
+    accessToken: string,
+    refreshToken: string,
+    expiresIn?: number,
+  ) => void;
   clearTokens: () => void;
 }
 
 export const useAuthStore = create<AuthState>((set) => ({
-  accessToken: localStorage.getItem(STORAGE_KEYS.ACCESS_TOKEN),
-  refreshToken: localStorage.getItem(STORAGE_KEYS.REFRESH_TOKEN),
-  isAuthenticated: !!localStorage.getItem(STORAGE_KEYS.ACCESS_TOKEN),
+  accessToken: getAccessToken(),
+  refreshToken: getRefreshToken(),
+  isAuthenticated: !!getAccessToken(),
 
-  setTokens: (accessToken, refreshToken) => {
-    localStorage.setItem(STORAGE_KEYS.ACCESS_TOKEN, accessToken);
-    localStorage.setItem(STORAGE_KEYS.REFRESH_TOKEN, refreshToken);
-    set({ accessToken, refreshToken, isAuthenticated: true });
+  setTokens: (accessToken, refreshToken, expiresIn) => {
+    setAuthTokens(accessToken, refreshToken, expiresIn);
+    set({
+      accessToken: getAccessToken(),
+      refreshToken: getRefreshToken(),
+      isAuthenticated: !!getAccessToken(),
+    });
   },
 
   clearTokens: () => {
-    localStorage.removeItem(STORAGE_KEYS.ACCESS_TOKEN);
-    localStorage.removeItem(STORAGE_KEYS.REFRESH_TOKEN);
+    clearAuthTokens();
     set({ accessToken: null, refreshToken: null, isAuthenticated: false });
   },
 }));
