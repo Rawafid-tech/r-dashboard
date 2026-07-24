@@ -1,0 +1,53 @@
+{
+  "app": {
+    "name": "Rawafid",
+    "tagline": "The Operating System for E-commerce Logistics"
+  },
+  "nav": {
+    "dashboard": "Dashboard",
+    "shipments": "Shipments",
+    "returns": "Returns",
+    "products": "Products",
+    "wallet": "Wallet",
+    "settings": "Settings",
+    "integrations": "Integrations",
+    "locations": "Sender Locations",
+    "shippingBoxes": "Shipping Boxes",
+    "shippingRates": "Shipping Rates"
+  },
+  "auth": {
+    "login": "Login",
+    "register": "Register",
+    "logout": "Logout",
+    "email": "Email",
+    "password": "Password",
+    "forgotPassword": "Forgot password?"
+  },
+  "common": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "create": "Create",
+    "search": "Search",
+    "filter": "Filter",
+    "loading": "Loading...",
+    "noData": "No data available",
+    "confirm": "Confirm",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous",
+    "actions": "Actions",
+    "status": "Status",
+    "date": "Date",
+    "all": "All"
+  },
+  "errors": {
+    "networkError": "Unable to connect to the server. Please check your connection.",
+    "unauthorized": "Please log in to continue.",
+    "forbidden": "You do not have permission for this action.",
+    "notFound": "The requested page was not found.",
+    "serverError": "A server error occurred. Please try again later.",
+    "rateLimited": "Too many attempts. Please try again later."
+  }
+}
