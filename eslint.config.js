@@ -25,4 +25,14 @@ export default tseslint.config(
       ],
     },
   },
+  {
+    // shadcn/ui primitives and context providers co-export helpers by design.
+    files: [
+      "src/shared/components/ui/**/*.{ts,tsx}",
+      "src/shared/components/layout/sidebar-provider.tsx",
+    ],
+    rules: {
+      "react-refresh/only-export-components": "off",
+    },
+  },
 );
