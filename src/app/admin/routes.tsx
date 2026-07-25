@@ -17,6 +17,18 @@ const AdminHomePage = lazy(() =>
   })),
 );
 
+const AdminCompaniesPage = lazy(() =>
+  import("@/app/admin/companies-page").then((m) => ({
+    default: m.AdminCompaniesPage,
+  })),
+);
+
+const AdminCompanyDetailPage = lazy(() =>
+  import("@/app/admin/company-detail-page").then((m) => ({
+    default: m.AdminCompanyDetailPage,
+  })),
+);
+
 export const adminRoutes: RouteObject[] = [
   {
     element: <AdminGuestRoute />,
@@ -36,6 +48,14 @@ export const adminRoutes: RouteObject[] = [
           {
             path: "/admin",
             element: <AdminHomePage />,
+          },
+          {
+            path: "/admin/companies",
+            element: <AdminCompaniesPage />,
+          },
+          {
+            path: "/admin/companies/:companyId",
+            element: <AdminCompanyDetailPage />,
           },
         ],
       },

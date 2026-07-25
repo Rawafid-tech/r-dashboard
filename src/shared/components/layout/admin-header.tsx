@@ -1,4 +1,4 @@
-import { ShieldCheck } from "lucide-react";
+import { Menu, ShieldCheck } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import {
   Avatar,
@@ -14,6 +14,8 @@ import {
 } from "@/shared/components/ui";
 import { AuthLocaleThemeControls } from "@/features/auth/components/auth-locale-theme-controls";
 import { useAdminLogout } from "@/features/admin/auth/hooks/use-admin-logout";
+import { SidebarExpandButton } from "@/shared/components/layout/sidebar-toggle-button";
+import { useSidebar } from "@/shared/components/layout/sidebar-provider";
 import type { AdminRole } from "@/shared/types/enums";
 import { cn } from "@/shared/lib/utils";
 
@@ -43,6 +45,7 @@ export function AdminHeader({
   className,
 }: AdminHeaderProps) {
   const { t } = useTranslation(["admin", "common"]);
+  const { mobileOpen, setMobileOpen, isMobile, collapsed } = useSidebar();
   const logoutMutation = useAdminLogout();
 
   return (
@@ -52,7 +55,23 @@ export function AdminHeader({
         className,
       )}
     >
-      <div className="flex min-w-0 items-center gap-2.5">
+      {isMobile ? (
+        <Button
+          type="button"
+          variant="outline"
+          size="icon-sm"
+          aria-label={t("shell.openNavigation")}
+          aria-expanded={mobileOpen}
+          aria-controls="admin-mobile-nav"
+          onClick={() => setMobileOpen(true)}
+        >
+          <Menu />
+        </Button>
+      ) : collapsed ? (
+        <SidebarExpandButton controlsId="admin-sidebar-nav" />
+      ) : null}
+
+      <div className="flex min-w-0 items-center gap-2.5 md:hidden">
         <span
           className="grid size-8 shrink-0 place-items-center rounded-lg bg-violet-500/10 text-violet-600 ring-1 ring-violet-500/15 dark:text-violet-300"
           aria-hidden="true"
@@ -60,14 +79,11 @@ export function AdminHeader({
           <ShieldCheck className="size-4" />
         </span>
         <div className="min-w-0 leading-tight">
-          <p className="truncate text-sm font-semibold">{t("common:app.name")}</p>
-          <Badge variant="secondary" className="mt-0.5 text-[10px] uppercase">
-            {t("shell.badge")}
-          </Badge>
+          <p className="truncate text-sm font-semibold">{t("shell.badge")}</p>
         </div>
       </div>
 
-      <div className="min-w-0 flex-1" aria-hidden="true" />
+      <div className="hidden min-w-0 flex-1 md:block" aria-hidden="true" />
 
       <AuthLocaleThemeControls />
 

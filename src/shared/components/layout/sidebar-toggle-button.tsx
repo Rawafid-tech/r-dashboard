@@ -7,9 +7,13 @@ import { useLocaleStore } from "@/stores/locale.store";
 
 interface SidebarToggleButtonProps {
   className?: string;
+  controlsId?: string;
 }
 
-export function SidebarExpandButton({ className }: SidebarToggleButtonProps) {
+export function SidebarExpandButton({
+  className,
+  controlsId = "merchant-sidebar-nav",
+}: SidebarToggleButtonProps) {
   const { t } = useTranslation("dashboard");
   const { toggleCollapsed } = useSidebar();
   const dir = useLocaleStore((state) => state.dir);
@@ -23,7 +27,7 @@ export function SidebarExpandButton({ className }: SidebarToggleButtonProps) {
       onClick={toggleCollapsed}
       aria-label={t("shell.expandSidebar")}
       aria-expanded={false}
-      aria-controls="merchant-sidebar-nav"
+      aria-controls={controlsId}
       className={cn("shrink-0", className)}
     >
       <ExpandIcon aria-hidden="true" />
@@ -31,7 +35,10 @@ export function SidebarExpandButton({ className }: SidebarToggleButtonProps) {
   );
 }
 
-export function SidebarCollapseButton({ className }: SidebarToggleButtonProps) {
+export function SidebarCollapseButton({
+  className,
+  controlsId = "merchant-sidebar-nav",
+}: SidebarToggleButtonProps) {
   const { t } = useTranslation("dashboard");
   const { toggleCollapsed } = useSidebar();
   const dir = useLocaleStore((state) => state.dir);
@@ -45,7 +52,7 @@ export function SidebarCollapseButton({ className }: SidebarToggleButtonProps) {
       onClick={toggleCollapsed}
       aria-label={t("shell.collapseSidebar")}
       aria-expanded
-      aria-controls="merchant-sidebar-nav"
+      aria-controls={controlsId}
       className={cn("shrink-0 text-sidebar-foreground", className)}
     >
       <CollapseIcon aria-hidden="true" />

@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { Building2, CreditCard, ShieldCheck, Users } from "lucide-react";
+import { ArrowUpRight, Building2, CreditCard, ShieldCheck, Users } from "lucide-react";
+import { Link } from "react-router-dom";
 import {
   Badge,
   Card,
@@ -11,11 +12,12 @@ import {
 } from "@/shared/components/ui";
 import { useAdminMe } from "@/features/admin/auth/hooks/use-admin-me";
 import { AdminRole } from "@/shared/types/enums";
+import { cn } from "@/shared/lib/utils";
 
 const MODULES = [
-  { key: "plans", icon: CreditCard },
-  { key: "companies", icon: Building2 },
-  { key: "users", icon: Users },
+  { key: "plans", icon: CreditCard, href: null },
+  { key: "companies", icon: Building2, href: "/admin/companies" },
+  { key: "users", icon: Users, href: null },
 ] as const;
 
 export function AdminHomePage() {
@@ -94,15 +96,25 @@ export function AdminHomePage() {
         </div>
 
         <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {MODULES.map(({ key, icon: Icon }) => (
-            <li key={key}>
-              <Card className="h-full border-dashed opacity-90">
+          {MODULES.map(({ key, icon: Icon, href }) => {
+            const isLive = Boolean(href);
+            const card = (
+              <Card
+                className={cn(
+                  "h-full transition-colors",
+                  isLive
+                    ? "border-border/80 hover:border-primary/30 hover:bg-card/80"
+                    : "border-dashed opacity-90",
+                )}
+              >
                 <CardHeader className="gap-3">
                   <div className="flex items-center justify-between gap-2">
                     <span className="grid size-9 place-items-center rounded-lg bg-violet-500/10 text-violet-700 ring-1 ring-violet-500/12 dark:text-violet-200">
                       <Icon className="size-4" aria-hidden="true" />
                     </span>
-                    <Badge variant="outline">{t("home.comingSoon")}</Badge>
+                    <Badge variant={isLive ? "success" : "outline"}>
+                      {isLive ? t("home.openModule") : t("home.comingSoon")}
+                    </Badge>
                   </div>
                   <CardTitle className="text-base">
                     {t(`home.modules.${key}.title`)}
@@ -113,14 +125,37 @@ export function AdminHomePage() {
                 </CardHeader>
                 <CardContent>
                   <p className="text-xs text-muted-foreground">
-                    {isReadOnly
-                      ? t("home.modules.readOnlyHint")
-                      : t("home.modules.manageHint")}
+                    {isLive
+                      ? t("home.modules.openHint")
+                      : isReadOnly
+                        ? t("home.modules.readOnlyHint")
+                        : t("home.modules.manageHint")}
                   </p>
+                  {isLive ? (
+                    <span className="mt-3 inline-flex items-center gap-1 text-sm font-medium text-primary">
+                      {t("home.openModule")}
+                      <ArrowUpRight className="size-4" aria-hidden="true" />
+                    </span>
+                  ) : null}
                 </CardContent>
               </Card>
-            </li>
-          ))}
+            );
+
+            return (
+              <li key={key}>
+                {href ? (
+                  <Link
+                    to={href}
+                    className="block rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                  >
+                    {card}
+                  </Link>
+                ) : (
+                  card
+                )}
+              </li>
+            );
+          })}
         </ul>
       </section>
     </div>

@@ -203,3 +203,20 @@
 ::-webkit-scrollbar-thumb:hover {
   background: var(--color-gray-500);
 }
+
+/* Data table indeterminate loading bar */
+@keyframes data-table-loading-bar {
+  0% {
+    transform: translateX(-100%);
+  }
+  50% {
+    transform: translateX(20%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.data-table-loading-bar {
+  animation: data-table-loading-bar 1.1s ease-in-out infinite;
+}

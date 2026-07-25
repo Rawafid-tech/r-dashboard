@@ -49,7 +49,19 @@
   "shell": {
     "badge": "Admin Console",
     "userMenuLabel": "Menu for {{name}}",
-    "loggingOut": "Signing out..."
+    "loggingOut": "Signing out...",
+    "sidebarLabel": "Admin navigation",
+    "openNavigation": "Open navigation",
+    "closeNavigation": "Close navigation",
+    "currentRole": "Your access",
+    "currentRoleValue": "Access: {{role}}",
+    "roleFallback": "Staff",
+    "nav": {
+      "home": "Overview",
+      "companies": "Companies",
+      "plans": "Plans",
+      "users": "Users"
+    }
   },
   "roles": {
     "SUPER_ADMIN": "Super admin",
@@ -64,9 +76,11 @@
     "modulesTitle": "Admin modules",
     "modulesSubtitle": "Coming soon — full management tools will appear here.",
     "comingSoon": "Coming soon",
+    "openModule": "Open",
     "modules": {
       "readOnlyHint": "Your role is view-only until these pages ship.",
       "manageHint": "Full management will be available when this module launches.",
+      "openHint": "Browse registered merchants and their subscription context.",
       "plans": {
         "title": "Plan management",
         "description": "Create and edit subscription plans, pricing tiers, and features."
@@ -78,6 +92,119 @@
       "users": {
         "title": "Users & moderation",
         "description": "Browse users, suspend accounts, and verify channels."
+      }
+    }
+  },
+  "companies": {
+    "metaTitle": "Companies directory — Rawafid Admin",
+    "metaDescription": "Browse registered merchant companies, their plans, teams, and subscription history on the Rawafid platform.",
+    "skipToContent": "Skip to companies list",
+    "hero": {
+      "badge": "Merchant directory",
+      "title": "Companies directory",
+      "subtitle": "Every storefront on Rawafid lives here — search by store name or account number, inspect plans, and review subscription history.",
+      "totalLabel": "Registered companies"
+    },
+    "toolbar": {
+      "title": "Search and sort companies",
+      "searchPlaceholder": "Search by company name or account number…",
+      "searchHint": "Matches store name anywhere, or account number from the start.",
+      "sortLabel": "Sort by",
+      "sort": {
+        "createdDesc": "Newest first",
+        "createdAsc": "Oldest first",
+        "nameAsc": "Name A → Z",
+        "nameDesc": "Name Z → A",
+        "identifierAsc": "Account # ascending",
+        "identifierDesc": "Account # descending"
+      }
+    },
+    "table": {
+      "caption": "Registered companies",
+      "company": "Company",
+      "accountNumber": "Account #",
+      "plan": "Current plan",
+      "country": "Ship-from",
+      "volume": "Monthly volume",
+      "registered": "Registered",
+      "actions": "Actions",
+      "view": "View",
+      "viewCompany": "View company"
+    },
+    "pagination": {
+      "label": "Companies pagination",
+      "summary": "Showing {{start}}–{{end}} of {{total}} companies",
+      "pageOf": "Page {{current}} of {{total}}"
+    },
+    "empty": {
+      "title": "No companies yet",
+      "description": "When merchants register on Rawafid, their companies will appear here for platform oversight.",
+      "searchTitle": "No matching companies",
+      "searchDescription": "Try a different store name or account number prefix."
+    },
+    "errors": {
+      "loadFailed": "Could not load companies",
+      "loadFailedHint": "Check your connection and try again.",
+      "retry": "Try again"
+    },
+    "planCodes": {
+      "FREE": "Free",
+      "LAUNCH": "Launch"
+    },
+    "detail": {
+      "metaTitle": "{{name}} — Company — Rawafid Admin",
+      "metaTitleFallback": "Company details — Rawafid Admin",
+      "metaDescription": "Operational profile, team, and subscription history for {{name}} on Rawafid.",
+      "metaDescriptionFallback": "Company operational profile on Rawafid.",
+      "skipToContent": "Skip to company details",
+      "backToDirectory": "Back to companies",
+      "badge": "Merchant company",
+      "currentPlan": "Current plan",
+      "profile": {
+        "title": "Company profile",
+        "subtitle": "Registration facts and logistics footprint for this merchant tenant.",
+        "accountNumber": "Account number",
+        "country": "Ship-from country",
+        "volume": "Declared monthly volume",
+        "size": "Company size",
+        "industry": "Industry",
+        "website": "Website",
+        "visitWebsite": "Visit website",
+        "registeredAt": "Registered",
+        "updatedAt": "Last updated",
+        "notProvided": "Not provided",
+        "logisticsHint": "Logistics context",
+        "logisticsDescription": "Ship-from country and declared volume help the platform understand routing and capacity needs.",
+        "tenantHint": "Tenant account",
+        "tenantDescription": "Each company is an isolated merchant workspace with its own users, subscription, and future shipment data."
+      },
+      "subscriptions": {
+        "title": "Subscription history",
+        "subtitle": "Active deal and past plans assigned by the platform team.",
+        "loading": "Loading subscription history…",
+        "error": "Could not load subscription history.",
+        "empty": "No subscription records found.",
+        "shipments": "Shipments / month",
+        "price": "Price",
+        "billingPeriod": "Billing cycle",
+        "period": "Period"
+      },
+      "team": {
+        "title": "Company team",
+        "subtitle": "People who can access this merchant workspace.",
+        "loading": "Loading team members…",
+        "error": "Could not load team members.",
+        "empty": "No team members found.",
+        "verified": "Verified user",
+        "notVerified": "Not verified",
+        "roles": {
+          "OWNER": "Owner",
+          "AGENT": "Agent"
+        },
+        "status": {
+          "ACTIVE": "Active",
+          "SUSPENDED": "Suspended"
+        }
       }
     }
   }

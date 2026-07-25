@@ -1,4 +1,11 @@
 import type { CompanySize, MonthlyShipmentVolume, BillingPeriod } from "@/shared/types/enums";
+import type { PaginationParams } from "@/shared/types/api";
+
+export type AdminCompanySort = "CREATED_AT" | "NAME" | "IDENTIFIER";
+
+export interface AdminCompaniesListParams extends PaginationParams {
+  sort?: AdminCompanySort;
+}
 
 export interface AdminCompany {
   id: string;
