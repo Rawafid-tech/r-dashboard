@@ -207,5 +207,179 @@
         }
       }
     }
+  },
+  "plans": {
+    "metaTitle": "Plan catalog — Rawafid Admin",
+    "metaDescription": "Manage subscription plans, pricing tiers, and feature matrices for the Rawafid merchant platform.",
+    "skipToContent": "Skip to plan catalog",
+    "hero": {
+      "badge": "Subscription catalog",
+      "title": "Plan management",
+      "subtitle": "Shape the offers merchants see on signup and billing — localized names, volume tiers, and feature limits in one catalog.",
+      "totalLabel": "Plans in catalog",
+      "activeCount": "{{count}} active",
+      "createPlan": "Create plan"
+    },
+    "toolbar": {
+      "title": "Filter catalog",
+      "hint": "Active plans appear on the public pricing page; archived plans stay assignable by staff only.",
+      "filterLabel": "Plan status filter",
+      "filters": {
+        "ALL": "All",
+        "ACTIVE": "Active",
+        "ARCHIVED": "Archived"
+      }
+    },
+    "status": {
+      "ACTIVE": "Active",
+      "ARCHIVED": "Archived"
+    },
+    "catalog": {
+      "defaultPlan": "Default signup plan",
+      "highlighted": "Highlighted",
+      "customBadge": "Custom pricing",
+      "customPricing": "Contact us — custom pricing",
+      "noTiers": "No pricing tiers configured",
+      "tierCount": "{{count}} pricing tiers",
+      "tierListLabel": "Pricing tiers for this plan",
+      "tierShipments": "{{count}} shipments/mo",
+      "tierMonthly": "{{price}}/mo",
+      "pricing": "Pricing",
+      "featureCount": "{{count}} features",
+      "sortOrder": "Sort #{{order}}",
+      "viewPlan": "View plan"
+    },
+    "empty": {
+      "title": "No plans in the catalog",
+      "description": "Create the first subscription plan to define what merchants can subscribe to on Rawafid.",
+      "filterTitle": "No plans match this filter",
+      "filterDescription": "Try another status filter or create a new plan."
+    },
+    "errors": {
+      "loadFailed": "Could not load plans",
+      "loadFailedHint": "Check your connection and try again.",
+      "retry": "Try again"
+    },
+    "detail": {
+      "metaTitle": "{{name}} — Plan — Rawafid Admin",
+      "metaTitleFallback": "Plan details — Rawafid Admin",
+      "metaDescription": "Edit pricing tiers, features, and visibility for {{name}} on Rawafid.",
+      "metaDescriptionFallback": "Subscription plan details on Rawafid.",
+      "skipToContent": "Skip to plan details",
+      "backToCatalog": "Back to plans",
+      "badge": "Subscription plan"
+    },
+    "create": {
+      "metaTitle": "Create plan — Rawafid Admin",
+      "metaDescription": "Add a new subscription plan to the Rawafid catalog with localized copy, tiers, and features.",
+      "skipToContent": "Skip to create plan form",
+      "badge": "New plan",
+      "title": "Create subscription plan",
+      "subtitle": "Define a plan code, bilingual copy, shipment volume tiers, and the feature matrix merchants will see."
+    },
+    "form": {
+      "basics": {
+        "title": "Plan identity",
+        "description": "Codes are permanent identifiers used in subscriptions and admin tools.",
+        "code": "Plan code",
+        "codePlaceholder": "LAUNCH",
+        "codeHint": "Uppercase letters, numbers, and underscores only — max 50 characters.",
+        "codeImmutable": "Plan codes cannot be changed after creation.",
+        "nameEn": "Name (English)",
+        "nameAr": "Name (Arabic)",
+        "descriptionEn": "Description (English)",
+        "descriptionAr": "Description (Arabic)",
+        "sortOrder": "Display order",
+        "highlighted": "Highlight on pricing page",
+        "customPricing": "Custom pricing (contact us)"
+      },
+      "tiers": {
+        "title": "Pricing tiers",
+        "description": "Each tier pairs a monthly shipment volume with explicit monthly and yearly prices.",
+        "cardTitle": "Volume tiers",
+        "cardDescription": "Merchants pick a tier when subscribing. Yearly price is stored separately — not 12× monthly.",
+        "tierLabel": "Tier {{index}}",
+        "shipments": "Shipments / month",
+        "monthlyPrice": "Monthly price (EGP)",
+        "yearlyPrice": "Yearly price (EGP)",
+        "sortOrder": "Sort order",
+        "addTier": "Add tier",
+        "remove": "Remove",
+        "removeTier": "Remove tier {{index}}",
+        "customPricingHint": "Custom pricing plans have no tiers — merchants contact the platform team."
+      },
+      "features": {
+        "title": "Feature matrix",
+        "description": "Rows appear on the public pricing comparison table.",
+        "cardTitle": "Plan features",
+        "cardDescription": "Each feature has a type that controls how it renders for merchants.",
+        "empty": "No features yet — add rows to describe limits and capabilities.",
+        "featureLabel": "Feature {{index}}",
+        "labelEn": "Label (English)",
+        "labelAr": "Label (Arabic)",
+        "type": "Feature type",
+        "numberValue": "Numeric limit",
+        "enabledValue": "Included in plan",
+        "textValue": "Display text",
+        "unlimitedHint": "Unlimited features need no extra value — they render as an unlimited badge.",
+        "addFeature": "Add feature",
+        "remove": "Remove",
+        "removeFeature": "Remove feature {{index}}",
+        "types": {
+          "NUMBER": "Number",
+          "BOOLEAN": "Yes / No",
+          "UNLIMITED": "Unlimited",
+          "TEXT": "Text"
+        }
+      },
+      "validation": {
+        "code": "Plan code is required",
+        "codeFormat": "Use uppercase letters, numbers, and underscores only (max 50)",
+        "nameEn": "English name is required",
+        "nameAr": "Arabic name is required",
+        "descriptionEn": "English description is required",
+        "descriptionAr": "Arabic description is required",
+        "sortOrder": "Enter a valid sort order (0 or higher)",
+        "tierShipments": "Enter a valid shipment volume",
+        "tierPrice": "Enter a valid price with up to 2 decimal places",
+        "tiersRequired": "Add at least one pricing tier, or enable custom pricing",
+        "customPricingTiers": "Custom pricing plans must not include tiers",
+        "duplicateTierVolume": "Each tier must have a unique shipment volume",
+        "featureType": "Select a feature type",
+        "labelEn": "English label is required",
+        "labelAr": "Arabic label is required",
+        "featureNumber": "Enter a valid number for this feature",
+        "featureEnabled": "Choose whether this feature is included",
+        "featureText": "Enter display text for this feature"
+      },
+      "create": "Create plan",
+      "save": "Save changes",
+      "saving": "Saving…",
+      "readOnlyHint": "Your role can view plans but not edit them."
+    },
+    "lifecycle": {
+      "archive": "Archive plan",
+      "activate": "Reactivate plan",
+      "defaultHint": "The default signup plan cannot be archived.",
+      "archiveTitle": "Archive this plan?",
+      "archiveDescription": "{{name}} will disappear from the public pricing page. Existing subscriptions keep their snapshot.",
+      "activateTitle": "Reactivate this plan?",
+      "activateDescription": "{{name}} will return to the active catalog and can be assigned to companies again.",
+      "cancel": "Cancel",
+      "confirmArchive": "Archive plan",
+      "confirmActivate": "Reactivate",
+      "confirming": "Working…"
+    },
+    "toast": {
+      "created": "Plan created",
+      "updated": "Plan saved",
+      "archived": "Plan archived",
+      "activated": "Plan reactivated",
+      "duplicateCode": "A plan with this code already exists",
+      "cannotArchiveDefault": "The default signup plan cannot be archived",
+      "saveFailed": "Could not save plan",
+      "archiveFailed": "Could not archive plan",
+      "activateFailed": "Could not reactivate plan"
+    }
   }
 }

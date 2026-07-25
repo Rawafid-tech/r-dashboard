@@ -15,7 +15,7 @@ import { AdminRole } from "@/shared/types/enums";
 import { cn } from "@/shared/lib/utils";
 
 const MODULES = [
-  { key: "plans", icon: CreditCard, href: null },
+  { key: "plans", icon: CreditCard, href: "/admin/plans" },
   { key: "companies", icon: Building2, href: "/admin/companies" },
   { key: "users", icon: Users, href: null },
 ] as const;

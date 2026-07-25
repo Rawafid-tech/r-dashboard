@@ -29,6 +29,24 @@ const AdminCompanyDetailPage = lazy(() =>
   })),
 );
 
+const AdminPlansPage = lazy(() =>
+  import("@/app/admin/plans-page").then((m) => ({
+    default: m.AdminPlansPage,
+  })),
+);
+
+const AdminPlanCreatePage = lazy(() =>
+  import("@/app/admin/plan-create-page").then((m) => ({
+    default: m.AdminPlanCreatePage,
+  })),
+);
+
+const AdminPlanDetailPage = lazy(() =>
+  import("@/app/admin/plan-detail-page").then((m) => ({
+    default: m.AdminPlanDetailPage,
+  })),
+);
+
 export const adminRoutes: RouteObject[] = [
   {
     element: <AdminGuestRoute />,
@@ -56,6 +74,18 @@ export const adminRoutes: RouteObject[] = [
           {
             path: "/admin/companies/:companyId",
             element: <AdminCompanyDetailPage />,
+          },
+          {
+            path: "/admin/plans",
+            element: <AdminPlansPage />,
+          },
+          {
+            path: "/admin/plans/new",
+            element: <AdminPlanCreatePage />,
+          },
+          {
+            path: "/admin/plans/:planId",
+            element: <AdminPlanDetailPage />,
           },
         ],
       },

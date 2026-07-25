@@ -1,8 +1,8 @@
 import type { PlanStatus, PlanFeatureType } from "@/shared/types/enums";
 
 export interface LocaleMap {
-  en: string;
-  ar: string;
+  en: string | null;
+  ar: string | null;
 }
 
 export interface AdminPlanTier {
@@ -24,8 +24,8 @@ export interface AdminPlanFeature {
 export interface AdminPlan {
   id: string;
   code: string;
-  name: LocaleMap;
-  description: LocaleMap;
+  name: LocaleMap | null;
+  description: LocaleMap | null;
   highlighted: boolean;
   customPricing: boolean;
   sortOrder: number;
