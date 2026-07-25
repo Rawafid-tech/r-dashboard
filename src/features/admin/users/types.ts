@@ -1,4 +1,11 @@
+import type { PaginationParams } from "@/shared/types/api";
 import type { MerchantRole, UserStatus } from "@/shared/types/enums";
+
+export type AdminUserSort = "CREATED_AT" | "NAME" | "EMAIL";
+
+export interface AdminUsersListParams extends PaginationParams {
+  sort?: AdminUserSort;
+}
 
 export interface AdminUser {
   id: string;

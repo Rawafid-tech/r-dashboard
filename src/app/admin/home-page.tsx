@@ -17,7 +17,7 @@ import { cn } from "@/shared/lib/utils";
 const MODULES = [
   { key: "plans", icon: CreditCard, href: "/admin/plans" },
   { key: "companies", icon: Building2, href: "/admin/companies" },
-  { key: "users", icon: Users, href: null },
+  { key: "users", icon: Users, href: "/admin/users" },
 ] as const;
 
 export function AdminHomePage() {

@@ -74,7 +74,7 @@
     "subtitle": "You're in the platform admin console. The modules below will go live as each screen ships.",
     "roleHint": "Your current access: {{role}}",
     "modulesTitle": "Admin modules",
-    "modulesSubtitle": "Coming soon — full management tools will appear here.",
+    "modulesSubtitle": "Browse and manage platform resources from each module.",
     "comingSoon": "Coming soon",
     "openModule": "Open",
     "modules": {
@@ -385,6 +385,125 @@
       "saveFailed": "Could not save plan",
       "archiveFailed": "Could not archive plan",
       "activateFailed": "Could not reactivate plan"
+    }
+  },
+  "users": {
+    "metaTitle": "Users directory — Rawafid Admin",
+    "metaDescription": "Browse merchant accounts, verify contact channels, and moderate access across the Rawafid platform.",
+    "skipToContent": "Skip to users list",
+    "hero": {
+      "badge": "People & trust",
+      "title": "Users directory",
+      "subtitle": "Every person behind a merchant workspace — search by name or email, review verification status, and take moderation action when needed.",
+      "totalLabel": "Registered users"
+    },
+    "toolbar": {
+      "title": "Search and sort users",
+      "searchPlaceholder": "Search by name or email…",
+      "searchHint": "Matches first name, last name, full name anywhere, or email.",
+      "sortLabel": "Sort by",
+      "sort": {
+        "createdDesc": "Newest first",
+        "createdAsc": "Oldest first",
+        "nameAsc": "Name A → Z",
+        "nameDesc": "Name Z → A",
+        "emailAsc": "Email A → Z",
+        "emailDesc": "Email Z → A"
+      }
+    },
+    "table": {
+      "caption": "Registered merchant users",
+      "user": "User",
+      "email": "Email",
+      "phone": "Phone",
+      "status": "Status",
+      "registered": "Registered",
+      "actions": "Actions",
+      "view": "View",
+      "viewUser": "View user"
+    },
+    "pagination": {
+      "label": "Users pagination",
+      "summary": "Showing {{start}}–{{end}} of {{total}} users",
+      "pageOf": "Page {{current}} of {{total}}"
+    },
+    "empty": {
+      "title": "No users yet",
+      "description": "When merchants register on Rawafid, their owner accounts will appear here for platform oversight.",
+      "searchTitle": "No matching users",
+      "searchDescription": "Try a different name or email address."
+    },
+    "errors": {
+      "loadFailed": "Could not load users",
+      "loadFailedHint": "Check your connection and try again.",
+      "retry": "Try again"
+    },
+    "roles": {
+      "OWNER": "Owner",
+      "AGENT": "Agent"
+    },
+    "status": {
+      "ACTIVE": "Active",
+      "SUSPENDED": "Suspended"
+    },
+    "verified": {
+      "label": "Verified user",
+      "notLabel": "Not verified",
+      "short": "Verified",
+      "notShort": "Unverified"
+    },
+    "detail": {
+      "metaTitle": "{{name}} — User — Rawafid Admin",
+      "metaTitleFallback": "User details — Rawafid Admin",
+      "metaDescription": "Profile, verification, and moderation for {{name}} on Rawafid.",
+      "metaDescriptionFallback": "Merchant user profile on Rawafid.",
+      "skipToContent": "Skip to user details",
+      "backToDirectory": "Back to users",
+      "badge": "Merchant user",
+      "readOnlyHint": "Your role can view user records but cannot change verification or account status.",
+      "profile": {
+        "title": "User profile",
+        "subtitle": "Identity and contact details for this merchant account holder.",
+        "email": "Email",
+        "phone": "Phone",
+        "dateOfBirth": "Date of birth",
+        "registeredAt": "Registered",
+        "company": "Company workspace",
+        "viewCompany": "View company profile",
+        "notProvided": "Not provided",
+        "workspaceHint": "Tenant access",
+        "workspaceDescription": "This user belongs to one merchant company. Suspending them blocks login and revokes every active session immediately."
+      },
+      "trust": {
+        "title": "Channel verification",
+        "subtitle": "Attest email and phone independently — the verified badge requires both channels.",
+        "emailVerified": "Email verified",
+        "emailVerifiedHint": "Mark when the email address has been confirmed by platform staff.",
+        "phoneVerified": "Phone verified",
+        "phoneVerifiedHint": "Mark when the phone number has been confirmed. Resets if the user changes their number.",
+        "overallHint": "The overall verified badge updates automatically when both email and phone are attested.",
+        "saving": "Saving verification…"
+      },
+      "moderation": {
+        "title": "Account moderation",
+        "subtitle": "Control whether this user can sign in to their merchant workspace.",
+        "activeDescription": "This user can sign in and use the merchant dashboard. Suspending them blocks login and invalidates refresh tokens immediately.",
+        "suspendedDescription": "This account is suspended — the user cannot sign in until reactivated.",
+        "suspend": "Suspend account",
+        "reactivate": "Reactivate account",
+        "suspendTitle": "Suspend this account?",
+        "suspendDescription": "{{name}} will be blocked from signing in and all active sessions will end immediately.",
+        "reactivateTitle": "Reactivate this account?",
+        "reactivateDescription": "{{name}} will be able to sign in again with their existing credentials.",
+        "cancel": "Cancel",
+        "confirmSuspend": "Suspend account",
+        "confirmReactivate": "Reactivate",
+        "confirming": "Working…"
+      }
+    },
+    "toast": {
+      "updated": "User updated",
+      "updateFailed": "Could not update user"
     }
   }
 }

@@ -47,6 +47,18 @@ const AdminPlanDetailPage = lazy(() =>
   })),
 );
 
+const AdminUsersPage = lazy(() =>
+  import("@/app/admin/users-page").then((m) => ({
+    default: m.AdminUsersPage,
+  })),
+);
+
+const AdminUserDetailPage = lazy(() =>
+  import("@/app/admin/user-detail-page").then((m) => ({
+    default: m.AdminUserDetailPage,
+  })),
+);
+
 export const adminRoutes: RouteObject[] = [
   {
     element: <AdminGuestRoute />,
@@ -86,6 +98,14 @@ export const adminRoutes: RouteObject[] = [
           {
             path: "/admin/plans/:planId",
             element: <AdminPlanDetailPage />,
+          },
+          {
+            path: "/admin/users",
+            element: <AdminUsersPage />,
+          },
+          {
+            path: "/admin/users/:userId",
+            element: <AdminUserDetailPage />,
           },
         ],
       },

@@ -1,5 +1,6 @@
 import { Loader2, ShieldCheck, UserRound } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { Link } from "react-router-dom";
 import {
   Avatar,
   AvatarFallback,
@@ -10,6 +11,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/shared/components/ui";
+import { getUserInitials } from "@/features/admin/users/lib/user-label";
 import type { AdminUser } from "@/features/admin/users/types";
 import { UserStatus } from "@/shared/types/enums";
 
@@ -20,64 +22,66 @@ interface CompanyTeamSectionProps {
   onRetry: () => void;
 }
 
-function getInitials(name: string) {
-  const parts = name.trim().split(/\s+/).filter(Boolean);
-  if (parts.length === 0) return "?";
-  if (parts.length === 1) return parts[0]!.slice(0, 2).toUpperCase();
-  return `${parts[0]!.charAt(0)}${parts[1]!.charAt(0)}`.toUpperCase();
-}
-
 function TeamMemberCard({ user }: { user: AdminUser }) {
   const { t } = useTranslation("admin");
 
   return (
-    <li className="rounded-xl border border-border/70 bg-card/40 p-4">
-      <div className="flex items-start gap-3">
-        <Avatar size="sm">
-          <AvatarFallback className="bg-violet-500/10 text-violet-700 dark:text-violet-200">
-            {getInitials(user.fullName)}
-          </AvatarFallback>
-        </Avatar>
+    <li>
+      <Link
+        to={`/admin/users/${user.id}`}
+        className="block rounded-xl border border-border/70 bg-card/40 p-4 transition-colors hover:border-primary/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+      >
+        <div className="flex items-start gap-3">
+          <Avatar size="sm">
+            <AvatarFallback className="bg-violet-500/10 text-violet-700 dark:text-violet-200">
+              {getUserInitials(user.fullName)}
+            </AvatarFallback>
+          </Avatar>
 
-        <div className="min-w-0 flex-1 space-y-2">
-          <div className="flex flex-wrap items-center gap-2">
-            <p dir="auto" className="truncate font-medium text-foreground">
-              {user.fullName}
+          <div className="min-w-0 flex-1 space-y-2">
+            <div className="flex flex-wrap items-center gap-2">
+              <p dir="auto" className="truncate font-medium text-foreground">
+                {user.fullName}
+              </p>
+              <Badge variant="outline" className="text-[10px] uppercase">
+                {t(`companies.detail.team.roles.${user.role}`)}
+              </Badge>
+              <Badge
+                variant={
+                  user.status === UserStatus.ACTIVE ? "success" : "destructive"
+                }
+                className="text-[10px] uppercase"
+              >
+                {t(`companies.detail.team.status.${user.status}`)}
+              </Badge>
+            </div>
+
+            <p className="truncate text-sm text-muted-foreground" dir="ltr">
+              {user.email}
             </p>
-            <Badge variant="outline" className="text-[10px] uppercase">
-              {t(`companies.detail.team.roles.${user.role}`)}
-            </Badge>
-            <Badge
-              variant={
-                user.status === UserStatus.ACTIVE ? "success" : "destructive"
-              }
-              className="text-[10px] uppercase"
-            >
-              {t(`companies.detail.team.status.${user.status}`)}
-            </Badge>
-          </div>
+            <p className="truncate text-sm text-muted-foreground" dir="ltr">
+              {user.phone}
+            </p>
 
-          <p className="truncate text-sm text-muted-foreground" dir="ltr">
-            {user.email}
-          </p>
-          <p className="truncate text-sm text-muted-foreground" dir="ltr">
-            {user.phone}
-          </p>
+            <div className="flex flex-wrap gap-2">
+              {user.verified ? (
+                <Badge variant="success" className="gap-1">
+                  <ShieldCheck className="size-3" aria-hidden="true" />
+                  {t("companies.detail.team.verified")}
+                </Badge>
+              ) : (
+                <Badge variant="muted">
+                  {t("companies.detail.team.notVerified")}
+                </Badge>
+              )}
+            </div>
 
-          <div className="flex flex-wrap gap-2">
-            {user.verified ? (
-              <Badge variant="success" className="gap-1">
-                <ShieldCheck className="size-3" aria-hidden="true" />
-                {t("companies.detail.team.verified")}
-              </Badge>
-            ) : (
-              <Badge variant="muted">
-                {t("companies.detail.team.notVerified")}
-              </Badge>
-            )}
+            <span className="text-xs font-medium text-primary">
+              {t("users.table.viewUser")}
+            </span>
           </div>
         </div>
-      </div>
+      </Link>
     </li>
   );
 }
