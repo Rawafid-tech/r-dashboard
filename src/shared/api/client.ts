@@ -3,9 +3,11 @@ import {
   getAccessToken,
   getRefreshToken,
   setAuthTokens,
+  type AuthPlane,
 } from "@/shared/lib/auth-tokens";
 import { API_BASE_URL, STORAGE_KEYS } from "@/shared/lib/constants";
 import type { TokenResponse } from "@/shared/types/api";
+import { useAdminAuthStore } from "@/stores/admin-auth.store";
 import { useAuthStore } from "@/stores/auth.store";
 
 /** Auth endpoints that must never trigger the token-refresh interceptor. */
@@ -27,6 +29,10 @@ const PUBLIC_AUTH_URLS = [
 function matchesUrl(url: string | undefined, paths: readonly string[]) {
   if (!url) return false;
   return paths.some((path) => url.includes(path));
+}
+
+function resolveAuthPlane(url: string | undefined): AuthPlane {
+  return url?.startsWith("/api/admin/") ? "admin" : "merchant";
 }
 
 export const apiClient = axios.create({
@@ -53,8 +59,27 @@ function processQueue(error: unknown, token: string | null = null) {
   failedQueue = [];
 }
 
+function syncAuthStore(plane: AuthPlane, accessToken: string, refreshToken: string) {
+  if (plane === "admin") {
+    useAdminAuthStore.setState({
+      accessToken,
+      refreshToken,
+      isAuthenticated: true,
+    });
+    return;
+  }
+
+  useAuthStore.setState({
+    accessToken,
+    refreshToken,
+    isAuthenticated: true,
+  });
+}
+
 apiClient.interceptors.request.use((config) => {
-  const token = getAccessToken();
+  const plane = resolveAuthPlane(config.url);
+  const token = getAccessToken(plane);
+
   if (token && !matchesUrl(config.url, PUBLIC_AUTH_URLS)) {
     config.headers.Authorization = `Bearer ${token}`;
   }
@@ -78,6 +103,8 @@ apiClient.interceptors.response.use(
       return Promise.reject(error);
     }
 
+    const plane = resolveAuthPlane(originalRequest.url);
+
     if (isRefreshing) {
       return new Promise((resolve, reject) => {
         failedQueue.push({ resolve, reject });
@@ -90,30 +117,29 @@ apiClient.interceptors.response.use(
     originalRequest._retry = true;
     isRefreshing = true;
 
-    const refreshToken = getRefreshToken();
+    const refreshToken = getRefreshToken(plane);
     if (!refreshToken) {
       isRefreshing = false;
-      redirectToLogin();
+      redirectToLogin(plane);
       return Promise.reject(error);
     }
 
     try {
-      const isAdminRoute = originalRequest.url?.startsWith("/api/admin/");
-      const refreshUrl = isAdminRoute
-        ? "/api/admin/auth/refresh"
-        : "/api/auth/refresh";
+      const refreshUrl =
+        plane === "admin" ? "/api/admin/auth/refresh" : "/api/auth/refresh";
 
       const { data } = await axios.post<TokenResponse>(
         `${API_BASE_URL || ""}${refreshUrl}`,
         { refreshToken },
       );
 
-      setAuthTokens(data.accessToken, data.refreshToken, data.expiresIn);
-      useAuthStore.setState({
-        accessToken: data.accessToken,
-        refreshToken: data.refreshToken,
-        isAuthenticated: true,
-      });
+      setAuthTokens(
+        plane,
+        data.accessToken,
+        data.refreshToken,
+        data.expiresIn,
+      );
+      syncAuthStore(plane, data.accessToken, data.refreshToken);
 
       processQueue(null, data.accessToken);
 
@@ -121,7 +147,7 @@ apiClient.interceptors.response.use(
       return apiClient(originalRequest);
     } catch (refreshError) {
       processQueue(refreshError, null);
-      redirectToLogin();
+      redirectToLogin(plane);
       return Promise.reject(refreshError);
     } finally {
       isRefreshing = false;
@@ -129,15 +155,17 @@ apiClient.interceptors.response.use(
   },
 );
 
-function redirectToLogin() {
+function redirectToLogin(plane: AuthPlane) {
+  if (plane === "admin") {
+    useAdminAuthStore.getState().clearTokens();
+    const loginPath = "/admin/login";
+    if (window.location.pathname === loginPath) return;
+    window.location.href = loginPath;
+    return;
+  }
+
   useAuthStore.getState().clearTokens();
-
-  const loginPath = window.location.pathname.startsWith("/admin")
-    ? "/admin/login"
-    : "/login";
-
-  // Already on a guest auth page — avoid a full reload that hides error toasts.
+  const loginPath = "/login";
   if (window.location.pathname === loginPath) return;
-
   window.location.href = loginPath;
 }

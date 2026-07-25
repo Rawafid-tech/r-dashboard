@@ -5,6 +5,7 @@ import { Suspense } from "react";
 import { LoadingSpinner } from "@/shared/components/feedback/LoadingSpinner";
 import { UiPlayground } from "@/app/dev/UiPlayground";
 import { merchantRoutes } from "@/app/merchant/routes";
+import { AdminRouteTree } from "@/app/admin/routes";
 import { publicRoutes } from "@/app/public/routes";
 import { ProtectedRoute } from "@/features/auth/components/protected-route";
 import { useLocaleStore } from "@/stores/locale.store";
@@ -67,6 +68,8 @@ export default function App() {
               ))}
               <Route path="/ui" element={<UiPlayground />} />
             </Route>
+
+            {AdminRouteTree()}
 
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>

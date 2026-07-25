@@ -1,0 +1,84 @@
+{
+  "login": {
+    "metaTitle": "Admin sign in — Rawafid",
+    "metaDescription": "Staff sign-in for Rawafid platform operations — plans, companies, and user oversight.",
+    "eyebrow": "Admin console",
+    "title": "Platform team sign in",
+    "subtitle": "Sign in to manage subscription plans, the companies directory, and user oversight.",
+    "staffOnly": "Staff only",
+    "submit": "Enter admin console",
+    "submitting": "Verifying...",
+    "merchantLink": "← Merchant dashboard",
+    "securityNotice": "This portal is for authorized Rawafid staff only.",
+    "highlightsLabel": "What you'll manage",
+    "highlights": {
+      "plans": "Plans",
+      "companies": "Companies",
+      "users": "Users"
+    },
+    "fields": {
+      "email": "Email",
+      "emailPlaceholder": "admin@rawafid.com",
+      "password": "Password",
+      "passwordPlaceholder": "Enter your password"
+    },
+    "showPassword": "Show password",
+    "hidePassword": "Hide password",
+    "success": "Welcome to the admin console",
+    "errors": {
+      "required": "This field is required",
+      "email": "Enter a valid email address",
+      "invalidCredentials": "Incorrect email or password",
+      "suspended": "Your account has been suspended. Contact a system administrator.",
+      "generic": "Could not sign you in. Please try again."
+    }
+  },
+  "brand": {
+    "eyebrow": "Rawafid",
+    "badge": "Platform admin console",
+    "headline": "Operational control for e-commerce logistics",
+    "description": "Manage the plan catalog, registered companies, their subscriptions, and user oversight — from one secure hub for Rawafid staff.",
+    "footer": "rawafid.softizone.net · staff access only",
+    "points": {
+      "plans": "Subscription plans and pricing",
+      "companies": "Companies directory and accounts",
+      "users": "Users directory and company teams",
+      "moderation": "Suspensions and channel verification"
+    }
+  },
+  "shell": {
+    "badge": "Admin Console",
+    "userMenuLabel": "Menu for {{name}}",
+    "loggingOut": "Signing out..."
+  },
+  "roles": {
+    "SUPER_ADMIN": "Super admin",
+    "SUPPORT": "Support — read only"
+  },
+  "home": {
+    "metaTitle": "Admin console — Rawafid",
+    "metaDescription": "Rawafid platform admin hub — plans, companies, and users.",
+    "title": "Welcome, {{name}}",
+    "subtitle": "You're in the platform admin console. The modules below will go live as each screen ships.",
+    "roleHint": "Your current access: {{role}}",
+    "modulesTitle": "Admin modules",
+    "modulesSubtitle": "Coming soon — full management tools will appear here.",
+    "comingSoon": "Coming soon",
+    "modules": {
+      "readOnlyHint": "Your role is view-only until these pages ship.",
+      "manageHint": "Full management will be available when this module launches.",
+      "plans": {
+        "title": "Plan management",
+        "description": "Create and edit subscription plans, pricing tiers, and features."
+      },
+      "companies": {
+        "title": "Companies directory",
+        "description": "Browse registered companies and assign subscription plans."
+      },
+      "users": {
+        "title": "Users & moderation",
+        "description": "Browse users, suspend accounts, and verify channels."
+      }
+    }
+  }
+}

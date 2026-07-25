@@ -5,43 +5,58 @@ import {
 } from "@/shared/lib/constants";
 import { getCookie, removeCookie, setCookie } from "@/shared/lib/cookies";
 
-export function getAccessToken(): string | null {
-  return getCookie(STORAGE_KEYS.ACCESS_TOKEN);
+export type AuthPlane = "merchant" | "admin";
+
+function tokenKeys(plane: AuthPlane) {
+  return plane === "admin"
+    ? {
+        access: STORAGE_KEYS.ADMIN_ACCESS_TOKEN,
+        refresh: STORAGE_KEYS.ADMIN_REFRESH_TOKEN,
+      }
+    : {
+        access: STORAGE_KEYS.ACCESS_TOKEN,
+        refresh: STORAGE_KEYS.REFRESH_TOKEN,
+      };
 }
 
-export function getRefreshToken(): string | null {
-  return getCookie(STORAGE_KEYS.REFRESH_TOKEN);
+export function getAccessToken(plane: AuthPlane = "merchant"): string | null {
+  return getCookie(tokenKeys(plane).access);
+}
+
+export function getRefreshToken(plane: AuthPlane = "merchant"): string | null {
+  return getCookie(tokenKeys(plane).refresh);
 }
 
 export function setAuthTokens(
+  plane: AuthPlane,
   accessToken: string,
   refreshToken: string,
   expiresIn = DEFAULT_ACCESS_TOKEN_MAX_AGE_SECONDS,
 ) {
   if (!accessToken.trim() || !refreshToken.trim()) return;
 
-  setCookie(STORAGE_KEYS.ACCESS_TOKEN, accessToken, {
-    maxAgeSeconds: expiresIn,
-  });
-  setCookie(STORAGE_KEYS.REFRESH_TOKEN, refreshToken, {
+  const keys = tokenKeys(plane);
+  setCookie(keys.access, accessToken, { maxAgeSeconds: expiresIn });
+  setCookie(keys.refresh, refreshToken, {
     maxAgeSeconds: REFRESH_TOKEN_MAX_AGE_SECONDS,
   });
 }
 
-export function clearAuthTokens() {
-  removeCookie(STORAGE_KEYS.ACCESS_TOKEN);
-  removeCookie(STORAGE_KEYS.REFRESH_TOKEN);
+export function clearAuthTokens(plane: AuthPlane) {
+  const keys = tokenKeys(plane);
+  removeCookie(keys.access);
+  removeCookie(keys.refresh);
 }
 
-/** One-time cleanup after moving token storage from localStorage to cookies. */
+/** One-time cleanup after moving merchant token storage from localStorage to cookies. */
 export function migrateLegacyTokenStorage() {
   if (typeof localStorage === "undefined") return;
 
   const legacyAccess = localStorage.getItem(STORAGE_KEYS.ACCESS_TOKEN);
   const legacyRefresh = localStorage.getItem(STORAGE_KEYS.REFRESH_TOKEN);
 
-  if (legacyAccess && legacyRefresh && !getAccessToken()) {
-    setAuthTokens(legacyAccess, legacyRefresh);
+  if (legacyAccess && legacyRefresh && !getAccessToken("merchant")) {
+    setAuthTokens("merchant", legacyAccess, legacyRefresh);
   }
 
   localStorage.removeItem(STORAGE_KEYS.ACCESS_TOKEN);

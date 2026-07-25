@@ -6,6 +6,8 @@ export const API_BASE_URL = import.meta.env.DEV
 export const STORAGE_KEYS = {
   ACCESS_TOKEN: "rawafid-access-token",
   REFRESH_TOKEN: "rawafid-refresh-token",
+  ADMIN_ACCESS_TOKEN: "rawafid-admin-access-token",
+  ADMIN_REFRESH_TOKEN: "rawafid-admin-refresh-token",
   THEME: "rawafid-theme",
   LOCALE: "rawafid-locale",
   SIDEBAR_COLLAPSED: "rawafid-sidebar-collapsed",

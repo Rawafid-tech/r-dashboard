@@ -3,13 +3,10 @@ import {
   clearAuthTokens,
   getAccessToken,
   getRefreshToken,
-  migrateLegacyTokenStorage,
   setAuthTokens,
 } from "@/shared/lib/auth-tokens";
 
-migrateLegacyTokenStorage();
-
-interface AuthState {
+interface AdminAuthState {
   accessToken: string | null;
   refreshToken: string | null;
   isAuthenticated: boolean;
@@ -21,22 +18,22 @@ interface AuthState {
   clearTokens: () => void;
 }
 
-export const useAuthStore = create<AuthState>((set) => ({
-  accessToken: getAccessToken("merchant"),
-  refreshToken: getRefreshToken("merchant"),
-  isAuthenticated: !!getAccessToken("merchant"),
+export const useAdminAuthStore = create<AdminAuthState>((set) => ({
+  accessToken: getAccessToken("admin"),
+  refreshToken: getRefreshToken("admin"),
+  isAuthenticated: !!getAccessToken("admin"),
 
   setTokens: (accessToken, refreshToken, expiresIn) => {
-    setAuthTokens("merchant", accessToken, refreshToken, expiresIn);
+    setAuthTokens("admin", accessToken, refreshToken, expiresIn);
     set({
-      accessToken: getAccessToken("merchant"),
-      refreshToken: getRefreshToken("merchant"),
-      isAuthenticated: !!getAccessToken("merchant"),
+      accessToken: getAccessToken("admin"),
+      refreshToken: getRefreshToken("admin"),
+      isAuthenticated: !!getAccessToken("admin"),
     });
   },
 
   clearTokens: () => {
-    clearAuthTokens("merchant");
+    clearAuthTokens("admin");
     set({ accessToken: null, refreshToken: null, isAuthenticated: false });
   },
 }));
