@@ -262,7 +262,7 @@ function DefaultPagination({
 }: DataTablePaginationConfig) {
   const { t } = useTranslation("common");
 
-  if (totalPages <= 1) return null;
+  if (totalElements <= 0) return null;
 
   const start = page * pageSize + 1;
   const end = Math.min((page + 1) * pageSize, totalElements);
@@ -272,54 +272,58 @@ function DefaultPagination({
   const pageOf =
     labels?.pageOf?.({ current: page + 1, total: totalPages }) ??
     `${page + 1} / ${totalPages}`;
+  const showNavigation = totalPages > 1;
 
   return (
     <nav
       aria-label={labels?.ariaLabel ?? t("common.actions")}
       className={cn(
-        "flex flex-col gap-3 rounded-xl border border-border/70 bg-card/60 px-4 py-3 sm:flex-row sm:items-center sm:justify-between",
+        "flex flex-col gap-3 rounded-xl border border-border/70 bg-card/60 px-4 py-3 sm:flex-row sm:items-center",
+        showNavigation ? "sm:justify-between" : "sm:justify-start",
         className,
       )}
     >
       <p className="text-sm text-muted-foreground" dir="ltr">
         <span className="tabular-nums">{summary}</span>
       </p>
-      <div className="flex items-center gap-1.5">
-        <Button
-          type="button"
-          variant="outline"
-          size="sm"
-          disabled={page <= 0 || isFetching}
-          onClick={() => onPageChange(page - 1)}
-          aria-label={labels?.previous ?? t("common.previous")}
-          className="rounded-lg"
-        >
-          <ChevronLeft aria-hidden="true" />
-          <span className="hidden sm:inline">
-            {labels?.previous ?? t("common.previous")}
+      {showNavigation ? (
+        <div className="flex items-center gap-1.5">
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            disabled={page <= 0 || isFetching}
+            onClick={() => onPageChange(page - 1)}
+            aria-label={labels?.previous ?? t("common.previous")}
+            className="rounded-lg"
+          >
+            <ChevronLeft aria-hidden="true" />
+            <span className="hidden sm:inline">
+              {labels?.previous ?? t("common.previous")}
+            </span>
+          </Button>
+          <span
+            className="min-w-16 text-center text-sm font-medium tabular-nums text-foreground"
+            dir="ltr"
+          >
+            {pageOf}
           </span>
-        </Button>
-        <span
-          className="min-w-16 text-center text-sm font-medium tabular-nums text-foreground"
-          dir="ltr"
-        >
-          {pageOf}
-        </span>
-        <Button
-          type="button"
-          variant="outline"
-          size="sm"
-          disabled={page >= totalPages - 1 || isFetching}
-          onClick={() => onPageChange(page + 1)}
-          aria-label={labels?.next ?? t("common.next")}
-          className="rounded-lg"
-        >
-          <span className="hidden sm:inline">
-            {labels?.next ?? t("common.next")}
-          </span>
-          <ChevronRight aria-hidden="true" />
-        </Button>
-      </div>
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            disabled={page >= totalPages - 1 || isFetching}
+            onClick={() => onPageChange(page + 1)}
+            aria-label={labels?.next ?? t("common.next")}
+            className="rounded-lg"
+          >
+            <span className="hidden sm:inline">
+              {labels?.next ?? t("common.next")}
+            </span>
+            <ChevronRight aria-hidden="true" />
+          </Button>
+        </div>
+      ) : null}
     </nav>
   );
 }
@@ -430,8 +434,11 @@ export function DataTable<T>({
 
   const showLoadingBar = Boolean(isFetching ?? (pagination !== false && pagination?.isFetching));
   const lastIndex = allColumns.length - 1;
+  const totalElements =
+    pagination !== false ? (pagination?.totalElements ?? 0) : 0;
+  const isGenuinelyEmpty = data.length === 0 && totalElements === 0;
 
-  if (data.length === 0 && emptyState) {
+  if (isGenuinelyEmpty && emptyState) {
     return (
       <div className={cn("space-y-4", className)}>
         <DataTableToolbar

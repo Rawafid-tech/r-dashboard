@@ -147,6 +147,11 @@
       "loadFailedHint": "Check your connection and try again.",
       "retry": "Try again"
     },
+    "toast": {
+      "assigned": "Subscription assigned",
+      "assignFailed": "Could not assign subscription",
+      "companyNotFound": "Company not found"
+    },
     "planCodes": {
       "FREE": "Free",
       "LAUNCH": "Launch"
@@ -188,6 +193,30 @@
         "price": "Price",
         "billingPeriod": "Billing cycle",
         "period": "Period"
+      },
+      "assign": {
+        "title": "Assign subscription",
+        "subtitle": "Replace this company's current plan immediately. The previous subscription moves to history as Replaced.",
+        "plan": "Plan",
+        "planPlaceholder": "Select a plan",
+        "tier": "Shipment volume",
+        "tierPlaceholder": "Select volume tier",
+        "billingPeriod": "Billing cycle",
+        "preview": "Deal preview",
+        "previewPrice": "Price",
+        "previewFree": "Free — open-ended",
+        "freeHint": "Free plans stay open-ended regardless of billing cycle.",
+        "submit": "Assign plan",
+        "confirmTitle": "Assign this plan?",
+        "confirmDescription": "This replaces {{company}}'s current subscription immediately. The active deal becomes Replaced in history.",
+        "confirm": "Assign now",
+        "cancel": "Cancel",
+        "confirming": "Assigning…",
+        "loadingPlans": "Loading plans…",
+        "plansError": "Could not load plans.",
+        "noPlans": "No assignable plans available.",
+        "tierOption": "{{count}} shipments / month",
+        "currentBadge": "Current"
       },
       "team": {
         "title": "Company team",

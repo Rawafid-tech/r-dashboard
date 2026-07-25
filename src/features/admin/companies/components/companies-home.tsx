@@ -1,7 +1,12 @@
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSearchParams } from "react-router-dom";
 import { useDebounce } from "@/shared/hooks/use-debounce";
+import {
+  readPageIndex,
+  shouldResetPageIndex,
+  writePageIndex,
+} from "@/shared/lib/pagination-params";
 import { CompaniesDataTable } from "@/features/admin/companies/components/companies-data-table";
 import { CompaniesEmptyState } from "@/features/admin/companies/components/companies-empty-state";
 import { CompaniesErrorState } from "@/features/admin/companies/components/companies-error-state";
@@ -25,7 +30,7 @@ export function CompaniesHome() {
   );
 
   const debouncedSearch = useDebounce(searchInput.trim(), 300);
-  const page = Math.max(0, Number(searchParams.get("page") ?? "1") - 1);
+  const page = readPageIndex(searchParams.get("page"));
   const sortOption = readSortOption(searchParams.get("sort"));
   const { sort, direction } = parseSortOption(sortOption);
 
@@ -64,6 +69,22 @@ export function CompaniesHome() {
     [setSearchParams],
   );
 
+  useEffect(() => {
+    const data = companiesQuery.data;
+    if (!data || companiesQuery.isFetching) return;
+
+    if (
+      shouldResetPageIndex(
+        data.page,
+        data.totalPages,
+        data.totalElements,
+        data.content.length,
+      )
+    ) {
+      updateParams({ page: null });
+    }
+  }, [companiesQuery.data, companiesQuery.isFetching, updateParams]);
+
   const handleSearchChange = (value: string) => {
     setSearchInput(value);
     updateParams({
@@ -81,7 +102,7 @@ export function CompaniesHome() {
 
   const handlePageChange = (nextPage: number) => {
     updateParams({
-      page: nextPage <= 0 ? null : String(nextPage + 1),
+      page: writePageIndex(nextPage),
     });
   };
 

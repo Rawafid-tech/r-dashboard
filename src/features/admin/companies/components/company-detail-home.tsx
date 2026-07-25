@@ -1,5 +1,7 @@
 import { useTranslation } from "react-i18next";
 import { Navigate, useParams } from "react-router-dom";
+import { useAdminMe } from "@/features/admin/auth/hooks/use-admin-me";
+import { CompanyAssignSubscriptionPanel } from "@/features/admin/companies/components/company-assign-subscription-panel";
 import { CompaniesErrorState } from "@/features/admin/companies/components/companies-error-state";
 import { CompanyDetailHero } from "@/features/admin/companies/components/company-detail-hero";
 import { CompanyDetailSkeleton } from "@/features/admin/companies/components/company-detail-skeleton";
@@ -9,6 +11,7 @@ import { CompanyTeamSection } from "@/features/admin/companies/components/compan
 import { useAdminCompany } from "@/features/admin/companies/hooks/use-admin-company";
 import { useAdminCompanySubscriptions } from "@/features/admin/companies/hooks/use-admin-company-subscriptions";
 import { useAdminCompanyUsers } from "@/features/admin/companies/hooks/use-admin-company-users";
+import { AdminRole } from "@/shared/types/enums";
 
 const UUID_PATTERN =
   /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
@@ -20,6 +23,12 @@ export function CompanyDetailHome() {
   const companyQuery = useAdminCompany(companyId);
   const subscriptionsQuery = useAdminCompanySubscriptions(companyId);
   const usersQuery = useAdminCompanyUsers(companyId);
+  const { data: admin } = useAdminMe();
+
+  const canAssign = admin?.role === AdminRole.SUPER_ADMIN;
+  const activeSubscription = subscriptionsQuery.data?.find(
+    (subscription) => subscription.status === "ACTIVE",
+  );
 
   if (!companyId || !UUID_PATTERN.test(companyId)) {
     return <Navigate to="/admin/companies" replace />;
@@ -66,6 +75,12 @@ export function CompanyDetailHome() {
               onRetry={() => void usersQuery.refetch()}
             />
           </div>
+
+          <CompanyAssignSubscriptionPanel
+            company={companyQuery.data}
+            activeSubscription={activeSubscription}
+            canAssign={canAssign}
+          />
 
           <CompanySubscriptionsSection
             subscriptions={subscriptionsQuery.data}

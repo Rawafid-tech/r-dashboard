@@ -5,6 +5,7 @@ import type { Subscription } from "@/features/subscription/types";
 import type {
   AdminCompaniesListParams,
   AdminCompany,
+  AssignSubscriptionRequest,
 } from "@/features/admin/companies/types";
 
 export async function getAdminCompanies(
@@ -38,6 +39,17 @@ export async function getAdminCompanyUsers(
 ): Promise<AdminUser[]> {
   const { data } = await apiClient.get<AdminUser[]>(
     `/api/admin/companies/${companyId}/users`,
+  );
+  return data;
+}
+
+export async function assignAdminCompanySubscription(
+  companyId: string,
+  body: AssignSubscriptionRequest,
+): Promise<Subscription> {
+  const { data } = await apiClient.post<Subscription>(
+    `/api/admin/companies/${companyId}/subscription`,
+    body,
   );
   return data;
 }
