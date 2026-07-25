@@ -245,6 +245,11 @@
       "tierShipments": "{{count}} شحنة/شهر",
       "tierMonthly": "{{price}}/شهر",
       "pricing": "التسعير",
+      "featuresTitle": "الميزات",
+      "featureListLabel": "الميزات المشمولة في هذه الخطة",
+      "featureIncluded": "مشمولة",
+      "featureExcluded": "غير مشمولة",
+      "featureUnlimited": "غير محدود",
       "featureCount": "{{count}} ميزات",
       "sortOrder": "ترتيب #{{order}}",
       "viewPlan": "عرض الخطة"

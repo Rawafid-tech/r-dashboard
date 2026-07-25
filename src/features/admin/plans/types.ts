@@ -14,7 +14,7 @@ export interface AdminPlanTier {
 }
 
 export interface AdminPlanFeature {
-  label: LocaleMap;
+  label: LocaleMap | null;
   type: PlanFeatureType;
   number?: number | null;
   enabled?: boolean | null;

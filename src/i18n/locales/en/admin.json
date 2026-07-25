@@ -245,6 +245,11 @@
       "tierShipments": "{{count}} shipments/mo",
       "tierMonthly": "{{price}}/mo",
       "pricing": "Pricing",
+      "featuresTitle": "Features",
+      "featureListLabel": "Features included in this plan",
+      "featureIncluded": "Included",
+      "featureExcluded": "Not included",
+      "featureUnlimited": "Unlimited",
       "featureCount": "{{count}} features",
       "sortOrder": "Sort #{{order}}",
       "viewPlan": "View plan"

@@ -16,6 +16,7 @@ import {
   CardTitle,
 } from "@/shared/components/ui";
 import { PlanCatalogPricing } from "@/features/admin/plans/components/plan-catalog-pricing";
+import { PlanCatalogFeatures } from "@/features/admin/plans/components/plan-catalog-features";
 import { PlanStatusBadge } from "@/features/admin/plans/components/plan-status-badge";
 import {
   getPlanDescription,
@@ -94,11 +95,13 @@ export function PlansCatalog({ plans }: PlansCatalogProps) {
 
                 <PlanCatalogPricing plan={plan} intlLocale={intlLocale} />
 
+                <PlanCatalogFeatures
+                  plan={plan}
+                  locale={locale}
+                  intlLocale={intlLocale}
+                />
+
                 <p className="text-xs text-muted-foreground">
-                  {t("plans.catalog.featureCount", {
-                    count: plan.features.length,
-                  })}
-                  {" · "}
                   {t("plans.catalog.sortOrder", { order: plan.sortOrder })}
                 </p>
               </CardContent>

@@ -40,3 +40,10 @@ export function getPlanDescription(
 ): string {
   return readLocalizedText(description, locale);
 }
+
+export function getLocalizedLabel(
+  map: MaybeLocaleMap,
+  locale: SupportedLocale,
+): string {
+  return readLocalizedText(map, locale) || "—";
+}
