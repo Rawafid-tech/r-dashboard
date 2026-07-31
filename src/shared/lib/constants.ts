@@ -1,7 +1,7 @@
-// In local Vite dev, use same-origin `/api` (proxied). In production builds, hit the API host.
-export const API_BASE_URL = import.meta.env.DEV
-  ? ""
-  : "https://rawafid.softizone.net";
+// Always use same-origin `/api`. In dev, Vite proxies to the API host.
+// In production, Vercel rewrites `/api/*` to the API host (see `vercel.json`).
+// This avoids CORS entirely because the browser sees requests as same-origin.
+export const API_BASE_URL = "";
 
 export const STORAGE_KEYS = {
   ACCESS_TOKEN: "rawafid-access-token",
