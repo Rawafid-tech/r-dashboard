@@ -157,7 +157,7 @@ function DefaultSearchField({
           onChange={(event) => onChange(event.target.value)}
           placeholder={placeholder ?? resolvedLabel}
           className={cn(
-            "rounded-lg bg-background ps-9 shadow-xs",
+            "rounded-md bg-background ps-9",
             value ? "pe-9" : "pe-3",
           )}
           autoComplete="off"
@@ -209,7 +209,7 @@ function DefaultSortField({
             size="sm"
             disabled={disabled}
             aria-label={`${resolvedLabel}: ${selectedLabel}`}
-            className="h-auto min-h-8 gap-2 rounded-lg bg-background py-1.5 ps-2.5 pe-2 shadow-xs hover:bg-muted/40"
+            className="h-auto min-h-8 gap-2 rounded-md bg-background py-1.5 ps-2.5 pe-2 hover:bg-muted/50"
           >
             <ArrowUpDown
               className="size-3.5 shrink-0 text-muted-foreground"
@@ -278,7 +278,7 @@ function DefaultPagination({
     <nav
       aria-label={labels?.ariaLabel ?? t("common.actions")}
       className={cn(
-        "flex flex-col gap-3 rounded-xl border border-border/70 bg-card/60 px-4 py-3 sm:flex-row sm:items-center",
+        "flex flex-col gap-3 rounded-lg border border-border bg-card px-4 py-3 sm:flex-row sm:items-center",
         showNavigation ? "sm:justify-between" : "sm:justify-start",
         className,
       )}
@@ -295,7 +295,7 @@ function DefaultPagination({
             disabled={page <= 0 || isFetching}
             onClick={() => onPageChange(page - 1)}
             aria-label={labels?.previous ?? t("common.previous")}
-            className="rounded-lg"
+            className="rounded-md"
           >
             <ChevronLeft aria-hidden="true" />
             <span className="hidden sm:inline">
@@ -315,7 +315,7 @@ function DefaultPagination({
             disabled={page >= totalPages - 1 || isFetching}
             onClick={() => onPageChange(page + 1)}
             aria-label={labels?.next ?? t("common.next")}
-            className="rounded-lg"
+            className="rounded-md"
           >
             <span className="hidden sm:inline">
               {labels?.next ?? t("common.next")}
@@ -357,7 +357,7 @@ function DataTableToolbar<T>({
     <section
       aria-labelledby={toolbarTitle ? "data-table-toolbar-title" : undefined}
       className={cn(
-        "flex flex-col gap-3 rounded-xl border border-border/70 bg-card/50 p-3.5 shadow-sm sm:flex-row sm:items-center sm:gap-0",
+        "flex flex-col gap-3 rounded-lg border border-border bg-card p-3 sm:flex-row sm:items-center sm:gap-0",
         toolbarConfig?.className,
       )}
     >
@@ -471,7 +471,7 @@ export function DataTable<T>({
 
       <div
         className={cn(
-          "relative overflow-hidden rounded-xl border border-border/70 bg-card shadow-sm",
+          "relative overflow-hidden rounded-lg border border-border bg-card",
           mobile !== false ? "hidden md:block" : undefined,
           tableClassName,
         )}
@@ -493,13 +493,13 @@ export function DataTable<T>({
           >
             {caption ? <caption className="sr-only">{caption}</caption> : null}
             <thead>
-              <tr className="border-b border-border bg-muted/40">
+              <tr className="border-b border-border bg-muted/30">
                 {allColumns.map((column, index) => (
                   <th
                     key={column.id}
                     scope="col"
                     className={cn(
-                      "px-4 py-3 text-xs font-semibold tracking-wide text-muted-foreground uppercase",
+                      "px-4 py-2.5 text-xs font-medium text-muted-foreground",
                       ALIGN_CLASSNAME[column.align ?? "start"],
                       index === 0 && "ps-5",
                       index === lastIndex && "pe-5",
@@ -516,7 +516,7 @@ export function DataTable<T>({
                 <tr
                   key={getRowKey(row)}
                   className={cn(
-                    "transition-colors hover:bg-muted/30",
+                    "transition-colors hover:bg-muted/20",
                     isFetching && "opacity-60",
                   )}
                 >

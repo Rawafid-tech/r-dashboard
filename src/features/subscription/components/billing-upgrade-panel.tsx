@@ -1,4 +1,4 @@
-import { ArrowUpRight, Info, Mail, Sparkles } from "lucide-react";
+import { ArrowUpRight, Info, Mail } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import {
   Button,
@@ -27,30 +27,14 @@ export function BillingUpgradePanel({
   const mailtoHref = `mailto:${SUPPORT_EMAIL}?subject=${mailSubject}&body=${mailBody}`;
 
   return (
-    <Card
-      className={cn(
-        "border-border/80 shadow-sm",
-        isFreePlan && "border-primary/20 bg-primary/[0.03]",
-        className,
-      )}
-    >
-      <CardHeader className="gap-3">
-        <div className="flex items-start gap-3">
-          <div
-            className="grid size-10 shrink-0 place-items-center rounded-xl bg-primary/10 text-primary ring-1 ring-primary/15"
-            aria-hidden="true"
-          >
-            <Sparkles className="size-5" />
-          </div>
-          <div className="min-w-0 space-y-1">
-            <CardTitle className="text-lg">
-              {isFreePlan ? t("upgrade.freeTitle") : t("upgrade.title")}
-            </CardTitle>
-            <CardDescription className="text-sm leading-relaxed">
-              {isFreePlan ? t("upgrade.freeDescription") : t("upgrade.description")}
-            </CardDescription>
-          </div>
-        </div>
+    <Card className={cn(isFreePlan && "border-primary/30 bg-primary/5", className)}>
+      <CardHeader className="gap-2">
+        <CardTitle className="text-base">
+          {isFreePlan ? t("upgrade.freeTitle") : t("upgrade.title")}
+        </CardTitle>
+        <CardDescription className="text-sm leading-relaxed">
+          {isFreePlan ? t("upgrade.freeDescription") : t("upgrade.description")}
+        </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
         <ul className="space-y-2 text-sm text-muted-foreground" role="list">
@@ -93,7 +77,7 @@ export function BillingSnapshotNotice({ className }: BillingSnapshotNoticeProps)
   return (
     <div
       className={cn(
-        "flex gap-3 rounded-xl border border-border/60 bg-muted/30 p-4 sm:p-5",
+        "flex gap-3 rounded-lg border border-border bg-muted/30 p-4 sm:p-5",
         className,
       )}
       role="note"

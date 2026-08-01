@@ -1,7 +1,8 @@
-import { ArrowLeft, CreditCard } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Link, Navigate, useNavigate } from "react-router-dom";
-import { Badge, Button } from "@/shared/components/ui";
+import { Button } from "@/shared/components/ui";
+import { PageHeader } from "@/shared/components/layout/page-header";
 import { PlanForm } from "@/features/admin/plans/components/plan-form";
 import { useAdminMe } from "@/features/admin/auth/hooks/use-admin-me";
 import { AdminRole } from "@/shared/types/enums";
@@ -31,35 +32,19 @@ export function PlanCreateHome() {
         {t("plans.create.skipToContent")}
       </a>
 
-      <section
-        className="relative overflow-hidden rounded-2xl bg-[linear-gradient(135deg,color-mix(in_oklab,var(--color-primary)_10%,transparent),color-mix(in_oklab,#7c3aed_8%,transparent))] px-5 py-6 ring-1 ring-foreground/8 sm:px-7 sm:py-8"
-        aria-labelledby="plan-create-title"
-      >
-        <div className="space-y-4">
-          <Button asChild variant="ghost" size="sm" className="-ms-2 w-fit">
-            <Link to="/admin/plans">
-              <ArrowLeft aria-hidden="true" />
-              {t("plans.detail.backToCatalog")}
-            </Link>
-          </Button>
+      <div className="space-y-4">
+        <Button asChild variant="ghost" size="sm" className="-ms-2 w-fit">
+          <Link to="/admin/plans">
+            <ArrowLeft aria-hidden="true" />
+            {t("plans.detail.backToCatalog")}
+          </Link>
+        </Button>
 
-          <div className="space-y-2">
-            <Badge variant="secondary" className="gap-1 uppercase">
-              <CreditCard className="size-3" aria-hidden="true" />
-              {t("plans.create.badge")}
-            </Badge>
-            <h1
-              id="plan-create-title"
-              className="text-2xl font-bold tracking-tight text-foreground sm:text-3xl"
-            >
-              {t("plans.create.title")}
-            </h1>
-            <p className="text-sm leading-relaxed text-muted-foreground">
-              {t("plans.create.subtitle")}
-            </p>
-          </div>
-        </div>
-      </section>
+        <PageHeader
+          title={t("plans.create.title")}
+          description={t("plans.create.subtitle")}
+        />
+      </div>
 
       <div id="plan-create-main">
         <PlanForm

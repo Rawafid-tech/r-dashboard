@@ -8,7 +8,7 @@ export function RawafidLogoMark({
   return (
     <span
       className={cn(
-        "grid size-9 shrink-0 place-items-center rounded-lg bg-sidebar-primary/10 text-sidebar-primary ring-1 ring-sidebar-primary/15",
+        "grid size-9 shrink-0 place-items-center rounded-md bg-sidebar-primary/10 text-sidebar-primary ring-1 ring-sidebar-primary/15",
         className,
       )}
       aria-hidden="true"

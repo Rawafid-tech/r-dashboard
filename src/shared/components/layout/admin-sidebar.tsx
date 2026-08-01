@@ -1,9 +1,10 @@
 import { NavLink } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { ShieldCheck, X } from "lucide-react";
+import { X } from "lucide-react";
 import { Button } from "@/shared/components/ui";
 import { cn } from "@/shared/lib/utils";
 import { ADMIN_NAV_ITEMS } from "@/shared/components/layout/admin-nav";
+import { AdminConsoleMark } from "@/shared/components/layout/admin-console-mark";
 import {
   AdminSidebarNavList,
   AdminSidebarRoleFooter,
@@ -29,7 +30,7 @@ export function AdminSidebar({ userRole, className }: AdminSidebarProps) {
     <aside
       id="admin-sidebar"
       className={cn(
-        "sticky top-0 hidden h-dvh max-h-dvh shrink-0 flex-col self-start border-e border-sidebar-border bg-sidebar text-sidebar-foreground transition-[width] duration-300 ease-in-out md:flex",
+        "sticky top-0 hidden h-dvh max-h-dvh shrink-0 flex-col self-start border-e border-sidebar-border bg-sidebar text-sidebar-foreground shadow-[1px_0_0_0_var(--sidebar-border)] transition-[width] duration-300 ease-in-out md:flex",
         collapsed ? "w-(--sidebar-width-collapsed)" : "w-(--sidebar-width)",
         className,
       )}
@@ -48,22 +49,12 @@ export function AdminSidebar({ userRole, className }: AdminSidebarProps) {
             aria-label={t("shell.nav.home")}
             className="rounded-lg outline-none focus-visible:ring-3 focus-visible:ring-sidebar-ring/50"
           >
-            <span
-              className="grid size-8 place-items-center rounded-lg bg-violet-500/10 text-violet-600 ring-1 ring-violet-500/15 dark:text-violet-300"
-              aria-hidden="true"
-            >
-              <ShieldCheck className="size-4" />
-            </span>
+            <AdminConsoleMark />
           </NavLink>
         ) : (
           <>
             <div className="flex min-w-0 flex-1 items-center gap-2.5">
-              <span
-                className="grid size-8 shrink-0 place-items-center rounded-lg bg-violet-500/10 text-violet-600 ring-1 ring-violet-500/15 dark:text-violet-300"
-                aria-hidden="true"
-              >
-                <ShieldCheck className="size-4" />
-              </span>
+              <AdminConsoleMark />
               <div className="min-w-0">
                 <p className="truncate text-sm font-bold">{t("shell.badge")}</p>
                 <p className="truncate text-xs text-muted-foreground">
@@ -110,12 +101,7 @@ export function AdminMobileSidebar({
   return (
     <div className="flex h-full flex-col bg-sidebar text-sidebar-foreground">
       <div className="flex h-14 items-center gap-2.5 border-b border-sidebar-border px-4">
-        <span
-          className="grid size-8 shrink-0 place-items-center rounded-lg bg-violet-500/10 text-violet-600 ring-1 ring-violet-500/15 dark:text-violet-300"
-          aria-hidden="true"
-        >
-          <ShieldCheck className="size-4" />
-        </span>
+        <AdminConsoleMark />
         <div className="min-w-0 flex-1">
           <p className="truncate text-sm font-bold">{t("shell.badge")}</p>
           <p className="truncate text-xs text-muted-foreground">

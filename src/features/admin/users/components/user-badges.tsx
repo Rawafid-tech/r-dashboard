@@ -26,7 +26,7 @@ export function UserIdentityCell({ user }: UserIdentityCellProps) {
   return (
     <div className="flex min-w-0 items-center gap-3">
       <span
-        className="grid size-9 shrink-0 place-items-center rounded-full bg-emerald-500/10 text-sm font-semibold text-emerald-700 ring-1 ring-emerald-500/12 dark:text-emerald-200"
+        className="grid size-9 shrink-0 place-items-center rounded-full bg-primary/10 text-sm font-semibold text-primary ring-1 ring-primary/15"
         aria-hidden="true"
       >
         {getUserInitials(user.fullName)}

@@ -44,6 +44,10 @@
     "all": "الكل"
   },
   "comingSoon": "قريباً",
+  "breadcrumb": {
+    "ariaLabel": "مسار التنقل",
+    "detail": "التفاصيل"
+  },
   "datePicker": {
     "placeholder": "اختر تاريخاً",
     "clear": "مسح التاريخ"

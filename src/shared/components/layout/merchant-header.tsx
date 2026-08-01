@@ -15,6 +15,7 @@ import {
 import { AuthLocaleThemeControls } from "@/features/auth/components/auth-locale-theme-controls";
 import { useLogout } from "@/features/auth/hooks/use-logout";
 import { SidebarExpandButton } from "@/shared/components/layout/sidebar-toggle-button";
+import { MerchantAppBreadcrumbs } from "@/shared/components/layout/app-breadcrumbs";
 import { useSidebar } from "@/shared/components/layout/sidebar-provider";
 import { cn } from "@/shared/lib/utils";
 
@@ -48,7 +49,7 @@ export function MerchantHeader({
   return (
     <header
       className={cn(
-        "sticky top-0 z-30 flex h-14 shrink-0 items-center gap-3 border-b border-border bg-background/90 px-4 backdrop-blur-sm sm:px-6",
+        "sticky top-0 z-30 flex h-12 shrink-0 items-center gap-3 border-b border-border bg-background px-4 sm:px-5",
         className,
       )}
     >
@@ -72,7 +73,9 @@ export function MerchantHeader({
         <p className="truncate text-sm font-semibold">{t("common:app.name")}</p>
       </div>
 
-      <div className="hidden min-w-0 flex-1 md:block" aria-hidden="true" />
+      <div className="min-w-0 flex-1">
+        <MerchantAppBreadcrumbs className="md:flex" />
+      </div>
 
       <AuthLocaleThemeControls />
 

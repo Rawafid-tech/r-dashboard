@@ -28,20 +28,20 @@ export function SettingsSectionCard({
   return (
     <Card
       id={id}
-      className={cn("scroll-mt-[4.75rem] border-border/80 shadow-sm lg:scroll-mt-20", className)}
+      className={cn("scroll-mt-[4.75rem] lg:scroll-mt-20", className)}
       aria-labelledby={`${id}-title`}
       aria-describedby={`${id}-description`}
     >
-      <CardHeader className="gap-3 border-b border-border/60 bg-muted/20 pb-4">
+      <CardHeader className="gap-2 border-b border-border pb-4">
         <div className="flex items-start gap-3">
           <div
-            className="grid size-10 shrink-0 place-items-center rounded-xl bg-primary/10 text-primary ring-1 ring-primary/15"
+            className="grid size-9 shrink-0 place-items-center rounded-md bg-primary/10 text-primary"
             aria-hidden="true"
           >
-            <Icon className="size-5" />
+            <Icon className="size-4" />
           </div>
           <div className="min-w-0 space-y-1">
-            <CardTitle id={`${id}-title`} className="text-lg">
+            <CardTitle id={`${id}-title`} className="text-base">
               {title}
             </CardTitle>
             <CardDescription id={`${id}-description`} className="text-sm leading-relaxed">

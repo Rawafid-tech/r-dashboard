@@ -33,7 +33,7 @@ function TeamMemberCard({ user }: { user: AdminUser }) {
       >
         <div className="flex items-start gap-3">
           <Avatar size="sm">
-            <AvatarFallback className="bg-violet-500/10 text-violet-700 dark:text-violet-200">
+            <AvatarFallback className="bg-primary/10 text-primary">
               {getUserInitials(user.fullName)}
             </AvatarFallback>
           </Avatar>
@@ -99,7 +99,7 @@ export function CompanyTeamSection({
       <CardHeader>
         <div className="flex items-start gap-3">
           <span
-            className="grid size-9 place-items-center rounded-lg bg-violet-500/10 text-violet-700 ring-1 ring-violet-500/12 dark:text-violet-200"
+            className="grid size-9 place-items-center rounded-lg bg-primary/10 text-primary ring-1 ring-primary/15"
             aria-hidden="true"
           >
             <UserRound className="size-4" />

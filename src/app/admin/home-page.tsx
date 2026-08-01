@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { ArrowUpRight, Building2, CreditCard, ShieldCheck, Users } from "lucide-react";
+import { ArrowUpRight, Building2, CreditCard, Users } from "lucide-react";
 import { Link } from "react-router-dom";
 import {
   Badge,
@@ -10,6 +10,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/shared/components/ui";
+import { PageHeader } from "@/shared/components/layout/page-header";
 import { useAdminMe } from "@/features/admin/auth/hooks/use-admin-me";
 import { AdminRole } from "@/shared/types/enums";
 import { cn } from "@/shared/lib/utils";
@@ -49,40 +50,25 @@ export function AdminHomePage() {
 
   const isReadOnly = admin?.role === AdminRole.SUPPORT;
 
+  const description = (
+    <>
+      {t("home.subtitle")}
+      {admin?.role ? (
+        <span className="mt-2 block text-xs text-muted-foreground">
+          {t("home.roleHint", { role: t(`roles.${admin.role}`) })}
+        </span>
+      ) : null}
+    </>
+  );
+
   return (
     <div className="mx-auto w-full max-w-5xl px-4 py-6 sm:px-6 sm:py-8">
-      <section
-        className="relative overflow-hidden rounded-2xl bg-[linear-gradient(135deg,color-mix(in_oklab,var(--color-primary)_12%,transparent),color-mix(in_oklab,#7c3aed_10%,transparent))] px-5 py-6 ring-1 ring-foreground/8 sm:px-7 sm:py-8"
-        aria-labelledby="admin-home-title"
-      >
-        <div className="flex flex-wrap items-start justify-between gap-4">
-          <div className="max-w-2xl space-y-2">
-            <Badge variant="secondary" className="gap-1 uppercase">
-              <ShieldCheck className="size-3" aria-hidden="true" />
-              {t("shell.badge")}
-            </Badge>
-            <h1
-              id="admin-home-title"
-              className="text-2xl font-bold tracking-tight text-foreground sm:text-3xl"
-            >
-              {t("home.title", { name: admin?.fullName ?? "" })}
-            </h1>
-            <p className="text-sm leading-relaxed text-muted-foreground">
-              {t("home.subtitle")}
-            </p>
-            {admin?.role ? (
-              <p className="text-xs text-muted-foreground">
-                {t("home.roleHint", { role: t(`roles.${admin.role}`) })}
-              </p>
-            ) : null}
-          </div>
-        </div>
-      </section>
+      <PageHeader
+        title={t("home.title", { name: admin?.fullName ?? "" })}
+        description={description}
+      />
 
-      <section
-        className="mt-8"
-        aria-labelledby="admin-modules-title"
-      >
+      <section className="mt-8" aria-labelledby="admin-modules-title">
         <div className="mb-4 space-y-1">
           <h2
             id="admin-modules-title"
@@ -109,7 +95,7 @@ export function AdminHomePage() {
               >
                 <CardHeader className="gap-3">
                   <div className="flex items-center justify-between gap-2">
-                    <span className="grid size-9 place-items-center rounded-lg bg-violet-500/10 text-violet-700 ring-1 ring-violet-500/12 dark:text-violet-200">
+                    <span className="grid size-9 place-items-center rounded-md bg-primary/10 text-primary ring-1 ring-primary/15">
                       <Icon className="size-4" aria-hidden="true" />
                     </span>
                     <Badge variant={isLive ? "success" : "outline"}>
@@ -146,7 +132,7 @@ export function AdminHomePage() {
                 {href ? (
                   <Link
                     to={href}
-                    className="block rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                    className="block rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                   >
                     {card}
                   </Link>

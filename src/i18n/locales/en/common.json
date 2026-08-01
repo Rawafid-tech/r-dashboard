@@ -44,6 +44,10 @@
     "all": "All"
   },
   "comingSoon": "Soon",
+  "breadcrumb": {
+    "ariaLabel": "Breadcrumb",
+    "detail": "Detail"
+  },
   "datePicker": {
     "placeholder": "Pick a date",
     "clear": "Clear date"

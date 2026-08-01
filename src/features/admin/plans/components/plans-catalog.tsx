@@ -1,7 +1,7 @@
 import {
   ArrowUpRight,
-  Sparkles,
   Star,
+  Tags,
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
@@ -49,7 +49,7 @@ export function PlansCatalog({ plans }: PlansCatalogProps) {
               className={cn(
                 "flex h-full flex-col transition-colors",
                 plan.highlighted && !isArchived
-                  ? "border-primary/30 bg-[linear-gradient(180deg,color-mix(in_oklab,var(--color-primary)_6%,transparent),transparent)]"
+                  ? "border-primary/40 bg-primary/5"
                   : "border-border/80",
                 isArchived && "opacity-80",
               )}
@@ -79,7 +79,7 @@ export function PlansCatalog({ plans }: PlansCatalogProps) {
                   ) : null}
                   {plan.customPricing ? (
                     <Badge variant="outline" className="gap-1">
-                      <Sparkles className="size-3" aria-hidden="true" />
+                      <Tags className="size-3" aria-hidden="true" />
                       {t("plans.catalog.customBadge")}
                     </Badge>
                   ) : null}

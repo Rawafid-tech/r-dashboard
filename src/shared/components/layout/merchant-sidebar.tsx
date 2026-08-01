@@ -31,7 +31,7 @@ export function MerchantSidebar({
     <aside
       id="merchant-sidebar"
       className={cn(
-        "sticky top-0 hidden h-dvh max-h-dvh shrink-0 flex-col self-start border-e border-sidebar-border bg-sidebar text-sidebar-foreground transition-[width] duration-300 ease-in-out md:flex",
+        "sticky top-0 hidden h-dvh max-h-dvh shrink-0 flex-col self-start border-e border-sidebar-border bg-sidebar text-sidebar-foreground shadow-[1px_0_0_0_var(--sidebar-border)] transition-[width] duration-300 ease-in-out md:flex",
         collapsed ? "w-(--sidebar-width-collapsed)" : "w-(--sidebar-width)",
         className,
       )}

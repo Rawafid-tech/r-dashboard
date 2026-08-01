@@ -84,7 +84,7 @@ export function UserTrustPanel({ user, canModerate }: UserTrustPanelProps) {
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div className="flex items-start gap-3">
             <span
-              className="grid size-9 place-items-center rounded-lg bg-emerald-500/10 text-emerald-700 ring-1 ring-emerald-500/12 dark:text-emerald-200"
+              className="grid size-9 place-items-center rounded-lg bg-primary/10 text-primary ring-1 ring-primary/15"
               aria-hidden="true"
             >
               <ShieldCheck className="size-4" />

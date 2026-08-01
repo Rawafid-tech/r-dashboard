@@ -12,7 +12,7 @@ export function UsersEmptyState({ hasSearch }: UsersEmptyStateProps) {
   return (
     <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-border/80 bg-muted/15 px-6 py-14 text-center">
       <span
-        className="grid size-12 place-items-center rounded-2xl bg-emerald-500/10 text-emerald-600 ring-1 ring-emerald-500/12 dark:text-emerald-300"
+        className="grid size-12 place-items-center rounded-lg bg-primary/10 text-primary ring-1 ring-primary/15"
         aria-hidden="true"
       >
         <Icon className="size-5" />

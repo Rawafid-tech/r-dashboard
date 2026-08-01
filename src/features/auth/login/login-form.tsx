@@ -1,7 +1,7 @@
 import { useId, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { Eye, EyeOff, Loader2, Package, RefreshCcw, Wallet } from "lucide-react";
+import { Eye, EyeOff, Loader2 } from "lucide-react";
 import {
   Button,
   Field,
@@ -10,17 +10,12 @@ import {
   FieldLabel,
   FieldSet,
   Input,
+  Separator,
 } from "@/shared/components/ui";
 import { useAppForm } from "@/shared/hooks/use-app-form";
 import { getFieldErrors } from "@/shared/api/error-handler";
 import { createLoginSchema } from "@/features/auth/login/schema";
 import { applyLoginFieldErrors, useLogin } from "@/features/auth/login/use-login";
-
-const HIGHLIGHTS = [
-  { key: "shipments", icon: Package },
-  { key: "returns", icon: RefreshCcw },
-  { key: "wallet", icon: Wallet },
-] as const;
 
 export function LoginForm() {
   const { t, i18n } = useTranslation("auth");
@@ -65,39 +60,21 @@ export function LoginForm() {
       id={formId}
       onSubmit={onSubmit}
       noValidate
-      className="flex flex-col gap-3.5"
+      className="flex flex-col gap-6"
       aria-labelledby={`${formId}-title`}
     >
-      <header className="space-y-1">
-        <p className="text-xs font-medium text-primary">{t("login.eyebrow")}</p>
+      <header className="space-y-1.5">
         <h1
           id={`${formId}-title`}
-          className="text-xl font-bold tracking-tight text-foreground"
+          className="text-2xl font-semibold tracking-tight text-foreground"
         >
           {t("login.title")}
         </h1>
-        <p className="text-xs leading-snug text-muted-foreground">
-          {t("login.subtitle")}
-        </p>
+        <p className="text-sm text-muted-foreground">{t("login.subtitle")}</p>
       </header>
 
-      <ul
-        className="flex flex-wrap gap-2"
-        aria-label={t("login.highlightsLabel")}
-      >
-        {HIGHLIGHTS.map(({ key, icon: Icon }) => (
-          <li
-            key={key}
-            className="inline-flex items-center gap-1.5 rounded-full bg-primary/8 px-2.5 py-1 text-[11px] font-medium text-primary ring-1 ring-primary/12"
-          >
-            <Icon className="size-3" aria-hidden="true" />
-            {t(`login.highlights.${key}`)}
-          </li>
-        ))}
-      </ul>
-
-      <FieldGroup className="gap-3.5">
-        <FieldSet className="gap-2.5">
+      <FieldGroup className="gap-4">
+        <FieldSet className="gap-4">
           <Field data-invalid={!!errors.email || undefined}>
             <FieldLabel htmlFor={`${formId}-email`}>
               {t("login.fields.email")}
@@ -162,7 +139,7 @@ export function LoginForm() {
         </FieldSet>
       </FieldGroup>
 
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col gap-4">
         <Button type="submit" size="lg" fullWidth disabled={busy}>
           {busy ? (
             <>
@@ -174,11 +151,13 @@ export function LoginForm() {
           )}
         </Button>
 
-        <p className="text-center text-xs text-muted-foreground">
+        <Separator />
+
+        <p className="text-center text-sm text-muted-foreground">
           {t("login.noAccount")}{" "}
           <Link
             to="/register"
-            className="font-medium text-primary underline-offset-4 hover:underline focus-visible:rounded-sm focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring/50"
+            className="font-medium text-primary underline-offset-4 hover:underline focus-visible:rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/40"
           >
             {t("login.registerLink")}
           </Link>

@@ -4,6 +4,10 @@ import { useTranslation } from "react-i18next";
 import { Badge, Tooltip, TooltipContent, TooltipTrigger } from "@/shared/components/ui";
 import { cn } from "@/shared/lib/utils";
 import type { MerchantNavItem } from "@/shared/components/layout/merchant-nav";
+import {
+  sidebarNavActiveClassName,
+  sidebarNavItemClassName,
+} from "@/shared/components/layout/sidebar-nav-styles";
 
 interface MerchantSidebarNavItemProps {
   item: MerchantNavItem;
@@ -42,16 +46,7 @@ export function MerchantSidebarNavItem({
     ? label
     : `${label} — ${t("comingSoon")}`;
 
-  const itemClassName = cn(
-    "relative flex w-full items-center rounded-lg text-sm font-medium transition-colors outline-none focus-visible:ring-3 focus-visible:ring-sidebar-ring/50",
-    collapsed ? "size-10 justify-center px-0" : "gap-2.5 px-2.5 py-2",
-    item.enabled
-      ? "text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
-      : "cursor-not-allowed text-muted-foreground/80",
-  );
-
-  const activeClassName =
-    "bg-sidebar-primary text-sidebar-primary-foreground shadow-sm hover:bg-sidebar-primary hover:text-sidebar-primary-foreground";
+  const itemClassName = sidebarNavItemClassName(collapsed, item.enabled);
 
   const icon = <item.icon className="size-4 shrink-0" aria-hidden="true" />;
 
@@ -85,7 +80,10 @@ export function MerchantSidebarNavItem({
       onClick={onNavigate}
       aria-label={collapsed ? label : undefined}
       className={({ isActive }) =>
-        cn(itemClassName, isActive && activeClassName, isActive && !collapsed && "font-semibold")
+        cn(
+          itemClassName,
+          sidebarNavActiveClassName(isActive, collapsed),
+        )
       }
     >
       {icon}
@@ -164,7 +162,7 @@ export function MerchantSidebarPlanFooter({
       <NavLink
         to="/billing"
         className={cn(
-          "mx-auto grid size-10 place-items-center rounded-lg bg-sidebar-accent text-[11px] font-bold uppercase text-sidebar-accent-foreground ring-1 ring-sidebar-border outline-none transition-colors hover:bg-sidebar-accent focus-visible:ring-3 focus-visible:ring-sidebar-ring/50",
+          "mx-auto grid size-9 place-items-center rounded-md border border-sidebar-border bg-sidebar-accent text-[10px] font-bold uppercase text-sidebar-accent-foreground outline-none transition-colors hover:bg-sidebar-accent focus-visible:ring-2 focus-visible:ring-sidebar-ring/40",
           className,
         )}
         aria-label={planTooltip}
@@ -181,7 +179,7 @@ export function MerchantSidebarPlanFooter({
     <NavLink
       to="/billing"
       className={cn(
-        "block rounded-lg bg-sidebar-accent/70 px-3 py-2.5 ring-1 ring-sidebar-border transition-colors outline-none hover:bg-sidebar-accent focus-visible:ring-3 focus-visible:ring-sidebar-ring/50",
+        "block rounded-md border border-sidebar-border bg-sidebar-accent/50 px-3 py-2 transition-colors outline-none hover:bg-sidebar-accent focus-visible:ring-2 focus-visible:ring-sidebar-ring/40",
         className,
       )}
       aria-label={planTooltip}

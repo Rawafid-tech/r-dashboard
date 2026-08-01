@@ -1,4 +1,4 @@
-import { Menu, ShieldCheck } from "lucide-react";
+import { Menu } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import {
   Avatar,
@@ -15,6 +15,8 @@ import {
 import { AuthLocaleThemeControls } from "@/features/auth/components/auth-locale-theme-controls";
 import { useAdminLogout } from "@/features/admin/auth/hooks/use-admin-logout";
 import { SidebarExpandButton } from "@/shared/components/layout/sidebar-toggle-button";
+import { AdminAppBreadcrumbs } from "@/shared/components/layout/app-breadcrumbs";
+import { AdminConsoleMark } from "@/shared/components/layout/admin-console-mark";
 import { useSidebar } from "@/shared/components/layout/sidebar-provider";
 import type { AdminRole } from "@/shared/types/enums";
 import { cn } from "@/shared/lib/utils";
@@ -51,7 +53,7 @@ export function AdminHeader({
   return (
     <header
       className={cn(
-        "sticky top-0 z-30 flex h-14 shrink-0 items-center gap-3 border-b border-border bg-background/90 px-4 backdrop-blur-sm sm:px-6",
+        "sticky top-0 z-30 flex h-12 shrink-0 items-center gap-3 border-b border-border bg-background px-4 sm:px-5",
         className,
       )}
     >
@@ -71,19 +73,14 @@ export function AdminHeader({
         <SidebarExpandButton controlsId="admin-sidebar-nav" />
       ) : null}
 
-      <div className="flex min-w-0 items-center gap-2.5 md:hidden">
-        <span
-          className="grid size-8 shrink-0 place-items-center rounded-lg bg-violet-500/10 text-violet-600 ring-1 ring-violet-500/15 dark:text-violet-300"
-          aria-hidden="true"
-        >
-          <ShieldCheck className="size-4" />
-        </span>
-        <div className="min-w-0 leading-tight">
-          <p className="truncate text-sm font-semibold">{t("shell.badge")}</p>
-        </div>
+      <div className="flex min-w-0 items-center gap-2 md:hidden">
+        <AdminConsoleMark className="size-7" />
+        <p className="truncate text-sm font-semibold">{t("shell.badge")}</p>
       </div>
 
-      <div className="hidden min-w-0 flex-1 md:block" aria-hidden="true" />
+      <div className="min-w-0 flex-1">
+        <AdminAppBreadcrumbs className="md:flex" />
+      </div>
 
       <AuthLocaleThemeControls />
 
@@ -99,7 +96,7 @@ export function AdminHeader({
             })}
           >
             <Avatar size="sm">
-              <AvatarFallback className="bg-violet-500/10 text-violet-700 dark:text-violet-200">
+              <AvatarFallback className="bg-primary/10 text-primary">
                 {getInitials(userName)}
               </AvatarFallback>
             </Avatar>

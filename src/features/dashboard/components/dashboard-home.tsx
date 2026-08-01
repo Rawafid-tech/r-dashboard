@@ -42,10 +42,10 @@ export function DashboardHome() {
       <section
         id="dashboard-main"
         aria-labelledby="dashboard-overview-title"
-        className="space-y-4"
+        className="space-y-4 border-t border-border pt-6"
       >
         <div>
-          <h2 id="dashboard-overview-title" className="text-lg font-semibold">
+          <h2 id="dashboard-overview-title" className="text-base font-semibold">
             {t("overview.title")}
           </h2>
           <p className="text-sm text-muted-foreground">{t("overview.subtitle")}</p>

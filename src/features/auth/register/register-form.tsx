@@ -90,28 +90,25 @@ export function RegisterForm() {
       id={formId}
       onSubmit={onSubmit}
       noValidate
-      className="flex flex-col gap-3.5"
+      className="flex flex-col gap-6"
       aria-labelledby={`${formId}-title`}
     >
-      <header className="space-y-1">
-        <div className="flex items-center justify-between gap-3">
-          <p className="text-xs font-medium text-primary" aria-live="polite">
+      <header className="space-y-3">
+        <div className="flex items-center justify-between gap-4">
+          <p
+            className="text-xs font-medium text-muted-foreground"
+            aria-live="polite"
+          >
             {t("register.stepOf", { current: step, total: 2 })}
-            <span className="text-muted-foreground">
-              {" · "}
-              {step === 1
-                ? t("register.steps.account")
-                : t("register.steps.business")}
-            </span>
           </p>
           <ol
-            className="flex w-20 gap-1"
+            className="flex gap-1.5"
             aria-label={t("register.stepOf", { current: step, total: 2 })}
           >
             {[1, 2].map((item) => (
               <li
                 key={item}
-                className={`h-1 flex-1 rounded-full transition-colors ${
+                className={`h-1.5 w-8 rounded-full transition-colors ${
                   item <= step ? "bg-primary" : "bg-muted"
                 }`}
                 aria-current={item === step ? "step" : undefined}
@@ -119,15 +116,17 @@ export function RegisterForm() {
             ))}
           </ol>
         </div>
-        <h1
-          id={`${formId}-title`}
-          className="text-xl font-bold tracking-tight text-foreground"
-        >
-          {t("register.title")}
-        </h1>
-        <p className="text-xs leading-snug text-muted-foreground">
-          {t("register.subtitle")}
-        </p>
+        <div className="space-y-1.5">
+          <h1
+            id={`${formId}-title`}
+            className="text-2xl font-semibold tracking-tight text-foreground"
+          >
+            {step === 1
+              ? t("register.steps.account")
+              : t("register.steps.business")}
+          </h1>
+          <p className="text-sm text-muted-foreground">{t("register.subtitle")}</p>
+        </div>
       </header>
 
       {step === 1 ? (
@@ -148,7 +147,7 @@ export function RegisterForm() {
         />
       )}
 
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col gap-4">
         {step === 1 ? (
           <Button
             type="button"
@@ -191,11 +190,11 @@ export function RegisterForm() {
           </div>
         )}
 
-        <p className="text-center text-xs text-muted-foreground">
+        <p className="text-center text-sm text-muted-foreground">
           {t("register.haveAccount")}{" "}
           <Link
             to="/login"
-            className="font-medium text-primary underline-offset-4 hover:underline focus-visible:rounded-sm focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring/50"
+            className="font-medium text-primary underline-offset-4 hover:underline focus-visible:rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/40"
           >
             {t("register.loginLink")}
           </Link>

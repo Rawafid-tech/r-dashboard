@@ -61,7 +61,7 @@ function CompanyIdentity({ company }: { company: AdminCompany }) {
   return (
     <div className="flex min-w-0 items-center gap-3">
       <span
-        className="grid size-9 shrink-0 place-items-center rounded-lg bg-violet-500/10 text-violet-700 ring-1 ring-violet-500/12 dark:text-violet-200"
+        className="grid size-9 shrink-0 place-items-center rounded-md bg-primary/10 text-primary ring-1 ring-primary/15"
         aria-hidden="true"
       >
         <Building2 className="size-4" />

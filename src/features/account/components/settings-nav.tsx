@@ -152,7 +152,7 @@ export function SettingsNav({ showCompany, className }: SettingsNavProps) {
         </ul>
       </div>
 
-      <div className="sticky top-14 z-20 -mx-1 bg-background/95 pb-1 backdrop-blur-sm lg:hidden">
+      <div className="sticky top-14 z-20 -mx-1 bg-background pb-1 lg:hidden">
         <div
           role="tablist"
           aria-label={t("nav.label")}
