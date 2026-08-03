@@ -14,6 +14,18 @@ const RegisterPage = lazy(() =>
   })),
 );
 
+const ForgotPasswordPage = lazy(() =>
+  import("@/app/public/forgot-password-page").then((m) => ({
+    default: m.ForgotPasswordPage,
+  })),
+);
+
+const ResetPasswordPage = lazy(() =>
+  import("@/app/public/reset-password-page").then((m) => ({
+    default: m.ResetPasswordPage,
+  })),
+);
+
 /**
  * Public auth/marketing pages.
  * Page shells live under `app/public`; domain UI/logic stays in `features/*`.
@@ -29,6 +41,14 @@ export const publicRoutes: RouteObject[] = [
       {
         path: "/register",
         element: <RegisterPage />,
+      },
+      {
+        path: "/forgot-password",
+        element: <ForgotPasswordPage />,
+      },
+      {
+        path: "/reset-password",
+        element: <ResetPasswordPage />,
       },
     ],
   },

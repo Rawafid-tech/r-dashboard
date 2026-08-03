@@ -38,3 +38,14 @@ export interface ChangePasswordRequest {
   currentPassword: string;
   newPassword: string;
 }
+
+export interface ForgotPasswordRequest {
+  email: string;
+}
+
+export interface ResetPasswordRequest {
+  email: string;
+  /** Exactly 6 numeric digits — keep as string to preserve leading zeros. */
+  code: string;
+  newPassword: string;
+}

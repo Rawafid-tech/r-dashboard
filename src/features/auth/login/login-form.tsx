@@ -99,9 +99,17 @@ export function LoginForm() {
           </Field>
 
           <Field data-invalid={!!errors.password || undefined}>
-            <FieldLabel htmlFor={`${formId}-password`}>
-              {t("login.fields.password")}
-            </FieldLabel>
+            <div className="flex items-center justify-between">
+              <FieldLabel htmlFor={`${formId}-password`}>
+                {t("login.fields.password")}
+              </FieldLabel>
+              <Link
+                to="/forgot-password"
+                className="text-xs font-medium text-primary underline-offset-4 hover:underline focus-visible:rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/40"
+              >
+                {t("login.forgotPassword")}
+              </Link>
+            </div>
             <div className="relative">
               <Input
                 id={`${formId}-password`}
