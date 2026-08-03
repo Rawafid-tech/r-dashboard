@@ -62,7 +62,11 @@
     "country": "Country",
     "currency": "Currency",
     "optional": "Optional",
-    "notSet": "Not set"
+    "notSet": "Not set",
+    "avatar": "Profile Picture",
+    "avatarHint": "PNG, JPEG or WebP — max 2 MB",
+    "companyLogo": "Company Logo",
+    "companyLogoHint": "Visible to customers — PNG, JPEG or WebP — max 2 MB"
   },
   "badges": {
     "verified": "Verified",
@@ -159,5 +163,30 @@
     "label": "Loading settings..."
   },
   "showPassword": "Show password",
-  "hidePassword": "Hide password"
+  "hidePassword": "Hide password",
+  "media": {
+    "dropzone": {
+      "idle": "Click to upload or drag and drop",
+      "active": "Drop your image here",
+      "hint": "PNG, JPEG or WebP — max {{max}} MB",
+      "ariaLabel": "Upload image"
+    },
+    "avatar": {
+      "change": "Change picture",
+      "remove": "Remove picture",
+      "updated": "Profile picture updated.",
+      "removed": "Profile picture removed."
+    },
+    "logo": {
+      "change": "Change logo",
+      "remove": "Remove logo",
+      "updated": "Company logo updated.",
+      "removed": "Company logo removed."
+    },
+    "errors": {
+      "uploadFailed": "Could not upload image.",
+      "setAvatarFailed": "Could not set profile picture.",
+      "setLogoFailed": "Could not set company logo."
+    }
+  }
 }

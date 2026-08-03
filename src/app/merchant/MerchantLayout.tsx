@@ -40,7 +40,11 @@ function MerchantLayoutShell() {
       <MerchantSidebar planName={subscription?.planName} />
 
       <div className="flex min-w-0 flex-1 flex-col">
-        <MerchantHeader userName={user?.fullName} userEmail={user?.email} />
+        <MerchantHeader
+          userName={user?.fullName}
+          userEmail={user?.email}
+          userAvatarUrl={user?.avatarUrl}
+        />
 
         <main id="merchant-main" className="flex-1">
           <Outlet />

@@ -31,6 +31,7 @@ import {
   toUpdateCompanyPayload,
   type CompanyFormValues,
 } from "@/features/company/schema";
+import { LogoUploader } from "@/features/media";
 
 const VOLUME_OPTIONS = Object.values(MonthlyShipmentVolume);
 
@@ -105,6 +106,19 @@ export function CompanySettingsForm({
           {t("sections.company.readOnlyHint")}
         </FieldDescription>
       ) : null}
+
+      {/* Company Logo Section — OWNER only, shown once company data is loaded */}
+      {canEdit && company && (
+        <div className="rounded-lg border border-border/60 bg-card p-4">
+          <div className="mb-3">
+            <h4 className="text-sm font-medium">{t("fields.companyLogo")}</h4>
+            <p className="text-xs text-muted-foreground">
+              {t("fields.companyLogoHint")}
+            </p>
+          </div>
+          <LogoUploader currentLogoUrl={company.logoUrl} size="lg" />
+        </div>
+      )}
 
       {company ? (
         <div className="rounded-lg bg-muted/30 px-3 py-2 text-sm ring-1 ring-border/60">

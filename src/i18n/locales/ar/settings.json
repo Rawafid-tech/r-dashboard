@@ -62,7 +62,11 @@
     "country": "البلد",
     "currency": "العملة",
     "optional": "اختياري",
-    "notSet": "غير محدد"
+    "notSet": "غير محدد",
+    "avatar": "الصورة الشخصية",
+    "avatarHint": "ارفع صورة شخصية (PNG أو JPEG أو WebP — حد أقصى 2 ميجابايت)",
+    "companyLogo": "شعار الشركة",
+    "companyLogoHint": "ارفع شعار شركتك (سيظهر للعملاء — PNG أو JPEG أو WebP — حد أقصى 2 ميجابايت)"
   },
   "badges": {
     "verified": "موثّق",
@@ -159,5 +163,30 @@
     "label": "جاري تحميل الإعدادات..."
   },
   "showPassword": "إظهار كلمة المرور",
-  "hidePassword": "إخفاء كلمة المرور"
+  "hidePassword": "إخفاء كلمة المرور",
+  "media": {
+    "dropzone": {
+      "idle": "اضغط للرفع أو اسحب وأفلت",
+      "active": "أفلت الصورة هنا",
+      "hint": "PNG أو JPEG أو WebP — حد أقصى {{max}} ميجابايت",
+      "ariaLabel": "رفع صورة"
+    },
+    "avatar": {
+      "change": "تغيير الصورة",
+      "remove": "إزالة الصورة",
+      "updated": "تم تحديث الصورة الشخصية.",
+      "removed": "تم إزالة الصورة الشخصية."
+    },
+    "logo": {
+      "change": "تغيير الشعار",
+      "remove": "إزالة الشعار",
+      "updated": "تم تحديث شعار الشركة.",
+      "removed": "تم إزالة شعار الشركة."
+    },
+    "errors": {
+      "uploadFailed": "تعذر رفع الصورة.",
+      "setAvatarFailed": "تعذر تعيين الصورة الشخصية.",
+      "setLogoFailed": "تعذر تعيين شعار الشركة."
+    }
+  }
 }

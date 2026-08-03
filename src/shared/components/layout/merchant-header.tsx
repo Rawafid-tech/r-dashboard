@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import {
   Avatar,
   AvatarFallback,
+  AvatarImage,
   Button,
   DropdownMenu,
   DropdownMenuContent,
@@ -22,6 +23,7 @@ import { cn } from "@/shared/lib/utils";
 interface MerchantHeaderProps {
   userName?: string;
   userEmail?: string;
+  userAvatarUrl?: string | null;
   className?: string;
 }
 
@@ -40,6 +42,7 @@ function getInitials(name?: string) {
 export function MerchantHeader({
   userName,
   userEmail,
+  userAvatarUrl,
   className,
 }: MerchantHeaderProps) {
   const { t } = useTranslation(["common", "dashboard"]);
@@ -91,6 +94,12 @@ export function MerchantHeader({
             })}
           >
             <Avatar size="sm">
+              {userAvatarUrl && (
+                <AvatarImage
+                  src={userAvatarUrl}
+                  alt={userName ?? ""}
+                />
+              )}
               <AvatarFallback className="bg-primary/10 text-primary">
                 {getInitials(userName)}
               </AvatarFallback>

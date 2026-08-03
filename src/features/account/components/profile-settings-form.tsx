@@ -24,6 +24,7 @@ import {
   createProfileSchema,
   type ProfileFormValues,
 } from "@/features/account/schema";
+import { AvatarUploader } from "@/features/media";
 
 const DOB_END = new Date();
 const DOB_START = new Date(DOB_END.getFullYear() - 100, 0, 1);
@@ -90,6 +91,19 @@ export function ProfileSettingsForm({ user }: ProfileSettingsFormProps) {
 
   return (
     <form id={formId} onSubmit={onSubmit} noValidate className="space-y-5">
+      {/* Avatar Upload Section */}
+      {user && (
+        <div className="rounded-lg border border-border/60 bg-card p-4">
+          <div className="mb-3">
+            <h4 className="text-sm font-medium">{t("fields.avatar")}</h4>
+            <p className="text-xs text-muted-foreground">
+              {t("fields.avatarHint")}
+            </p>
+          </div>
+          <AvatarUploader currentAvatarUrl={user.avatarUrl} size="lg" />
+        </div>
+      )}
+
       <FieldGroup>
         <FieldSet className="gap-4">
           <div className="grid gap-4 sm:grid-cols-2">

@@ -31,6 +31,7 @@ export interface User {
   verified: boolean;
   role: MerchantRole;
   status: UserStatus;
+  avatarUrl: string | null;
 }
 
 export interface ChangePasswordRequest {
