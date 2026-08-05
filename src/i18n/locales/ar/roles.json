@@ -1,0 +1,108 @@
+{
+  "metaTitle": "الأدوار — روافد",
+  "metaDescription": "عرّف حزم الصلاحيات لفريق شركتك.",
+  "skipToContent": "تخطَّ إلى قائمة الأدوار",
+  "hero": {
+    "title": "الأدوار",
+    "subtitle": "أنشئ حزم صلاحيات باسم واضح لفريقك. إسناد الأدوار للمستخدمين سيأتي في تحديث لاحق.",
+    "totalLabel": "الأدوار",
+    "create": "إضافة دور"
+  },
+  "toolbar": {
+    "title": "أدوار الشركة",
+    "searchPlaceholder": "ابحث باسم الدور…",
+    "searchHint": "البحث يتم على اسم الدور فقط.",
+    "sortLabel": "الترتيب",
+    "sort": {
+      "createdDesc": "الأحدث أولاً",
+      "createdAsc": "الأقدم أولاً",
+      "nameAsc": "الاسم أ–ي",
+      "nameDesc": "الاسم ي–أ"
+    }
+  },
+  "table": {
+    "caption": "قائمة الأدوار",
+    "name": "الاسم",
+    "users": "عدد المستخدمين",
+    "permissions": "الصلاحيات",
+    "created": "تاريخ الإنشاء",
+    "actions": "إجراءات",
+    "edit": "تعديل",
+    "delete": "حذف"
+  },
+  "pagination": {
+    "label": "ترقيم الأدوار",
+    "summary": "عرض {{start}}–{{end}} من {{total}}",
+    "pageOf": "صفحة {{current}} من {{total}}"
+  },
+  "empty": {
+    "title": "لا توجد أدوار بعد",
+    "description": "أضف دورًا لتجميع الصلاحيات التي ستُسند لاحقًا.",
+    "searchTitle": "لا توجد أدوار مطابقة",
+    "searchDescription": "جرّب اسمًا آخر أو امسح البحث."
+  },
+  "errors": {
+    "loadFailed": "تعذّر تحميل الأدوار",
+    "loadFailedHint": "تحقق من اتصالك وحاول مرة أخرى.",
+    "retry": "إعادة المحاولة",
+    "forbidden": "إدارة الأدوار متاحة لمالك الشركة فقط."
+  },
+  "form": {
+    "createTitle": "إضافة دور",
+    "editTitle": "تعديل الدور",
+    "description": "اختر اسمًا والصلاحيات التي تشملها هذه الحزمة.",
+    "name": "الاسم",
+    "namePlaceholder": "مثال: موظفو المستودع",
+    "roleDescription": "الوصف",
+    "roleDescriptionPlaceholder": "ملاحظة اختيارية عن الغرض من هذا الدور",
+    "roleDescriptionHint": "اختياري. حتى 500 حرف.",
+    "permissions": "الصلاحيات",
+    "permissionsHint": "اختيار إجراء يضم الصفحة التابعة له تلقائيًا. يمكنك ترك الصلاحيات فارغة الآن.",
+    "permissionsHintShort": "الإجراء يضم الصفحة تلقائيًا",
+    "permissionsSearch": "تصفية الصلاحيات",
+    "permissionsSearchPlaceholder": "تصفية…",
+    "permissionsEmpty": "لا توجد صلاحيات مطابقة للتصفية.",
+    "permissionsLoadFailed": "تعذّر تحميل كتالوج الصلاحيات.",
+    "permissionsTableCaption": "كتالوج الصلاحيات",
+    "permissionsColumns": {
+      "name": "الاسم",
+      "kind": "نوع المعاملة",
+      "grant": "التصريح"
+    },
+    "expand": "توسيع",
+    "collapse": "طي",
+    "parentLockedHint": "مقفل طالما توجد صلاحية فرعية محددة",
+    "cancel": "إلغاء",
+    "save": "حفظ الدور",
+    "saving": "جاري الحفظ…",
+    "loadingRole": "جاري تحميل الدور…",
+    "validation": {
+      "nameRequired": "الاسم مطلوب",
+      "nameMax": "يجب ألا يتجاوز الاسم 100 حرف",
+      "descriptionMax": "يجب ألا يتجاوز الوصف 500 حرف",
+      "permissionsMax": "تم اختيار عدد كبير من الصلاحيات"
+    }
+  },
+  "kind": {
+    "PAGE": "الصفحة",
+    "ACTION": "الإجراء"
+  },
+  "delete": {
+    "title": "حذف الدور؟",
+    "description": "سيتم حذف «{{name}}». إذا كان الدور مُسندًا لمستخدمين فيجب نقلهم أولاً قبل إتمام الحذف.",
+    "confirm": "حذف الدور",
+    "cancel": "الإبقاء على الدور",
+    "deleting": "جاري الحذف…"
+  },
+  "toast": {
+    "created": "تم إنشاء الدور",
+    "updated": "تم تحديث الدور",
+    "deleted": "تم حذف الدور",
+    "saveFailed": "تعذّر حفظ الدور",
+    "deleteFailed": "تعذّر حذف الدور",
+    "notFound": "الدور غير موجود",
+    "inUse": "هذا الدور ما زال مُسندًا إلى مستخدمين. انقلهم أولاً.",
+    "unknownPermission": "إحدى الصلاحيات المحددة لم تعد صالحة. حدّث القائمة وحاول مجددًا.",
+    "nameTaken": "يوجد دور بهذا الاسم بالفعل"
+  }
+}

@@ -1,0 +1,108 @@
+{
+  "metaTitle": "Roles — Rawafid",
+  "metaDescription": "Define permission bundles for your company staff.",
+  "skipToContent": "Skip to roles list",
+  "hero": {
+    "title": "Roles",
+    "subtitle": "Create named permission bundles for your team. Assignment to users comes in a later update.",
+    "totalLabel": "Roles",
+    "create": "Add role"
+  },
+  "toolbar": {
+    "title": "Company roles",
+    "searchPlaceholder": "Search by role name…",
+    "searchHint": "Searches the role name only.",
+    "sortLabel": "Sort",
+    "sort": {
+      "createdDesc": "Newest first",
+      "createdAsc": "Oldest first",
+      "nameAsc": "Name A–Z",
+      "nameDesc": "Name Z–A"
+    }
+  },
+  "table": {
+    "caption": "Roles list",
+    "name": "Name",
+    "users": "Users",
+    "permissions": "Permissions",
+    "created": "Created",
+    "actions": "Actions",
+    "edit": "Edit",
+    "delete": "Delete"
+  },
+  "pagination": {
+    "label": "Roles pagination",
+    "summary": "Showing {{start}}–{{end}} of {{total}}",
+    "pageOf": "Page {{current}} of {{total}}"
+  },
+  "empty": {
+    "title": "No roles yet",
+    "description": "Add a role to group permissions you can assign later.",
+    "searchTitle": "No matching roles",
+    "searchDescription": "Try a different name, or clear the search."
+  },
+  "errors": {
+    "loadFailed": "Could not load roles",
+    "loadFailedHint": "Check your connection and try again.",
+    "retry": "Retry",
+    "forbidden": "Only company owners can manage roles."
+  },
+  "form": {
+    "createTitle": "Add role",
+    "editTitle": "Edit role",
+    "description": "Choose a name and the permissions this bundle includes.",
+    "name": "Name",
+    "namePlaceholder": "e.g. Warehouse staff",
+    "roleDescription": "Description",
+    "roleDescriptionPlaceholder": "Optional note about who this role is for",
+    "roleDescriptionHint": "Optional. Up to 500 characters.",
+    "permissions": "Permissions",
+    "permissionsHint": "Selecting an action also includes its page. You can leave permissions empty for now.",
+    "permissionsHintShort": "Action implies its page",
+    "permissionsSearch": "Filter permissions",
+    "permissionsSearchPlaceholder": "Filter…",
+    "permissionsEmpty": "No permissions match your filter.",
+    "permissionsLoadFailed": "Could not load the permission catalog.",
+    "permissionsTableCaption": "Permission catalog",
+    "permissionsColumns": {
+      "name": "Name",
+      "kind": "Type",
+      "grant": "Allow"
+    },
+    "expand": "Expand",
+    "collapse": "Collapse",
+    "parentLockedHint": "Locked while a child permission is selected",
+    "cancel": "Cancel",
+    "save": "Save role",
+    "saving": "Saving…",
+    "loadingRole": "Loading role…",
+    "validation": {
+      "nameRequired": "Name is required",
+      "nameMax": "Name must be 100 characters or fewer",
+      "descriptionMax": "Description must be 500 characters or fewer",
+      "permissionsMax": "Too many permissions selected"
+    }
+  },
+  "kind": {
+    "PAGE": "Page",
+    "ACTION": "Action"
+  },
+  "delete": {
+    "title": "Delete role?",
+    "description": "This removes “{{name}}”. Users assigned to it must be moved first before delete can succeed.",
+    "confirm": "Delete role",
+    "cancel": "Keep role",
+    "deleting": "Deleting…"
+  },
+  "toast": {
+    "created": "Role created",
+    "updated": "Role updated",
+    "deleted": "Role deleted",
+    "saveFailed": "Could not save the role",
+    "deleteFailed": "Could not delete the role",
+    "notFound": "Role not found",
+    "inUse": "This role is still assigned to users. Move them first.",
+    "unknownPermission": "A selected permission is no longer valid. Refresh and try again.",
+    "nameTaken": "A role with this name already exists"
+  }
+}

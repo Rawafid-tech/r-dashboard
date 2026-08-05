@@ -1,6 +1,8 @@
+import { useMemo } from "react";
 import { NavLink } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { X } from "lucide-react";
+import { useMe } from "@/features/account/hooks/use-me";
 import { Button } from "@/shared/components/ui";
 import { cn } from "@/shared/lib/utils";
 import { MERCHANT_NAV_ITEMS } from "@/shared/components/layout/merchant-nav";
@@ -11,7 +13,22 @@ import {
 import { RawafidLogoMark } from "@/shared/components/layout/rawafid-logo-mark";
 import { SidebarCollapseButton } from "@/shared/components/layout/sidebar-toggle-button";
 import { useSidebar } from "@/shared/components/layout/sidebar-provider";
+import { MerchantRole } from "@/shared/types/enums";
 import { useLocaleStore } from "@/stores/locale.store";
+
+function useMerchantNavItems() {
+  const meQuery = useMe();
+  const isOwner = meQuery.data?.role === MerchantRole.OWNER;
+
+  return useMemo(
+    () =>
+      MERCHANT_NAV_ITEMS.filter((item) => {
+        if (item.ownerOnly && !isOwner) return false;
+        return true;
+      }),
+    [isOwner],
+  );
+}
 
 interface MerchantSidebarProps {
   planName?: string;
@@ -26,6 +43,7 @@ export function MerchantSidebar({
   const { collapsed } = useSidebar();
   const dir = useLocaleStore((state) => state.dir);
   const tooltipSide = dir === "rtl" ? "left" : "right";
+  const navItems = useMerchantNavItems();
 
   return (
     <aside
@@ -71,7 +89,7 @@ export function MerchantSidebar({
       <MerchantSidebarNavList
         collapsed={collapsed}
         tooltipSide={tooltipSide}
-        items={MERCHANT_NAV_ITEMS}
+        items={navItems}
       />
 
       <div className="border-t border-sidebar-border p-3">
@@ -97,6 +115,7 @@ export function MerchantMobileSidebar({
   const { t } = useTranslation(["common", "dashboard"]);
   const dir = useLocaleStore((state) => state.dir);
   const tooltipSide = dir === "rtl" ? "left" : "right";
+  const navItems = useMerchantNavItems();
 
   return (
     <div className="flex h-full flex-col bg-sidebar text-sidebar-foreground">
@@ -125,7 +144,7 @@ export function MerchantMobileSidebar({
       <MerchantSidebarNavList
         collapsed={false}
         tooltipSide={tooltipSide}
-        items={MERCHANT_NAV_ITEMS}
+        items={navItems}
         onNavigate={onNavigate}
         className="px-3 py-4"
       />
