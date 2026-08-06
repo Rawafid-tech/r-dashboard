@@ -52,6 +52,15 @@
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) * 1.4);
   --radius-2xl: calc(var(--radius) * 1.8);
+
+  /* Dialog widths (px) — w1 = 400 … w7 = 900 */
+  --max-width-dialog-w1: 400px;
+  --max-width-dialog-w2: 500px;
+  --max-width-dialog-w3: 600px;
+  --max-width-dialog-w4: 650px;
+  --max-width-dialog-w5: 700px;
+  --max-width-dialog-w6: 800px;
+  --max-width-dialog-w7: 900px;
 }
 
 :root {
@@ -209,6 +218,29 @@
   .auth-brand-icon-chip {
     background-color: var(--auth-brand-icon-bg);
     color: var(--auth-brand-fg);
+  }
+
+  /* DialogContent widths — driven by `data-size` (see dialog.tsx), values from @theme */
+  [data-slot="dialog-content"][data-size="w1"] {
+    max-width: min(calc(100vw - 2rem), var(--max-width-dialog-w1));
+  }
+  [data-slot="dialog-content"][data-size="w2"] {
+    max-width: min(calc(100vw - 2rem), var(--max-width-dialog-w2));
+  }
+  [data-slot="dialog-content"][data-size="w3"] {
+    max-width: min(calc(100vw - 2rem), var(--max-width-dialog-w3));
+  }
+  [data-slot="dialog-content"][data-size="w4"] {
+    max-width: min(calc(100vw - 2rem), var(--max-width-dialog-w4));
+  }
+  [data-slot="dialog-content"][data-size="w5"] {
+    max-width: min(calc(100vw - 2rem), var(--max-width-dialog-w5));
+  }
+  [data-slot="dialog-content"][data-size="w6"] {
+    max-width: min(calc(100vw - 2rem), var(--max-width-dialog-w6));
+  }
+  [data-slot="dialog-content"][data-size="w7"] {
+    max-width: min(calc(100vw - 2rem), var(--max-width-dialog-w7));
   }
 }
 

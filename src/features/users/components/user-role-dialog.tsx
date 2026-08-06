@@ -63,7 +63,7 @@ export function UserRoleDialog({
       }}
     >
       <DialogContent
-        size="w15"
+        size="w1"
         className="gap-0 overflow-hidden"
         showCloseButton={!busy}
         closeLabel={tCommon("common.close")}

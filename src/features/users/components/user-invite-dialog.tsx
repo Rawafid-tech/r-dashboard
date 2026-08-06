@@ -98,7 +98,7 @@ export function UserInviteDialog({ open, onOpenChange }: UserInviteDialogProps) 
       }}
     >
       <DialogContent
-        size="w15"
+        size="w3"
         className="gap-0 overflow-hidden"
         showCloseButton={!busy}
         closeLabel={tCommon("common.close")}

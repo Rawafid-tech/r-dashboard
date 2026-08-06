@@ -95,7 +95,7 @@ export function UserSetPasswordDialog({
       }}
     >
       <DialogContent
-        size="w15"
+        size="w1"
         className="gap-0 overflow-hidden text-sm"
         showCloseButton={!busy}
         closeLabel={tCommon("common.close")}
