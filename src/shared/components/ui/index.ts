@@ -88,7 +88,9 @@ export {
   DialogPortal,
   DialogTitle,
   DialogTrigger,
+  dialogContentSizes,
 } from "./dialog";
+export type { DialogContentSize } from "./dialog";
 export {
   Tooltip,
   TooltipContent,

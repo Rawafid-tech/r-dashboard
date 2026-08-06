@@ -15,6 +15,7 @@ const NO_REFRESH_URLS = [
   "/api/auth/login",
   "/api/auth/register",
   "/api/auth/refresh",
+  "/api/auth/invitation/accept",
   "/api/admin/auth/login",
   "/api/admin/auth/refresh",
 ] as const;
@@ -23,6 +24,7 @@ const NO_REFRESH_URLS = [
 const PUBLIC_AUTH_URLS = [
   "/api/auth/login",
   "/api/auth/register",
+  "/api/auth/invitation/accept",
   "/api/admin/auth/login",
 ] as const;
 

@@ -472,6 +472,7 @@
       "AGENT": "وكيل"
     },
     "status": {
+      "INVITED": "مدعو",
       "ACTIVE": "نشط",
       "SUSPENDED": "معلّق"
     },

@@ -1,7 +1,7 @@
+import { lazy, Suspense } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "sonner";
-import { Suspense } from "react";
 import { LoadingSpinner } from "@/shared/components/feedback/LoadingSpinner";
 import { UiPlayground } from "@/app/dev/UiPlayground";
 import { merchantRoutes } from "@/app/merchant/routes";
@@ -9,6 +9,12 @@ import { AdminRouteTree } from "@/app/admin/routes";
 import { publicRoutes } from "@/app/public/routes";
 import { ProtectedRoute } from "@/features/auth/components/protected-route";
 import { useLocaleStore } from "@/stores/locale.store";
+
+const AcceptInvitePage = lazy(() =>
+  import("@/app/public/accept-invite-page").then((m) => ({
+    default: m.AcceptInvitePage,
+  })),
+);
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -36,6 +42,8 @@ export default function App() {
       <BrowserRouter>
         <Suspense fallback={<FullPageLoader />}>
           <Routes>
+            <Route path="/accept-invite" element={<AcceptInvitePage />} />
+
             {/* Guest-only: register / login / pricing */}
             {publicRoutes.map((route, index) => (
               <Route key={route.path ?? `public-${index}`} element={route.element}>

@@ -472,6 +472,7 @@
       "AGENT": "Agent"
     },
     "status": {
+      "INVITED": "Invited",
       "ACTIVE": "Active",
       "SUSPENDED": "Suspended"
     },

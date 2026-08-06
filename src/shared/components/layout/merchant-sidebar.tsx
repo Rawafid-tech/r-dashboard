@@ -15,18 +15,23 @@ import { SidebarCollapseButton } from "@/shared/components/layout/sidebar-toggle
 import { useSidebar } from "@/shared/components/layout/sidebar-provider";
 import { MerchantRole } from "@/shared/types/enums";
 import { useLocaleStore } from "@/stores/locale.store";
+import { useMerchantPermissions } from "@/shared/hooks/use-merchant-permissions";
 
 function useMerchantNavItems() {
   const meQuery = useMe();
+  const { hasPermission } = useMerchantPermissions();
   const isOwner = meQuery.data?.role === MerchantRole.OWNER;
 
   return useMemo(
     () =>
       MERCHANT_NAV_ITEMS.filter((item) => {
         if (item.ownerOnly && !isOwner) return false;
+        if (item.permissionCode && !hasPermission(item.permissionCode)) {
+          return false;
+        }
         return true;
       }),
-    [isOwner],
+    [isOwner, hasPermission],
   );
 }
 

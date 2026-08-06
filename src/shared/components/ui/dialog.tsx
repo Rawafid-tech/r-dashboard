@@ -4,6 +4,18 @@ import { XIcon } from "lucide-react";
 
 import { cn } from "@/shared/lib/utils";
 
+/** Preset dialog widths — use `size="w2"` instead of hand-written `max-w-*`. */
+export const dialogContentSizes = {
+  w1: "max-w-sm",
+  /** Between w1 (24rem) and w2 (28rem). */
+  w15: "max-w-[26rem]",
+  w2: "max-w-md",
+  w3: "max-w-lg",
+  w4: "max-w-xl",
+} as const;
+
+export type DialogContentSize = keyof typeof dialogContentSizes;
+
 function Dialog({
   ...props
 }: React.ComponentProps<typeof DialogPrimitive.Root>) {
@@ -49,18 +61,22 @@ function DialogContent({
   children,
   showCloseButton = true,
   closeLabel = "Close",
+  size = "w3",
   ...props
 }: React.ComponentProps<typeof DialogPrimitive.Content> & {
   showCloseButton?: boolean;
   closeLabel?: string;
+  size?: DialogContentSize;
 }) {
   return (
     <DialogPortal>
       <DialogOverlay />
       <DialogPrimitive.Content
         data-slot="dialog-content"
+        data-size={size}
         className={cn(
-          "fixed top-1/2 left-1/2 z-50 flex w-[calc(100%-2rem)] max-w-lg -translate-x-1/2 -translate-y-1/2 flex-col gap-4 rounded-xl border border-border/70 bg-background p-0 shadow-lg outline-none",
+          "fixed top-1/2 left-1/2 z-50 flex w-[calc(100%-2rem)] -translate-x-1/2 -translate-y-1/2 flex-col gap-4 rounded-xl border border-border/70 bg-background p-0 shadow-lg outline-none",
+          dialogContentSizes[size],
           "duration-200 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95",
           "max-h-[min(90dvh,44rem)]",
           className,

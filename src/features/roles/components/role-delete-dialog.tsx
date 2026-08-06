@@ -47,7 +47,8 @@ export function RoleDeleteDialog({
       }}
     >
       <DialogContent
-        className="max-w-sm gap-0 overflow-hidden"
+        size="w1"
+        className="gap-0 overflow-hidden"
         showCloseButton={!deleteMutation.isPending}
         closeLabel={tCommon("common.close")}
       >

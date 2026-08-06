@@ -1,0 +1,187 @@
+{
+  "metaTitle": "المستخدمون — روافد",
+  "metaDescription": "ادعُ زملاءك وأدر فريق شركتك.",
+  "skipToContent": "تخطَّ إلى قائمة المستخدمين",
+  "hero": {
+    "title": "المستخدمون",
+    "subtitle": "ادعُ أعضاء الفريق، عيّن الأدوار، وأدر صلاحيات الوصول لشركتك.",
+    "totalLabel": "المستخدمون",
+    "invite": "إضافة مستخدم"
+  },
+  "toolbar": {
+    "title": "فريق الشركة",
+    "searchPlaceholder": "ابحث بالاسم أو البريد…",
+    "searchHint": "يطابق جزءًا من الاسم أو البريد الإلكتروني.",
+    "sortLabel": "الترتيب",
+    "sort": {
+      "createdDesc": "الأحدث أولاً",
+      "createdAsc": "الأقدم أولاً",
+      "nameAsc": "الاسم أ–ي",
+      "nameDesc": "الاسم ي–أ",
+      "emailAsc": "البريد أ–ي",
+      "emailDesc": "البريد ي–أ"
+    }
+  },
+  "table": {
+    "caption": "مستخدمو الشركة",
+    "name": "الاسم",
+    "email": "البريد الإلكتروني",
+    "phone": "الهاتف",
+    "role": "الدور",
+    "status": "الحالة",
+    "created": "تاريخ الإضافة",
+    "actions": "إجراءات",
+    "resendInvite": "إعادة إرسال الدعوة",
+    "resendInviteHint": "يرسل رابطًا جديدًا ويلغي الرابط السابق.",
+    "resendCooldown": "إعادة الإرسال بعد {{seconds}} ث",
+    "openMenu": "إجراءات {{name}}",
+    "emailVerified": "البريد موثّق",
+    "ownerBadge": "المالك"
+  },
+  "status": {
+    "INVITED": "مدعو",
+    "ACTIVE": "نشط",
+    "SUSPENDED": "موقوف"
+  },
+  "pagination": {
+    "label": "ترقيم المستخدمين",
+    "summary": "عرض {{start}}–{{end}} من {{total}}",
+    "pageOf": "صفحة {{current}} من {{total}}"
+  },
+  "empty": {
+    "title": "لا يوجد مستخدمون بعد",
+    "description": "ادعُ زميلًا للانضمام إلى مساحة عمل شركتك.",
+    "searchTitle": "لا يوجد مستخدمون مطابقون",
+    "searchDescription": "جرّب اسمًا أو بريدًا آخر، أو امسح البحث."
+  },
+  "errors": {
+    "loadFailed": "تعذّر تحميل المستخدمين",
+    "loadFailedHint": "تحقق من اتصالك وحاول مرة أخرى.",
+    "retry": "إعادة المحاولة"
+  },
+  "actions": {
+    "edit": "تعديل",
+    "changeRole": "تغيير الدور",
+    "activate": "تنشيط",
+    "deactivate": "تعطيل",
+    "delete": "حذف",
+    "revealLink": "إظهار رابط الدعوة",
+    "setPassword": "تعيين كلمة المرور"
+  },
+  "form": {
+    "validation": {
+      "firstNameRequired": "الاسم الأول مطلوب",
+      "lastNameRequired": "اسم العائلة مطلوب",
+      "emailRequired": "البريد الإلكتروني مطلوب",
+      "emailInvalid": "أدخل بريدًا إلكترونيًا صالحًا",
+      "phoneRequired": "رقم الهاتف مطلوب",
+      "phoneInvalid": "8–15 رقمًا، ويمكن أن يبدأ بـ +",
+      "dateOfBirthPast": "أدخل تاريخًا سابقًا صالحًا",
+      "passwordMin": "كلمة المرور 8 أحرف على الأقل",
+      "passwordMax": "كلمة المرور 100 حرف كحد أقصى",
+      "passwordConfirmRequired": "أكّد كلمة المرور",
+      "passwordMismatch": "كلمتا المرور غير متطابقتين"
+    }
+  },
+  "invite": {
+    "title": "إضافة مستخدم",
+    "description": "ننشئ الحساب ونرسل رابط الدعوة بالبريد. قد يستغرق التسليم لحظات.",
+    "firstName": "الاسم الأول",
+    "lastName": "اسم العائلة",
+    "email": "البريد الإلكتروني",
+    "phone": "الهاتف",
+    "role": "الدور",
+    "rolePlaceholder": "افتراضي: Agent (بدون صلاحيات)",
+    "roleHint": "اختياري. عيّن دورًا مخصصًا من شركتك.",
+    "cancel": "إلغاء",
+    "submit": "إرسال الدعوة",
+    "submitting": "جاري الإنشاء…"
+  },
+  "edit": {
+    "title": "تعديل المستخدم",
+    "description": "بيانات الملف فقط. لا يمكن تغيير البريد من هنا.",
+    "firstName": "الاسم الأول",
+    "lastName": "اسم العائلة",
+    "phone": "الهاتف",
+    "dateOfBirth": "تاريخ الميلاد",
+    "cancel": "إلغاء",
+    "submit": "حفظ التغييرات",
+    "submitting": "جاري الحفظ…",
+    "loading": "جاري تحميل المستخدم…"
+  },
+  "role": {
+    "title": "تغيير الدور",
+    "description": "سيتم تسجيل خروجه من جميع الأجهزة لتطبيق الصلاحيات الجديدة.",
+    "role": "الدور",
+    "rolePlaceholder": "Agent (مدمج، بدون صلاحيات)",
+    "cancel": "إلغاء",
+    "submit": "تحديث الدور",
+    "submitting": "جاري التحديث…"
+  },
+  "reveal": {
+    "title": "إظهار رابط الدعوة؟",
+    "description": "سيُصدر رابط جديد وأي رابط أُرسل سابقًا بالبريد سيتوقف عن العمل. انسخه وشاركه بأمان — لن نعرض الرابط كاملًا على الشاشة.",
+    "confirm": "إنشاء الرابط",
+    "cancel": "إلغاء",
+    "copy": "نسخ الرابط",
+    "copySuccess": "تم نسخ رابط الدعوة",
+    "copyFailed": "تعذّر النسخ — حاول مجددًا",
+    "working": "جاري الإنشاء…",
+    "doneTitle": "الرابط جاهز",
+    "doneDescription": "شاركه خارج البريد. قبول هذا الرابط لا يوثّق البريد الإلكتروني."
+  },
+  "setPassword": {
+    "title": "تعيين كلمة المرور",
+    "description": "تعيين كلمة مرور جديدة وإنهاء كل الجلسات لهذا الشخص.",
+    "newPassword": "كلمة المرور الجديدة",
+    "confirmPassword": "تأكيد كلمة المرور",
+    "cancel": "إلغاء",
+    "submit": "تعيين كلمة المرور",
+    "submitting": "جاري الحفظ…"
+  },
+  "delete": {
+    "title": "حذف المستخدم نهائيًا؟",
+    "description": "سيُزال {{name}} ويُحرّر بريده للاستخدام مجددًا. لا يمكن التراجع.",
+    "confirmLabel": "اكتب {{token}} للتأكيد",
+    "confirmPlaceholder": "{{token}}",
+    "cancel": "الإبقاء على المستخدم",
+    "confirm": "حذف المستخدم",
+    "deleting": "جاري الحذف…"
+  },
+  "statusConfirm": {
+    "activateTitle": "تنشيط المستخدم؟",
+    "activateDescription": "سيتمكن {{name}} من تسجيل الدخول مجددًا.",
+    "deactivateTitle": "تعطيل المستخدم؟",
+    "deactivateDescription": "لن يتمكن {{name}} من تسجيل الدخول. قد تبقى الجلسات النشطة حتى انتهاء الرموز.",
+    "cancel": "إلغاء",
+    "activate": "تنشيط",
+    "deactivate": "تعطيل",
+    "working": "جاري التحديث…"
+  },
+  "toast": {
+    "inviteCreated": "تم إنشاء الدعوة — أرسلنا لهم رابطًا",
+    "inviteFailed": "تعذّر إنشاء الدعوة",
+    "inviteQuotaExceeded": "تم بلوغ حد الدعوات اليومي (20 كل 24 ساعة)",
+    "resendSuccess": "أُعيد إرسال الدعوة — الروابط السابقة لم تعد صالحة",
+    "resendFailed": "تعذّر إعادة إرسال الدعوة",
+    "resendTooSoon": "يرجى الانتظار قبل إعادة الإرسال",
+    "updated": "تم تحديث المستخدم",
+    "updateFailed": "تعذّر تحديث المستخدم",
+    "roleUpdated": "تم تحديث الدور — سيحتاج لتسجيل الدخول مجددًا",
+    "roleUpdateFailed": "تعذّر تحديث الدور",
+    "roleNotAssignable": "لا يمكن إسناد هذا الدور",
+    "cannotGrantRole": "لا يمكنك منح صلاحيات لا تملكها أنت",
+    "activated": "تم تنشيط المستخدم",
+    "deactivated": "تم تعطيل المستخدم",
+    "statusFailed": "تعذّر تحديث الحالة",
+    "passwordSet": "تم تعيين كلمة المرور",
+    "passwordSetFailed": "تعذّر تعيين كلمة المرور",
+    "deleted": "تم حذف المستخدم",
+    "deleteFailed": "تعذّر حذف المستخدم",
+    "cannotDeleteSelf": "لا يمكنك حذف حسابك",
+    "ownerLocked": "لا يمكن تعديل مالك الشركة بهذه الطريقة",
+    "accountAlreadyActivated": "هذا الحساب لديه كلمة مرور بالفعل",
+    "revealFailed": "تعذّر إنشاء رابط الدعوة",
+    "notFound": "المستخدم غير موجود"
+  }
+}

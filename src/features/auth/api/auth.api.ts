@@ -41,3 +41,19 @@ export async function resetPassword(
 ): Promise<void> {
   await apiClient.post("/api/auth/password/reset", payload);
 }
+
+export interface AcceptInvitationRequest {
+  userId: string;
+  token: string;
+  newPassword: string;
+}
+
+export async function acceptInvitation(
+  payload: AcceptInvitationRequest,
+): Promise<TokenResponse> {
+  const { data } = await apiClient.post<TokenResponse>(
+    "/api/auth/invitation/accept",
+    payload,
+  );
+  return data;
+}

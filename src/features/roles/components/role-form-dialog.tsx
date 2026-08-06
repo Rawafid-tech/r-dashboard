@@ -157,7 +157,8 @@ export function RoleFormDialog({
       }}
     >
       <DialogContent
-        className="max-w-md gap-0 overflow-hidden"
+        size="w2"
+        className="gap-0 overflow-hidden"
         showCloseButton={!isSaving}
         closeLabel={tCommon("common.close")}
       >

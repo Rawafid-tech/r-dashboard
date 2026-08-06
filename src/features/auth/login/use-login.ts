@@ -9,6 +9,7 @@ import {
   isApiError,
   parseApiError,
 } from "@/shared/api/error-handler";
+import { getApiErrorCode } from "@/features/roles/lib/role-form-errors";
 import { useAuthStore } from "@/stores/auth.store";
 
 export function useLogin() {
@@ -51,6 +52,11 @@ export function useLogin() {
       }
 
       if (isApiError(error, 403)) {
+        if (getApiErrorCode(error) === "auth.accountNotActivated") {
+          toast.error(t("login.errors.notActivated"));
+          return;
+        }
+
         toast.error(t("login.errors.suspended"));
         return;
       }

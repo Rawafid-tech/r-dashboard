@@ -1,0 +1,187 @@
+{
+  "metaTitle": "Users — Rawafid",
+  "metaDescription": "Invite colleagues and manage your company team.",
+  "skipToContent": "Skip to users list",
+  "hero": {
+    "title": "Users",
+    "subtitle": "Invite teammates, assign roles, and manage access for your company.",
+    "totalLabel": "Users",
+    "invite": "Add user"
+  },
+  "toolbar": {
+    "title": "Company team",
+    "searchPlaceholder": "Search by name or email…",
+    "searchHint": "Matches part of the name or email address.",
+    "sortLabel": "Sort",
+    "sort": {
+      "createdDesc": "Newest first",
+      "createdAsc": "Oldest first",
+      "nameAsc": "Name A–Z",
+      "nameDesc": "Name Z–A",
+      "emailAsc": "Email A–Z",
+      "emailDesc": "Email Z–A"
+    }
+  },
+  "table": {
+    "caption": "Company users",
+    "name": "Name",
+    "email": "Email",
+    "phone": "Phone",
+    "role": "Role",
+    "status": "Status",
+    "created": "Added",
+    "actions": "Actions",
+    "resendInvite": "Resend invitation",
+    "resendInviteHint": "Sends a new link and invalidates the previous one.",
+    "resendCooldown": "Resend available in {{seconds}}s",
+    "openMenu": "Actions for {{name}}",
+    "emailVerified": "Email verified",
+    "ownerBadge": "Owner"
+  },
+  "status": {
+    "INVITED": "Invited",
+    "ACTIVE": "Active",
+    "SUSPENDED": "Suspended"
+  },
+  "pagination": {
+    "label": "Users pagination",
+    "summary": "Showing {{start}}–{{end}} of {{total}}",
+    "pageOf": "Page {{current}} of {{total}}"
+  },
+  "empty": {
+    "title": "No users yet",
+    "description": "Invite a colleague to join your company workspace.",
+    "searchTitle": "No matching users",
+    "searchDescription": "Try another name or email, or clear the search."
+  },
+  "errors": {
+    "loadFailed": "Could not load users",
+    "loadFailedHint": "Check your connection and try again.",
+    "retry": "Retry"
+  },
+  "actions": {
+    "edit": "Edit",
+    "changeRole": "Change role",
+    "activate": "Activate",
+    "deactivate": "Deactivate",
+    "delete": "Delete",
+    "revealLink": "Show invitation link",
+    "setPassword": "Set password"
+  },
+  "form": {
+    "validation": {
+      "firstNameRequired": "First name is required",
+      "lastNameRequired": "Last name is required",
+      "emailRequired": "Email is required",
+      "emailInvalid": "Enter a valid email address",
+      "phoneRequired": "Phone is required",
+      "phoneInvalid": "Use 8–15 digits, optional leading +",
+      "dateOfBirthPast": "Enter a valid past date",
+      "passwordMin": "Password must be at least 8 characters",
+      "passwordMax": "Password must be at most 100 characters",
+      "passwordConfirmRequired": "Confirm the password",
+      "passwordMismatch": "Passwords do not match"
+    }
+  },
+  "invite": {
+    "title": "Add user",
+    "description": "We create the account and email an invitation link. Delivery may take a moment.",
+    "firstName": "First name",
+    "lastName": "Last name",
+    "email": "Email",
+    "phone": "Phone",
+    "role": "Role",
+    "rolePlaceholder": "Default: Agent (no permissions)",
+    "roleHint": "Optional. Assign a custom role from your company.",
+    "cancel": "Cancel",
+    "submit": "Send invitation",
+    "submitting": "Creating…"
+  },
+  "edit": {
+    "title": "Edit user",
+    "description": "Profile details only. Email cannot be changed here.",
+    "firstName": "First name",
+    "lastName": "Last name",
+    "phone": "Phone",
+    "dateOfBirth": "Date of birth",
+    "cancel": "Cancel",
+    "submit": "Save changes",
+    "submitting": "Saving…",
+    "loading": "Loading user…"
+  },
+  "role": {
+    "title": "Change role",
+    "description": "They will be signed out on all devices so the new permissions apply.",
+    "role": "Role",
+    "rolePlaceholder": "Agent (built-in, no permissions)",
+    "cancel": "Cancel",
+    "submit": "Update role",
+    "submitting": "Updating…"
+  },
+  "reveal": {
+    "title": "Show invitation link?",
+    "description": "A new link will be issued and any link already emailed will stop working. Copy it and share it securely — we will not display the full URL on screen.",
+    "confirm": "Generate link",
+    "cancel": "Cancel",
+    "copy": "Copy link",
+    "copySuccess": "Invitation link copied",
+    "copyFailed": "Could not copy — try again",
+    "working": "Generating…",
+    "doneTitle": "Link ready",
+    "doneDescription": "Share it out of band. Accepting this link does not verify the user's email."
+  },
+  "setPassword": {
+    "title": "Set password",
+    "description": "Sets a new password and ends every session for this person.",
+    "newPassword": "New password",
+    "confirmPassword": "Confirm password",
+    "cancel": "Cancel",
+    "submit": "Set password",
+    "submitting": "Saving…"
+  },
+  "delete": {
+    "title": "Delete user permanently?",
+    "description": "This removes {{name}} and frees their email for reuse. This cannot be undone.",
+    "confirmLabel": "Type {{token}} to confirm",
+    "confirmPlaceholder": "{{token}}",
+    "cancel": "Keep user",
+    "confirm": "Delete user",
+    "deleting": "Deleting…"
+  },
+  "statusConfirm": {
+    "activateTitle": "Activate user?",
+    "activateDescription": "{{name}} will be able to sign in again.",
+    "deactivateTitle": "Deactivate user?",
+    "deactivateDescription": "{{name}} will be blocked from signing in. Active sessions may remain until tokens expire.",
+    "cancel": "Cancel",
+    "activate": "Activate",
+    "deactivate": "Deactivate",
+    "working": "Updating…"
+  },
+  "toast": {
+    "inviteCreated": "Invitation created — we've sent them a link",
+    "inviteFailed": "Could not create invitation",
+    "inviteQuotaExceeded": "Daily invitation limit reached (20 per 24 hours)",
+    "resendSuccess": "Invitation resent — previous links no longer work",
+    "resendFailed": "Could not resend invitation",
+    "resendTooSoon": "Please wait before resending",
+    "updated": "User updated",
+    "updateFailed": "Could not update user",
+    "roleUpdated": "Role updated — they will need to sign in again",
+    "roleUpdateFailed": "Could not update role",
+    "roleNotAssignable": "This role cannot be assigned",
+    "cannotGrantRole": "You can't give someone access you don't have yourself",
+    "activated": "User activated",
+    "deactivated": "User deactivated",
+    "statusFailed": "Could not update status",
+    "passwordSet": "Password updated",
+    "passwordSetFailed": "Could not set password",
+    "deleted": "User deleted",
+    "deleteFailed": "Could not delete user",
+    "cannotDeleteSelf": "You cannot delete your own account",
+    "ownerLocked": "The company owner cannot be changed this way",
+    "accountAlreadyActivated": "This account already has a password",
+    "revealFailed": "Could not generate invitation link",
+    "notFound": "User not found"
+  }
+}

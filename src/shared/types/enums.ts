@@ -46,6 +46,7 @@ export type PlanFeatureType =
   (typeof PlanFeatureType)[keyof typeof PlanFeatureType];
 
 export const UserStatus = {
+  INVITED: "INVITED",
   ACTIVE: "ACTIVE",
   SUSPENDED: "SUSPENDED",
 } as const;
