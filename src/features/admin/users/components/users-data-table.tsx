@@ -129,7 +129,6 @@ export function UsersDataTable({
         value: search,
         onChange: onSearchChange,
         placeholder: t("users.toolbar.searchPlaceholder"),
-        hint: t("users.toolbar.searchHint"),
         label: t("common:common.search"),
       }}
       sort={{

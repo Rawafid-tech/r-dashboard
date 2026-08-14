@@ -1,0 +1,162 @@
+{
+  "metaTitle": "مواقع المرسل — روافد",
+  "metaDescription": "إدارة عناوين الاستلام التي تُشحن منها شحناتك.",
+  "skipToContent": "انتقل إلى قائمة مواقع المرسل",
+  "hero": {
+    "title": "مواقع المرسل",
+    "subtitle": "أضف وأدر عناوين الاستلام التي يجمع منها المندوبون الشحنات.",
+    "totalLabel": "المواقع",
+    "add": "إضافة موقع"
+  },
+  "toolbar": {
+    "title": "عناوين الاستلام",
+    "searchPlaceholder": "ابحث بالاسم أو جهة الاتصال أو المنطقة أو العنوان…",
+    "searchHint": "يطابق جزءًا من اسم الموقع أو بيانات الاتصال أو المنطقة أو سطر العنوان.",
+    "sortLabel": "الترتيب",
+    "statusLabel": "الحالة",
+    "statusAll": "كل الحالات",
+    "governorateLabel": "المحافظة",
+    "governorateAll": "كل المحافظات",
+    "sort": {
+      "createdDesc": "الأحدث أولًا",
+      "createdAsc": "الأقدم أولًا",
+      "nameAsc": "الاسم أ–ي",
+      "nameDesc": "الاسم ي–أ"
+    }
+  },
+  "table": {
+    "caption": "مواقع المرسل",
+    "name": "الاسم",
+    "governorate": "المحافظة",
+    "area": "المنطقة",
+    "contact": "جهة الاتصال",
+    "status": "الحالة",
+    "created": "تاريخ الإضافة",
+    "actions": "الإجراءات",
+    "defaultBadge": "أساسي",
+    "openMenu": "إجراءات {{name}}"
+  },
+  "status": {
+    "ACTIVE": "نشط",
+    "INACTIVE": "غير نشط"
+  },
+  "pagination": {
+    "label": "ترقيم مواقع المرسل",
+    "summary": "عرض {{start}}–{{end}} من {{total}}",
+    "pageOf": "صفحة {{current}} من {{total}}"
+  },
+  "empty": {
+    "title": "لا توجد مواقع مرسل بعد",
+    "description": "أضف أول عنوان استلام يجمع منه المندوبون الشحنات.",
+    "searchTitle": "لا توجد مواقع مطابقة",
+    "searchDescription": "جرّب كلمة بحث أخرى أو امسح عوامل التصفية."
+  },
+  "errors": {
+    "loadFailed": "تعذّر تحميل مواقع المرسل",
+    "loadFailedHint": "تحقق من الاتصال وحاول مرة أخرى.",
+    "retry": "إعادة المحاولة"
+  },
+  "actions": {
+    "edit": "تعديل",
+    "setDefault": "تعيين كأساسي",
+    "activate": "تفعيل",
+    "deactivate": "إلغاء التفعيل",
+    "defaultDeactivateTooltip": "لا يمكن إلغاء تفعيل الموقع الأساسي. عيّن موقعًا آخر كأساسي أولًا."
+  },
+  "statusConfirm": {
+    "activateTitle": "تفعيل الموقع؟",
+    "deactivateTitle": "إلغاء تفعيل الموقع؟",
+    "activateDescription": "سيصبح «{{name}}» متاحًا للاستلام مرة أخرى.",
+    "deactivateDescription": "لن يكون «{{name}}» متاحًا للاستلام الجديد حتى تعيد تفعيله.",
+    "cancel": "إلغاء",
+    "activate": "تفعيل",
+    "deactivate": "إلغاء التفعيل",
+    "working": "جارٍ التنفيذ…"
+  },
+  "defaultConfirm": {
+    "title": "تعيين كموقع أساسي؟",
+    "description": "سيصبح «{{name}}» عنوان الاستلام الأساسي لشركتك.",
+    "cancel": "إلغاء",
+    "confirm": "تعيين كأساسي",
+    "working": "جارٍ التنفيذ…"
+  },
+  "form": {
+    "createTitle": "إضافة موقع مرسل",
+    "createDescription": "أخبر المندوبين من أين يجمعون الشحنات.",
+    "editTitle": "تعديل موقع المرسل",
+    "editDescription": "حدّث تفاصيل الاستلام لهذا الموقع.",
+    "loading": "جارٍ تحميل الموقع…",
+    "saving": "جارٍ الحفظ…",
+    "name": "اسم الموقع",
+    "contactName": "اسم جهة الاتصال",
+    "contactPhone": "هاتف جهة الاتصال",
+    "contactEmail": "البريد الإلكتروني لجهة الاتصال",
+    "governorate": "المحافظة",
+    "governoratePlaceholder": "اختر المحافظة",
+    "governorateHint": "إلزامي. اختر من القائمة — لا تكتب يدويًا.",
+    "area": "المنطقة / الحي",
+    "areaPlaceholder": "اكتب أو اختر منطقة",
+    "areaHint": "الاقتراحات مساعدة، لكن يمكنك كتابة أي اسم منطقة.",
+    "areaGovernorateRequired": "اختر المحافظة أولًا.",
+    "areaSuggestionsLabel": "اقتراحات المناطق",
+    "areaLoading": "جارٍ تحميل الاقتراحات…",
+    "areaNoSuggestions": "لا توجد اقتراحات — يمكنك كتابة اسم المنطقة.",
+    "areaResultsCount": "{{count}} اقتراح متاح",
+    "addressLine": "العنوان الكامل للمندوب",
+    "addressLineHint": "اكتب العنوان كما ستعطيه لمندوب الاستلام.",
+    "structuredLegend": "العنوان المفصّل (اختياري)",
+    "structuredHint": "بعض شركات الشحن تستخدم هذه الحقول منفصلة.",
+    "street": "الشارع",
+    "buildingNumber": "رقم المبنى",
+    "postalCode": "الرمز البريدي",
+    "coordinatesLegend": "الإحداثيات (اختياري)",
+    "coordinatesHint": "أرسل خط العرض وخط الطول معًا، أو اتركهما فارغين.",
+    "pickOnMap": "اختر من الخريطة",
+    "mapsUnavailable": "خرائط Google غير مهيأة في هذه البيئة.",
+    "latitude": "خط العرض",
+    "longitude": "خط الطول",
+    "governoratesLoadFailed": "تعذّر تحميل المحافظات.",
+    "areasLoadFailed": "تعذّر تحميل اقتراحات المناطق.",
+    "validation": {
+      "nameRequired": "اسم الموقع مطلوب",
+      "contactNameRequired": "اسم جهة الاتصال مطلوب",
+      "phoneRequired": "رقم الهاتف مطلوب",
+      "phoneInvalid": "استخدم 8–15 رقمًا مع + اختياري في البداية",
+      "emailRequired": "البريد الإلكتروني مطلوب",
+      "emailInvalid": "أدخل بريدًا إلكترونيًا صالحًا",
+      "emailMax": "يجب ألا يتجاوز البريد 255 حرفًا",
+      "governorateRequired": "اختر محافظة",
+      "areaRequired": "المنطقة مطلوبة",
+      "addressLineRequired": "العنوان مطلوب",
+      "latitudeInvalid": "أدخل خط عرض صالحًا بين -90 و 90",
+      "longitudeInvalid": "أدخل خط طول صالحًا بين -180 و 180",
+      "coordinateDecimals": "استخدم 6 خانات عشرية كحد أقصى",
+      "coordinatePair": "أرسل خط العرض وخط الطول معًا، أو اتركهما فارغين"
+    }
+  },
+  "toast": {
+    "created": "تمت إضافة موقع المرسل",
+    "updated": "تم تحديث موقع المرسل",
+    "activated": "تم تفعيل الموقع",
+    "deactivated": "تم إلغاء تفعيل الموقع",
+    "defaultSet": "تم تحديث الموقع الأساسي",
+    "createFailed": "تعذّر إضافة موقع المرسل",
+    "updateFailed": "تعذّر تحديث موقع المرسل",
+    "statusFailed": "تعذّر تحديث حالة الموقع",
+    "defaultFailed": "تعذّر تعيين الموقع الأساسي",
+    "defaultDeactivateBlocked": "لا يمكن إلغاء تفعيل الموقع الأساسي"
+  },
+  "mapPicker": {
+    "title": "اختر الإحداثيات من الخريطة",
+    "description": "انقر على الخريطة لتحديد نقطة الاستلام. يمكنك تعديل القيم يدويًا بعد ذلك.",
+    "mapLabel": "خريطة Google لاختيار إحداثيات الاستلام",
+    "loading": "جارٍ تحميل الخريطة…",
+    "loadFailed": "تعذّر تحميل Google Maps. تحقق من الاتصال ومفتاح API.",
+    "missingApiKey": "أضف VITE_GOOGLE_MAPS_API_KEY لتفعيل الاختيار من الخريطة.",
+    "help": "انقر في أي مكان على الخريطة لتعيين خط العرض وخط الطول.",
+    "selected": "المحدد: {{lat}}، {{lng}}",
+    "noneSelected": "لم يتم تحديد نقطة بعد.",
+    "clear": "مسح الإحداثيات",
+    "confirm": "استخدام هذه الإحداثيات"
+  }
+}

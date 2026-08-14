@@ -242,6 +242,20 @@
   [data-slot="dialog-content"][data-size="w7"] {
     max-width: min(calc(100vw - 2rem), var(--max-width-dialog-w7));
   }
+
+  /* Scrollable body: header/footer stay fixed; body scrolls inside tall dialogs */
+  [data-slot="dialog-content"] > form {
+    display: flex;
+    min-height: 0;
+    flex: 1 1 auto;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  [data-slot="dialog-header"],
+  [data-slot="dialog-footer"] {
+    flex-shrink: 0;
+  }
 }
 
 /* Selection */

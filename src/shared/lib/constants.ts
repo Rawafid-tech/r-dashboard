@@ -27,5 +27,9 @@ export const DEFAULT_LOCALE: SupportedLocale = "ar";
 export const DEFAULT_THEME = "dark" as const;
 export type DefaultTheme = typeof DEFAULT_THEME;
 
+/** Google Maps JavaScript API key (Maps + Places for coordinate picker). */
+export const GOOGLE_MAPS_API_KEY =
+  import.meta.env.VITE_GOOGLE_MAPS_API_KEY?.trim() ?? "";
+
 /** Merchant billing upgrade / support contact. */
 export const SUPPORT_EMAIL = "support@rawafid.com";

@@ -168,7 +168,6 @@ export function CompaniesDataTable({
         value: search,
         onChange: onSearchChange,
         placeholder: t("companies.toolbar.searchPlaceholder"),
-        hint: t("companies.toolbar.searchHint"),
         label: t("common:common.search"),
       }}
       sort={{

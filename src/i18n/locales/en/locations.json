@@ -1,0 +1,162 @@
+{
+  "metaTitle": "Sender locations — Rawafid",
+  "metaDescription": "Manage pickup addresses your shipments are collected from.",
+  "skipToContent": "Skip to sender locations list",
+  "hero": {
+    "title": "Sender locations",
+    "subtitle": "Add and manage the pickup addresses couriers collect shipments from.",
+    "totalLabel": "Locations",
+    "add": "Add location"
+  },
+  "toolbar": {
+    "title": "Pickup addresses",
+    "searchPlaceholder": "Search by name, contact, district, or address…",
+    "searchHint": "Matches part of the location name, contact details, district, or address line.",
+    "sortLabel": "Sort",
+    "statusLabel": "Status",
+    "statusAll": "All statuses",
+    "governorateLabel": "Governorate",
+    "governorateAll": "All governorates",
+    "sort": {
+      "createdDesc": "Newest first",
+      "createdAsc": "Oldest first",
+      "nameAsc": "Name A–Z",
+      "nameDesc": "Name Z–A"
+    }
+  },
+  "table": {
+    "caption": "Sender locations",
+    "name": "Name",
+    "governorate": "Governorate",
+    "area": "District",
+    "contact": "Contact",
+    "status": "Status",
+    "created": "Added",
+    "actions": "Actions",
+    "defaultBadge": "Default",
+    "openMenu": "Actions for {{name}}"
+  },
+  "status": {
+    "ACTIVE": "Active",
+    "INACTIVE": "Inactive"
+  },
+  "pagination": {
+    "label": "Sender locations pagination",
+    "summary": "Showing {{start}}–{{end}} of {{total}}",
+    "pageOf": "Page {{current}} of {{total}}"
+  },
+  "empty": {
+    "title": "No sender locations yet",
+    "description": "Add the first pickup address your couriers should collect from.",
+    "searchTitle": "No matching locations",
+    "searchDescription": "Try another search term or clear the filters."
+  },
+  "errors": {
+    "loadFailed": "Could not load sender locations",
+    "loadFailedHint": "Check your connection and try again.",
+    "retry": "Retry"
+  },
+  "actions": {
+    "edit": "Edit",
+    "setDefault": "Set as default",
+    "activate": "Activate",
+    "deactivate": "Deactivate",
+    "defaultDeactivateTooltip": "The default location cannot be deactivated. Set another location as default first."
+  },
+  "statusConfirm": {
+    "activateTitle": "Activate location?",
+    "deactivateTitle": "Deactivate location?",
+    "activateDescription": "“{{name}}” will become available for pickup again.",
+    "deactivateDescription": "“{{name}}” will no longer be available for new pickups until you activate it again.",
+    "cancel": "Cancel",
+    "activate": "Activate",
+    "deactivate": "Deactivate",
+    "working": "Working…"
+  },
+  "defaultConfirm": {
+    "title": "Set as default location?",
+    "description": "“{{name}}” will become the default pickup address for your company.",
+    "cancel": "Cancel",
+    "confirm": "Set as default",
+    "working": "Working…"
+  },
+  "form": {
+    "createTitle": "Add sender location",
+    "createDescription": "Tell couriers where to collect shipments from.",
+    "editTitle": "Edit sender location",
+    "editDescription": "Update pickup details for this location.",
+    "loading": "Loading location…",
+    "saving": "Saving…",
+    "name": "Location name",
+    "contactName": "Contact name",
+    "contactPhone": "Contact phone",
+    "contactEmail": "Contact email",
+    "governorate": "Governorate",
+    "governoratePlaceholder": "Choose a governorate",
+    "governorateHint": "Required. Choose from the list — do not type freely.",
+    "area": "District / area",
+    "areaPlaceholder": "Type or choose a district",
+    "areaHint": "Suggestions help, but you can type any district name.",
+    "areaGovernorateRequired": "Choose a governorate first.",
+    "areaSuggestionsLabel": "District suggestions",
+    "areaLoading": "Loading suggestions…",
+    "areaNoSuggestions": "No suggestions — you can still type the district name.",
+    "areaResultsCount": "{{count}} suggestions available",
+    "addressLine": "Full address for the driver",
+    "addressLineHint": "Write the address as you would give it to a courier.",
+    "structuredLegend": "Structured address (optional)",
+    "structuredHint": "Some carriers use these fields separately.",
+    "street": "Street",
+    "buildingNumber": "Building number",
+    "postalCode": "Postal code",
+    "coordinatesLegend": "Coordinates (optional)",
+    "coordinatesHint": "Send both latitude and longitude, or leave both empty.",
+    "pickOnMap": "Pick on map",
+    "mapsUnavailable": "Google Maps is not configured for this environment.",
+    "latitude": "Latitude",
+    "longitude": "Longitude",
+    "governoratesLoadFailed": "Could not load governorates.",
+    "areasLoadFailed": "Could not load district suggestions.",
+    "validation": {
+      "nameRequired": "Location name is required",
+      "contactNameRequired": "Contact name is required",
+      "phoneRequired": "Phone is required",
+      "phoneInvalid": "Use 8–15 digits, optional leading +",
+      "emailRequired": "Email is required",
+      "emailInvalid": "Enter a valid email address",
+      "emailMax": "Email must be at most 255 characters",
+      "governorateRequired": "Choose a governorate",
+      "areaRequired": "District is required",
+      "addressLineRequired": "Address is required",
+      "latitudeInvalid": "Enter a valid latitude between -90 and 90",
+      "longitudeInvalid": "Enter a valid longitude between -180 and 180",
+      "coordinateDecimals": "Use at most 6 decimal places",
+      "coordinatePair": "Send both latitude and longitude, or leave both empty"
+    }
+  },
+  "toast": {
+    "created": "Sender location added",
+    "updated": "Sender location updated",
+    "activated": "Location activated",
+    "deactivated": "Location deactivated",
+    "defaultSet": "Default location updated",
+    "createFailed": "Could not add sender location",
+    "updateFailed": "Could not update sender location",
+    "statusFailed": "Could not update location status",
+    "defaultFailed": "Could not set default location",
+    "defaultDeactivateBlocked": "The default location cannot be deactivated"
+  },
+  "mapPicker": {
+    "title": "Pick coordinates on the map",
+    "description": "Click the map to place the pickup point. You can still fine-tune the values manually afterward.",
+    "mapLabel": "Google map for choosing pickup coordinates",
+    "loading": "Loading map…",
+    "loadFailed": "Could not load Google Maps. Check your connection and API key.",
+    "missingApiKey": "Add VITE_GOOGLE_MAPS_API_KEY to enable map picking.",
+    "help": "Click anywhere on the map to set latitude and longitude.",
+    "selected": "Selected: {{lat}}, {{lng}}",
+    "noneSelected": "No point selected yet.",
+    "clear": "Clear coordinates",
+    "confirm": "Use these coordinates"
+  }
+}

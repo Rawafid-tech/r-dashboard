@@ -33,6 +33,10 @@ export function useMerchantShellBreadcrumbs(): ShellBreadcrumb[] {
       return [home, { label: t("nav.roles") }];
     }
 
+    if (pathname.startsWith("/locations")) {
+      return [home, { label: t("nav.locations") }];
+    }
+
     if (pathname.startsWith("/settings")) {
       return [home, { label: t("nav.settings") }];
     }

@@ -42,11 +42,11 @@ export interface DataTableSearchConfig {
   value: string;
   onChange: (value: string) => void;
   placeholder?: string;
-  hint?: string;
   label?: string;
   id?: string;
   disabled?: boolean;
   className?: string;
+  wrapperClassName?: string;
   render?: (config: DataTableSearchConfig) => ReactNode;
 }
 
@@ -69,6 +69,7 @@ export interface DataTableSortConfig {
 export interface DataTableFiltersConfig {
   render: () => ReactNode;
   className?: string;
+  containerClassName?: string;
 }
 
 export interface DataTablePaginationLabels {
@@ -130,7 +131,6 @@ function DefaultSearchField({
   value,
   onChange,
   placeholder,
-  hint,
   label,
   id = "data-table-search",
   disabled,
@@ -175,11 +175,6 @@ function DefaultSearchField({
           </button>
         ) : null}
       </div>
-      {hint ? (
-        <p className="mt-1.5 hidden text-xs text-muted-foreground sm:block">
-          {hint}
-        </p>
-      ) : null}
     </div>
   );
 }
@@ -368,7 +363,9 @@ function DataTableToolbar<T>({
       ) : null}
 
       {hasSearch && search ? (
-        <div className="min-w-0 sm:flex-1 sm:pe-3">
+        <div
+          className={cn("min-w-0 sm:flex-1 sm:pe-3", search.wrapperClassName)}
+        >
           {search.render ? search.render(search) : <DefaultSearchField {...search} />}
         </div>
       ) : null}
@@ -382,7 +379,14 @@ function DataTableToolbar<T>({
             />
           ) : null}
 
-          <div className="flex items-center justify-end gap-2 sm:shrink-0 sm:ps-3">
+          <div
+            className={cn(
+              "flex items-center justify-end gap-2 sm:ps-3",
+              hasFilters && filters?.containerClassName
+                ? filters.containerClassName
+                : "sm:shrink-0",
+            )}
+          >
             {hasFilters && filters ? (
               <div className={cn("min-w-0", filters.className)}>
                 {filters.render()}

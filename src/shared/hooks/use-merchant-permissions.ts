@@ -11,6 +11,9 @@ export const MerchantPermission = {
   USER_PASSWORD_SET: "user:password:set",
   ROLE_READ: "role:read",
   SUBSCRIPTION_READ: "subscription:read",
+  PAGE_SENDER_LOCATIONS: "page:senderLocations",
+  SENDER_LOCATION_READ: "senderLocation:read",
+  SENDER_LOCATION_MANAGE: "senderLocation:manage",
 } as const;
 
 export type MerchantPermissionCode =
@@ -40,5 +43,11 @@ export function useMerchantPermissions() {
     canRevealInvite: hasPermission(MerchantPermission.USER_INVITE_REVEAL),
     canSetUserPassword: hasPermission(MerchantPermission.USER_PASSWORD_SET),
     canReadRoles: hasPermission(MerchantPermission.ROLE_READ),
+    canReadSenderLocations: hasPermission(
+      MerchantPermission.SENDER_LOCATION_READ,
+    ),
+    canManageSenderLocations: hasPermission(
+      MerchantPermission.SENDER_LOCATION_MANAGE,
+    ),
   };
 }

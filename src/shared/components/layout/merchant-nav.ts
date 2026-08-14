@@ -1,6 +1,7 @@
 import {
   CreditCard,
   LayoutDashboard,
+  MapPin,
   Package,
   RefreshCcw,
   Settings,
@@ -38,6 +39,13 @@ export const MERCHANT_NAV_ITEMS: MerchantNavItem[] = [
     icon: Shield,
     enabled: true,
     ownerOnly: true,
+  },
+  {
+    key: "locations",
+    href: "/locations",
+    icon: MapPin,
+    enabled: true,
+    permissionCode: "page:senderLocations",
   },
   { key: "shipments", href: "/shipments", icon: Package, enabled: false },
   { key: "returns", href: "/returns", icon: RefreshCcw, enabled: false },

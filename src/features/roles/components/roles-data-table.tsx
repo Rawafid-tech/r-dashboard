@@ -127,7 +127,6 @@ export function RolesDataTable({
         value: search,
         onChange: onSearchChange,
         placeholder: t("toolbar.searchPlaceholder"),
-        hint: t("toolbar.searchHint"),
         label: t("common:common.search"),
       }}
       sort={{
