@@ -17,28 +17,32 @@ export interface MerchantNavItem {
   href: string;
   icon: LucideIcon;
   enabled: boolean;
-  /** When true, item is shown only for company OWNER. */
-  ownerOnly?: boolean;
-  /** Fine-grained permission code required (owners always pass). */
+  /** PAGE permission from GET /api/auth/me → permissions (e.g. page:users). */
   permissionCode?: string;
 }
 
 export const MERCHANT_NAV_ITEMS: MerchantNavItem[] = [
   { key: "dashboard", href: "/", icon: LayoutDashboard, enabled: true },
-  { key: "billing", href: "/billing", icon: CreditCard, enabled: true },
+  {
+    key: "billing",
+    href: "/billing",
+    icon: CreditCard,
+    enabled: true,
+    permissionCode: "page:subscription",
+  },
   {
     key: "users",
     href: "/users",
     icon: Users,
     enabled: true,
-    permissionCode: "user:read",
+    permissionCode: "page:users",
   },
   {
     key: "roles",
     href: "/roles",
     icon: Shield,
     enabled: true,
-    ownerOnly: true,
+    permissionCode: "page:roles",
   },
   {
     key: "locations",

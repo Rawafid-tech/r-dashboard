@@ -8,9 +8,14 @@ import { useLocaleStore } from "@/stores/locale.store";
 interface RolesHeroProps {
   totalElements?: number;
   onCreate: () => void;
+  canCreate?: boolean;
 }
 
-export function RolesHero({ totalElements, onCreate }: RolesHeroProps) {
+export function RolesHero({
+  totalElements,
+  onCreate,
+  canCreate = false,
+}: RolesHeroProps) {
   const { t } = useTranslation("roles");
   const locale = useLocaleStore((state) => state.locale);
   const intlLocale = locale === "ar" ? "ar-EG" : "en-US";
@@ -27,10 +32,12 @@ export function RolesHero({ totalElements, onCreate }: RolesHeroProps) {
               value={totalElements.toLocaleString(intlLocale)}
             />
           ) : null}
-          <Button type="button" className="w-full sm:w-auto" onClick={onCreate}>
-            <Plus aria-hidden="true" />
-            {t("hero.create")}
-          </Button>
+          {canCreate ? (
+            <Button type="button" className="w-full sm:w-auto" onClick={onCreate}>
+              <Plus aria-hidden="true" />
+              {t("hero.create")}
+            </Button>
+          ) : null}
         </div>
       }
     />

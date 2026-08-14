@@ -24,6 +24,7 @@ interface RolesDataTableProps {
   onPageChange: (page: number) => void;
   onEdit: (role: RoleListItem) => void;
   onDelete: (role: RoleListItem) => void;
+  canManage?: boolean;
   isFetching?: boolean;
   emptyState?: ReactNode;
 }
@@ -55,6 +56,7 @@ export function RolesDataTable({
   onPageChange,
   onEdit,
   onDelete,
+  canManage = false,
   isFetching,
   emptyState,
 }: RolesDataTableProps) {
@@ -187,52 +189,62 @@ export function RolesDataTable({
               {formatDate(role.createdAt)}
             </time>
             <div className="flex flex-wrap gap-2">
-              <Button
-                type="button"
-                variant="outline"
-                size="sm"
-                onClick={() => onEdit(role)}
-              >
-                <Pencil aria-hidden="true" />
-                {t("table.edit")}
-              </Button>
-              <Button
-                type="button"
-                variant="outline"
-                size="sm"
-                onClick={() => onDelete(role)}
-              >
-                <Trash2 aria-hidden="true" />
-                {t("table.delete")}
-              </Button>
+              {canManage ? (
+                <>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={() => onEdit(role)}
+                  >
+                    <Pencil aria-hidden="true" />
+                    {t("table.edit")}
+                  </Button>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={() => onDelete(role)}
+                  >
+                    <Trash2 aria-hidden="true" />
+                    {t("table.delete")}
+                  </Button>
+                </>
+              ) : null}
             </div>
           </article>
         ),
       }}
-      rowActions={(role) => (
-        <div className="flex items-center justify-end gap-1">
-          <Button
-            type="button"
-            variant="ghost"
-            size="icon-sm"
-            onClick={() => onEdit(role)}
-            aria-label={`${t("table.edit")}: ${role.name}`}
-          >
-            <Pencil aria-hidden="true" />
-          </Button>
-          <Button
-            type="button"
-            variant="ghost"
-            size="icon-sm"
-            onClick={() => onDelete(role)}
-            aria-label={`${t("table.delete")}: ${role.name}`}
-          >
-            <Trash2 aria-hidden="true" />
-          </Button>
-        </div>
-      )}
+      rowActions={
+        canManage
+          ? (role) => (
+              <div className="flex items-center justify-end gap-1">
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="icon-sm"
+                  onClick={() => onEdit(role)}
+                  aria-label={`${t("table.edit")}: ${role.name}`}
+                >
+                  <Pencil aria-hidden="true" />
+                </Button>
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="icon-sm"
+                  onClick={() => onDelete(role)}
+                  aria-label={`${t("table.delete")}: ${role.name}`}
+                >
+                  <Trash2 aria-hidden="true" />
+                </Button>
+              </div>
+            )
+          : undefined
+      }
       actionsColumnHeader={
-        <span className="sr-only">{t("table.actions")}</span>
+        canManage ? (
+          <span className="sr-only">{t("table.actions")}</span>
+        ) : undefined
       }
       emptyState={emptyState}
     />

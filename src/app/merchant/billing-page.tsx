@@ -1,6 +1,8 @@
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
+import { PermissionGate } from "@/features/auth/components/permission-gate";
 import { BillingHome } from "@/features/subscription/components/billing-home";
+import { MerchantPermission } from "@/shared/hooks/use-merchant-permissions";
 
 export function BillingPage() {
   const { t } = useTranslation("billing");
@@ -28,5 +30,9 @@ export function BillingPage() {
     };
   }, [t]);
 
-  return <BillingHome />;
+  return (
+    <PermissionGate permission={MerchantPermission.SUBSCRIPTION_READ}>
+      <BillingHome />
+    </PermissionGate>
+  );
 }

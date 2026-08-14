@@ -17,6 +17,7 @@ import {
 } from "@/features/roles/lib/roles-list-params";
 import type { RoleListItem } from "@/features/roles/types";
 import { useDebounce } from "@/shared/hooks/use-debounce";
+import { useMerchantPermissions } from "@/shared/hooks/use-merchant-permissions";
 import {
   readPageIndex,
   shouldResetPageIndex,
@@ -32,6 +33,7 @@ type FormState =
 
 export function RolesHome() {
   const { t } = useTranslation("roles");
+  const { canManageRoles } = useMerchantPermissions();
   const [searchParams, setSearchParams] = useSearchParams();
   const [searchInput, setSearchInput] = useState(
     () => searchParams.get("q") ?? "",
@@ -136,6 +138,7 @@ export function RolesHome() {
           <RolesHero
             totalElements={rolesQuery.data?.totalElements}
             onCreate={() => setFormState({ mode: "create", roleId: null })}
+            canCreate={canManageRoles}
           />
 
           {rolesQuery.isError ? (
@@ -162,6 +165,7 @@ export function RolesHome() {
                   setFormState({ mode: "edit", roleId: role.id })
                 }
                 onDelete={setRoleToDelete}
+                canManage={canManageRoles}
                 isFetching={rolesQuery.isFetching}
                 emptyState={<RolesEmptyState hasSearch={hasSearch} />}
               />

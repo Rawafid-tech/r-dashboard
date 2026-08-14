@@ -1,7 +1,8 @@
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { OwnerGate } from "@/features/auth/components/owner-route";
+import { PermissionGate } from "@/features/auth/components/permission-gate";
 import { RolesHome } from "@/features/roles";
+import { MerchantPermission } from "@/shared/hooks/use-merchant-permissions";
 
 export function RolesPage() {
   const { t } = useTranslation("roles");
@@ -30,8 +31,8 @@ export function RolesPage() {
   }, [t]);
 
   return (
-    <OwnerGate>
+    <PermissionGate permission={MerchantPermission.ROLE_READ}>
       <RolesHome />
-    </OwnerGate>
+    </PermissionGate>
   );
 }

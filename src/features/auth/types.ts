@@ -30,6 +30,8 @@ export interface User {
   phoneVerified: boolean;
   verified: boolean;
   role: MerchantRole;
+  /** Effective permission codes for this user (from assigned role; owners receive the full set). */
+  permissions: string[];
   status: UserStatus;
   avatarUrl: string | null;
 }

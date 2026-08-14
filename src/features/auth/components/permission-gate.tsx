@@ -15,7 +15,7 @@ interface PermissionGateProps {
 
 /**
  * Hides merchant routes the signed-in user cannot access (403 avoidance).
- * Company owners always pass.
+ * Permissions come from GET /api/auth/me → permissions.
  */
 export function PermissionGate({
   permission,

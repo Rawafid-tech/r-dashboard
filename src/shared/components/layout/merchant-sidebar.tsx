@@ -2,7 +2,6 @@ import { useMemo } from "react";
 import { NavLink } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { X } from "lucide-react";
-import { useMe } from "@/features/account/hooks/use-me";
 import { Button } from "@/shared/components/ui";
 import { cn } from "@/shared/lib/utils";
 import { MERCHANT_NAV_ITEMS } from "@/shared/components/layout/merchant-nav";
@@ -13,25 +12,20 @@ import {
 import { RawafidLogoMark } from "@/shared/components/layout/rawafid-logo-mark";
 import { SidebarCollapseButton } from "@/shared/components/layout/sidebar-toggle-button";
 import { useSidebar } from "@/shared/components/layout/sidebar-provider";
-import { MerchantRole } from "@/shared/types/enums";
 import { useLocaleStore } from "@/stores/locale.store";
 import { useMerchantPermissions } from "@/shared/hooks/use-merchant-permissions";
 
 function useMerchantNavItems() {
-  const meQuery = useMe();
-  const { hasPermission } = useMerchantPermissions();
-  const isOwner = meQuery.data?.role === MerchantRole.OWNER;
+  const { hasPermission, isLoading } = useMerchantPermissions();
 
   return useMemo(
     () =>
       MERCHANT_NAV_ITEMS.filter((item) => {
-        if (item.ownerOnly && !isOwner) return false;
-        if (item.permissionCode && !hasPermission(item.permissionCode)) {
-          return false;
-        }
-        return true;
+        if (!item.permissionCode) return true;
+        if (isLoading) return false;
+        return hasPermission(item.permissionCode);
       }),
-    [isOwner, hasPermission],
+    [hasPermission, isLoading],
   );
 }
 
