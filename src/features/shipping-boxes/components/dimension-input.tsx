@@ -63,23 +63,23 @@ export function DimensionInput({
         >
           <Minus aria-hidden="true" />
         </Button>
-        <div className="relative min-w-0 flex-1">
+        <div className="flex min-w-0 flex-1 items-stretch gap-1.5">
           <Input
             id={id}
             inputMode="decimal"
             dir="ltr"
-            value={value}
+            value={value ?? ""}
             disabled={disabled}
+            autoComplete="off"
             aria-invalid={invalid || undefined}
             aria-describedby={unitId}
-            className="pe-10 text-end tabular-nums"
+            className="min-w-0 flex-1 text-start tabular-nums"
             onChange={(event) => onChange(event.target.value)}
             onBlur={handleBlur}
           />
           <span
             id={unitId}
-            className="pointer-events-none absolute inset-y-0 end-3 flex items-center text-xs text-muted-foreground"
-            aria-hidden="true"
+            className="flex shrink-0 items-center text-xs text-muted-foreground"
           >
             {unitLabel}
           </span>

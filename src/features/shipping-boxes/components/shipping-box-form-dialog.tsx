@@ -22,6 +22,7 @@ import {
   Switch,
 } from "@/shared/components/ui";
 import { DimensionInput } from "@/features/shipping-boxes/components/dimension-input";
+import { ShippingBoxPreview } from "@/features/shipping-boxes/components/shipping-box-preview";
 import { useCreateShippingBox } from "@/features/shipping-boxes/hooks/use-create-shipping-box";
 import { useShippingBox } from "@/features/shipping-boxes/hooks/use-shipping-box";
 import { useUpdateShippingBox } from "@/features/shipping-boxes/hooks/use-update-shipping-box";
@@ -75,6 +76,7 @@ export function ShippingBoxFormDialog({
     handleSubmit,
     reset,
     setError,
+    watch,
     formState: { errors, isSubmitting },
   } = useAppForm({
     schema,
@@ -102,6 +104,9 @@ export function ShippingBoxFormDialog({
     isSubmitting || createMutation.isPending || updateMutation.isPending;
   const isLoading =
     open && mode === "edit" && boxQuery.isLoading && !boxQuery.data;
+  const lengthCm = watch("lengthCm");
+  const widthCm = watch("widthCm");
+  const heightCm = watch("heightCm");
 
   const onSubmit = handleSubmit(async (values: ShippingBoxFormValues) => {
     const payload = toShippingBoxPayload(values);
@@ -139,7 +144,7 @@ export function ShippingBoxFormDialog({
       }}
     >
       <DialogContent
-        size="w4"
+        size="w5"
         className="gap-0 overflow-hidden"
         showCloseButton={!busy}
         closeLabel={tCommon("common.close")}
@@ -182,7 +187,14 @@ export function ShippingBoxFormDialog({
                 <FieldSet>
                   <FieldLegend>{t("form.dimensionsLegend")}</FieldLegend>
                   <FieldDescription>{t("form.dimensionsHint")}</FieldDescription>
-                  <FieldGroup className="grid gap-4 pt-2 sm:grid-cols-3">
+                  <div className="grid gap-4 pt-2 lg:grid-cols-[minmax(9rem,11rem)_1fr] lg:items-start">
+                    <ShippingBoxPreview
+                      lengthCm={lengthCm}
+                      widthCm={widthCm}
+                      heightCm={heightCm}
+                      className="lg:sticky lg:top-0"
+                    />
+                    <FieldGroup className="grid gap-4 sm:grid-cols-3">
                     <Controller
                       name="lengthCm"
                       control={control}
@@ -279,6 +291,7 @@ export function ShippingBoxFormDialog({
                       )}
                     />
                   </FieldGroup>
+                  </div>
                 </FieldSet>
 
                 <Field

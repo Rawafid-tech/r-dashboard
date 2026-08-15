@@ -92,6 +92,11 @@
       "dimensionDecimals": "يسمح {{field}} بمنزلتين عشريتين كحد أقصى"
     }
   },
+  "preview": {
+    "label": "معاينة الصندوق: {{length}} × {{width}} × {{height}} {{unit}}",
+    "placeholder": "أدخل الأبعاد لعرض المعاينة",
+    "empty": "لا توجد أبعاد صالحة للمعاينة بعد"
+  },
   "delete": {
     "title": "حذف صندوق الشحن؟",
     "description": "سيتم إزالة «{{name}}» من قوالبك.",

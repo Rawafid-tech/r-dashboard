@@ -92,6 +92,11 @@
       "dimensionDecimals": "{{field}} allows at most two decimal places"
     }
   },
+  "preview": {
+    "label": "Box preview: {{length}} × {{width}} × {{height}} {{unit}}",
+    "placeholder": "Enter dimensions to preview",
+    "empty": "No valid dimensions to preview yet"
+  },
   "delete": {
     "title": "Delete shipping box?",
     "description": "“{{name}}” will be removed from your presets.",
