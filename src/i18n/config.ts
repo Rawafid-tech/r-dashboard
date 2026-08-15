@@ -20,6 +20,8 @@ import usersAr from "./locales/ar/users.json";
 import usersEn from "./locales/en/users.json";
 import locationsAr from "./locales/ar/locations.json";
 import locationsEn from "./locales/en/locations.json";
+import shippingBoxesAr from "./locales/ar/shipping-boxes.json";
+import shippingBoxesEn from "./locales/en/shipping-boxes.json";
 
 const resources = {
   ar: {
@@ -32,6 +34,7 @@ const resources = {
     roles: rolesAr,
     users: usersAr,
     locations: locationsAr,
+    shippingBoxes: shippingBoxesAr,
   },
   en: {
     common: commonEn,
@@ -43,6 +46,7 @@ const resources = {
     roles: rolesEn,
     users: usersEn,
     locations: locationsEn,
+    shippingBoxes: shippingBoxesEn,
   },
 };
 
@@ -53,7 +57,7 @@ i18n
     resources,
     fallbackLng: "ar",
     defaultNS: "common",
-    ns: ["common", "auth", "dashboard", "settings", "billing", "admin", "roles", "users", "locations"],
+    ns: ["common", "auth", "dashboard", "settings", "billing", "admin", "roles", "users", "locations", "shippingBoxes"],
     interpolation: {
       escapeValue: false,
     },

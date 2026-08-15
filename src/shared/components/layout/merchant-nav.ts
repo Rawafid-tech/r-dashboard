@@ -1,4 +1,5 @@
 import {
+  Box,
   CreditCard,
   LayoutDashboard,
   MapPin,
@@ -43,6 +44,13 @@ export const MERCHANT_NAV_ITEMS: MerchantNavItem[] = [
     icon: Shield,
     enabled: true,
     permissionCode: "page:roles",
+  },
+  {
+    key: "shippingBoxes",
+    href: "/shipping-boxes",
+    icon: Box,
+    enabled: true,
+    permissionCode: "page:shippingBoxes",
   },
   {
     key: "locations",

@@ -1,0 +1,112 @@
+{
+  "metaTitle": "Shipping boxes — Rawafid",
+  "metaDescription": "Manage reusable package size presets for your shipments.",
+  "skipToContent": "Skip to shipping boxes list",
+  "hero": {
+    "title": "Shipping boxes",
+    "subtitle": "Save package dimensions once and reuse them when creating shipments.",
+    "totalLabel": "Boxes",
+    "add": "Add box"
+  },
+  "toolbar": {
+    "title": "Package presets",
+    "searchPlaceholder": "Search by box name…",
+    "sortLabel": "Sort",
+    "defaultLabel": "Default",
+    "defaultAll": "All boxes",
+    "defaultOnly": "Default only",
+    "defaultNone": "Non-default only",
+    "sort": {
+      "createdDesc": "Newest first",
+      "createdAsc": "Oldest first",
+      "nameAsc": "Name A–Z",
+      "nameDesc": "Name Z–A",
+      "lengthAsc": "Length ↑",
+      "lengthDesc": "Length ↓",
+      "widthAsc": "Width ↑",
+      "widthDesc": "Width ↓",
+      "heightAsc": "Height ↑",
+      "heightDesc": "Height ↓"
+    }
+  },
+  "table": {
+    "caption": "Shipping boxes",
+    "name": "Name",
+    "length": "Length",
+    "width": "Width",
+    "height": "Height",
+    "default": "Default",
+    "actions": "Actions",
+    "edit": "Edit",
+    "delete": "Delete",
+    "openMenu": "Actions for {{name}}",
+    "yes": "Yes",
+    "no": "No",
+    "unit": "cm"
+  },
+  "pagination": {
+    "label": "Shipping boxes pagination",
+    "summary": "Showing {{start}}–{{end}} of {{total}}",
+    "pageOf": "Page {{current}} of {{total}}"
+  },
+  "empty": {
+    "title": "No shipping boxes yet",
+    "description": "Add your first package preset so dimensions are ready for every shipment.",
+    "searchTitle": "No matching boxes",
+    "searchDescription": "Try another search term or clear the filters."
+  },
+  "errors": {
+    "loadFailed": "Could not load shipping boxes",
+    "loadFailedHint": "Check your connection and try again.",
+    "retry": "Retry"
+  },
+  "actions": {
+    "edit": "Edit",
+    "delete": "Delete"
+  },
+  "form": {
+    "createTitle": "Add shipping box",
+    "createDescription": "Define a reusable package size preset for your company.",
+    "editTitle": "Edit shipping box",
+    "editDescription": "Update the preset name, dimensions, or default status.",
+    "loading": "Loading box…",
+    "name": "Box name",
+    "namePlaceholder": "e.g. Large box",
+    "lengthCm": "Length",
+    "widthCm": "Width",
+    "heightCm": "Height",
+    "dimensionsLegend": "Dimensions",
+    "dimensionsHint": "Enter outer dimensions in centimetres. Up to two decimal places.",
+    "unit": "cm",
+    "decrease": "Decrease {{field}}",
+    "increase": "Increase {{field}}",
+    "isDefault": "Set as default box",
+    "isDefaultHint": "The default box pre-fills shipment dimensions when available.",
+    "saving": "Saving…",
+    "validation": {
+      "nameRequired": "Box name is required",
+      "nameMax": "Box name must be at most 100 characters",
+      "dimensionRequired": "{{field}} is required",
+      "dimensionPositive": "{{field}} must be greater than 0",
+      "dimensionMax": "{{field}} must be at most 999.99",
+      "dimensionDecimals": "{{field}} allows at most two decimal places"
+    }
+  },
+  "delete": {
+    "title": "Delete shipping box?",
+    "description": "“{{name}}” will be removed from your presets.",
+    "defaultWarning": "This is your default box. Deleting it will leave your company without a default preset.",
+    "cancel": "Cancel",
+    "confirm": "Delete",
+    "deleting": "Deleting…"
+  },
+  "toast": {
+    "created": "Shipping box added",
+    "updated": "Shipping box updated",
+    "deleted": "Shipping box deleted",
+    "saveFailed": "Could not save shipping box",
+    "deleteFailed": "Could not delete shipping box",
+    "notFound": "Shipping box not found",
+    "concurrentDefault": "Your default box was changed at the same time — try again"
+  }
+}

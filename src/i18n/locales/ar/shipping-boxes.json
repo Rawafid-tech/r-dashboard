@@ -1,0 +1,112 @@
+{
+  "metaTitle": "صناديق الشحن — روافد",
+  "metaDescription": "إدارة قوالب أحجام الطرود القابلة لإعادة الاستخدام في شحناتك.",
+  "skipToContent": "انتقل إلى قائمة صناديق الشحن",
+  "hero": {
+    "title": "صناديق الشحن",
+    "subtitle": "احفظ أبعاد الطرد مرة واحدة وأعد استخدامها عند إنشاء الشحنات.",
+    "totalLabel": "الصناديق",
+    "add": "إضافة صندوق"
+  },
+  "toolbar": {
+    "title": "قوالب الطرود",
+    "searchPlaceholder": "البحث باسم الصندوق…",
+    "sortLabel": "الترتيب",
+    "defaultLabel": "الافتراضي",
+    "defaultAll": "كل الصناديق",
+    "defaultOnly": "الافتراضي فقط",
+    "defaultNone": "غير الافتراضي فقط",
+    "sort": {
+      "createdDesc": "الأحدث أولاً",
+      "createdAsc": "الأقدم أولاً",
+      "nameAsc": "الاسم أ–ي",
+      "nameDesc": "الاسم ي–أ",
+      "lengthAsc": "الطول ↑",
+      "lengthDesc": "الطول ↓",
+      "widthAsc": "العرض ↑",
+      "widthDesc": "العرض ↓",
+      "heightAsc": "الارتفاع ↑",
+      "heightDesc": "الارتفاع ↓"
+    }
+  },
+  "table": {
+    "caption": "صناديق الشحن",
+    "name": "الاسم",
+    "length": "الطول",
+    "width": "العرض",
+    "height": "الارتفاع",
+    "default": "افتراضي",
+    "actions": "إجراءات",
+    "edit": "تعديل",
+    "delete": "حذف",
+    "openMenu": "إجراءات {{name}}",
+    "yes": "نعم",
+    "no": "لا",
+    "unit": "سم"
+  },
+  "pagination": {
+    "label": "ترقيم صناديق الشحن",
+    "summary": "عرض {{start}}–{{end}} من {{total}}",
+    "pageOf": "صفحة {{current}} من {{total}}"
+  },
+  "empty": {
+    "title": "لا توجد صناديق شحن بعد",
+    "description": "أضف أول قالب أبعاد ليكون جاهزاً في كل شحنة.",
+    "searchTitle": "لا توجد صناديق مطابقة",
+    "searchDescription": "جرّب مصطلح بحث آخر أو امسح عوامل التصفية."
+  },
+  "errors": {
+    "loadFailed": "تعذّر تحميل صناديق الشحن",
+    "loadFailedHint": "تحقق من اتصالك وحاول مرة أخرى.",
+    "retry": "إعادة المحاولة"
+  },
+  "actions": {
+    "edit": "تعديل",
+    "delete": "حذف"
+  },
+  "form": {
+    "createTitle": "إضافة صندوق شحن",
+    "createDescription": "عرّف قالب أبعاد طرد قابل لإعادة الاستخدام لشركتك.",
+    "editTitle": "تعديل صندوق الشحن",
+    "editDescription": "حدّث اسم القالب أو الأبعاد أو حالة الافتراضي.",
+    "loading": "جاري تحميل الصندوق…",
+    "name": "اسم الصندوق",
+    "namePlaceholder": "مثال: صندوق كبير",
+    "lengthCm": "الطول",
+    "widthCm": "العرض",
+    "heightCm": "الارتفاع",
+    "dimensionsLegend": "الأبعاد",
+    "dimensionsHint": "أدخل الأبعاد الخارجية (سم). بحد أقصى منزلتين عشريتين.",
+    "unit": "سم",
+    "decrease": "تقليل {{field}}",
+    "increase": "زيادة {{field}}",
+    "isDefault": "تعيين كصندوق افتراضي",
+    "isDefaultHint": "يُعبّئ الصندوق الافتراضي أبعاد الشحنة عند توفره.",
+    "saving": "جاري الحفظ…",
+    "validation": {
+      "nameRequired": "اسم الصندوق مطلوب",
+      "nameMax": "يجب ألا يتجاوز اسم الصندوق 100 حرف",
+      "dimensionRequired": "{{field}} مطلوب",
+      "dimensionPositive": "يجب أن يكون {{field}} أكبر من 0",
+      "dimensionMax": "يجب ألا يتجاوز {{field}} 999.99",
+      "dimensionDecimals": "يسمح {{field}} بمنزلتين عشريتين كحد أقصى"
+    }
+  },
+  "delete": {
+    "title": "حذف صندوق الشحن؟",
+    "description": "سيتم إزالة «{{name}}» من قوالبك.",
+    "defaultWarning": "هذا هو صندوقك الافتراضي. حذفه سيترك شركتك بدون صندوق افتراضي.",
+    "cancel": "إلغاء",
+    "confirm": "حذف",
+    "deleting": "جاري الحذف…"
+  },
+  "toast": {
+    "created": "تمت إضافة صندوق الشحن",
+    "updated": "تم تحديث صندوق الشحن",
+    "deleted": "تم حذف صندوق الشحن",
+    "saveFailed": "تعذّر حفظ صندوق الشحن",
+    "deleteFailed": "تعذّر حذف صندوق الشحن",
+    "notFound": "صندوق الشحن غير موجود",
+    "concurrentDefault": "تم تغيير الصندوق الافتراضي في نفس الوقت — حاول مرة أخرى"
+  }
+}
