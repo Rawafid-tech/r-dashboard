@@ -1,7 +1,7 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useSearchParams } from "react-router-dom";
-import { useDebounce } from "@/shared/hooks/use-debounce";
+import { useListSearchParam } from "@/shared/hooks/use-list-search-param";
 import {
   readPageIndex,
   shouldResetPageIndex,
@@ -25,28 +25,6 @@ const PAGE_SIZE = 20;
 export function UsersHome() {
   const { t } = useTranslation("admin");
   const [searchParams, setSearchParams] = useSearchParams();
-  const [searchInput, setSearchInput] = useState(
-    () => searchParams.get("q") ?? "",
-  );
-
-  const debouncedSearch = useDebounce(searchInput.trim(), 300);
-  const page = readPageIndex(searchParams.get("page"));
-  const sortOption = readUsersSortOption(searchParams.get("sort"));
-  const { sort, direction } = parseUsersSortOption(sortOption);
-
-  const queryParams = useMemo(
-    () => ({
-      page,
-      size: PAGE_SIZE,
-      sort,
-      direction,
-      search: debouncedSearch || undefined,
-    }),
-    [page, sort, direction, debouncedSearch],
-  );
-
-  const usersQuery = useAdminUsers(queryParams);
-
   const updateParams = useCallback(
     (updates: Record<string, string | null>) => {
       setSearchParams(
@@ -68,6 +46,27 @@ export function UsersHome() {
     },
     [setSearchParams],
   );
+  const { searchInput, debouncedSearch, handleSearchChange } = useListSearchParam(
+    searchParams,
+    updateParams,
+  );
+
+  const page = readPageIndex(searchParams.get("page"));
+  const sortOption = readUsersSortOption(searchParams.get("sort"));
+  const { sort, direction } = parseUsersSortOption(sortOption);
+
+  const queryParams = useMemo(
+    () => ({
+      page,
+      size: PAGE_SIZE,
+      sort,
+      direction,
+      search: debouncedSearch || undefined,
+    }),
+    [page, sort, direction, debouncedSearch],
+  );
+
+  const usersQuery = useAdminUsers(queryParams);
 
   useEffect(() => {
     const data = usersQuery.data;
@@ -84,14 +83,6 @@ export function UsersHome() {
       updateParams({ page: null });
     }
   }, [usersQuery.data, usersQuery.isFetching, updateParams]);
-
-  const handleSearchChange = (value: string) => {
-    setSearchInput(value);
-    updateParams({
-      q: value.trim() || null,
-      page: null,
-    });
-  };
 
   const handleSortChange = (value: UsersSortOption) => {
     updateParams({

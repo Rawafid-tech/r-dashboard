@@ -28,7 +28,7 @@ import {
   type UsersSortOption,
 } from "@/features/users/lib/users-list-params";
 import type { CompanyUser } from "@/features/users/types";
-import { useDebounce } from "@/shared/hooks/use-debounce";
+import { useListSearchParam } from "@/shared/hooks/use-list-search-param";
 import { MerchantPermission } from "@/shared/hooks/use-merchant-permissions";
 import { useMerchantPermissions } from "@/shared/hooks/use-merchant-permissions";
 import {
@@ -46,41 +46,6 @@ export function UsersHome() {
   const canManage = hasPermission(MerchantPermission.USER_MANAGE);
 
   const [searchParams, setSearchParams] = useSearchParams();
-  const [searchInput, setSearchInput] = useState(
-    () => searchParams.get("q") ?? "",
-  );
-  const [inviteOpen, setInviteOpen] = useState(false);
-  const [editUser, setEditUser] = useState<CompanyUser | null>(null);
-  const [roleUser, setRoleUser] = useState<CompanyUser | null>(null);
-  const [revealUser, setRevealUser] = useState<CompanyUser | null>(null);
-  const [passwordUser, setPasswordUser] = useState<CompanyUser | null>(null);
-  const [deleteUser, setDeleteUser] = useState<CompanyUser | null>(null);
-  const [statusTarget, setStatusTarget] = useState<{
-    user: CompanyUser;
-    mode: StatusConfirmMode;
-  } | null>(null);
-  const [resendCooldownUntil, setResendCooldownUntil] = useState<
-    Record<string, number>
-  >({});
-
-  const debouncedSearch = useDebounce(searchInput.trim(), 300);
-  const page = readPageIndex(searchParams.get("page"));
-  const sortOption = readUsersSortOption(searchParams.get("sort"));
-  const { sort, direction } = parseUsersSortOption(sortOption);
-
-  const queryParams = useMemo(
-    () => ({
-      page,
-      size: PAGE_SIZE,
-      sort,
-      direction,
-      search: debouncedSearch || undefined,
-    }),
-    [page, sort, direction, debouncedSearch],
-  );
-
-  const usersQuery = useCompanyUsers(queryParams);
-
   const updateParams = useCallback(
     (updates: Record<string, string | null>) => {
       setSearchParams(
@@ -102,6 +67,40 @@ export function UsersHome() {
     },
     [setSearchParams],
   );
+  const { searchInput, debouncedSearch, handleSearchChange } = useListSearchParam(
+    searchParams,
+    updateParams,
+  );
+  const [inviteOpen, setInviteOpen] = useState(false);
+  const [editUser, setEditUser] = useState<CompanyUser | null>(null);
+  const [roleUser, setRoleUser] = useState<CompanyUser | null>(null);
+  const [revealUser, setRevealUser] = useState<CompanyUser | null>(null);
+  const [passwordUser, setPasswordUser] = useState<CompanyUser | null>(null);
+  const [deleteUser, setDeleteUser] = useState<CompanyUser | null>(null);
+  const [statusTarget, setStatusTarget] = useState<{
+    user: CompanyUser;
+    mode: StatusConfirmMode;
+  } | null>(null);
+  const [resendCooldownUntil, setResendCooldownUntil] = useState<
+    Record<string, number>
+  >({});
+
+  const page = readPageIndex(searchParams.get("page"));
+  const sortOption = readUsersSortOption(searchParams.get("sort"));
+  const { sort, direction } = parseUsersSortOption(sortOption);
+
+  const queryParams = useMemo(
+    () => ({
+      page,
+      size: PAGE_SIZE,
+      sort,
+      direction,
+      search: debouncedSearch || undefined,
+    }),
+    [page, sort, direction, debouncedSearch],
+  );
+
+  const usersQuery = useCompanyUsers(queryParams);
 
   useEffect(() => {
     const data = usersQuery.data;
@@ -118,14 +117,6 @@ export function UsersHome() {
       updateParams({ page: null });
     }
   }, [usersQuery.data, usersQuery.isFetching, updateParams]);
-
-  const handleSearchChange = (value: string) => {
-    setSearchInput(value);
-    updateParams({
-      q: value.trim() || null,
-      page: null,
-    });
-  };
 
   const handleSortChange = (value: UsersSortOption) => {
     updateParams({

@@ -18,7 +18,7 @@ import {
   type ShippingBoxesSortOption,
 } from "@/features/shipping-boxes/lib/shipping-boxes-list-params";
 import type { ShippingBox } from "@/features/shipping-boxes/types";
-import { useDebounce } from "@/shared/hooks/use-debounce";
+import { useListSearchParam } from "@/shared/hooks/use-list-search-param";
 import {
   MerchantPermission,
   useMerchantPermissions,
@@ -42,33 +42,6 @@ export function ShippingBoxesHome() {
   const canManage = hasPermission(MerchantPermission.SHIPPING_BOX_MANAGE);
 
   const [searchParams, setSearchParams] = useSearchParams();
-  const [searchInput, setSearchInput] = useState(
-    () => searchParams.get("q") ?? "",
-  );
-  const [formState, setFormState] = useState<FormState>(null);
-  const [boxToDelete, setBoxToDelete] = useState<ShippingBox | null>(null);
-
-  const debouncedSearch = useDebounce(searchInput.trim(), 300);
-  const page = readPageIndex(searchParams.get("page"));
-  const sortOption = readShippingBoxesSortOption(searchParams.get("sort"));
-  const { sort, direction } = parseShippingBoxesSortOption(sortOption);
-  const defaultFilter = searchParams.get("default") ?? "";
-  const parsedDefault = readDefaultFilter(defaultFilter || null);
-
-  const queryParams = useMemo(
-    () => ({
-      page,
-      size: PAGE_SIZE,
-      sort,
-      direction,
-      search: debouncedSearch || undefined,
-      isDefault: parsedDefault,
-    }),
-    [page, sort, direction, debouncedSearch, parsedDefault],
-  );
-
-  const boxesQuery = useShippingBoxes(queryParams);
-
   const updateParams = useCallback(
     (updates: Record<string, string | null>) => {
       setSearchParams(
@@ -90,6 +63,31 @@ export function ShippingBoxesHome() {
     },
     [setSearchParams],
   );
+  const { searchInput, debouncedSearch, handleSearchChange } = useListSearchParam(
+    searchParams,
+    updateParams,
+  );
+  const page = readPageIndex(searchParams.get("page"));
+  const sortOption = readShippingBoxesSortOption(searchParams.get("sort"));
+  const { sort, direction } = parseShippingBoxesSortOption(sortOption);
+  const defaultFilter = searchParams.get("default") ?? "";
+  const parsedDefault = readDefaultFilter(defaultFilter || null);
+  const [formState, setFormState] = useState<FormState>(null);
+  const [boxToDelete, setBoxToDelete] = useState<ShippingBox | null>(null);
+
+  const queryParams = useMemo(
+    () => ({
+      page,
+      size: PAGE_SIZE,
+      sort,
+      direction,
+      search: debouncedSearch || undefined,
+      isDefault: parsedDefault,
+    }),
+    [page, sort, direction, debouncedSearch, parsedDefault],
+  );
+
+  const boxesQuery = useShippingBoxes(queryParams);
 
   useEffect(() => {
     const data = boxesQuery.data;
@@ -106,14 +104,6 @@ export function ShippingBoxesHome() {
       updateParams({ page: null });
     }
   }, [boxesQuery.data, boxesQuery.isFetching, updateParams]);
-
-  const handleSearchChange = (value: string) => {
-    setSearchInput(value);
-    updateParams({
-      q: value.trim() || null,
-      page: null,
-    });
-  };
 
   const handleSortChange = (value: ShippingBoxesSortOption) => {
     updateParams({

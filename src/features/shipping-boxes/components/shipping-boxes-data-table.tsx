@@ -6,21 +6,16 @@ import {
   DataTable,
   type DataTableColumn,
 } from "@/shared/components/data-display/data-table";
-import {
-  Badge,
-  Button,
-  Label,
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/shared/components/ui";
 import { ShippingBoxRowActionsMenu } from "@/features/shipping-boxes/components/shipping-box-row-actions-menu";
 import type { ShippingBoxRowAction } from "@/features/shipping-boxes/components/shipping-box-row-actions-menu";
+import { ShippingBoxesToolbar } from "@/features/shipping-boxes/components/shipping-boxes-toolbar";
 import { formatDimension } from "@/features/shipping-boxes/lib/format-dimension";
 import type { ShippingBoxesSortOption } from "@/features/shipping-boxes/lib/shipping-boxes-list-params";
 import type { ShippingBox } from "@/features/shipping-boxes/types";
+import {
+  Badge,
+  Button,
+} from "@/shared/components/ui";
 
 interface ShippingBoxesDataTableProps {
   boxes: ShippingBox[];
@@ -40,32 +35,6 @@ interface ShippingBoxesDataTableProps {
   isFetching?: boolean;
   emptyState?: ReactNode;
 }
-
-const SORT_OPTIONS: ShippingBoxesSortOption[] = [
-  "CREATED_AT_DESC",
-  "CREATED_AT_ASC",
-  "NAME_ASC",
-  "NAME_DESC",
-  "LENGTH_CM_ASC",
-  "LENGTH_CM_DESC",
-  "WIDTH_CM_ASC",
-  "WIDTH_CM_DESC",
-  "HEIGHT_CM_ASC",
-  "HEIGHT_CM_DESC",
-];
-
-const SORT_LABEL_KEYS: Record<ShippingBoxesSortOption, string> = {
-  CREATED_AT_DESC: "toolbar.sort.createdDesc",
-  CREATED_AT_ASC: "toolbar.sort.createdAsc",
-  NAME_ASC: "toolbar.sort.nameAsc",
-  NAME_DESC: "toolbar.sort.nameDesc",
-  LENGTH_CM_ASC: "toolbar.sort.lengthAsc",
-  LENGTH_CM_DESC: "toolbar.sort.lengthDesc",
-  WIDTH_CM_ASC: "toolbar.sort.widthAsc",
-  WIDTH_CM_DESC: "toolbar.sort.widthDesc",
-  HEIGHT_CM_ASC: "toolbar.sort.heightAsc",
-  HEIGHT_CM_DESC: "toolbar.sort.heightDesc",
-};
 
 function DimensionCell({ value, unit }: { value: number; unit: string }) {
   return (
@@ -145,56 +114,23 @@ export function ShippingBoxesDataTable({
       caption={t("table.caption")}
       minWidth="720px"
       isFetching={isFetching}
-      toolbar={{ title: t("toolbar.title") }}
-      search={{
-        id: "shipping-boxes-search",
-        value: search,
-        onChange: onSearchChange,
-        placeholder: t("toolbar.searchPlaceholder"),
-        label: t("common:common.search"),
-        wrapperClassName: "sm:flex-none sm:w-72 lg:w-104",
-        className: "w-full sm:flex-none",
-      }}
-      sort={{
-        id: "shipping-boxes-sort",
-        value: sortOption,
-        onChange: (value) => onSortChange(value as ShippingBoxesSortOption),
-        label: t("toolbar.sortLabel"),
-        options: SORT_OPTIONS.map((value) => ({
-          value,
-          label: t(SORT_LABEL_KEYS[value]),
-        })),
-      }}
-      filters={{
-        containerClassName: "sm:min-w-0 sm:flex-1",
-        className: "w-full sm:min-w-[12rem]",
+      toolbar={{
+        title: t("toolbar.title"),
         render: () => (
-          <div className="min-w-0 flex-1 space-y-1.5">
-            <Label htmlFor="shipping-boxes-default-filter" className="text-xs">
-              {t("toolbar.defaultLabel")}
-            </Label>
-            <Select
-              value={defaultFilter || "__all__"}
-              onValueChange={(value) =>
-                onDefaultFilterChange(value === "__all__" ? "" : value)
-              }
-            >
-              <SelectTrigger
-                id="shipping-boxes-default-filter"
-                className="w-full"
-                aria-label={t("toolbar.defaultLabel")}
-              >
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="__all__">{t("toolbar.defaultAll")}</SelectItem>
-                <SelectItem value="true">{t("toolbar.defaultOnly")}</SelectItem>
-                <SelectItem value="false">{t("toolbar.defaultNone")}</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
+          <ShippingBoxesToolbar
+            search={search}
+            sortOption={sortOption}
+            defaultFilter={defaultFilter}
+            onSearchChange={onSearchChange}
+            onSortChange={onSortChange}
+            onDefaultFilterChange={onDefaultFilterChange}
+            disabled={isFetching}
+          />
         ),
       }}
+      search={false}
+      sort={false}
+      filters={false}
       pagination={{
         page,
         totalPages,

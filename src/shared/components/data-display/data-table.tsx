@@ -441,20 +441,7 @@ export function DataTable<T>({
   const totalElements =
     pagination !== false ? (pagination?.totalElements ?? 0) : 0;
   const isGenuinelyEmpty = data.length === 0 && totalElements === 0;
-
-  if (isGenuinelyEmpty && emptyState) {
-    return (
-      <div className={cn("space-y-4", className)}>
-        <DataTableToolbar
-          toolbar={toolbar}
-          search={search}
-          sort={sort}
-          filters={filters}
-        />
-        {emptyState}
-      </div>
-    );
-  }
+  const showEmptyPlaceholder = isGenuinelyEmpty && Boolean(emptyState);
 
   return (
     <div className={cn("space-y-4", className)}>
@@ -465,93 +452,99 @@ export function DataTable<T>({
         filters={filters}
       />
 
-      {mobile !== false && mobile ? (
-        <div className={cn("grid gap-3 md:hidden", mobile.className)}>
-          {data.map((row) => (
-            <div key={getRowKey(row)}>{mobile.renderRow(row)}</div>
-          ))}
-        </div>
-      ) : null}
-
-      <div
-        className={cn(
-          "relative overflow-hidden rounded-lg border border-border bg-card",
-          mobile !== false ? "hidden md:block" : undefined,
-          tableClassName,
-        )}
-      >
-        {showLoadingBar ? (
-          <div
-            className="absolute inset-x-0 top-0 z-10 h-0.5 overflow-hidden bg-primary/10"
-            role="status"
-            aria-live="polite"
-          >
-            <div className="data-table-loading-bar h-full w-1/3 rounded-full bg-primary" />
-          </div>
-        ) : null}
-
-        <div className="overflow-x-auto">
-          <table
-            className="w-full border-collapse text-sm"
-            style={{ minWidth }}
-          >
-            {caption ? <caption className="sr-only">{caption}</caption> : null}
-            <thead>
-              <tr className="border-b border-border bg-muted/30">
-                {allColumns.map((column, index) => (
-                  <th
-                    key={column.id}
-                    scope="col"
-                    className={cn(
-                      "px-4 py-2.5 text-xs font-medium text-muted-foreground",
-                      ALIGN_CLASSNAME[column.align ?? "start"],
-                      index === 0 && "ps-5",
-                      index === lastIndex && "pe-5",
-                      column.headerClassName,
-                    )}
-                  >
-                    {column.header}
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-border/60">
+      {showEmptyPlaceholder ? (
+        emptyState
+      ) : (
+        <>
+          {mobile !== false && mobile ? (
+            <div className={cn("grid gap-3 md:hidden", mobile.className)}>
               {data.map((row) => (
-                <tr
-                  key={getRowKey(row)}
-                  className={cn(
-                    "transition-colors hover:bg-muted/20",
-                    isFetching && "opacity-60",
-                  )}
-                >
-                  {allColumns.map((column, index) => (
-                    <td
-                      key={column.id}
+                <div key={getRowKey(row)}>{mobile.renderRow(row)}</div>
+              ))}
+            </div>
+          ) : null}
+
+          <div
+            className={cn(
+              "relative overflow-hidden rounded-lg border border-border bg-card",
+              mobile !== false ? "hidden md:block" : undefined,
+              tableClassName,
+            )}
+          >
+            {showLoadingBar ? (
+              <div
+                className="absolute inset-x-0 top-0 z-10 h-0.5 overflow-hidden bg-primary/10"
+                role="status"
+                aria-live="polite"
+              >
+                <div className="data-table-loading-bar h-full w-1/3 rounded-full bg-primary" />
+              </div>
+            ) : null}
+
+            <div className="overflow-x-auto">
+              <table
+                className="w-full border-collapse text-sm"
+                style={{ minWidth }}
+              >
+                {caption ? <caption className="sr-only">{caption}</caption> : null}
+                <thead>
+                  <tr className="border-b border-border bg-muted/30">
+                    {allColumns.map((column, index) => (
+                      <th
+                        key={column.id}
+                        scope="col"
+                        className={cn(
+                          "px-4 py-2.5 text-xs font-medium text-muted-foreground",
+                          ALIGN_CLASSNAME[column.align ?? "start"],
+                          index === 0 && "ps-5",
+                          index === lastIndex && "pe-5",
+                          column.headerClassName,
+                        )}
+                      >
+                        {column.header}
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-border/60">
+                  {data.map((row) => (
+                    <tr
+                      key={getRowKey(row)}
                       className={cn(
-                        "px-4 py-3.5 align-middle",
-                        ALIGN_CLASSNAME[column.align ?? "start"],
-                        index === 0 && "ps-5",
-                        index === lastIndex && "pe-5",
-                        column.className,
+                        "transition-colors hover:bg-muted/20",
+                        isFetching && "opacity-60",
                       )}
                     >
-                      {column.cell(row)}
-                    </td>
+                      {allColumns.map((column, index) => (
+                        <td
+                          key={column.id}
+                          className={cn(
+                            "px-4 py-3.5 align-middle",
+                            ALIGN_CLASSNAME[column.align ?? "start"],
+                            index === 0 && "ps-5",
+                            index === lastIndex && "pe-5",
+                            column.className,
+                          )}
+                        >
+                          {column.cell(row)}
+                        </td>
+                      ))}
+                    </tr>
                   ))}
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
+                </tbody>
+              </table>
+            </div>
+          </div>
 
-      {pagination !== false && pagination ? (
-        pagination.render ? (
-          pagination.render(pagination)
-        ) : (
-          <DefaultPagination {...pagination} />
-        )
-      ) : null}
+          {pagination !== false && pagination ? (
+            pagination.render ? (
+              pagination.render(pagination)
+            ) : (
+              <DefaultPagination {...pagination} />
+            )
+          ) : null}
+        </>
+      )}
     </div>
   );
 }

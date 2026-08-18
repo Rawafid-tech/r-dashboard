@@ -24,7 +24,7 @@ import {
   type ProductsSortOption,
 } from "@/features/products/lib/products-list-params";
 import type { Product, ProductCategory, ProductsTab } from "@/features/products/types";
-import { useDebounce } from "@/shared/hooks/use-debounce";
+import { useListSearchParam } from "@/shared/hooks/use-list-search-param";
 import {
   MerchantPermission,
   useMerchantPermissions,
@@ -53,8 +53,30 @@ export function ProductsHome() {
   const canManage = hasPermission(MerchantPermission.PRODUCT_MANAGE);
 
   const [searchParams, setSearchParams] = useSearchParams();
-  const [searchInput, setSearchInput] = useState(
-    () => searchParams.get("q") ?? "",
+  const updateParams = useCallback(
+    (updates: Record<string, string | null>) => {
+      setSearchParams(
+        (current) => {
+          const next = new URLSearchParams(current);
+
+          Object.entries(updates).forEach(([key, value]) => {
+            if (value === null || value === "") {
+              next.delete(key);
+            } else {
+              next.set(key, value);
+            }
+          });
+
+          return next;
+        },
+        { replace: true },
+      );
+    },
+    [setSearchParams],
+  );
+  const { searchInput, debouncedSearch, handleSearchChange } = useListSearchParam(
+    searchParams,
+    updateParams,
   );
   const [productFormState, setProductFormState] =
     useState<ProductFormState>(null);
@@ -65,7 +87,6 @@ export function ProductsHome() {
     useState<ProductCategory | null>(null);
 
   const activeTab = readProductsTab(searchParams.get("tab"));
-  const debouncedSearch = useDebounce(searchInput.trim(), 300);
   const page = readPageIndex(searchParams.get("page"));
   const sortOption = readProductsSortOption(searchParams.get("sort"));
   const { sort, direction } = parseProductsSortOption(sortOption);
@@ -91,28 +112,6 @@ export function ProductsHome() {
   });
   const categoriesQuery = useProductCategories();
 
-  const updateParams = useCallback(
-    (updates: Record<string, string | null>) => {
-      setSearchParams(
-        (current) => {
-          const next = new URLSearchParams(current);
-
-          Object.entries(updates).forEach(([key, value]) => {
-            if (value === null || value === "") {
-              next.delete(key);
-            } else {
-              next.set(key, value);
-            }
-          });
-
-          return next;
-        },
-        { replace: true },
-      );
-    },
-    [setSearchParams],
-  );
-
   useEffect(() => {
     const data = productsQuery.data;
     if (!data || productsQuery.isFetching || activeTab !== "products") return;
@@ -132,14 +131,6 @@ export function ProductsHome() {
   const handleTabChange = (tab: ProductsTab) => {
     updateParams({
       tab: tab === "products" ? null : tab,
-      page: null,
-    });
-  };
-
-  const handleSearchChange = (value: string) => {
-    setSearchInput(value);
-    updateParams({
-      q: value.trim() || null,
       page: null,
     });
   };

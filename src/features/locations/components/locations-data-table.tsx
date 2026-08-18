@@ -5,27 +5,17 @@ import {
   DataTable,
   type DataTableColumn,
 } from "@/shared/components/data-display/data-table";
-import {
-  Label,
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/shared/components/ui";
 import { LocationRowActionsMenu } from "@/features/locations/components/location-row-actions-menu";
 import type { LocationRowAction } from "@/features/locations/components/location-row-actions-menu";
 import { LocationStatusBadge } from "@/features/locations/components/location-status-badge";
-import { useGovernorates } from "@/features/locations/hooks/use-governorates";
+import { LocationsToolbar } from "@/features/locations/components/locations-toolbar";
 import {
-  getGovernorateLabel,
   getLocationGovernorateLabel,
 } from "@/features/locations/lib/location-form-errors";
 import type { LocationsSortOption } from "@/features/locations/lib/locations-list-params";
 import type { SenderLocation } from "@/features/locations/types";
 import { Badge } from "@/shared/components/ui";
 import { formatDate } from "@/shared/lib/formatters";
-import { SenderLocationStatus } from "@/shared/types/enums";
 import { useLocaleStore } from "@/stores/locale.store";
 
 interface LocationsDataTableProps {
@@ -48,20 +38,6 @@ interface LocationsDataTableProps {
   emptyState?: ReactNode;
 }
 
-const SORT_OPTIONS: LocationsSortOption[] = [
-  "CREATED_AT_DESC",
-  "CREATED_AT_ASC",
-  "NAME_ASC",
-  "NAME_DESC",
-];
-
-const SORT_LABEL_KEYS: Record<LocationsSortOption, string> = {
-  CREATED_AT_DESC: "toolbar.sort.createdDesc",
-  CREATED_AT_ASC: "toolbar.sort.createdAsc",
-  NAME_ASC: "toolbar.sort.nameAsc",
-  NAME_DESC: "toolbar.sort.nameDesc",
-};
-
 export function LocationsDataTable({
   locations,
   search,
@@ -81,10 +57,8 @@ export function LocationsDataTable({
   isFetching,
   emptyState,
 }: LocationsDataTableProps) {
-  const { t } = useTranslation("locations");
+  const { t } = useTranslation(["locations", "common"]);
   const locale = useLocaleStore((state) => state.locale);
-  const governoratesQuery = useGovernorates("EG");
-  const governorates = governoratesQuery.data ?? [];
 
   const columns = useMemo<DataTableColumn<SenderLocation>[]>(
     () => [
@@ -159,93 +133,25 @@ export function LocationsDataTable({
       caption={t("table.caption")}
       minWidth="960px"
       isFetching={isFetching}
-      toolbar={{ title: t("toolbar.title") }}
-      search={{
-        id: "locations-search",
-        value: search,
-        onChange: onSearchChange,
-        placeholder: t("toolbar.searchPlaceholder"),
-        label: t("common:common.search"),
-        wrapperClassName: "sm:flex-none sm:w-72 lg:w-104",
-        className: "w-full sm:flex-none",
-      }}
-      sort={{
-        id: "locations-sort",
-        value: sortOption,
-        onChange: (value) => onSortChange(value as LocationsSortOption),
-        label: t("toolbar.sortLabel"),
-        options: SORT_OPTIONS.map((value) => ({
-          value,
-          label: t(SORT_LABEL_KEYS[value]),
-        })),
-      }}
-      filters={{
-        containerClassName: "sm:min-w-0 sm:flex-1",
-        className: "w-full sm:min-w-[24rem]",
+      toolbar={{
+        title: t("toolbar.title"),
         render: () => (
-          <div className="flex w-full flex-col gap-3 sm:flex-row sm:items-end sm:gap-3">
-            <div className="min-w-0 flex-1 space-y-1.5 sm:min-w-[11rem]">
-              <Label htmlFor="locations-status-filter" className="text-xs">
-                {t("toolbar.statusLabel")}
-              </Label>
-              <Select
-                value={statusFilter || "__all__"}
-                onValueChange={(value) =>
-                  onStatusFilterChange(value === "__all__" ? "" : value)
-                }
-              >
-                <SelectTrigger
-                  id="locations-status-filter"
-                  className="w-full"
-                  aria-label={t("toolbar.statusLabel")}
-                >
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="__all__">{t("toolbar.statusAll")}</SelectItem>
-                  <SelectItem value={SenderLocationStatus.ACTIVE}>
-                    {t("status.ACTIVE")}
-                  </SelectItem>
-                  <SelectItem value={SenderLocationStatus.INACTIVE}>
-                    {t("status.INACTIVE")}
-                  </SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-
-            <div className="min-w-0 flex-1 space-y-1.5 sm:min-w-[11rem]">
-              <Label htmlFor="locations-governorate-filter" className="text-xs">
-                {t("toolbar.governorateLabel")}
-              </Label>
-              <Select
-                value={governorateFilter || "__all__"}
-                onValueChange={(value) =>
-                  onGovernorateFilterChange(value === "__all__" ? "" : value)
-                }
-                disabled={governoratesQuery.isLoading}
-              >
-                <SelectTrigger
-                  id="locations-governorate-filter"
-                  className="w-full"
-                  aria-label={t("toolbar.governorateLabel")}
-                >
-                  <SelectValue placeholder={t("toolbar.governorateAll")} />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="__all__">
-                    {t("toolbar.governorateAll")}
-                  </SelectItem>
-                  {governorates.map((governorate) => (
-                    <SelectItem key={governorate.id} value={governorate.id}>
-                      {getGovernorateLabel(governorate, locale)}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
+          <LocationsToolbar
+            search={search}
+            sortOption={sortOption}
+            statusFilter={statusFilter}
+            governorateFilter={governorateFilter}
+            onSearchChange={onSearchChange}
+            onSortChange={onSortChange}
+            onStatusFilterChange={onStatusFilterChange}
+            onGovernorateFilterChange={onGovernorateFilterChange}
+            disabled={isFetching}
+          />
         ),
       }}
+      search={false}
+      sort={false}
+      filters={false}
       pagination={{
         page,
         totalPages,

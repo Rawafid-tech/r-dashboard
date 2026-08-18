@@ -16,7 +16,7 @@ import {
   type RolesSortOption,
 } from "@/features/roles/lib/roles-list-params";
 import type { RoleListItem } from "@/features/roles/types";
-import { useDebounce } from "@/shared/hooks/use-debounce";
+import { useListSearchParam } from "@/shared/hooks/use-list-search-param";
 import { useMerchantPermissions } from "@/shared/hooks/use-merchant-permissions";
 import {
   readPageIndex,
@@ -35,30 +35,6 @@ export function RolesHome() {
   const { t } = useTranslation("roles");
   const { canManageRoles } = useMerchantPermissions();
   const [searchParams, setSearchParams] = useSearchParams();
-  const [searchInput, setSearchInput] = useState(
-    () => searchParams.get("q") ?? "",
-  );
-  const [formState, setFormState] = useState<FormState>(null);
-  const [roleToDelete, setRoleToDelete] = useState<RoleListItem | null>(null);
-
-  const debouncedSearch = useDebounce(searchInput.trim(), 300);
-  const page = readPageIndex(searchParams.get("page"));
-  const sortOption = readRolesSortOption(searchParams.get("sort"));
-  const { sort, direction } = parseRolesSortOption(sortOption);
-
-  const queryParams = useMemo(
-    () => ({
-      page,
-      size: PAGE_SIZE,
-      sort,
-      direction,
-      search: debouncedSearch || undefined,
-    }),
-    [page, sort, direction, debouncedSearch],
-  );
-
-  const rolesQuery = useRoles(queryParams);
-
   const updateParams = useCallback(
     (updates: Record<string, string | null>) => {
       setSearchParams(
@@ -80,6 +56,29 @@ export function RolesHome() {
     },
     [setSearchParams],
   );
+  const { searchInput, debouncedSearch, handleSearchChange } = useListSearchParam(
+    searchParams,
+    updateParams,
+  );
+  const [formState, setFormState] = useState<FormState>(null);
+  const [roleToDelete, setRoleToDelete] = useState<RoleListItem | null>(null);
+
+  const page = readPageIndex(searchParams.get("page"));
+  const sortOption = readRolesSortOption(searchParams.get("sort"));
+  const { sort, direction } = parseRolesSortOption(sortOption);
+
+  const queryParams = useMemo(
+    () => ({
+      page,
+      size: PAGE_SIZE,
+      sort,
+      direction,
+      search: debouncedSearch || undefined,
+    }),
+    [page, sort, direction, debouncedSearch],
+  );
+
+  const rolesQuery = useRoles(queryParams);
 
   useEffect(() => {
     const data = rolesQuery.data;
@@ -96,14 +95,6 @@ export function RolesHome() {
       updateParams({ page: null });
     }
   }, [rolesQuery.data, rolesQuery.isFetching, updateParams]);
-
-  const handleSearchChange = (value: string) => {
-    setSearchInput(value);
-    updateParams({
-      q: value.trim() || null,
-      page: null,
-    });
-  };
 
   const handleSortChange = (value: RolesSortOption) => {
     updateParams({

@@ -22,7 +22,7 @@ import {
   type LocationsSortOption,
 } from "@/features/locations/lib/locations-list-params";
 import type { SenderLocation } from "@/features/locations/types";
-import { useDebounce } from "@/shared/hooks/use-debounce";
+import { useListSearchParam } from "@/shared/hooks/use-list-search-param";
 import {
   MerchantPermission,
   useMerchantPermissions,
@@ -41,8 +41,30 @@ export function LocationsHome() {
   const canManage = hasPermission(MerchantPermission.SENDER_LOCATION_MANAGE);
 
   const [searchParams, setSearchParams] = useSearchParams();
-  const [searchInput, setSearchInput] = useState(
-    () => searchParams.get("q") ?? "",
+  const updateParams = useCallback(
+    (updates: Record<string, string | null>) => {
+      setSearchParams(
+        (current) => {
+          const next = new URLSearchParams(current);
+
+          Object.entries(updates).forEach(([key, value]) => {
+            if (value === null || value === "") {
+              next.delete(key);
+            } else {
+              next.set(key, value);
+            }
+          });
+
+          return next;
+        },
+        { replace: true },
+      );
+    },
+    [setSearchParams],
+  );
+  const { searchInput, debouncedSearch, handleSearchChange } = useListSearchParam(
+    searchParams,
+    updateParams,
   );
   const [formMode, setFormMode] = useState<"create" | "edit" | null>(null);
   const [editLocation, setEditLocation] = useState<SenderLocation | null>(
@@ -56,7 +78,6 @@ export function LocationsHome() {
     null,
   );
 
-  const debouncedSearch = useDebounce(searchInput.trim(), 300);
   const page = readPageIndex(searchParams.get("page"));
   const sortOption = readLocationsSortOption(searchParams.get("sort"));
   const { sort, direction } = parseLocationsSortOption(sortOption);
@@ -79,28 +100,6 @@ export function LocationsHome() {
 
   const locationsQuery = useSenderLocations(queryParams);
 
-  const updateParams = useCallback(
-    (updates: Record<string, string | null>) => {
-      setSearchParams(
-        (current) => {
-          const next = new URLSearchParams(current);
-
-          Object.entries(updates).forEach(([key, value]) => {
-            if (value === null || value === "") {
-              next.delete(key);
-            } else {
-              next.set(key, value);
-            }
-          });
-
-          return next;
-        },
-        { replace: true },
-      );
-    },
-    [setSearchParams],
-  );
-
   useEffect(() => {
     const data = locationsQuery.data;
     if (!data || locationsQuery.isFetching) return;
@@ -116,14 +115,6 @@ export function LocationsHome() {
       updateParams({ page: null });
     }
   }, [locationsQuery.data, locationsQuery.isFetching, updateParams]);
-
-  const handleSearchChange = (value: string) => {
-    setSearchInput(value);
-    updateParams({
-      q: value.trim() || null,
-      page: null,
-    });
-  };
 
   const handleSortChange = (value: LocationsSortOption) => {
     updateParams({
