@@ -1,0 +1,223 @@
+{
+  "metaTitle": "Products — Rawafid",
+  "metaDescription": "Manage your shipping product catalog — names, weights, customs codes, and categories.",
+  "metaCreateTitle": "Add product — Rawafid",
+  "metaCreateDescription": "Add a new product to your shipping catalog.",
+  "metaEditTitle": "Edit product — Rawafid",
+  "metaEditDescription": "Update product details in your shipping catalog.",
+  "skipToContent": "Skip to products content",
+  "hero": {
+    "title": "Products",
+    "subtitle": "Your shipping catalog — save item details once and reuse them when creating shipments.",
+    "totalLabel": "Products",
+    "add": "Add product"
+  },
+  "tabs": {
+    "label": "Products sections",
+    "products": "Product list",
+    "categories": "Categories"
+  },
+  "toolbar": {
+    "title": "Product catalog",
+    "searchPlaceholder": "Search by name, SKU or barcode…",
+    "sortLabel": "Sort",
+    "handlingLabel": "Handling",
+    "handlingAll": "All handling types",
+    "categoryLabel": "Category",
+    "categoryAll": "All categories",
+    "sort": {
+      "createdDesc": "Newest first",
+      "createdAsc": "Oldest first",
+      "nameAsc": "Name A–Z",
+      "nameDesc": "Name Z–A",
+      "skuAsc": "SKU A–Z",
+      "skuDesc": "SKU Z–A",
+      "priceAsc": "Price ↑",
+      "priceDesc": "Price ↓",
+      "weightAsc": "Weight ↑",
+      "weightDesc": "Weight ↓"
+    }
+  },
+  "handling": {
+    "GENERAL": "General",
+    "FRAGILE": "Fragile",
+    "LIQUID": "Liquid",
+    "BATTERY": "Battery",
+    "FLAMMABLE": "Flammable"
+  },
+  "table": {
+    "caption": "Products",
+    "image": "Image",
+    "name": "Name",
+    "sku": "SKU",
+    "barcode": "Barcode",
+    "price": "Price",
+    "weight": "Weight",
+    "handling": "Handling",
+    "category": "Category",
+    "actions": "Actions",
+    "edit": "Edit",
+    "delete": "Delete",
+    "openMenu": "Actions for {{name}}",
+    "noImage": "No image",
+    "noBarcode": "—",
+    "noCategory": "—",
+    "weightUnit": "kg"
+  },
+  "pagination": {
+    "label": "Products pagination",
+    "summary": "Showing {{start}}–{{end}} of {{total}}",
+    "pageOf": "Page {{current}} of {{total}}"
+  },
+  "empty": {
+    "title": "No products yet",
+    "description": "Add your first product so shipment details are ready to reuse.",
+    "searchTitle": "No matching products",
+    "searchDescription": "Try another search term or clear the filters."
+  },
+  "errors": {
+    "loadFailed": "Could not load products",
+    "loadFailedHint": "Check your connection and try again.",
+    "retry": "Retry"
+  },
+  "actions": {
+    "edit": "Edit",
+    "delete": "Delete"
+  },
+  "form": {
+    "createTitle": "Add product",
+    "createDescription": "Define a shippable item for your company catalog.",
+    "editTitle": "Edit product",
+    "editDescription": "Update product details. Past shipments keep the values they were sent with.",
+    "loading": "Loading product…",
+    "backToList": "Back to products",
+    "identityLegend": "Identity",
+    "shippingLegend": "Shipping",
+    "customsLegend": "Customs",
+    "categoryLegend": "Category",
+    "name": "Product name",
+    "namePlaceholder": "e.g. Wireless headphones",
+    "sku": "SKU",
+    "skuPlaceholder": "e.g. HP-1000",
+    "barcode": "Barcode",
+    "barcodePlaceholder": "EAN / UPC (optional)",
+    "image": "Product image",
+    "imageHint": "PNG, JPEG or WebP, up to 2 MB.",
+    "imageUploading": "Uploading…",
+    "imageRemove": "Remove image",
+    "price": "Price",
+    "priceHint": "In your company currency. Zero is allowed.",
+    "weightKg": "Weight",
+    "weightHint": "Required — used for rate quotes.",
+    "weightUnit": "kg",
+    "dimensionsLegend": "Item dimensions",
+    "dimensionsHint": "Optional outer dimensions of the item itself — not the shipping box. Enter all three or leave all empty.",
+    "lengthCm": "Length",
+    "widthCm": "Width",
+    "heightCm": "Height",
+    "dimensionUnit": "cm",
+    "clearDimensions": "Clear dimensions",
+    "hsCode": "HS code",
+    "hsCodePlaceholder": "e.g. 8518.30",
+    "hsCodeHint": "Digits grouped by dots for customs.",
+    "description": "Contents description",
+    "descriptionPlaceholder": "Customs contents line (optional)",
+    "handling": "Handling type",
+    "handlingHint": "Required on every save.",
+    "category": "Category",
+    "categoryPlaceholder": "None — uncategorized",
+    "categoryHint": "Optional filing category.",
+    "saving": "Saving…",
+    "notFoundTitle": "Product not found",
+    "notFoundDescription": "This product may have been deleted or you no longer have access.",
+    "validation": {
+      "nameRequired": "Product name is required",
+      "nameMax": "Product name must be at most 200 characters",
+      "skuRequired": "SKU is required",
+      "skuMax": "SKU must be at most 64 characters",
+      "hsCodeInvalid": "HS code must contain digits and dots only, e.g. 8518.30",
+      "dimensionsAllOrNone": "Enter length, width and height together, or leave all empty",
+      "fieldRequired": "{{field}} is required",
+      "fieldInvalid": "{{field}} must be a valid number",
+      "fieldPositive": "{{field}} must be greater than 0",
+      "fieldMinZero": "{{field}} must be 0 or more",
+      "fieldMax": "{{field}} must be at most {{max}}",
+      "fieldDecimals": "{{field}} allows at most {{decimals}} decimal places"
+    }
+  },
+  "delete": {
+    "title": "Delete product?",
+    "description": "“{{name}}” will be permanently removed from your catalog.",
+    "hint": "Past shipments keep their own copy of this product's details.",
+    "cancel": "Cancel",
+    "confirm": "Delete",
+    "deleting": "Deleting…"
+  },
+  "toast": {
+    "created": "Product added",
+    "updated": "Product updated",
+    "deleted": "Product deleted",
+    "saveFailed": "Could not save product",
+    "deleteFailed": "Could not delete product",
+    "notFound": "Product not found"
+  },
+  "categories": {
+    "hero": {
+      "title": "Categories",
+      "subtitle": "Organize products into a two-level filing system. Categories do not affect shipping rates.",
+      "add": "Add category"
+    },
+    "tree": {
+      "caption": "Product categories",
+      "name": "Category",
+      "products": "Products",
+      "actions": "Actions",
+      "emptyTitle": "No categories yet",
+      "emptyDescription": "Categories are optional — add one to organize your catalog.",
+      "openMenu": "Actions for {{name}}",
+      "subCategory": "Sub-category of {{parent}}"
+    },
+    "actions": {
+      "rename": "Rename",
+      "move": "Move",
+      "delete": "Delete"
+    },
+    "form": {
+      "createTitle": "Add category",
+      "createDescription": "Create a top-level category or sub-category.",
+      "editTitle": "Edit category",
+      "editDescription": "Rename or move this category.",
+      "name": "Category name",
+      "namePlaceholder": "e.g. Electronics",
+      "parent": "Parent category",
+      "parentTopLevel": "Top level",
+      "parentHint": "Only top-level categories can have sub-categories.",
+      "saving": "Saving…",
+      "validation": {
+        "nameRequired": "Category name is required",
+        "nameMax": "Category name must be at most 100 characters"
+      }
+    },
+    "delete": {
+      "title": "Delete category?",
+      "description": "“{{name}}” will be removed.",
+      "uncategorizedWarning": "{{count}} product(s) filed here will become uncategorized — they will not be deleted.",
+      "hasChildrenWarning": "Delete or move sub-categories first.",
+      "cancel": "Cancel",
+      "confirm": "Delete",
+      "deleting": "Deleting…"
+    },
+    "toast": {
+      "created": "Category added",
+      "updated": "Category updated",
+      "deleted": "Category deleted",
+      "saveFailed": "Could not save category",
+      "deleteFailed": "Could not delete category",
+      "notFound": "Category not found"
+    },
+    "errors": {
+      "loadFailed": "Could not load categories",
+      "retry": "Retry"
+    }
+  }
+}

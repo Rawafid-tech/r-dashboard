@@ -46,6 +46,13 @@ export const MERCHANT_NAV_ITEMS: MerchantNavItem[] = [
     permissionCode: "page:roles",
   },
   {
+    key: "products",
+    href: "/products",
+    icon: ShoppingBag,
+    enabled: true,
+    permissionCode: "page:products",
+  },
+  {
     key: "shippingBoxes",
     href: "/shipping-boxes",
     icon: Box,
@@ -61,7 +68,6 @@ export const MERCHANT_NAV_ITEMS: MerchantNavItem[] = [
   },
   { key: "shipments", href: "/shipments", icon: Package, enabled: false },
   { key: "returns", href: "/returns", icon: RefreshCcw, enabled: false },
-  { key: "products", href: "/products", icon: ShoppingBag, enabled: false },
   { key: "wallet", href: "/wallet", icon: Wallet, enabled: false },
   { key: "settings", href: "/settings", icon: Settings, enabled: true },
 ];

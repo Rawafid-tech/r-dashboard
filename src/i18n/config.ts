@@ -22,6 +22,8 @@ import locationsAr from "./locales/ar/locations.json";
 import locationsEn from "./locales/en/locations.json";
 import shippingBoxesAr from "./locales/ar/shipping-boxes.json";
 import shippingBoxesEn from "./locales/en/shipping-boxes.json";
+import productsAr from "./locales/ar/products.json";
+import productsEn from "./locales/en/products.json";
 
 const resources = {
   ar: {
@@ -35,6 +37,7 @@ const resources = {
     users: usersAr,
     locations: locationsAr,
     shippingBoxes: shippingBoxesAr,
+    products: productsAr,
   },
   en: {
     common: commonEn,
@@ -47,6 +50,7 @@ const resources = {
     users: usersEn,
     locations: locationsEn,
     shippingBoxes: shippingBoxesEn,
+    products: productsEn,
   },
 };
 
@@ -57,7 +61,7 @@ i18n
     resources,
     fallbackLng: "ar",
     defaultNS: "common",
-    ns: ["common", "auth", "dashboard", "settings", "billing", "admin", "roles", "users", "locations", "shippingBoxes"],
+    ns: ["common", "auth", "dashboard", "settings", "billing", "admin", "roles", "users", "locations", "shippingBoxes", "products"],
     interpolation: {
       escapeValue: false,
     },

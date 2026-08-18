@@ -1,0 +1,223 @@
+{
+  "metaTitle": "المنتجات — روافد",
+  "metaDescription": "إدارة كتalog المنتجات للشحن — الأسماء والأوزان ورموز الجمارك والفئات.",
+  "metaCreateTitle": "إضافة منتج — روافد",
+  "metaCreateDescription": "إضافة منتج جديد إلى كتalog الشحن.",
+  "metaEditTitle": "تعديل منتج — روافد",
+  "metaEditDescription": "تحديث تفاصيل المنتج في كتalog الشحن.",
+  "skipToContent": "انتقل إلى محتوى المنتجات",
+  "hero": {
+    "title": "المنتجات",
+    "subtitle": "كتalog الشحن — احفظ تفاصيل المنتج مرة واحدة وأعد استخدامها عند إنشاء الشحنات.",
+    "totalLabel": "المنتجات",
+    "add": "إضافة منتج"
+  },
+  "tabs": {
+    "label": "أقسام المنتجات",
+    "products": "قائمة المنتجات",
+    "categories": "الفئات"
+  },
+  "toolbar": {
+    "title": "كتalog المنتجات",
+    "searchPlaceholder": "بحث بالاسم أو SKU أو الباركود…",
+    "sortLabel": "ترتيب",
+    "handlingLabel": "نوع المعالجة",
+    "handlingAll": "جميع أنواع المعالجة",
+    "categoryLabel": "الفئة",
+    "categoryAll": "جميع الفئات",
+    "sort": {
+      "createdDesc": "الأحدث أولاً",
+      "createdAsc": "الأقدم أولاً",
+      "nameAsc": "الاسم أ–ي",
+      "nameDesc": "الاسم ي–أ",
+      "skuAsc": "SKU أ–ي",
+      "skuDesc": "SKU ي–أ",
+      "priceAsc": "السعر ↑",
+      "priceDesc": "السعر ↓",
+      "weightAsc": "الوزن ↑",
+      "weightDesc": "الوزن ↓"
+    }
+  },
+  "handling": {
+    "GENERAL": "عام",
+    "FRAGILE": "قابل للكسر",
+    "LIQUID": "سائل",
+    "BATTERY": "بطارية",
+    "FLAMMABLE": "قابل للاشتعال"
+  },
+  "table": {
+    "caption": "المنتجات",
+    "image": "الصورة",
+    "name": "الاسم",
+    "sku": "SKU",
+    "barcode": "الباركود",
+    "price": "السعر",
+    "weight": "الوزن",
+    "handling": "المعالجة",
+    "category": "الفئة",
+    "actions": "إجراءات",
+    "edit": "تعديل",
+    "delete": "حذف",
+    "openMenu": "إجراءات {{name}}",
+    "noImage": "بدون صورة",
+    "noBarcode": "—",
+    "noCategory": "—",
+    "weightUnit": "كجم"
+  },
+  "pagination": {
+    "label": "ترقيم المنتجات",
+    "summary": "عرض {{start}}–{{end}} من {{total}}",
+    "pageOf": "صفحة {{current}} من {{total}}"
+  },
+  "empty": {
+    "title": "لا توجد منتجات بعد",
+    "description": "أضف أول منتج لتكون تفاصيل الشحن جاهزة لإعادة الاستخدام.",
+    "searchTitle": "لا توجد منتجات مطابقة",
+    "searchDescription": "جرّب مصطلح بحث آخر أو امسح الفلاتر."
+  },
+  "errors": {
+    "loadFailed": "تعذّر تحميل المنتجات",
+    "loadFailedHint": "تحقق من اتصالك وحاول مرة أخرى.",
+    "retry": "إعادة المحاولة"
+  },
+  "actions": {
+    "edit": "تعديل",
+    "delete": "حذف"
+  },
+  "form": {
+    "createTitle": "إضافة منتج",
+    "createDescription": "تعريف منتج قابل للشحن في كتalog شركتك.",
+    "editTitle": "تعديل منتج",
+    "editDescription": "تحديث تفاصيل المنتج. الشحنات السابقة تحتفظ بالقيم التي أُرسلت بها.",
+    "loading": "جاري تحميل المنتج…",
+    "backToList": "العودة إلى المنتجات",
+    "identityLegend": "الهوية",
+    "shippingLegend": "الشحن",
+    "customsLegend": "الجمارك",
+    "categoryLegend": "الفئة",
+    "name": "اسم المنتج",
+    "namePlaceholder": "مثال: سماعات لاسلكية",
+    "sku": "SKU",
+    "skuPlaceholder": "مثال: HP-1000",
+    "barcode": "الباركود",
+    "barcodePlaceholder": "EAN / UPC (اختياري)",
+    "image": "صورة المنتج",
+    "imageHint": "PNG أو JPEG أو WebP، حتى 2 ميجابايت.",
+    "imageUploading": "جاري الرفع…",
+    "imageRemove": "إزالة الصورة",
+    "price": "السعر",
+    "priceHint": "بعملة شركتك. الصفر مسموح.",
+    "weightKg": "الوزن",
+    "weightHint": "مطلوب — يُستخدم لحساب الأسعار.",
+    "weightUnit": "كجم",
+    "dimensionsLegend": "أبعاد المنتج",
+    "dimensionsHint": "أبعاد المنتج نفسه اختيارية — وليست صندوق الشحن. أدخل الثلاثة معاً أو اتركها فارغة.",
+    "lengthCm": "الطول",
+    "widthCm": "العرض",
+    "heightCm": "الارتفاع",
+    "dimensionUnit": "سم",
+    "clearDimensions": "مسح الأبعاد",
+    "hsCode": "رمز HS",
+    "hsCodePlaceholder": "مثال: 8518.30",
+    "hsCodeHint": "أرقام مفصولة بنقاط للجمارك.",
+    "description": "وصف المحتويات",
+    "descriptionPlaceholder": "سطر محتويات الجمارك (اختياري)",
+    "handling": "نوع المعالجة",
+    "handlingHint": "مطلوب في كل حفظ.",
+    "category": "الفئة",
+    "categoryPlaceholder": "بدون — غير مصنّف",
+    "categoryHint": "فئة تصنيف اختيارية.",
+    "saving": "جاري الحفظ…",
+    "notFoundTitle": "المنتج غير موجود",
+    "notFoundDescription": "ربما حُذف هذا المنتج أو لم يعد لديك صلاحية الوصول.",
+    "validation": {
+      "nameRequired": "اسم المنتج مطلوب",
+      "nameMax": "اسم المنتج يجب ألا يتجاوز 200 حرف",
+      "skuRequired": "SKU مطلوب",
+      "skuMax": "SKU يجب ألا يتجاوز 64 حرفاً",
+      "hsCodeInvalid": "رمز HS يجب أن يحتوي على أرقام ونقاط فقط، مثال: 8518.30",
+      "dimensionsAllOrNone": "أدخل الطول والعرض والارتفاع معاً، أو اتركها فارغة",
+      "fieldRequired": "{{field}} مطلوب",
+      "fieldInvalid": "{{field}} يجب أن يكون رقماً صالحاً",
+      "fieldPositive": "{{field}} يجب أن يكون أكبر من 0",
+      "fieldMinZero": "{{field}} يجب أن يكون 0 أو أكثر",
+      "fieldMax": "{{field}} يجب ألا يتجاوز {{max}}",
+      "fieldDecimals": "{{field}} يسمح بـ {{decimals}} منازل عشرية كحد أقصى"
+    }
+  },
+  "delete": {
+    "title": "حذف المنتج؟",
+    "description": "سيتم حذف «{{name}}» نهائياً من الكتalog.",
+    "hint": "الشحنات السابقة تحتفظ بنسختها من تفاصيل هذا المنتج.",
+    "cancel": "إلغاء",
+    "confirm": "حذف",
+    "deleting": "جاري الحذف…"
+  },
+  "toast": {
+    "created": "تمت إضافة المنتج",
+    "updated": "تم تحديث المنتج",
+    "deleted": "تم حذف المنتج",
+    "saveFailed": "تعذّر حفظ المنتج",
+    "deleteFailed": "تعذّر حذف المنتج",
+    "notFound": "المنتج غير موجود"
+  },
+  "categories": {
+    "hero": {
+      "title": "الفئات",
+      "subtitle": "نظّم المنتجات في نظام تصنيف من مستويين. الفئات لا تؤثر على أسعار الشحن.",
+      "add": "إضافة فئة"
+    },
+    "tree": {
+      "caption": "فئات المنتجات",
+      "name": "الفئة",
+      "products": "المنتجات",
+      "actions": "إجراءات",
+      "emptyTitle": "لا توجد فئات بعد",
+      "emptyDescription": "الفئات اختيارية — أضف فئة لتنظيم الكتalog.",
+      "openMenu": "إجراءات {{name}}",
+      "subCategory": "فئة فرعية تحت {{parent}}"
+    },
+    "actions": {
+      "rename": "إعادة تسمية",
+      "move": "نقل",
+      "delete": "حذف"
+    },
+    "form": {
+      "createTitle": "إضافة فئة",
+      "createDescription": "إنشاء فئة رئيسية أو فرعية.",
+      "editTitle": "تعديل الفئة",
+      "editDescription": "إعادة تسمية أو نقل هذه الفئة.",
+      "name": "اسم الفئة",
+      "namePlaceholder": "مثال: إلكترونيات",
+      "parent": "الفئة الرئيسية",
+      "parentTopLevel": "المستوى الأعلى",
+      "parentHint": "فقط الفئات الرئيسية يمكن أن تحتوي على فئات فرعية.",
+      "saving": "جاري الحفظ…",
+      "validation": {
+        "nameRequired": "اسم الفئة مطلوب",
+        "nameMax": "اسم الفئة يجب ألا يتجاوز 100 حرف"
+      }
+    },
+    "delete": {
+      "title": "حذف الفئة؟",
+      "description": "سيتم حذف «{{name}}».",
+      "uncategorizedWarning": "{{count}} منتج/منتجات مصنّفة هنا ستصبح غير مصنّفة — ولن تُحذف.",
+      "hasChildrenWarning": "احذف الفئات الفرعية أو انقلها أولاً.",
+      "cancel": "إلغاء",
+      "confirm": "حذف",
+      "deleting": "جاري الحذف…"
+    },
+    "toast": {
+      "created": "تمت إضافة الفئة",
+      "updated": "تم تحديث الفئة",
+      "deleted": "تم حذف الفئة",
+      "saveFailed": "تعذّر حفظ الفئة",
+      "deleteFailed": "تعذّر حذف الفئة",
+      "notFound": "الفئة غير موجودة"
+    },
+    "errors": {
+      "loadFailed": "تعذّر تحميل الفئات",
+      "retry": "إعادة المحاولة"
+    }
+  }
+}

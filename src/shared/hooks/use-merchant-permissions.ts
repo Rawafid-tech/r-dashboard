@@ -9,6 +9,7 @@ export const MerchantPermission = {
   PAGE_ROLES: "page:roles",
   PAGE_SUBSCRIPTION: "page:subscription",
   PAGE_SENDER_LOCATIONS: "page:senderLocations",
+  PAGE_PRODUCTS: "page:products",
   PAGE_SHIPPING_BOXES: "page:shippingBoxes",
   USER_READ: "user:read",
   USER_MANAGE: "user:manage",
@@ -18,6 +19,8 @@ export const MerchantPermission = {
   SUBSCRIPTION_READ: "subscription:read",
   SENDER_LOCATION_READ: "senderLocation:read",
   SENDER_LOCATION_MANAGE: "senderLocation:manage",
+  PRODUCT_READ: "product:read",
+  PRODUCT_MANAGE: "product:manage",
   SHIPPING_BOX_READ: "shippingBox:read",
   SHIPPING_BOX_MANAGE: "shippingBox:manage",
 } as const;
@@ -70,6 +73,8 @@ export function useMerchantPermissions() {
     canManageSenderLocations: hasPermission(
       MerchantPermission.SENDER_LOCATION_MANAGE,
     ),
+    canReadProducts: hasPermission(MerchantPermission.PRODUCT_READ),
+    canManageProducts: hasPermission(MerchantPermission.PRODUCT_MANAGE),
     canReadShippingBoxes: hasPermission(MerchantPermission.SHIPPING_BOX_READ),
     canManageShippingBoxes: hasPermission(
       MerchantPermission.SHIPPING_BOX_MANAGE,
