@@ -1,0 +1,92 @@
+{
+  "metaTitle": "المحفظة — روافد",
+  "metaDescription": "اعرض رصيدك المسبق وسجل معاملاتك على روافد.",
+  "skipToContent": "انتقل إلى المحفظة",
+  "hero": {
+    "title": "المحفظة",
+    "description": "رصيدك المسبق وكل حركة على حسابك."
+  },
+  "balance": {
+    "title": "الرصيد المتاح",
+    "updatedAt": "آخر تحديث {{date}}",
+    "updatedAtLabel": "تاريخ آخر تحديث للرصيد"
+  },
+  "header": {
+    "triggerLabel": "رصيد المحفظة",
+    "totalBalance": "إجمالي الرصيد",
+    "updatedAt": "آخر تحديث {{date}}",
+    "hint": "الاشتراكات وتجديدها تُخصم من هذا الرصيد. لإضافة رصيد، تواصل مع دعم روافد.",
+    "loadError": "تعذّر تحميل الرصيد",
+    "viewWallet": "عرض المحفظة والمعاملات"
+  },
+  "toolbar": {
+    "title": "سجل المعاملات",
+    "sortLabel": "ترتيب",
+    "typeLabel": "النوع",
+    "typeAll": "كل الأنواع",
+    "sort": {
+      "createdDesc": "الأحدث أولاً",
+      "createdAsc": "الأقدم أولاً",
+      "amountDesc": "الأكبر مبلغاً أولاً",
+      "amountAsc": "الأصغر مبلغاً أولاً"
+    }
+  },
+  "table": {
+    "caption": "معاملات المحفظة",
+    "date": "التاريخ",
+    "type": "النوع",
+    "note": "السبب",
+    "amount": "المبلغ",
+    "balanceAfter": "الرصيد بعد",
+    "actions": "إجراءات",
+    "viewDetails": "عرض تفاصيل {{label}}",
+    "noNote": "لا يوجد سبب",
+    "noNoteHint": "خصم تلقائي — لم يُدخل سبب"
+  },
+  "transactionTypes": {
+    "ADMIN_CREDIT": "رصيد من روافد",
+    "ADMIN_DEBIT": "تعديل من روافد",
+    "SUBSCRIPTION_NEW": "اشتراك",
+    "SUBSCRIPTION_RENEWAL": "تجديد الاشتراك",
+    "TOP_UP": "شحن رصيد",
+    "REFUND": "استرداد",
+    "unknownCredit": "إضافة",
+    "unknownDebit": "خصم"
+  },
+  "pagination": {
+    "label": "ترقيم صفحات معاملات المحفظة",
+    "summary": "عرض {{start}}–{{end}} من {{total}}",
+    "pageOf": "صفحة {{current}} من {{total}}"
+  },
+  "empty": {
+    "title": "لا توجد معاملات بعد",
+    "description": "عندما يتغير رصيدك — رصيد من روافد أو خصم اشتراك — سيظهر هنا.",
+    "filterTitle": "لا توجد معاملات مطابقة",
+    "filterDescription": "جرّب فلتر نوع مختلفاً أو أعد ضبط الترتيب."
+  },
+  "errors": {
+    "loadFailed": "تعذّر تحميل المحفظة",
+    "loadFailedHint": "تحقق من الاتصال وحاول مرة أخرى.",
+    "retry": "إعادة المحاولة"
+  },
+  "detail": {
+    "title": "تفاصيل المعاملة",
+    "type": "النوع",
+    "direction": "الاتجاه",
+    "amount": "المبلغ",
+    "balanceBefore": "الرصيد قبل",
+    "balanceAfter": "الرصيد بعد",
+    "note": "السبب",
+    "referenceType": "نوع المرجع",
+    "referenceId": "معرّف المرجع",
+    "createdAt": "التاريخ",
+    "directionCredit": "إضافة",
+    "directionDebit": "خصم",
+    "copyReference": "نسخ معرّف المرجع",
+    "copied": "تم النسخ"
+  },
+  "amount": {
+    "creditAria": "إضافة {{amount}}",
+    "debitAria": "خصم {{amount}}"
+  }
+}

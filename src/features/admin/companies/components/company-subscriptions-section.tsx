@@ -43,9 +43,11 @@ function SubscriptionTimelineItem({ subscription }: { subscription: Subscription
     ? t(`billing:billingPeriod.${subscription.billingPeriod}`)
     : t("billing:plan.openEnded");
 
-  const endsLabel = subscription.endsAt
-    ? formatDate(subscription.endsAt)
-    : t("billing:plan.openEnded");
+  const periodSeparator = subscription.endsAt
+    ? locale === "ar"
+      ? "←"
+      : "→"
+    : "–";
 
   return (
     <li className="relative ps-6">
@@ -61,7 +63,9 @@ function SubscriptionTimelineItem({ subscription }: { subscription: Subscription
           <div className="min-w-0 space-y-1">
             <p className="font-semibold text-foreground">{subscription.planName}</p>
             <p className="font-mono text-xs uppercase tracking-wide text-muted-foreground">
-              {subscription.planCode}
+              <span dir="ltr" className="inline-block">
+                {subscription.planCode}
+              </span>
             </p>
           </div>
           <Badge variant={getStatusVariant(subscription.status)}>
@@ -74,21 +78,24 @@ function SubscriptionTimelineItem({ subscription }: { subscription: Subscription
             <dt className="text-xs text-muted-foreground">
               {t("companies.detail.subscriptions.shipments")}
             </dt>
-            <dd dir="ltr" className="mt-1 text-sm font-medium text-start tabular-nums">
-              {subscription.shipmentsPerMonth.toLocaleString(intlLocale)}
+            <dd className="mt-1 text-sm font-medium tabular-nums">
+              <span dir="ltr" className="inline-block">
+                {subscription.shipmentsPerMonth.toLocaleString(intlLocale)}
+              </span>
             </dd>
           </div>
           <div>
             <dt className="text-xs text-muted-foreground">
               {t("companies.detail.subscriptions.price")}
             </dt>
-            <dd
-              dir={isFree ? undefined : "ltr"}
-              className="mt-1 text-sm font-medium text-start tabular-nums"
-            >
-              {isFree
-                ? t("billing:plan.freePrice")
-                : formatCurrency(subscription.price, "EGP", intlLocale)}
+            <dd className="mt-1 text-sm font-medium tabular-nums">
+              {isFree ? (
+                t("billing:plan.freePrice")
+              ) : (
+                <span dir="ltr" className="inline-block">
+                  {formatCurrency(subscription.price, "EGP", intlLocale)}
+                </span>
+              )}
             </dd>
           </div>
           <div>
@@ -101,8 +108,23 @@ function SubscriptionTimelineItem({ subscription }: { subscription: Subscription
             <dt className="text-xs text-muted-foreground">
               {t("companies.detail.subscriptions.period")}
             </dt>
-            <dd dir="ltr" className="mt-1 text-start text-sm font-medium tabular-nums">
-              {formatDate(subscription.startsAt)} → {endsLabel}
+            <dd className="mt-1 text-sm font-medium">
+              <span dir="ltr" className="inline-block tabular-nums">
+                {formatDate(subscription.startsAt)}
+              </span>
+              <span
+                className="mx-1 text-muted-foreground"
+                aria-hidden="true"
+              >
+                {periodSeparator}
+              </span>
+              {subscription.endsAt ? (
+                <span dir="ltr" className="inline-block tabular-nums">
+                  {formatDate(subscription.endsAt)}
+                </span>
+              ) : (
+                <span>{t("billing:plan.openEnded")}</span>
+              )}
             </dd>
           </div>
         </dl>

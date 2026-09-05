@@ -1,0 +1,92 @@
+{
+  "metaTitle": "Wallet — Rawafid",
+  "metaDescription": "View your prepaid balance and transaction history on Rawafid.",
+  "skipToContent": "Skip to wallet",
+  "hero": {
+    "title": "Wallet",
+    "description": "Your prepaid balance and every movement on your account."
+  },
+  "balance": {
+    "title": "Available balance",
+    "updatedAt": "Last updated {{date}}",
+    "updatedAtLabel": "Balance last updated"
+  },
+  "header": {
+    "triggerLabel": "Wallet balance",
+    "totalBalance": "Total balance",
+    "updatedAt": "Updated {{date}}",
+    "hint": "Subscriptions and renewals are paid from this balance. To add funds, contact Rawafid support.",
+    "loadError": "Could not load balance",
+    "viewWallet": "View wallet & transactions"
+  },
+  "toolbar": {
+    "title": "Transaction history",
+    "sortLabel": "Sort",
+    "typeLabel": "Type",
+    "typeAll": "All types",
+    "sort": {
+      "createdDesc": "Newest first",
+      "createdAsc": "Oldest first",
+      "amountDesc": "Largest amount first",
+      "amountAsc": "Smallest amount first"
+    }
+  },
+  "table": {
+    "caption": "Wallet transactions",
+    "date": "Date",
+    "type": "Type",
+    "note": "Reason",
+    "amount": "Amount",
+    "balanceAfter": "Balance after",
+    "actions": "Actions",
+    "viewDetails": "View details for {{label}}",
+    "noNote": "No note provided",
+    "noNoteHint": "Automatic charge — no note was entered"
+  },
+  "transactionTypes": {
+    "ADMIN_CREDIT": "Credit from Rawafid",
+    "ADMIN_DEBIT": "Adjustment by Rawafid",
+    "SUBSCRIPTION_NEW": "Subscription",
+    "SUBSCRIPTION_RENEWAL": "Subscription renewal",
+    "TOP_UP": "Top up",
+    "REFUND": "Refund",
+    "unknownCredit": "Credit",
+    "unknownDebit": "Debit"
+  },
+  "pagination": {
+    "label": "Wallet transactions pagination",
+    "summary": "Showing {{start}}–{{end}} of {{total}}",
+    "pageOf": "Page {{current}} of {{total}}"
+  },
+  "empty": {
+    "title": "No transactions yet",
+    "description": "When your balance changes — a credit from Rawafid or a subscription charge — it will appear here.",
+    "filterTitle": "No matching transactions",
+    "filterDescription": "Try a different type filter or reset the sort."
+  },
+  "errors": {
+    "loadFailed": "Could not load wallet",
+    "loadFailedHint": "Check your connection and try again.",
+    "retry": "Retry"
+  },
+  "detail": {
+    "title": "Transaction details",
+    "type": "Type",
+    "direction": "Direction",
+    "amount": "Amount",
+    "balanceBefore": "Balance before",
+    "balanceAfter": "Balance after",
+    "note": "Reason",
+    "referenceType": "Reference type",
+    "referenceId": "Reference ID",
+    "createdAt": "Date",
+    "directionCredit": "Credit",
+    "directionDebit": "Debit",
+    "copyReference": "Copy reference ID",
+    "copied": "Copied"
+  },
+  "amount": {
+    "creditAria": "Credit of {{amount}}",
+    "debitAria": "Debit of {{amount}}"
+  }
+}

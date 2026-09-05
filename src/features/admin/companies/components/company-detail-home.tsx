@@ -1,7 +1,10 @@
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Navigate, useParams } from "react-router-dom";
 import { useAdminMe } from "@/features/admin/auth/hooks/use-admin-me";
 import { CompanyAssignSubscriptionPanel } from "@/features/admin/companies/components/company-assign-subscription-panel";
+import { CompanyWalletLedgerSheet } from "@/features/admin/companies/components/company-wallet-ledger-sheet";
+import { CompanyWalletSummary } from "@/features/admin/companies/components/company-wallet-summary";
 import { CompaniesErrorState } from "@/features/admin/companies/components/companies-error-state";
 import { CompanyDetailHero } from "@/features/admin/companies/components/company-detail-hero";
 import { CompanyDetailSkeleton } from "@/features/admin/companies/components/company-detail-skeleton";
@@ -11,6 +14,7 @@ import { CompanyTeamSection } from "@/features/admin/companies/components/compan
 import { useAdminCompany } from "@/features/admin/companies/hooks/use-admin-company";
 import { useAdminCompanySubscriptions } from "@/features/admin/companies/hooks/use-admin-company-subscriptions";
 import { useAdminCompanyUsers } from "@/features/admin/companies/hooks/use-admin-company-users";
+import { useAdminCompanyWallet } from "@/features/admin/companies/hooks/use-admin-company-wallet";
 import { AdminRole } from "@/shared/types/enums";
 
 const UUID_PATTERN =
@@ -19,13 +23,16 @@ const UUID_PATTERN =
 export function CompanyDetailHome() {
   const { t } = useTranslation("admin");
   const { companyId } = useParams<{ companyId: string }>();
+  const [ledgerOpen, setLedgerOpen] = useState(false);
 
   const companyQuery = useAdminCompany(companyId);
+  const walletQuery = useAdminCompanyWallet(companyId);
   const subscriptionsQuery = useAdminCompanySubscriptions(companyId);
   const usersQuery = useAdminCompanyUsers(companyId);
   const { data: admin } = useAdminMe();
 
   const canAssign = admin?.role === AdminRole.SUPER_ADMIN;
+  const canManageWallet = admin?.role === AdminRole.SUPER_ADMIN;
   const activeSubscription = subscriptionsQuery.data?.find(
     (subscription) => subscription.status === "ACTIVE",
   );
@@ -43,6 +50,9 @@ export function CompanyDetailHome() {
   if (isNotFound) {
     return <Navigate to="/admin/companies" replace />;
   }
+
+  const wallet = walletQuery.data;
+  const currency = wallet?.currency ?? "EGP";
 
   return (
     <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-4 py-6 sm:px-6 sm:py-8">
@@ -64,7 +74,11 @@ export function CompanyDetailHome() {
 
       {companyQuery.data ? (
         <div id="company-detail-main" className="space-y-6">
-          <CompanyDetailHero company={companyQuery.data} />
+          <CompanyDetailHero
+            company={companyQuery.data}
+            wallet={wallet}
+            isWalletLoading={walletQuery.isLoading && !wallet}
+          />
 
           <div className="grid gap-6 xl:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)]">
             <CompanyProfileCard company={companyQuery.data} />
@@ -76,17 +90,56 @@ export function CompanyDetailHome() {
             />
           </div>
 
-          <CompanyAssignSubscriptionPanel
-            company={companyQuery.data}
-            activeSubscription={activeSubscription}
-            canAssign={canAssign}
-          />
+          <section
+            aria-labelledby="company-billing-heading"
+            className="space-y-4"
+          >
+            <div className="space-y-1">
+              <h2
+                id="company-billing-heading"
+                className="text-lg font-semibold tracking-tight text-foreground"
+              >
+                {t("companies.detail.billing.title")}
+              </h2>
+              <p className="text-sm text-muted-foreground">
+                {t("companies.detail.billing.subtitle")}
+              </p>
+            </div>
 
-          <CompanySubscriptionsSection
-            subscriptions={subscriptionsQuery.data}
-            isLoading={subscriptionsQuery.isLoading}
-            isError={subscriptionsQuery.isError}
-            onRetry={() => void subscriptionsQuery.refetch()}
+            <div className="grid gap-6 xl:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)]">
+              <div className="space-y-6">
+                <CompanyWalletSummary
+                  company={companyQuery.data}
+                  wallet={wallet}
+                  isLoading={walletQuery.isLoading && !wallet}
+                  isError={walletQuery.isError}
+                  canManage={canManageWallet}
+                  onViewLedger={() => setLedgerOpen(true)}
+                  onRetry={() => void walletQuery.refetch()}
+                />
+
+                <CompanyAssignSubscriptionPanel
+                  company={companyQuery.data}
+                  activeSubscription={activeSubscription}
+                  canAssign={canAssign}
+                />
+              </div>
+
+              <CompanySubscriptionsSection
+                subscriptions={subscriptionsQuery.data}
+                isLoading={subscriptionsQuery.isLoading}
+                isError={subscriptionsQuery.isError}
+                onRetry={() => void subscriptionsQuery.refetch()}
+              />
+            </div>
+          </section>
+
+          <CompanyWalletLedgerSheet
+            companyId={companyQuery.data.id}
+            companyName={companyQuery.data.name}
+            currency={currency}
+            open={ledgerOpen}
+            onOpenChange={setLedgerOpen}
           />
         </div>
       ) : null}

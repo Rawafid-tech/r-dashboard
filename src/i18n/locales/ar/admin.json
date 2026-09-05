@@ -150,7 +150,9 @@
     "toast": {
       "assigned": "تم تعيين الاشتراك",
       "assignFailed": "تعذّر تعيين الاشتراك",
-      "companyNotFound": "الشركة غير موجودة"
+      "companyNotFound": "الشركة غير موجودة",
+      "walletAdjusted": "تم تحديث رصيد المحفظة",
+      "walletAdjustFailed": "تعذّر تحديث رصيد المحفظة"
     },
     "planCodes": {
       "FREE": "مجاني",
@@ -165,6 +167,13 @@
       "backToDirectory": "العودة إلى الشركات",
       "badge": "شركة تاجر",
       "currentPlan": "الخطة الحالية",
+      "hero": {
+        "walletBalance": "رصيد المحفظة"
+      },
+      "billing": {
+        "title": "الفوترة والمحفظة",
+        "subtitle": "الرصيد المسبق، تعيين الخطة، وسجل الاشتراكات لهذا التاجر."
+      },
       "profile": {
         "title": "ملف الشركة",
         "subtitle": "بيانات التسجيل والبصمة اللوجستية لهذا المستأجر.",
@@ -233,6 +242,44 @@
         "status": {
           "ACTIVE": "نشط",
           "SUSPENDED": "معلّق"
+        }
+      },
+      "wallet": {
+        "title": "المحفظة",
+        "subtitle": "الرصيد المسبق ودفتر الحركات لهذا التاجر. التعديلات تظهر لمالك الشركة والموظفين الذين لديهم صلاحية المحفظة.",
+        "summaryHint": "يُخصم الرصيد للاشتراكات ويُضاف بواسطة فريق المنصة.",
+        "balanceLabel": "الرصيد المتاح",
+        "updatedAt": "آخر تحديث {{date}}",
+        "viewLedger": "عرض المعاملات",
+        "ledgerTitle": "معاملات المحفظة",
+        "ledgerDescription": "الدفتر الكامل لـ {{company}} — الأحدث أولاً.",
+        "adjustButton": "تعديل الرصيد",
+        "loadError": "تعذّر تحميل رصيد المحفظة.",
+        "transactionsError": "تعذّر تحميل معاملات المحفظة.",
+        "adjustTitle": "تعديل رصيد المحفظة",
+        "adjustDescription": "تحريك الرصيد لـ {{company}}. السبب الذي تدخله يظهر للتاجر في سجل محفظته.",
+        "directionLabel": "الاتجاه",
+        "directionCredit": "إضافة (ائتمان)",
+        "directionDebit": "خصم",
+        "directionCreditShort": "إضافة",
+        "directionDebitShort": "خصم",
+        "amountLabel": "المبلغ",
+        "amountHint": "بين 0.01 و 1,000,000.00 — بحد أقصى منزلتين عشريتين.",
+        "noteLabel": "السبب للتاجر",
+        "notePlaceholder": "اشرح سبب تغيير الرصيد — التاجر سيراه.",
+        "noteHint": "مطلوب. يظهر في صف معاملة محفظة التاجر.",
+        "previewTitle": "معاينة الرصيد",
+        "previewCurrent": "الرصيد الحالي",
+        "previewAfter": "بعد هذا التغيير",
+        "submit": "حفظ التعديل",
+        "submitting": "جاري الحفظ…",
+        "cancel": "إلغاء",
+        "createdBy": "معرّف الموظف",
+        "validation": {
+          "amount": "أدخل مبلغاً صالحاً",
+          "amountDecimals": "استخدم منزلتين عشريتين كحد أقصى",
+          "noteRequired": "السبب مطلوب",
+          "noteMax": "يجب ألا يتجاوز السبب 500 حرف"
         }
       }
     }

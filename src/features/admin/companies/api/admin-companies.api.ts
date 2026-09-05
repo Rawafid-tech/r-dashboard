@@ -7,6 +7,12 @@ import type {
   AdminCompany,
   AssignSubscriptionRequest,
 } from "@/features/admin/companies/types";
+import type {
+  AdminWallet,
+  AdminWalletTransaction,
+  WalletAdjustmentRequest,
+  WalletTransactionsListParams,
+} from "@/features/wallet/types";
 
 export async function getAdminCompanies(
   params: AdminCompaniesListParams = {},
@@ -52,4 +58,37 @@ export async function assignAdminCompanySubscription(
     body,
   );
   return data;
+}
+
+export async function getAdminCompanyWallet(
+  companyId: string,
+): Promise<AdminWallet> {
+  const { data } = await apiClient.get<AdminWallet>(
+    `/api/admin/companies/${companyId}/wallet`,
+  );
+  return data;
+}
+
+export async function getAdminCompanyWalletTransactions(
+  companyId: string,
+  params: WalletTransactionsListParams = {},
+): Promise<PaginatedResponse<AdminWalletTransaction>> {
+  const { data } = await apiClient.get<
+    PaginatedResponse<AdminWalletTransaction>
+  >(`/api/admin/companies/${companyId}/wallet/transactions`, { params });
+  return data;
+}
+
+export async function adjustAdminCompanyWallet(
+  companyId: string,
+  body: WalletAdjustmentRequest,
+): Promise<AdminWalletTransaction> {
+  const response = await apiClient.post<AdminWalletTransaction>(
+    `/api/admin/companies/${companyId}/wallet/adjustments`,
+    body,
+    {
+      validateStatus: (status) => status === 200 || status === 201,
+    },
+  );
+  return response.data;
 }

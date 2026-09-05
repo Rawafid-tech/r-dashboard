@@ -150,7 +150,9 @@
     "toast": {
       "assigned": "Subscription assigned",
       "assignFailed": "Could not assign subscription",
-      "companyNotFound": "Company not found"
+      "companyNotFound": "Company not found",
+      "walletAdjusted": "Wallet balance updated",
+      "walletAdjustFailed": "Could not update wallet balance"
     },
     "planCodes": {
       "FREE": "Free",
@@ -165,6 +167,13 @@
       "backToDirectory": "Back to companies",
       "badge": "Merchant company",
       "currentPlan": "Current plan",
+      "hero": {
+        "walletBalance": "Wallet balance"
+      },
+      "billing": {
+        "title": "Billing & wallet",
+        "subtitle": "Prepaid balance, plan assignment, and subscription history for this merchant."
+      },
       "profile": {
         "title": "Company profile",
         "subtitle": "Registration facts and logistics footprint for this merchant tenant.",
@@ -233,6 +242,44 @@
         "status": {
           "ACTIVE": "Active",
           "SUSPENDED": "Suspended"
+        }
+      },
+      "wallet": {
+        "title": "Wallet",
+        "subtitle": "Prepaid balance and ledger for this merchant. Adjustments are visible to the company owner and staff with wallet access.",
+        "summaryHint": "Balance is charged for subscriptions and topped up by platform staff.",
+        "balanceLabel": "Available balance",
+        "updatedAt": "Updated {{date}}",
+        "viewLedger": "View transactions",
+        "ledgerTitle": "Wallet transactions",
+        "ledgerDescription": "Full ledger for {{company}} — newest first.",
+        "adjustButton": "Adjust balance",
+        "loadError": "Could not load wallet balance.",
+        "transactionsError": "Could not load wallet transactions.",
+        "adjustTitle": "Adjust wallet balance",
+        "adjustDescription": "Move balance for {{company}}. The reason you enter is shown to the merchant on their wallet ledger.",
+        "directionLabel": "Direction",
+        "directionCredit": "Credit (add funds)",
+        "directionDebit": "Debit (remove funds)",
+        "directionCreditShort": "Credit",
+        "directionDebitShort": "Debit",
+        "amountLabel": "Amount",
+        "amountHint": "Between 0.01 and 1,000,000.00 — up to two decimal places.",
+        "noteLabel": "Reason for the merchant",
+        "notePlaceholder": "Explain why this balance is changing — the merchant will read this.",
+        "noteHint": "Required. Shown on the merchant wallet transaction row.",
+        "previewTitle": "Balance preview",
+        "previewCurrent": "Current balance",
+        "previewAfter": "After this change",
+        "submit": "Save adjustment",
+        "submitting": "Saving…",
+        "cancel": "Cancel",
+        "createdBy": "Staff ID",
+        "validation": {
+          "amount": "Enter a valid amount",
+          "amountDecimals": "Use at most two decimal places",
+          "noteRequired": "A reason is required",
+          "noteMax": "Reason must be 500 characters or fewer"
         }
       }
     }

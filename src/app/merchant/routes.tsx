@@ -8,6 +8,7 @@ import { RolesPage } from "@/app/merchant/roles-page";
 import { ShippingBoxesPage } from "@/app/merchant/shipping-boxes-page";
 import { SettingsPage } from "@/app/merchant/settings-page";
 import { UsersPage } from "@/app/merchant/users-page";
+import { WalletPage } from "@/app/merchant/wallet-page";
 
 export const merchantRoutes: RouteObject[] = [
   {
@@ -44,6 +45,10 @@ export const merchantRoutes: RouteObject[] = [
       {
         path: "settings",
         element: <SettingsPage />,
+      },
+      {
+        path: "wallet",
+        element: <WalletPage />,
       },
     ],
   },
