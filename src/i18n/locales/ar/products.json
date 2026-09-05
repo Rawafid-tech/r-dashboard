@@ -15,7 +15,8 @@
   "tabs": {
     "label": "أقسام المنتجات",
     "products": "قائمة المنتجات",
-    "categories": "الفئات"
+    "categories": "الفئات",
+    "import": "رفع المنتجات بالجملة"
   },
   "toolbar": {
     "title": "كتalog المنتجات",
@@ -218,6 +219,98 @@
     "errors": {
       "loadFailed": "تعذّر تحميل الفئات",
       "retry": "إعادة المحاولة"
+    }
+  },
+  "import": {
+    "metaTitle": "استيراد المنتجات — روافد",
+    "metaDescription": "استيراد المنتجات من جدول بيانات إلى كتالوج الشحن.",
+    "stepper": {
+      "label": "خطوات الاستيراد",
+      "stepOf": "الخطوة {{current}} من {{total}}",
+      "template": "القالب",
+      "upload": "رفع ومطابقة",
+      "preview": "معاينة",
+      "done": "تم"
+    },
+    "template": {
+      "title": "تنزيل القالب",
+      "description": "ابدأ بهذا الجدول حتى تتطابق العناوين. يمكنك أيضاً رفع ملفك ومطابقة الأعمدة في الخطوة التالية.",
+      "download": "تنزيل القالب",
+      "downloading": "جاري تجهيز القالب…",
+      "loadFailed": "تعذّر تحميل قائمة الأعمدة.",
+      "retry": "إعادة المحاولة",
+      "continue": "رفع الملف",
+      "columnsCaption": "أعمدة القالب",
+      "column": "العمود",
+      "required": "مطلوب",
+      "optional": "اختياري",
+      "example": "مثال",
+      "enumErrorTitle": "قيمة غير مسموحة",
+      "enumError": "اختر قيمة من القائمة. الكتابة اليدوية غير مسموحة.",
+      "enumPrompt": "اختر إحدى القيم المسموحة."
+    },
+    "upload": {
+      "title": "رفع الملف ومطابقة الأعمدة",
+      "description": "الملف يبقى في متصفحك. لن يُكتب شيء حتى تؤكد الاستيراد.",
+      "dropLabel": "ملف الجدول",
+      "dropHint": "أسقط ملف Excel أو CSV هنا، أو اختر ملفاً.",
+      "chooseFile": "اختيار ملف",
+      "accepted": "المسموح: .xlsx و .xls و .csv",
+      "invalidType": "استخدم ملف .xlsx أو .xls أو .csv.",
+      "emptyFile": "هذا الملف لا يحتوي على صفوف بيانات.",
+      "unreadable": "تعذّر قراءة هذا الملف. تحقق من التنسيق وحاول مرة أخرى.",
+      "parsing": "جاري قراءة الملف…",
+      "fileName": "الملف المحدد: {{name}}",
+      "replaceFile": "استبدال الملف",
+      "mappingTitle": "مطابقة الأعمدة",
+      "mappingDescription": "طابقنا العناوين التي تعرفنا عليها. صحّح أي عمود يبدو خاطئاً.",
+      "yourColumn": "عمودك",
+      "untitledColumn": "عمود بدون عنوان",
+      "mapsTo": "يُطابق",
+      "mapsToFor": "مطابقة {{column}} مع",
+      "ignore": "تجاهل هذا العمود",
+      "requiredUnmapped": "اربط كل عمود مطلوب قبل المعاينة.",
+      "missingRequired": "{{label}} مطلوب وغير مربوط.",
+      "applyGeneral": "هذا الجدول بلا عمود معالجة — طبّق «عام» على كل الصفوف",
+      "applyGeneralHint": "المعالجة مطلوبة. بدون هذا الخيار ستُرفض الصفوف الناقصة.",
+      "overLimitTitle": "هذا الملف فيه أكثر من 1000 صف",
+      "overLimitDescription": "سيُرسل أول 1000 صف بيانات فقط. قسّم الباقي في ملف آخر.",
+      "rowCount": "{{count}} صف بيانات جاهز",
+      "rowCountTruncated": "سيُرسل {{sent}} من أصل {{total}} صف بيانات",
+      "back": "رجوع",
+      "preview": "معاينة الاستيراد"
+    },
+    "preview": {
+      "title": "معاينة الاستيراد",
+      "description": "لم يُكتب شيء بعد. صحّح الملف أو المطابقة وأعد المعاينة حتى تخلو من الأخطاء.",
+      "newCategoriesTitle": "سيتم إنشاء {{count}} فئة جديدة",
+      "newCategoriesNone": "لن تُنشأ فئات جديدة.",
+      "fileErrorsTitle": "مشاكل على مستوى الملف",
+      "errorsSummary": "{{count}} صفوف فيها مشاكل",
+      "errorsNone": "كل الصفوف تبدو صحيحة.",
+      "tableCaption": "الصفوف التي سيتم استيرادها",
+      "row": "الصف",
+      "rowError": "مشكلة الصف",
+      "emptyCell": "—",
+      "back": "العودة للمطابقة",
+      "repreview": "معاينة مرة أخرى",
+      "import": "استيراد المنتجات",
+      "importDisabled": "أصلح كل الأخطاء قبل الاستيراد.",
+      "previewing": "جاري فحص الصفوف…",
+      "importing": "جاري الاستيراد…"
+    },
+    "result": {
+      "title": "اكتمل الاستيراد",
+      "description": "تمت إضافة {{created}} منتجات.",
+      "categoriesTitle": "تم إنشاء {{count}} فئات",
+      "backToList": "عرض المنتجات",
+      "importAnother": "استيراد ملف آخر"
+    },
+    "toast": {
+      "previewFailed": "تعذّرت معاينة هذا الاستيراد",
+      "committed": "تم استيراد {{count}} منتجات",
+      "commitFailed": "تعذّر استيراد المنتجات",
+      "nothingWritten": "رُفضت بعض الصفوف، لذلك لم يُستورد شيء"
     }
   }
 }

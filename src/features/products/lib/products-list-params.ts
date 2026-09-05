@@ -1,6 +1,7 @@
 import type {
   ProductHandling,
   ProductsSortField,
+  ProductsTab,
 } from "@/features/products/types";
 import { isProductHandling } from "@/features/products/schema";
 
@@ -59,8 +60,10 @@ export function readHandlingFilter(
   return undefined;
 }
 
-export function readProductsTab(
-  value: string | null,
-): "products" | "categories" {
-  return value === "categories" ? "categories" : "products";
+export function readProductsTab(value: string | null): ProductsTab {
+  if (value === "categories" || value === "import") {
+    return value;
+  }
+
+  return "products";
 }

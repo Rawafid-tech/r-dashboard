@@ -28,7 +28,9 @@ export function ProductsHero({
   const locale = useLocaleStore((state) => state.locale);
   const intlLocale = locale === "ar" ? "ar-EG" : "en-US";
 
-  const tabs: ProductsTab[] = ["products", "categories"];
+  const tabs: ProductsTab[] = canManage
+    ? ["products", "categories", "import"]
+    : ["products", "categories"];
 
   return (
     <PageHeader
@@ -42,7 +44,7 @@ export function ProductsHero({
               value={totalElements.toLocaleString(intlLocale)}
             />
           ) : null}
-          {canManage ? (
+          {canManage && activeTab !== "import" ? (
             <Button
               type="button"
               className="w-full sm:w-auto"
@@ -69,11 +71,13 @@ export function ProductsHero({
             return (
               <Button
                 key={tab}
+                id={`products-tab-${tab}`}
                 type="button"
                 size="sm"
                 variant={isActive ? "default" : "outline"}
                 role="tab"
                 aria-selected={isActive}
+                aria-controls="products-main"
                 className={cn(isActive && "pointer-events-none")}
                 onClick={() => onTabChange(tab)}
               >

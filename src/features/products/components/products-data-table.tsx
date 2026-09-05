@@ -80,16 +80,18 @@ export function ProductsDataTable({
         id: "name",
         header: t("table.name"),
         cell: (product) => (
-          <div className="min-w-0 space-y-0.5">
-            <span className="block font-medium text-foreground">
-              {product.name}
-            </span>
-            {product.categoryName ? (
-              <span className="block text-xs text-muted-foreground">
-                {product.categoryName}
-              </span>
-            ) : null}
-          </div>
+          <span className="block font-medium text-foreground">
+            {product.name}
+          </span>
+        ),
+      },
+      {
+        id: "category",
+        header: t("table.category"),
+        cell: (product) => (
+          <span className="text-sm text-foreground">
+            {product.categoryName ?? t("table.noCategory")}
+          </span>
         ),
       },
       {
@@ -194,6 +196,9 @@ export function ProductsDataTable({
               />
               <div className="min-w-0 flex-1 space-y-1">
                 <h3 className="font-semibold text-foreground">{product.name}</h3>
+                <p className="text-xs text-muted-foreground">
+                  {product.categoryName ?? t("table.noCategory")}
+                </p>
                 <p dir="ltr" className="font-mono text-xs text-muted-foreground">
                   {product.sku}
                 </p>

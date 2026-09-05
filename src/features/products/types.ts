@@ -77,4 +77,71 @@ export interface ProductCategoryPayload {
   parentId?: string | null;
 }
 
-export type ProductsTab = "products" | "categories";
+export type ProductsTab = "products" | "categories" | "import";
+
+export const IMPORT_FIELD_KEYS = [
+  "name",
+  "sku",
+  "barcode",
+  "hsCode",
+  "description",
+  "price",
+  "weightKg",
+  "lengthCm",
+  "widthCm",
+  "heightCm",
+  "handling",
+  "categoryPath",
+] as const;
+
+export type ImportFieldKey = (typeof IMPORT_FIELD_KEYS)[number];
+
+export type ImportColumnType = "TEXT" | "DECIMAL" | "ENUM";
+
+export interface ImportTemplateColumn {
+  key: string;
+  label: string;
+  required: boolean;
+  type: ImportColumnType;
+  example: string | null;
+  defaultValue: string | null;
+  allowedValues: string[];
+  aliases: string[];
+}
+
+export interface ImportRow {
+  rowNumber: number;
+  name?: string;
+  sku?: string;
+  barcode?: string;
+  hsCode?: string;
+  description?: string;
+  price?: string | number;
+  weightKg?: string | number;
+  lengthCm?: string | number;
+  widthCm?: string | number;
+  heightCm?: string | number;
+  handling?: string;
+  categoryPath?: string;
+}
+
+export interface ImportRequest {
+  dryRun: boolean;
+  rows: ImportRow[];
+}
+
+export interface ImportRowError {
+  row: number | null;
+  name: string | null;
+  reason: string;
+}
+
+export interface ImportResult {
+  dryRun: boolean;
+  totalRows: number;
+  created: number;
+  newCategories: string[];
+  errors: ImportRowError[];
+}
+
+export const IMPORT_MAX_ROWS = 1000;

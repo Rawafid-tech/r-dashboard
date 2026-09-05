@@ -15,7 +15,8 @@
   "tabs": {
     "label": "Products sections",
     "products": "Product list",
-    "categories": "Categories"
+    "categories": "Categories",
+    "import": "Bulk upload products"
   },
   "toolbar": {
     "title": "Product catalog",
@@ -218,6 +219,98 @@
     "errors": {
       "loadFailed": "Could not load categories",
       "retry": "Retry"
+    }
+  },
+  "import": {
+    "metaTitle": "Import products — Rawafid",
+    "metaDescription": "Import products from a spreadsheet into your shipping catalog.",
+    "stepper": {
+      "label": "Import steps",
+      "stepOf": "Step {{current}} of {{total}}",
+      "template": "Template",
+      "upload": "Upload and map",
+      "preview": "Preview",
+      "done": "Done"
+    },
+    "template": {
+      "title": "Download the template",
+      "description": "Start from this spreadsheet so the headers match. You can also upload your own file and map the columns in the next step.",
+      "download": "Download template",
+      "downloading": "Preparing template…",
+      "loadFailed": "Could not load the column list.",
+      "retry": "Retry",
+      "continue": "Upload file",
+      "columnsCaption": "Columns in the template",
+      "column": "Column",
+      "required": "Required",
+      "optional": "Optional",
+      "example": "Example",
+      "enumErrorTitle": "Invalid value",
+      "enumError": "Choose a value from the list. Other text is not allowed.",
+      "enumPrompt": "Choose one of the allowed values."
+    },
+    "upload": {
+      "title": "Upload and map columns",
+      "description": "The file stays in your browser. Nothing is written until you import.",
+      "dropLabel": "Spreadsheet file",
+      "dropHint": "Drop an Excel or CSV file here, or choose one.",
+      "chooseFile": "Choose file",
+      "accepted": "Accepted: .xlsx, .xls, .csv",
+      "invalidType": "Use an .xlsx, .xls or .csv file.",
+      "emptyFile": "This file has no data rows.",
+      "unreadable": "Could not read this file. Check the format and try again.",
+      "parsing": "Reading file…",
+      "fileName": "Selected file: {{name}}",
+      "replaceFile": "Replace file",
+      "mappingTitle": "Match your columns",
+      "mappingDescription": "We matched headers we recognized. Correct anything that looks wrong.",
+      "yourColumn": "Your column",
+      "untitledColumn": "Untitled column",
+      "mapsTo": "Maps to",
+      "mapsToFor": "Maps {{column}} to",
+      "ignore": "Ignore this column",
+      "requiredUnmapped": "Map every required column before previewing.",
+      "missingRequired": "{{label}} is required and is not mapped.",
+      "applyGeneral": "This sheet has no handling column — apply General to every row",
+      "applyGeneralHint": "Handling is required. Without this, rows missing a handling value will be rejected.",
+      "overLimitTitle": "This file has more than 1000 rows",
+      "overLimitDescription": "Only the first 1000 data rows will be sent. Split the rest into another file.",
+      "rowCount": "{{count}} data rows ready",
+      "rowCountTruncated": "{{sent}} of {{total}} data rows will be sent",
+      "back": "Back",
+      "preview": "Preview import"
+    },
+    "preview": {
+      "title": "Preview import",
+      "description": "Nothing has been written. Fix the file or mapping and preview again until it is clean.",
+      "newCategoriesTitle": "{{count}} new categories will be created",
+      "newCategoriesNone": "No new categories will be created.",
+      "fileErrorsTitle": "File-level problems",
+      "errorsSummary": "{{count}} rows have problems",
+      "errorsNone": "All rows look valid.",
+      "tableCaption": "Rows that will be imported",
+      "row": "Row",
+      "rowError": "Row problem",
+      "emptyCell": "—",
+      "back": "Back to mapping",
+      "repreview": "Preview again",
+      "import": "Import products",
+      "importDisabled": "Fix every error before importing.",
+      "previewing": "Checking rows…",
+      "importing": "Importing…"
+    },
+    "result": {
+      "title": "Import complete",
+      "description": "{{created}} products were added.",
+      "categoriesTitle": "{{count}} categories were created",
+      "backToList": "View products",
+      "importAnother": "Import another file"
+    },
+    "toast": {
+      "previewFailed": "Could not preview this import",
+      "committed": "{{count}} products imported",
+      "commitFailed": "Could not import products",
+      "nothingWritten": "Some rows were rejected, so nothing was imported"
     }
   }
 }

@@ -11,6 +11,7 @@ import type { ProductRowAction } from "@/features/products/components/product-ro
 import { ProductsDataTable } from "@/features/products/components/products-data-table";
 import { ProductsEmptyState } from "@/features/products/components/products-empty-state";
 import { ProductsErrorState } from "@/features/products/components/products-error-state";
+import { ImportTab } from "@/features/products/components/import-tab";
 import { ProductsHero } from "@/features/products/components/products-hero";
 import { ProductsPageSkeleton } from "@/features/products/components/products-page-skeleton";
 import { useProductCategories } from "@/features/products/hooks/use-product-categories";
@@ -49,7 +50,8 @@ type CategoryFormState =
 
 export function ProductsHome() {
   const { t } = useTranslation("products");
-  const { hasPermission } = useMerchantPermissions();
+  const { hasPermission, isLoading: isPermissionsLoading } =
+    useMerchantPermissions();
   const canManage = hasPermission(MerchantPermission.PRODUCT_MANAGE);
 
   const [searchParams, setSearchParams] = useSearchParams();
@@ -134,6 +136,13 @@ export function ProductsHome() {
       page: null,
     });
   };
+
+  useEffect(() => {
+    if (isPermissionsLoading) return;
+    if (activeTab === "import" && !canManage) {
+      updateParams({ tab: null });
+    }
+  }, [activeTab, canManage, isPermissionsLoading, updateParams]);
 
   const handleSortChange = (value: ProductsSortOption) => {
     updateParams({
@@ -227,7 +236,11 @@ export function ProductsHome() {
             canManage={canManage}
           />
 
-          <div id="products-main" role="tabpanel">
+          <div
+            id="products-main"
+            role="tabpanel"
+            aria-labelledby={`products-tab-${activeTab}`}
+          >
             {activeTab === "products" ? (
               <>
                 {productsQuery.isError ? (
@@ -266,7 +279,9 @@ export function ProductsHome() {
                   />
                 ) : null}
               </>
-            ) : (
+            ) : null}
+
+            {activeTab === "categories" ? (
               <>
                 {categoriesQuery.isError ? (
                   <ProductsErrorState
@@ -281,7 +296,11 @@ export function ProductsHome() {
                   />
                 )}
               </>
-            )}
+            ) : null}
+
+            {activeTab === "import" && canManage ? (
+              <ImportTab onGoToProducts={() => handleTabChange("products")} />
+            ) : null}
           </div>
         </>
       )}
