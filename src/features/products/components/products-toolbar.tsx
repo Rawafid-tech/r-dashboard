@@ -1,4 +1,4 @@
-import { ArrowUpDown, ChevronDown, Search, X } from "lucide-react";
+import { ArrowUpDown, Barcode, ChevronDown, Search, X } from "lucide-react";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { flattenCategoryTree } from "@/features/products/lib/category-tree-utils";
@@ -60,6 +60,7 @@ interface ProductsToolbarProps {
   onSortChange: (value: ProductsSortOption) => void;
   onHandlingFilterChange: (value: string) => void;
   onCategoryFilterChange: (value: string) => void;
+  onBarcodeLookup?: () => void;
   disabled?: boolean;
 }
 
@@ -73,6 +74,7 @@ export function ProductsToolbar({
   onSortChange,
   onHandlingFilterChange,
   onCategoryFilterChange,
+  onBarcodeLookup,
   disabled = false,
 }: ProductsToolbarProps) {
   const { t } = useTranslation(["products", "common"]);
@@ -123,6 +125,22 @@ export function ProductsToolbar({
         </div>
 
         <div className="grid grid-cols-1 gap-2 sm:grid-cols-3 lg:flex lg:shrink-0 lg:items-center">
+          {onBarcodeLookup ? (
+            <div className="min-w-0 sm:col-span-1">
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                disabled={disabled}
+                onClick={onBarcodeLookup}
+                className="h-9 w-full rounded-lg bg-background lg:min-w-[11rem]"
+              >
+                <Barcode aria-hidden="true" />
+                {t("toolbar.barcodeLookup")}
+              </Button>
+            </div>
+          ) : null}
+
           <div className="min-w-0 sm:col-span-1">
             <Label htmlFor="products-handling-filter" className="sr-only">
               {t("toolbar.handlingLabel")}

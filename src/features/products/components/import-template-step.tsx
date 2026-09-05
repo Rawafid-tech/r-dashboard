@@ -1,5 +1,5 @@
 import type { Ref } from "react";
-import { AlertCircle, Download, Loader2 } from "lucide-react";
+import { AlertCircle, Download, FileSpreadsheet, Loader2 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import {
   excelColumnName,
@@ -17,8 +17,10 @@ interface ImportTemplateStepProps {
   isLoading: boolean;
   isError: boolean;
   isDownloading: boolean;
+  isExportingCatalog: boolean;
   onRetry: () => void;
   onDownload: () => void | Promise<void>;
+  onExportCatalog: () => void | Promise<void>;
   onContinue: () => void;
 }
 
@@ -29,8 +31,10 @@ export function ImportTemplateStep({
   isLoading,
   isError,
   isDownloading,
+  isExportingCatalog,
   onRetry,
   onDownload,
+  onExportCatalog,
   onContinue,
 }: ImportTemplateStepProps) {
   const { t } = useTranslation("products");
@@ -160,11 +164,17 @@ export function ImportTemplateStep({
         </div>
       ) : null}
 
-      <div className="flex flex-col gap-2 sm:flex-row">
+      <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap">
         <Button
           type="button"
           onClick={onDownload}
-          disabled={isLoading || isError || isDownloading || columns.length === 0}
+          disabled={
+            isLoading ||
+            isError ||
+            isDownloading ||
+            isExportingCatalog ||
+            columns.length === 0
+          }
         >
           {isDownloading ? (
             <Loader2 className="animate-spin" aria-hidden="true" />
@@ -178,8 +188,29 @@ export function ImportTemplateStep({
         <Button
           type="button"
           variant="outline"
+          onClick={onExportCatalog}
+          disabled={
+            isLoading ||
+            isError ||
+            isDownloading ||
+            isExportingCatalog ||
+            columns.length === 0
+          }
+        >
+          {isExportingCatalog ? (
+            <Loader2 className="animate-spin" aria-hidden="true" />
+          ) : (
+            <FileSpreadsheet aria-hidden="true" />
+          )}
+          {isExportingCatalog
+            ? t("import.template.exportingCatalog")
+            : t("import.template.exportCatalog")}
+        </Button>
+        <Button
+          type="button"
+          variant="outline"
           onClick={onContinue}
-          disabled={isLoading}
+          disabled={isLoading || isExportingCatalog}
         >
           {t("import.template.continue")}
         </Button>

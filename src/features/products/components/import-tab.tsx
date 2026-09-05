@@ -11,15 +11,17 @@ import { ImportTemplateStep } from "@/features/products/components/import-templa
 import { ImportUploadMapStep } from "@/features/products/components/import-upload-map-step";
 import { useImportCommit } from "@/features/products/hooks/use-import-commit";
 import { useImportPreview } from "@/features/products/hooks/use-import-preview";
+import { useExportProductCatalog } from "@/features/products/hooks/use-export-product-catalog";
 import { useImportTemplate } from "@/features/products/hooks/use-import-template";
 import { useImportVariantCommit } from "@/features/products/hooks/use-import-variant-commit";
 import { getImportVariantColumns } from "@/features/products/lib/import-variant-columns";
 import {
   autoMapColumns,
-  getUnmappedRequiredColumns,
+  getUnmappedRequiredForMode,
   hasHandlingMapped,
   type ColumnMapping,
 } from "@/features/products/lib/import-map-columns";
+import { buildImportRequest } from "@/features/products/lib/import-request";
 import {
   autoMapVariantColumns,
   getUnmappedRequiredVariantColumns,
@@ -39,11 +41,12 @@ import {
 import { extractImportErrors } from "@/features/products/lib/import-row-errors";
 import { downloadImportTemplate } from "@/features/products/lib/import-template-xlsx";
 import type {
+  ImportMode,
   ImportResult,
   ImportVariantCommitResult,
   ImportVariantPreview,
 } from "@/features/products/types";
-import { isApiError } from "@/shared/api/error-handler";
+import { isApiError, parseApiError } from "@/shared/api/error-handler";
 import { useLocaleStore } from "@/stores/locale.store";
 
 interface ImportTabProps {
@@ -73,6 +76,8 @@ export function ImportTab({ onGoToProducts }: ImportTabProps) {
 
   const [step, setStep] = useState<ImportWizardStep>(1);
   const [isDownloading, setIsDownloading] = useState(false);
+  const { exportCatalog, isExporting: isExportingCatalog } =
+    useExportProductCatalog();
   const [isParsing, setIsParsing] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const [fileName, setFileName] = useState<string | null>(null);
@@ -82,6 +87,7 @@ export function ImportTab({ onGoToProducts }: ImportTabProps) {
   const [mapping, setMapping] = useState<ColumnMapping>(emptyMapping);
   const [variantMapping, setVariantMapping] =
     useState<VariantColumnMapping>(emptyVariantMapping);
+  const [importMode, setImportMode] = useState<ImportMode>("INSERT_ONLY");
   const [applyDefaultHandling, setApplyDefaultHandling] = useState(false);
   const [parseError, setParseError] = useState<string | null>(null);
   const [preview, setPreview] = useState<ImportResult | null>(null);
@@ -96,14 +102,18 @@ export function ImportTab({ onGoToProducts }: ImportTabProps) {
   const hasProductRows = (parsedProducts?.rows.length ?? 0) > 0;
   const hasVariantRows = (parsedVariants?.rows.length ?? 0) > 0;
   const showHandlingDefault =
-    Boolean(parsedProducts) && hasProductRows && !hasHandlingMapped(mapping);
+    importMode === "INSERT_ONLY" &&
+    Boolean(parsedProducts) &&
+    hasProductRows &&
+    !hasHandlingMapped(mapping);
 
   const unmappedRequired = useMemo(
     () =>
       parsedProducts && columns && hasProductRows
-        ? getUnmappedRequiredColumns(
+        ? getUnmappedRequiredForMode(
             mapping,
             columns,
+            importMode,
             showHandlingDefault && applyDefaultHandling,
           )
         : [],
@@ -111,6 +121,7 @@ export function ImportTab({ onGoToProducts }: ImportTabProps) {
       applyDefaultHandling,
       columns,
       hasProductRows,
+      importMode,
       mapping,
       parsedProducts,
       showHandlingDefault,
@@ -184,6 +195,7 @@ export function ImportTab({ onGoToProducts }: ImportTabProps) {
     setIsMultiSheet(false);
     setMapping(emptyMapping());
     setVariantMapping(emptyVariantMapping());
+    setImportMode("INSERT_ONLY");
     setApplyDefaultHandling(false);
     setParseError(null);
     setPreview(null);
@@ -286,7 +298,14 @@ export function ImportTab({ onGoToProducts }: ImportTabProps) {
       let productPreview: ImportResult | null = null;
 
       if (hasProductRows) {
-        productPreview = await previewMutation.mutateAsync(importRows);
+        productPreview = await previewMutation.mutateAsync(
+          buildImportRequest({
+            dryRun: true,
+            mode: importMode,
+            mapping,
+            rows: importRows,
+          }),
+        );
         if (generation !== previewGeneration.current) return;
       }
 
@@ -306,6 +325,7 @@ export function ImportTab({ onGoToProducts }: ImportTabProps) {
           dryRun: true,
           totalRows: 0,
           created: 0,
+          updatedSkus: [],
           newCategories: [],
           errors: [],
         },
@@ -321,8 +341,10 @@ export function ImportTab({ onGoToProducts }: ImportTabProps) {
     goToStep,
     hasProductRows,
     hasVariantRows,
+    importMode,
     importRows,
     importVariantRows,
+    mapping,
     previewMutation,
     productSkusInBatch,
     t,
@@ -348,12 +370,20 @@ export function ImportTab({ onGoToProducts }: ImportTabProps) {
         dryRun: false,
         totalRows: 0,
         created: 0,
+        updatedSkus: [],
         newCategories: [],
         errors: [],
       };
 
       if (hasProductRows) {
-        productResult = await commitMutation.mutateAsync(importRows);
+        productResult = await commitMutation.mutateAsync(
+          buildImportRequest({
+            dryRun: false,
+            mode: importMode,
+            mapping,
+            rows: importRows,
+          }),
+        );
       }
 
       let nextVariantCommit: ImportVariantCommitResult | null = null;
@@ -383,6 +413,15 @@ export function ImportTab({ onGoToProducts }: ImportTabProps) {
       setVariantCommitResult(nextVariantCommit);
       goToStep(4);
     } catch (error) {
+      if (isApiError(error, 409)) {
+        toast.error(
+          parseApiError(error).detail || t("import.toast.stalePreview"),
+        );
+        goToStep(3);
+        void runPreview();
+        return;
+      }
+
       if (isApiError(error, 422)) {
         const errors = extractImportErrors(error);
         setPreview((current) =>
@@ -392,6 +431,7 @@ export function ImportTab({ onGoToProducts }: ImportTabProps) {
                 dryRun: true,
                 totalRows: importRows.length,
                 created: 0,
+                updatedSkus: [],
                 newCategories: [],
                 errors,
               },
@@ -403,9 +443,12 @@ export function ImportTab({ onGoToProducts }: ImportTabProps) {
     goToStep,
     hasProductRows,
     hasVariantRows,
+    importMode,
     importRows,
     importVariantRows,
+    mapping,
     preview,
+    runPreview,
     t,
     variantCommitMutation,
     variantPreview,
@@ -436,8 +479,10 @@ export function ImportTab({ onGoToProducts }: ImportTabProps) {
           isLoading={templateQuery.isLoading}
           isError={templateQuery.isError}
           isDownloading={isDownloading}
+          isExportingCatalog={isExportingCatalog}
           onRetry={() => void templateQuery.refetch()}
           onDownload={() => void handleDownload()}
+          onExportCatalog={() => void exportCatalog()}
           onContinue={() => goToStep(2)}
         />
       ) : null}
@@ -453,6 +498,7 @@ export function ImportTab({ onGoToProducts }: ImportTabProps) {
           isMultiSheet={isMultiSheet}
           mapping={mapping}
           variantMapping={variantMapping}
+          importMode={importMode}
           applyDefaultHandling={applyDefaultHandling}
           showHandlingDefault={showHandlingDefault}
           unmappedRequired={unmappedRequired}
@@ -478,6 +524,15 @@ export function ImportTab({ onGoToProducts }: ImportTabProps) {
             setApplyDefaultHandling(value);
             setPreview(null);
           }}
+          onImportModeChange={(mode) => {
+            previewGeneration.current += 1;
+            setImportMode(mode);
+            if (mode === "UPSERT") {
+              setApplyDefaultHandling(false);
+            }
+            setPreview(null);
+            setVariantPreview(null);
+          }}
           onBack={() => goToStep(1)}
           onPreview={() => void runPreview()}
         />
@@ -490,6 +545,7 @@ export function ImportTab({ onGoToProducts }: ImportTabProps) {
           rows={importRows}
           mapping={mapping}
           result={preview}
+          importMode={importMode}
           variantPreview={variantPreview}
           hasProductRows={hasProductRows}
           isPreviewing={isPreviewing}

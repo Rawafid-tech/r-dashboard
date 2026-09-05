@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { useSearchParams } from "react-router-dom";
 import type { CategoryRowAction } from "@/features/products/components/category-row-actions-menu";
 import { CategoriesTab } from "@/features/products/components/categories-tab";
+import { BarcodeLookupDialog } from "@/features/products/components/barcode-lookup-dialog";
 import { CategoryDeleteDialog } from "@/features/products/components/category-delete-dialog";
 import { CategoryFormDialog } from "@/features/products/components/category-form-dialog";
 import { ProductDeleteDialog } from "@/features/products/components/product-delete-dialog";
@@ -14,6 +15,7 @@ import { ProductsErrorState } from "@/features/products/components/products-erro
 import { ImportTab } from "@/features/products/components/import-tab";
 import { ProductsHero } from "@/features/products/components/products-hero";
 import { ProductsPageSkeleton } from "@/features/products/components/products-page-skeleton";
+import { useExportProductCatalog } from "@/features/products/hooks/use-export-product-catalog";
 import { useProductCategories } from "@/features/products/hooks/use-product-categories";
 import { useProducts } from "@/features/products/hooks/use-products";
 import {
@@ -39,7 +41,7 @@ import {
 const PAGE_SIZE = 20;
 
 type ProductFormState =
-  | { mode: "create"; product: null }
+  | { mode: "create"; product: null; createDefaults?: { barcode?: string } }
   | { mode: "edit"; product: Product }
   | null;
 
@@ -53,6 +55,8 @@ export function ProductsHome() {
   const { hasPermission, isLoading: isPermissionsLoading } =
     useMerchantPermissions();
   const canManage = hasPermission(MerchantPermission.PRODUCT_MANAGE);
+  const { exportCatalog, isExporting: isExportingCatalog } =
+    useExportProductCatalog();
 
   const [searchParams, setSearchParams] = useSearchParams();
   const updateParams = useCallback(
@@ -87,6 +91,7 @@ export function ProductsHome() {
     useState<CategoryFormState>(null);
   const [categoryToDelete, setCategoryToDelete] =
     useState<ProductCategory | null>(null);
+  const [barcodeLookupOpen, setBarcodeLookupOpen] = useState(false);
 
   const activeTab = readProductsTab(searchParams.get("tab"));
   const page = readPageIndex(searchParams.get("page"));
@@ -233,6 +238,10 @@ export function ProductsHome() {
             onAddCategory={() =>
               setCategoryFormState({ mode: "create", category: null })
             }
+            onExportCatalog={
+              canManage ? () => void exportCatalog() : undefined
+            }
+            isExportingCatalog={isExportingCatalog}
             canManage={canManage}
           />
 
@@ -268,6 +277,7 @@ export function ProductsHome() {
                     pageSize={productsQuery.data?.size ?? PAGE_SIZE}
                     onPageChange={handlePageChange}
                     onRowAction={handleProductRowAction}
+                    onBarcodeLookup={() => setBarcodeLookupOpen(true)}
                     canManage={canManage}
                     isFetching={productsQuery.isFetching}
                     emptyState={
@@ -308,10 +318,27 @@ export function ProductsHome() {
       <ProductFormDialog
         mode={productFormState?.mode ?? "create"}
         product={productFormState?.product ?? null}
+        createDefaults={
+          productFormState?.mode === "create"
+            ? productFormState.createDefaults
+            : undefined
+        }
         open={productFormState !== null}
         onOpenChange={(open) => {
           if (!open) setProductFormState(null);
         }}
+      />
+
+      <BarcodeLookupDialog
+        open={barcodeLookupOpen}
+        onOpenChange={setBarcodeLookupOpen}
+        canManage={canManage}
+        onEditProduct={(product) =>
+          setProductFormState({ mode: "edit", product })
+        }
+        onCreateProduct={(defaults) =>
+          setProductFormState({ mode: "create", product: null, createDefaults: defaults })
+        }
       />
 
       <ProductDeleteDialog

@@ -5,10 +5,11 @@ import { ImportColumnMapper } from "@/features/products/components/import-column
 import { ImportFileZone } from "@/features/products/components/import-file-zone";
 import { ImportStepHeading } from "@/features/products/components/import-stepper";
 import { ImportVariantColumnMapper } from "@/features/products/components/import-variant-column-mapper";
+import { ImportModeSelector } from "@/features/products/components/import-mode-selector";
 import type { ColumnMapping } from "@/features/products/lib/import-map-columns";
 import type { VariantColumnMapping } from "@/features/products/lib/import-variant-map-columns";
 import type { ParsedSheet } from "@/features/products/lib/import-parse-sheet";
-import type { ImportTemplateColumn } from "@/features/products/types";
+import type { ImportMode, ImportTemplateColumn } from "@/features/products/types";
 import { Button, Checkbox, Label } from "@/shared/components/ui";
 
 interface ImportUploadMapStepProps {
@@ -21,6 +22,7 @@ interface ImportUploadMapStepProps {
   isMultiSheet: boolean;
   mapping: ColumnMapping;
   variantMapping: VariantColumnMapping;
+  importMode: ImportMode;
   applyDefaultHandling: boolean;
   showHandlingDefault: boolean;
   unmappedRequired: ImportTemplateColumn[];
@@ -33,6 +35,7 @@ interface ImportUploadMapStepProps {
   onFile: (file: File) => void;
   onMappingChange: (mapping: ColumnMapping) => void;
   onVariantMappingChange: (mapping: VariantColumnMapping) => void;
+  onImportModeChange: (mode: ImportMode) => void;
   onApplyDefaultHandlingChange: (value: boolean) => void;
   onBack: () => void;
   onPreview: () => void;
@@ -48,6 +51,7 @@ export function ImportUploadMapStep({
   isMultiSheet,
   mapping,
   variantMapping,
+  importMode,
   applyDefaultHandling,
   showHandlingDefault,
   unmappedRequired,
@@ -60,6 +64,7 @@ export function ImportUploadMapStep({
   onFile,
   onMappingChange,
   onVariantMappingChange,
+  onImportModeChange,
   onApplyDefaultHandlingChange,
   onBack,
   onPreview,
@@ -143,6 +148,12 @@ export function ImportUploadMapStep({
             columns={columns}
             mapping={mapping}
             onMappingChange={onMappingChange}
+            disabled={isPreviewing}
+          />
+
+          <ImportModeSelector
+            value={importMode}
+            onChange={onImportModeChange}
             disabled={isPreviewing}
           />
 

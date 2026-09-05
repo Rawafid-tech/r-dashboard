@@ -1,14 +1,14 @@
 {
   "metaTitle": "المنتجات — روافد",
-  "metaDescription": "إدارة كتalog المنتجات للشحن — الأسماء والأوزان ورموز الجمارك والفئات.",
+  "metaDescription": "إدارة كتالوج المنتجات للشحن — الأسماء والأوزان ورموز الجمارك والفئات.",
   "metaCreateTitle": "إضافة منتج — روافد",
-  "metaCreateDescription": "إضافة منتج جديد إلى كتalog الشحن.",
+  "metaCreateDescription": "إضافة منتج جديد إلى كتالوج الشحن.",
   "metaEditTitle": "تعديل منتج — روافد",
-  "metaEditDescription": "تحديث تفاصيل المنتج في كتalog الشحن.",
+  "metaEditDescription": "تحديث تفاصيل المنتج في كتالوج الشحن.",
   "skipToContent": "انتقل إلى محتوى المنتجات",
   "hero": {
     "title": "المنتجات",
-    "subtitle": "كتalog الشحن — احفظ تفاصيل المنتج مرة واحدة وأعد استخدامها عند إنشاء الشحنات.",
+    "subtitle": "كتالوج الشحن — احفظ تفاصيل المنتج مرة واحدة وأعد استخدامها عند إنشاء الشحنات.",
     "totalLabel": "المنتجات",
     "add": "إضافة منتج"
   },
@@ -19,7 +19,7 @@
     "import": "رفع المنتجات بالجملة"
   },
   "toolbar": {
-    "title": "كتalog المنتجات",
+    "title": "كتالوج المنتجات",
     "searchPlaceholder": "بحث بالاسم أو SKU أو الباركود أو المتغير…",
     "sortLabel": "ترتيب",
     "handlingLabel": "نوع المعالجة",
@@ -37,7 +37,22 @@
       "priceDesc": "السعر ↓",
       "weightAsc": "الوزن ↑",
       "weightDesc": "الوزن ↓"
-    }
+    },
+    "barcodeLookup": "بحث بالباركود"
+  },
+  "barcodeLookup": {
+    "title": "بحث بالباركود",
+    "description": "امسح أو اكتب باركوداً للبحث الدقيق في الكتالوج.",
+    "inputLabel": "الباركود",
+    "inputPlaceholder": "امسح أو اكتب الرمز…",
+    "search": "بحث",
+    "searching": "جاري البحث…",
+    "searchFailed": "تعذّر البحث عن هذا الباركود",
+    "invalidInput": "أدخل باركوداً للبحث. الشرطة المائلة غير مسموحة.",
+    "notFound": "{{barcode}} غير موجود في الكتالوج.",
+    "addProduct": "إضافة هذا المنتج",
+    "multipleTitle": "{{count}} منتجات تشترك في هذا الباركود — اختر واحداً",
+    "openSelected": "فتح المنتج المحدد"
   },
   "handling": {
     "GENERAL": "عام",
@@ -97,7 +112,7 @@
   },
   "form": {
     "createTitle": "إضافة منتج",
-    "createDescription": "تعريف منتج قابل للشحن في كتalog شركتك.",
+    "createDescription": "تعريف منتج قابل للشحن في كتالوج شركتك.",
     "editTitle": "تعديل منتج",
     "editDescription": "تحديث تفاصيل المنتج. الشحنات السابقة تحتفظ بالقيم التي أُرسلت بها.",
     "loading": "جاري تحميل المنتج…",
@@ -200,7 +215,7 @@
   },
   "delete": {
     "title": "حذف المنتج؟",
-    "description": "سيتم حذف «{{name}}» نهائياً من الكتalog.",
+    "description": "سيتم حذف «{{name}}» نهائياً من الكتالوج.",
     "hint": "الشحنات السابقة تحتفظ بنسختها من تفاصيل هذا المنتج.",
     "cancel": "إلغاء",
     "confirm": "حذف",
@@ -226,7 +241,7 @@
       "products": "المنتجات",
       "actions": "إجراءات",
       "emptyTitle": "لا توجد فئات بعد",
-      "emptyDescription": "الفئات اختيارية — أضف فئة لتنظيم الكتalog.",
+      "emptyDescription": "الفئات اختيارية — أضف فئة لتنظيم الكتالوج.",
       "openMenu": "إجراءات {{name}}",
       "subCategory": "فئة فرعية تحت {{parent}}"
     },
@@ -292,6 +307,10 @@
       "loadFailed": "تعذّر تحميل قائمة الأعمدة.",
       "retry": "إعادة المحاولة",
       "continue": "رفع الملف",
+      "exportCatalog": "تصدير المنتجات",
+      "exportingCatalog": "جاري تجهيز المنتجات",
+      "exportCatalogSuccess": "تم تصدير {{count}} منتج",
+      "exportCatalogFailed": "تعذّر تصدير الكتالوج",
       "columnsCaption": "أعمدة القالب",
       "column": "العمود",
       "required": "مطلوب",
@@ -330,7 +349,13 @@
       "rowCount": "{{count}} صف بيانات جاهز",
       "rowCountTruncated": "سيُرسل {{sent}} من أصل {{total}} صف بيانات",
       "back": "رجوع",
-      "preview": "معاينة الاستيراد"
+      "preview": "معاينة الاستيراد",
+      "modeLegend": "ما الغرض من هذا الملف؟",
+      "modeDescription": "اختر هل الصفوف تضيف منتجات جديدة أم تحدّث موجودة.",
+      "modeInsert": "إضافة منتجات جديدة",
+      "modeInsertHint": "رمز SKU الموجود مسبقاً يُرفض — كما كان من قبل.",
+      "modeUpsert": "تحديث منتجات لدي بالفعل",
+      "modeUpsertHint": "تُكتب فقط الأعمدة التي ربطتها. الخلايا الفارغة تمسح الحقول الاختيارية."
     },
     "preview": {
       "title": "معاينة الاستيراد",
@@ -340,6 +365,9 @@
       "fileErrorsTitle": "مشاكل على مستوى الملف",
       "errorsSummary": "{{count}} صفوف فيها مشاكل",
       "errorsNone": "كل الصفوف تبدو صحيحة.",
+      "updatedSkusTitle": "سيُحدَّث {{count}} منتج موجود",
+      "updatedSkusNone": "لن يُحدَّث أي منتج موجود.",
+      "updatedSkusShow": "عرض رموز SKU",
       "tableCaption": "الصفوف التي سيتم استيرادها",
       "row": "الصف",
       "rowError": "مشكلة الصف",
@@ -347,6 +375,7 @@
       "back": "العودة للمطابقة",
       "repreview": "معاينة مرة أخرى",
       "import": "استيراد المنتجات",
+      "updateProducts": "تحديث {{count}} منتج",
       "importDisabled": "أصلح كل الأخطاء قبل الاستيراد.",
       "previewing": "جاري فحص الصفوف…",
       "importing": "جاري الاستيراد…"
@@ -354,6 +383,10 @@
     "result": {
       "title": "اكتمل الاستيراد",
       "description": "تمت إضافة {{created}} منتجات.",
+      "descriptionUpdated": "تم تحديث {{updated}} منتج.",
+      "descriptionMixed": "تمت إضافة {{created}} منتج وتحديث {{updated}}.",
+      "createdSummary": "تمت إضافة {{count}} منتج",
+      "updatedSummary": "تم تحديث {{count}} منتج",
       "categoriesTitle": "تم إنشاء {{count}} فئات",
       "backToList": "عرض المنتجات",
       "importAnother": "استيراد ملف آخر"
@@ -361,8 +394,11 @@
     "toast": {
       "previewFailed": "تعذّرت معاينة هذا الاستيراد",
       "committed": "تم استيراد {{count}} منتجات",
+      "updated": "تم تحديث {{count}} منتج",
+      "committedMixed": "تم استيراد {{created}} منتج وتحديث {{updated}}",
       "commitFailed": "تعذّر استيراد المنتجات",
-      "nothingWritten": "رُفضت بعض الصفوف، لذلك لم يُستورد شيء"
+      "nothingWritten": "رُفضت بعض الصفوف، لذلك لم يُستورد شيء",
+      "stalePreview": "تغيّرت منتجاتك أثناء فحص الملف — يرجى المعاينة مرة أخرى"
     },
     "variants": {
       "templateTitle": "اختياري: ورقة المتغيرات",
@@ -400,7 +436,7 @@
       },
       "validation": {
         "productSkuRequired": "SKU المنتج مطلوب",
-        "productSkuNotFound": "لا يوجد منتج بهذا SKU في الكتalog أو في هذا الاستيراد",
+        "productSkuNotFound": "لا يوجد منتج بهذا SKU في الكتالوج أو في هذا الاستيراد",
         "variantNameRequired": "تسمية المتغير مطلوبة",
         "variantNameMax": "تسمية المتغير يجب ألا تتجاوز {{max}} حرفاً",
         "duplicateName": "هذه التسمية مستخدمة بالفعل لنفس المنتج",

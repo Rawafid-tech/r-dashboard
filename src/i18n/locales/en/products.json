@@ -37,7 +37,22 @@
       "priceDesc": "Price ↓",
       "weightAsc": "Weight ↑",
       "weightDesc": "Weight ↓"
-    }
+    },
+    "barcodeLookup": "Find by barcode"
+  },
+  "barcodeLookup": {
+    "title": "Find by barcode",
+    "description": "Scan or type a barcode for an exact match in your catalog.",
+    "inputLabel": "Barcode",
+    "inputPlaceholder": "Scan or type the code…",
+    "search": "Look up",
+    "searching": "Looking up…",
+    "searchFailed": "Could not look up this barcode",
+    "invalidInput": "Enter a barcode to search. Slashes are not allowed.",
+    "notFound": "{{barcode}} is not in your catalog.",
+    "addProduct": "Add this product",
+    "multipleTitle": "{{count}} products share this barcode — choose one",
+    "openSelected": "Open selected product"
   },
   "handling": {
     "GENERAL": "General",
@@ -288,6 +303,10 @@
       "loadFailed": "Could not load the column list.",
       "retry": "Retry",
       "continue": "Upload file",
+      "exportCatalog": "Export my catalog",
+      "exportingCatalog": "Preparing catalog…",
+      "exportCatalogSuccess": "{{count}} products exported",
+      "exportCatalogFailed": "Could not export your catalog",
       "columnsCaption": "Columns in the template",
       "column": "Column",
       "required": "Required",
@@ -326,7 +345,13 @@
       "rowCount": "{{count}} data rows ready",
       "rowCountTruncated": "{{sent}} of {{total}} data rows will be sent",
       "back": "Back",
-      "preview": "Preview import"
+      "preview": "Preview import",
+      "modeLegend": "What is this file for?",
+      "modeDescription": "Choose whether rows add new products or update ones you already have.",
+      "modeInsert": "Add new products",
+      "modeInsertHint": "Existing SKUs are rejected — same as before.",
+      "modeUpsert": "Update products I already have",
+      "modeUpsertHint": "Only the columns you mapped will be written. Blank cells clear optional fields."
     },
     "preview": {
       "title": "Preview import",
@@ -336,6 +361,9 @@
       "fileErrorsTitle": "File-level problems",
       "errorsSummary": "{{count}} rows have problems",
       "errorsNone": "All rows look valid.",
+      "updatedSkusTitle": "This will update {{count}} existing products",
+      "updatedSkusNone": "No existing products will be updated.",
+      "updatedSkusShow": "Show SKUs",
       "tableCaption": "Rows that will be imported",
       "row": "Row",
       "rowError": "Row problem",
@@ -343,6 +371,7 @@
       "back": "Back to mapping",
       "repreview": "Preview again",
       "import": "Import products",
+      "updateProducts": "Update {{count}} products",
       "importDisabled": "Fix every error before importing.",
       "previewing": "Checking rows…",
       "importing": "Importing…"
@@ -350,6 +379,10 @@
     "result": {
       "title": "Import complete",
       "description": "{{created}} products were added.",
+      "descriptionUpdated": "{{updated}} products were updated.",
+      "descriptionMixed": "{{created}} products were added and {{updated}} were updated.",
+      "createdSummary": "{{count}} products were added",
+      "updatedSummary": "{{count}} products were updated",
       "categoriesTitle": "{{count}} categories were created",
       "backToList": "View products",
       "importAnother": "Import another file"
@@ -357,8 +390,11 @@
     "toast": {
       "previewFailed": "Could not preview this import",
       "committed": "{{count}} products imported",
+      "updated": "{{count}} products updated",
+      "committedMixed": "{{created}} products imported and {{updated}} updated",
       "commitFailed": "Could not import products",
-      "nothingWritten": "Some rows were rejected, so nothing was imported"
+      "nothingWritten": "Some rows were rejected, so nothing was imported",
+      "stalePreview": "Your products changed while this file was being checked — please preview it again"
     },
     "variants": {
       "templateTitle": "Optional: Variants sheet",

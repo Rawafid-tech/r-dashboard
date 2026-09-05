@@ -4,7 +4,7 @@ import { toast } from "sonner";
 import { importProducts } from "@/features/products/api/product-import.api";
 import { productCategoryKeys } from "@/features/products/hooks/use-product-categories";
 import { productKeys } from "@/features/products/hooks/use-products";
-import type { ImportRow } from "@/features/products/types";
+import type { ImportRequest } from "@/features/products/types";
 import { isApiError, parseApiError } from "@/shared/api/error-handler";
 
 export function useImportCommit() {
@@ -13,14 +13,28 @@ export function useImportCommit() {
   const { t: tCommon } = useTranslation("common");
 
   return useMutation({
-    mutationFn: (rows: ImportRow[]) =>
-      importProducts({ dryRun: false, rows }),
+    mutationFn: (payload: ImportRequest) => importProducts(payload),
     onSuccess: (result) => {
       void queryClient.invalidateQueries({ queryKey: productKeys.lists() });
       void queryClient.invalidateQueries({
         queryKey: productCategoryKeys.tree(),
       });
-      toast.success(t("import.toast.committed", { count: result.created }));
+
+      const updatedCount = result.updatedSkus?.length ?? 0;
+      if (updatedCount > 0 && result.created > 0) {
+        toast.success(
+          t("import.toast.committedMixed", {
+            created: result.created,
+            updated: updatedCount,
+          }),
+        );
+      } else if (updatedCount > 0) {
+        toast.success(
+          t("import.toast.updated", { count: updatedCount }),
+        );
+      } else {
+        toast.success(t("import.toast.committed", { count: result.created }));
+      }
     },
     onError: (error) => {
       if (isApiError(error, 422)) {

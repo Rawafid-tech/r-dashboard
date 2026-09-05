@@ -64,6 +64,7 @@ interface ProductFormDialogProps {
   product: Product | null;
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  createDefaults?: { barcode?: string };
 }
 
 export function ProductFormDialog({
@@ -71,6 +72,7 @@ export function ProductFormDialog({
   product,
   open,
   onOpenChange,
+  createDefaults,
 }: ProductFormDialogProps) {
   const { t, i18n } = useTranslation("products");
   const { t: tCommon } = useTranslation("common");
@@ -128,9 +130,14 @@ export function ProductFormDialog({
       return;
     }
 
-    reset(EMPTY_PRODUCT_FORM_VALUES);
+    reset({
+      ...EMPTY_PRODUCT_FORM_VALUES,
+      ...(createDefaults?.barcode
+        ? { barcode: createDefaults.barcode }
+        : {}),
+    });
     setImagePreviewUrl(null);
-  }, [open, mode, product, productQuery.data, reset]);
+  }, [open, mode, product, productQuery.data, reset, createDefaults]);
 
   const busy =
     isSubmitting ||

@@ -1,7 +1,8 @@
 import type { Ref } from "react";
-import { AlertCircle, CheckCircle2, FolderPlus } from "lucide-react";
+import { AlertCircle, CheckCircle2, FolderPlus, RefreshCw } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { ImportStepHeading } from "@/features/products/components/import-stepper";
+import { ImportUpdatedSkusSection } from "@/features/products/components/import-updated-skus-section";
 import type {
   ImportResult,
   ImportVariantCommitResult,
@@ -16,6 +17,17 @@ interface ImportResultStepProps {
   onImportAnother: () => void;
 }
 
+function resultDescriptionKey(result: ImportResult): string {
+  const updated = result.updatedSkus?.length ?? 0;
+  if (result.created > 0 && updated > 0) {
+    return "import.result.descriptionMixed";
+  }
+  if (updated > 0) {
+    return "import.result.descriptionUpdated";
+  }
+  return "import.result.description";
+}
+
 export function ImportResultStep({
   headingRef,
   result,
@@ -25,14 +37,17 @@ export function ImportResultStep({
 }: ImportResultStepProps) {
   const { t } = useTranslation("products");
   const variantHasErrors = (variantResult?.errors.length ?? 0) > 0;
+  const updatedCount = result.updatedSkus?.length ?? 0;
+  const descriptionKey = resultDescriptionKey(result);
 
   return (
     <div className="space-y-6">
       <ImportStepHeading
         headingRef={headingRef}
         title={t("import.result.title")}
-        description={t("import.result.description", {
+        description={t(descriptionKey, {
           created: result.created,
+          updated: updatedCount,
         })}
       />
 
@@ -40,8 +55,18 @@ export function ImportResultStep({
         {result.created > 0 ? (
           <p className="flex items-center gap-2 text-sm font-medium text-foreground">
             <CheckCircle2 className="size-5 text-success" aria-hidden="true" />
-            {t("import.result.description", { created: result.created })}
+            {t("import.result.createdSummary", { count: result.created })}
           </p>
+        ) : null}
+
+        {updatedCount > 0 ? (
+          <div className="space-y-2">
+            <p className="flex items-center gap-2 text-sm font-medium text-foreground">
+              <RefreshCw className="size-4 text-primary" aria-hidden="true" />
+              {t("import.result.updatedSummary", { count: updatedCount })}
+            </p>
+            <ImportUpdatedSkusSection skus={result.updatedSkus ?? []} />
+          </div>
         ) : null}
 
         {result.newCategories.length > 0 ? (

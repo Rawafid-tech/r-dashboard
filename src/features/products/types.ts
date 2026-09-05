@@ -151,9 +151,15 @@ export interface ImportRow {
   categoryPath?: string;
 }
 
+export type ImportMode = "INSERT_ONLY" | "UPSERT";
+
 export interface ImportRequest {
   dryRun: boolean;
   rows: ImportRow[];
+  /** Omit for insert-only imports; send `"UPSERT"` for bulk updates. */
+  mode?: "UPSERT";
+  /** Required with `UPSERT`; must not be sent for insert-only imports. */
+  columns?: ImportFieldKey[];
 }
 
 export interface ImportRowError {
@@ -166,6 +172,7 @@ export interface ImportResult {
   dryRun: boolean;
   totalRows: number;
   created: number;
+  updatedSkus: string[];
   newCategories: string[];
   errors: ImportRowError[];
 }

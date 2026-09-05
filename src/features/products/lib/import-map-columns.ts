@@ -76,6 +76,29 @@ export function hasHandlingMapped(mapping: ColumnMapping): boolean {
   return Object.values(mapping).includes("handling");
 }
 
+export function isSkuMapped(mapping: ColumnMapping): boolean {
+  return getMappedKeys(mapping).has("sku");
+}
+
+export function getUnmappedRequiredForMode(
+  mapping: ColumnMapping,
+  columns: ImportTemplateColumn[],
+  mode: "INSERT_ONLY" | "UPSERT",
+  applyDefaultHandling: boolean,
+): ImportTemplateColumn[] {
+  if (mode === "UPSERT") {
+    if (isSkuMapped(mapping)) return [];
+    const skuColumn = columns.find((column) => column.key === "sku");
+    return skuColumn ? [skuColumn] : [];
+  }
+
+  return getUnmappedRequiredColumns(
+    mapping,
+    columns,
+    applyDefaultHandling,
+  );
+}
+
 export function assignColumnMapping(
   mapping: ColumnMapping,
   columnIndex: number,

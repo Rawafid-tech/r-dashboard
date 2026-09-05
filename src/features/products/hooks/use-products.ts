@@ -9,6 +9,8 @@ export const productKeys = {
     [...productKeys.lists(), params] as const,
   details: () => [...productKeys.all, "detail"] as const,
   detail: (id: string) => [...productKeys.details(), id] as const,
+  byBarcode: (barcode: string) =>
+    [...productKeys.all, "by-barcode", barcode] as const,
 };
 
 interface UseProductsOptions {

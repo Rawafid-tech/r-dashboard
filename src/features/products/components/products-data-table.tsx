@@ -36,6 +36,7 @@ interface ProductsDataTableProps {
   pageSize: number;
   onPageChange: (page: number) => void;
   onRowAction: (action: ProductRowAction, product: Product) => void;
+  onBarcodeLookup?: () => void;
   canManage?: boolean;
   isFetching?: boolean;
   emptyState?: ReactNode;
@@ -58,6 +59,7 @@ export function ProductsDataTable({
   pageSize,
   onPageChange,
   onRowAction,
+  onBarcodeLookup,
   canManage = false,
   isFetching,
   emptyState,
@@ -169,6 +171,7 @@ export function ProductsDataTable({
             onSortChange={onSortChange}
             onHandlingFilterChange={onHandlingFilterChange}
             onCategoryFilterChange={onCategoryFilterChange}
+            onBarcodeLookup={onBarcodeLookup}
             disabled={isFetching}
           />
         ),

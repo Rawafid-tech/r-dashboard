@@ -1,12 +1,21 @@
 import type { Ref } from "react";
-import { AlertCircle, ArrowLeft, ArrowRight, CheckCircle2, FolderPlus, Loader2 } from "lucide-react";
+import {
+  AlertCircle,
+  ArrowLeft,
+  ArrowRight,
+  CheckCircle2,
+  FolderPlus,
+  Loader2,
+} from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { ImportPreviewGrid } from "@/features/products/components/import-preview-grid";
 import { ImportStepHeading } from "@/features/products/components/import-stepper";
+import { ImportUpdatedSkusSection } from "@/features/products/components/import-updated-skus-section";
 import { ImportVariantPreviewSection } from "@/features/products/components/import-variant-preview-section";
 import { getMappedKeys, type ColumnMapping } from "@/features/products/lib/import-map-columns";
 import { hasVariantPreviewErrors } from "@/features/products/lib/import-variant-validate";
 import type {
+  ImportMode,
   ImportRow,
   ImportResult,
   ImportTemplateColumn,
@@ -20,6 +29,7 @@ interface ImportPreviewStepProps {
   rows: ImportRow[];
   mapping: ColumnMapping;
   result: ImportResult;
+  importMode: ImportMode;
   variantPreview: ImportVariantPreview | null;
   hasProductRows: boolean;
   isPreviewing: boolean;
@@ -29,12 +39,21 @@ interface ImportPreviewStepProps {
   onCommit: () => void;
 }
 
+function commitLabelKey(
+  importMode: ImportMode,
+  updatedCount: number,
+): "import" | "update" {
+  if (importMode === "UPSERT" && updatedCount > 0) return "update";
+  return "import";
+}
+
 export function ImportPreviewStep({
   headingRef,
   columns,
   rows,
   mapping,
   result,
+  importMode,
   variantPreview,
   hasProductRows,
   isPreviewing,
@@ -57,6 +76,14 @@ export function ImportPreviewStep({
   ).size;
   const busy = isPreviewing || isCommitting;
   const mappedKeys = [...getMappedKeys(mapping)];
+  const updatedCount = result.updatedSkus?.length ?? 0;
+  const commitKey = commitLabelKey(importMode, updatedCount);
+
+  const commitLabel = isCommitting
+    ? t("import.preview.importing")
+    : commitKey === "update"
+      ? t("import.preview.updateProducts", { count: updatedCount })
+      : t("import.preview.import");
 
   return (
     <div className="space-y-6">
@@ -72,6 +99,10 @@ export function ImportPreviewStep({
             className="space-y-3 rounded-xl border border-border bg-card p-4"
             aria-live="polite"
           >
+            {importMode === "UPSERT" ? (
+              <ImportUpdatedSkusSection skus={result.updatedSkus ?? []} />
+            ) : null}
+
             <div className="flex items-start gap-3">
               <FolderPlus
                 className="mt-0.5 size-5 shrink-0 text-primary"
@@ -146,9 +177,7 @@ export function ImportPreviewStep({
           {isCommitting ? (
             <Loader2 className="animate-spin" aria-hidden="true" />
           ) : null}
-          {isCommitting
-            ? t("import.preview.importing")
-            : t("import.preview.import")}
+          {commitLabel}
         </Button>
         {hasErrors ? (
           <p className="sr-only">{t("import.preview.importDisabled")}</p>

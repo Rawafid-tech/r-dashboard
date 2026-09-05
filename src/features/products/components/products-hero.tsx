@@ -1,4 +1,4 @@
-import { Plus } from "lucide-react";
+import { Plus, FileSpreadsheet, Loader2 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/shared/components/ui";
 import { PageHeader } from "@/shared/components/layout/page-header";
@@ -13,6 +13,8 @@ interface ProductsHeroProps {
   onTabChange: (tab: ProductsTab) => void;
   onAddProduct: () => void;
   onAddCategory: () => void;
+  onExportCatalog?: () => void;
+  isExportingCatalog?: boolean;
   canManage?: boolean;
 }
 
@@ -22,6 +24,8 @@ export function ProductsHero({
   onTabChange,
   onAddProduct,
   onAddCategory,
+  onExportCatalog,
+  isExportingCatalog = false,
   canManage = true,
 }: ProductsHeroProps) {
   const { t } = useTranslation("products");
@@ -44,18 +48,44 @@ export function ProductsHero({
               value={totalElements.toLocaleString(intlLocale)}
             />
           ) : null}
-          {canManage && activeTab !== "import" ? (
+          {canManage && activeTab === "products" ? (
+            <div className="flex w-full flex-row flex-wrap gap-2 sm:w-auto">
+              {onExportCatalog ? (
+                <Button
+                  type="button"
+                  variant="outline"
+                  className="min-w-0 flex-1 sm:flex-none sm:w-auto"
+                  disabled={isExportingCatalog}
+                  onClick={onExportCatalog}
+                >
+                  {isExportingCatalog ? (
+                    <Loader2 className="animate-spin" aria-hidden="true" />
+                  ) : (
+                    <FileSpreadsheet aria-hidden="true" />
+                  )}
+                  {isExportingCatalog
+                    ? t("import.template.exportingCatalog")
+                    : t("import.template.exportCatalog")}
+                </Button>
+              ) : null}
+              <Button
+                type="button"
+                className="min-w-0 flex-1 sm:flex-none sm:w-auto"
+                onClick={onAddProduct}
+              >
+                <Plus aria-hidden="true" />
+                {t("hero.add")}
+              </Button>
+            </div>
+          ) : null}
+          {canManage && activeTab === "categories" ? (
             <Button
               type="button"
               className="w-full sm:w-auto"
-              onClick={
-                activeTab === "categories" ? onAddCategory : onAddProduct
-              }
+              onClick={onAddCategory}
             >
               <Plus aria-hidden="true" />
-              {activeTab === "categories"
-                ? t("categories.hero.add")
-                : t("hero.add")}
+              {t("categories.hero.add")}
             </Button>
           ) : null}
         </div>

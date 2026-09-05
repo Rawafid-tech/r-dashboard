@@ -24,6 +24,16 @@ export async function getProduct(id: string): Promise<Product> {
   return data;
 }
 
+export async function getProductsByBarcode(
+  barcode: string,
+): Promise<Product[]> {
+  const trimmed = barcode.trim();
+  const { data } = await apiClient.get<Product[]>(
+    `/api/products/by-barcode/${encodeURIComponent(trimmed)}`,
+  );
+  return data;
+}
+
 export async function createProduct(
   payload: CreateProductPayload,
 ): Promise<Product> {
