@@ -1,5 +1,10 @@
 import type { ProductFormValues } from "@/features/products/schema";
-import type { Product, ProductPayload } from "@/features/products/types";
+import type {
+  CreateProductPayload,
+  Product,
+  ProductPayload,
+  VariantRequest,
+} from "@/features/products/types";
 import { roundDimensionInput } from "@/features/shipping-boxes/lib/format-dimension";
 
 function optionalString(value: string | undefined): string | undefined {
@@ -47,6 +52,17 @@ export function toProductPayload(values: ProductFormValues): ProductPayload {
   const imageMediaId = optionalString(values.imageMediaId);
   if (imageMediaId) payload.imageMediaId = imageMediaId;
 
+  return payload;
+}
+
+export function toCreateProductPayload(
+  values: ProductFormValues,
+  variants?: VariantRequest[],
+): CreateProductPayload {
+  const payload = toProductPayload(values) as CreateProductPayload;
+  if (variants?.length) {
+    payload.variants = variants;
+  }
   return payload;
 }
 

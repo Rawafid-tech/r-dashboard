@@ -4,7 +4,9 @@ import { useTranslation } from "react-i18next";
 import { ImportColumnMapper } from "@/features/products/components/import-column-mapper";
 import { ImportFileZone } from "@/features/products/components/import-file-zone";
 import { ImportStepHeading } from "@/features/products/components/import-stepper";
+import { ImportVariantColumnMapper } from "@/features/products/components/import-variant-column-mapper";
 import type { ColumnMapping } from "@/features/products/lib/import-map-columns";
+import type { VariantColumnMapping } from "@/features/products/lib/import-variant-map-columns";
 import type { ParsedSheet } from "@/features/products/lib/import-parse-sheet";
 import type { ImportTemplateColumn } from "@/features/products/types";
 import { Button, Checkbox, Label } from "@/shared/components/ui";
@@ -12,12 +14,17 @@ import { Button, Checkbox, Label } from "@/shared/components/ui";
 interface ImportUploadMapStepProps {
   headingRef: Ref<HTMLHeadingElement>;
   columns: ImportTemplateColumn[];
+  variantColumns: ImportTemplateColumn[];
   fileName: string | null;
   parsed: ParsedSheet | null;
+  parsedVariants: ParsedSheet | null;
+  isMultiSheet: boolean;
   mapping: ColumnMapping;
+  variantMapping: VariantColumnMapping;
   applyDefaultHandling: boolean;
   showHandlingDefault: boolean;
   unmappedRequired: ImportTemplateColumn[];
+  unmappedRequiredVariants: ImportTemplateColumn[];
   parseError: string | null;
   isParsing: boolean;
   isDragging: boolean;
@@ -25,6 +32,7 @@ interface ImportUploadMapStepProps {
   onDraggingChange: (dragging: boolean) => void;
   onFile: (file: File) => void;
   onMappingChange: (mapping: ColumnMapping) => void;
+  onVariantMappingChange: (mapping: VariantColumnMapping) => void;
   onApplyDefaultHandlingChange: (value: boolean) => void;
   onBack: () => void;
   onPreview: () => void;
@@ -33,12 +41,17 @@ interface ImportUploadMapStepProps {
 export function ImportUploadMapStep({
   headingRef,
   columns,
+  variantColumns,
   fileName,
   parsed,
+  parsedVariants,
+  isMultiSheet,
   mapping,
+  variantMapping,
   applyDefaultHandling,
   showHandlingDefault,
   unmappedRequired,
+  unmappedRequiredVariants,
   parseError,
   isParsing,
   isDragging,
@@ -46,6 +59,7 @@ export function ImportUploadMapStep({
   onDraggingChange,
   onFile,
   onMappingChange,
+  onVariantMappingChange,
   onApplyDefaultHandlingChange,
   onBack,
   onPreview,
@@ -54,7 +68,13 @@ export function ImportUploadMapStep({
   const isRtl = i18n.dir() === "rtl";
   const ContinueIcon = isRtl ? ArrowLeft : ArrowRight;
   const BackIcon = isRtl ? ArrowRight : ArrowLeft;
-  const canPreview = Boolean(parsed) && unmappedRequired.length === 0 && !isParsing;
+  const hasProductRows = (parsed?.rows.length ?? 0) > 0;
+  const hasVariantRows = (parsedVariants?.rows.length ?? 0) > 0;
+  const canPreview =
+    (hasProductRows || hasVariantRows) &&
+    (!hasProductRows || unmappedRequired.length === 0) &&
+    (!hasVariantRows || unmappedRequiredVariants.length === 0) &&
+    !isParsing;
   const handlingHintId = "import-handling-hint";
 
   return (
@@ -68,7 +88,7 @@ export function ImportUploadMapStep({
       <ImportFileZone
         fileName={fileName}
         isParsing={isParsing}
-        compact={Boolean(parsed)}
+        compact={Boolean(parsed || parsedVariants)}
         disabled={isPreviewing}
         isDragging={isDragging}
         onDraggingChange={onDraggingChange}
@@ -82,16 +102,21 @@ export function ImportUploadMapStep({
         </p>
       ) : null}
 
-      {parsed ? (
+      {parsed && hasProductRows ? (
         <div className="space-y-4">
-          <p className="text-sm text-muted-foreground" aria-live="polite">
-            {parsed.truncated
-              ? t("import.upload.rowCountTruncated", {
-                  sent: parsed.rows.length,
-                  total: parsed.totalDataRows,
-                })
-              : t("import.upload.rowCount", { count: parsed.rows.length })}
-          </p>
+          <div className="space-y-1">
+            <h3 className="text-sm font-semibold text-foreground">
+              {t("import.variants.productsSheetTitle")}
+            </h3>
+            <p className="text-sm text-muted-foreground" aria-live="polite">
+              {parsed.truncated
+                ? t("import.upload.rowCountTruncated", {
+                    sent: parsed.rows.length,
+                    total: parsed.totalDataRows,
+                  })
+                : t("import.upload.rowCount", { count: parsed.rows.length })}
+            </p>
+          </div>
 
           {parsed.truncated ? (
             <div
@@ -154,6 +179,59 @@ export function ImportUploadMapStep({
               </p>
               <ul className="list-disc ps-8 text-sm text-destructive">
                 {unmappedRequired.map((column) => (
+                  <li key={column.key}>
+                    {t("import.upload.missingRequired", { label: column.label })}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ) : null}
+        </div>
+      ) : null}
+
+      {parsedVariants && hasVariantRows ? (
+        <div className="space-y-4">
+          <div className="space-y-1">
+            <h3 className="text-sm font-semibold text-foreground">
+              {t("import.variants.sheetTitle")}
+            </h3>
+            <p className="text-sm text-muted-foreground" aria-live="polite">
+              {parsedVariants.truncated
+                ? t("import.variants.rowCountTruncated", {
+                    sent: parsedVariants.rows.length,
+                    total: parsedVariants.totalDataRows,
+                  })
+                : t("import.variants.rowCount", {
+                    count: parsedVariants.rows.length,
+                  })}
+            </p>
+          </div>
+
+          {!isMultiSheet ? (
+            <p className="text-sm text-muted-foreground">
+              {t("import.variants.singleSheetHint")}
+            </p>
+          ) : null}
+
+          <ImportVariantColumnMapper
+            headers={parsedVariants.headers}
+            columns={variantColumns}
+            mapping={variantMapping}
+            onMappingChange={onVariantMappingChange}
+            disabled={isPreviewing}
+          />
+
+          {unmappedRequiredVariants.length > 0 ? (
+            <div className="space-y-1" role="alert">
+              <p className="flex items-start gap-2 text-sm text-destructive">
+                <AlertTriangle
+                  className="mt-0.5 size-4 shrink-0"
+                  aria-hidden="true"
+                />
+                <span>{t("import.variants.requiredUnmapped")}</span>
+              </p>
+              <ul className="list-disc ps-8 text-sm text-destructive">
+                {unmappedRequiredVariants.map((column) => (
                   <li key={column.key}>
                     {t("import.upload.missingRequired", { label: column.label })}
                   </li>

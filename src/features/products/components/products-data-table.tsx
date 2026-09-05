@@ -11,6 +11,7 @@ import {
 } from "@/shared/components/ui";
 import { HandlingBadge } from "@/features/products/components/handling-badge";
 import { ProductImageThumbnail } from "@/features/products/components/product-image-thumbnail";
+import { ProductVariantsExpand } from "@/features/products/components/product-variants-expand";
 import type { ProductRowAction } from "@/features/products/components/product-row-actions-menu";
 import { ProductRowActionsMenu } from "@/features/products/components/product-row-actions-menu";
 import { ProductsToolbar } from "@/features/products/components/products-toolbar";
@@ -80,9 +81,15 @@ export function ProductsDataTable({
         id: "name",
         header: t("table.name"),
         cell: (product) => (
-          <span className="block font-medium text-foreground">
-            {product.name}
-          </span>
+          <div className="space-y-1">
+            <span className="block font-medium text-foreground">
+              {product.name}
+            </span>
+            <ProductVariantsExpand
+              productName={product.name}
+              variants={product.variants ?? []}
+            />
+          </div>
         ),
       },
       {
@@ -196,6 +203,10 @@ export function ProductsDataTable({
               />
               <div className="min-w-0 flex-1 space-y-1">
                 <h3 className="font-semibold text-foreground">{product.name}</h3>
+                <ProductVariantsExpand
+                  productName={product.name}
+                  variants={product.variants ?? []}
+                />
                 <p className="text-xs text-muted-foreground">
                   {product.categoryName ?? t("table.noCategory")}
                 </p>

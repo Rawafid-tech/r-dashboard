@@ -1,8 +1,10 @@
 import ExcelJS from "exceljs";
 import { enumDisplayValue } from "@/features/products/lib/import-handling-labels";
+import { getImportVariantColumns } from "@/features/products/lib/import-variant-columns";
 import { IMPORT_MAX_ROWS } from "@/features/products/types";
 import type { ImportTemplateColumn } from "@/features/products/types";
 import type { SupportedLocale } from "@/shared/lib/constants";
+import type { TFunction } from "i18next";
 
 const XLSX_MIME =
   "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
@@ -58,9 +60,11 @@ export async function downloadImportTemplate(
   filename: string,
   messages: ImportTemplateMessages,
   locale: SupportedLocale,
+  t: TFunction<"products">,
 ): Promise<void> {
   const workbook = new ExcelJS.Workbook();
   workbook.creator = "Rawafid";
+  const variantColumns = getImportVariantColumns(t);
 
   const products = workbook.addWorksheet("Products", {
     views: [{ state: "frozen", ySplit: 1 }],
@@ -126,6 +130,27 @@ export async function downloadImportTemplate(
   });
 
   lists.state = "hidden";
+
+  const variants = workbook.addWorksheet("Variants", {
+    views: [{ state: "frozen", ySplit: 1 }],
+  });
+
+  variants.addRow(variantColumns.map((column) => column.label));
+  variants.addRow(
+    variantColumns.map((column) => column.example ?? ""),
+  );
+
+  const variantHeaderRow = variants.getRow(1);
+  variantHeaderRow.font = { bold: true };
+  variantHeaderRow.alignment = { vertical: "middle", wrapText: true };
+
+  variantColumns.forEach((column, index) => {
+    const sheetColumn = variants.getColumn(index + 1);
+    sheetColumn.width = Math.min(
+      40,
+      Math.max(16, (column.label.length + (column.example?.length ?? 0)) / 2 + 4),
+    );
+  });
 
   const buffer = await workbook.xlsx.writeBuffer();
   const blob = new Blob([buffer], { type: XLSX_MIME });

@@ -1,7 +1,10 @@
 import type {
+  CreateProductPayload,
   Product,
   ProductPayload,
+  ProductVariant,
   ProductsListParams,
+  ReplaceVariantsPayload,
 } from "@/features/products/types";
 import { apiClient } from "@/shared/api/client";
 import type { PaginatedResponse } from "@/shared/types/api";
@@ -21,8 +24,21 @@ export async function getProduct(id: string): Promise<Product> {
   return data;
 }
 
-export async function createProduct(payload: ProductPayload): Promise<Product> {
+export async function createProduct(
+  payload: CreateProductPayload,
+): Promise<Product> {
   const { data } = await apiClient.post<Product>("/api/products", payload);
+  return data;
+}
+
+export async function replaceProductVariants(
+  id: string,
+  payload: ReplaceVariantsPayload,
+): Promise<ProductVariant[]> {
+  const { data } = await apiClient.put<ProductVariant[]>(
+    `/api/products/${id}/variants`,
+    payload,
+  );
   return data;
 }
 

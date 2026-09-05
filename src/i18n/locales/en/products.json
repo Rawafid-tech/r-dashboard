@@ -20,7 +20,7 @@
   },
   "toolbar": {
     "title": "Product catalog",
-    "searchPlaceholder": "Search by name, SKU or barcode…",
+    "searchPlaceholder": "Search by name, SKU, barcode or variant…",
     "sortLabel": "Sort",
     "handlingLabel": "Handling",
     "handlingAll": "All handling types",
@@ -63,7 +63,13 @@
     "noImage": "No image",
     "noBarcode": "—",
     "noCategory": "—",
-    "weightUnit": "kg"
+    "weightUnit": "kg",
+    "variantsCount_one": "{{count}} variant",
+    "variantsCount_other": "{{count}} variants",
+    "variantsExpand": "Show variants for {{name}}",
+    "variantsCollapse": "Hide variants for {{name}}",
+    "variantsListLabel": "Variants",
+    "variantPriceSameAsProduct": "Same as product"
   },
   "pagination": {
     "label": "Products pagination",
@@ -129,6 +135,48 @@
     "categoryPlaceholder": "None — uncategorized",
     "categoryHint": "Optional filing category.",
     "saving": "Saving…",
+    "variants": {
+      "legend": "Variants",
+      "toggleLabel": "This product has variants",
+      "toggleHint": "Variants are labels with an optional price — shipping still uses the product SKU and weight.",
+      "createHint": "Define option axes, then set a price per combination. Blank price means same as the product price.",
+      "editHint": "Edit variant labels and prices. Order here is the order customers see.",
+      "axisName": "Option name",
+      "axisNamePlaceholder": "e.g. Colour",
+      "axisValue": "Value",
+      "axisValuePlaceholder": "e.g. Red",
+      "addAxis": "Add option",
+      "removeAxis": "Remove option {{name}}",
+      "addAxisValue": "Add value to {{name}}",
+      "removeAxisValue": "Remove value {{value}} from {{name}}",
+      "combinationCount": "{{count}} combinations",
+      "combinationCountLive": "{{count}} variant combinations",
+      "tableCaption": "Variant combinations",
+      "columnLabel": "Label",
+      "columnPrice": "Price",
+      "pricePlaceholder": "Same as product",
+      "priceHint": "Leave blank to use the product price.",
+      "addRow": "Add variant",
+      "removeRow": "Remove variant {{name}}",
+      "moveUp": "Move {{name}} up",
+      "moveDown": "Move {{name}} down",
+      "rowName": "Variant label",
+      "rowNamePlaceholder": "e.g. Red / M",
+      "emptyCreate": "Add at least one option with values to generate variants.",
+      "emptyEdit": "No variants yet — add one or turn off variants to remove them all.",
+      "validation": {
+        "nameRequired": "Variant label is required",
+        "nameMax": "Variant label must be at most {{max}} characters",
+        "duplicateName": "This label is already used",
+        "priceInvalid": "Price must be a valid number",
+        "priceMinZero": "Price must be 0 or more",
+        "priceMax": "Price must be at most {{max}}",
+        "priceDecimals": "Price allows at most 2 decimal places",
+        "maxCount": "A product can have at most {{max}} variants",
+        "combinationLimit": "{{count}} combinations exceeds the limit of {{max}}",
+        "axisNameRequired": "Name every option that has values"
+      }
+    },
     "notFoundTitle": "Product not found",
     "notFoundDescription": "This product may have been deleted or you no longer have access.",
     "validation": {
@@ -311,6 +359,57 @@
       "committed": "{{count}} products imported",
       "commitFailed": "Could not import products",
       "nothingWritten": "Some rows were rejected, so nothing was imported"
+    },
+    "variants": {
+      "templateTitle": "Optional: Variants sheet",
+      "templateDescription": "The downloaded template includes a second sheet named Variants. Each row adds or replaces variant labels for a product SKU. Leave variant price blank to use the product price.",
+      "sheetTitle": "Variants sheet",
+      "productsSheetTitle": "Products sheet",
+      "singleSheetHint": "Variant rows were read from a dedicated sheet in this workbook.",
+      "mappingTitle": "Match variant columns",
+      "mappingDescription": "Map your variant sheet headers. Product SKU must match an existing product or a SKU in the products sheet.",
+      "requiredUnmapped": "Map every required variant column before previewing.",
+      "rowCount": "{{count}} variant rows ready",
+      "rowCountTruncated": "{{sent}} of {{total}} variant rows will be sent",
+      "previewTitle": "Variant import preview",
+      "previewDescription": "{{rows}} variant rows across {{products}} products.",
+      "replaceHint": "Import replaces the full variant list for each product SKU — existing labels not in the sheet will be removed.",
+      "errorsSummary": "{{count}} variant rows have problems",
+      "errorsNone": "All variant rows look valid.",
+      "errorsTableCaption": "Variant row problems",
+      "commitFailed": "Could not apply variants for this product",
+      "resultApplied": "{{variants}} variants applied across {{products}} products",
+      "resultPartialFailure": "Some variants could not be applied",
+      "columns": {
+        "productSku": {
+          "label": "Product SKU",
+          "example": "DOC-SHIRT-001"
+        },
+        "variantName": {
+          "label": "Variant label",
+          "example": "Red / M"
+        },
+        "variantPrice": {
+          "label": "Variant price",
+          "example": "140"
+        }
+      },
+      "validation": {
+        "productSkuRequired": "Product SKU is required",
+        "productSkuNotFound": "No product with this SKU exists in your catalog or this import",
+        "variantNameRequired": "Variant label is required",
+        "variantNameMax": "Variant label must be at most {{max}} characters",
+        "duplicateName": "This label is already used for the same product",
+        "priceInvalid": "Variant price must be a valid number",
+        "priceMinZero": "Variant price must be 0 or more",
+        "priceMax": "Variant price must be at most {{max}}",
+        "priceDecimals": "Variant price allows at most 2 decimal places",
+        "maxPerProduct": "This product would have {{count}} variants — the limit is {{max}}"
+      },
+      "toast": {
+        "committed": "{{count}} variants applied across {{products}} products",
+        "partialFailure": "Products were imported, but some variants failed"
+      }
     }
   }
 }

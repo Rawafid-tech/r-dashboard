@@ -3,8 +3,8 @@ import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { createProduct } from "@/features/products/api/products.api";
 import { productKeys } from "@/features/products/hooks/use-products";
-import { isDuplicateSkuConflict } from "@/features/products/lib/product-form-errors";
-import type { ProductPayload } from "@/features/products/types";
+import { isDuplicateSkuConflict, isVariantsFieldError } from "@/features/products/lib/product-form-errors";
+import type { CreateProductPayload } from "@/features/products/types";
 import { isApiError, parseApiError } from "@/shared/api/error-handler";
 
 export function useCreateProduct() {
@@ -13,7 +13,7 @@ export function useCreateProduct() {
   const { t: tCommon } = useTranslation("common");
 
   return useMutation({
-    mutationFn: (payload: ProductPayload) => createProduct(payload),
+    mutationFn: (payload: CreateProductPayload) => createProduct(payload),
     onSuccess: (product) => {
       void queryClient.invalidateQueries({ queryKey: productKeys.lists() });
       queryClient.setQueryData(productKeys.detail(product.id), product);
@@ -25,7 +25,7 @@ export function useCreateProduct() {
         return;
       }
 
-      if (isDuplicateSkuConflict(error)) {
+      if (isDuplicateSkuConflict(error) || isVariantsFieldError(error)) {
         return;
       }
 

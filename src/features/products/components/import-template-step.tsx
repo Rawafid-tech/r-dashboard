@@ -13,6 +13,7 @@ import { cn } from "@/shared/lib/utils";
 interface ImportTemplateStepProps {
   headingRef: Ref<HTMLHeadingElement>;
   columns: ImportTemplateColumn[];
+  variantColumns: ImportTemplateColumn[];
   isLoading: boolean;
   isError: boolean;
   isDownloading: boolean;
@@ -24,6 +25,7 @@ interface ImportTemplateStepProps {
 export function ImportTemplateStep({
   headingRef,
   columns,
+  variantColumns,
   isLoading,
   isError,
   isDownloading,
@@ -135,6 +137,27 @@ export function ImportTemplateStep({
             </tbody>
           </table>
         </ImportSheetScroller>
+      ) : null}
+
+      {!isError && !isLoading && variantColumns.length > 0 ? (
+        <div className="space-y-2 rounded-xl border border-border/60 bg-muted/20 p-4">
+          <h3 className="text-sm font-semibold text-foreground">
+            {t("import.variants.templateTitle")}
+          </h3>
+          <p className="text-sm text-muted-foreground">
+            {t("import.variants.templateDescription")}
+          </p>
+          <ul className="list-disc ps-5 text-sm text-muted-foreground">
+            {variantColumns.map((column) => (
+              <li key={column.key}>
+                <span className="font-medium text-foreground">{column.label}</span>
+                {column.required
+                  ? ` (${t("import.template.required")})`
+                  : ` (${t("import.template.optional")})`}
+              </li>
+            ))}
+          </ul>
+        </div>
       ) : null}
 
       <div className="flex flex-col gap-2 sm:flex-row">

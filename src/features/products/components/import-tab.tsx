@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { toast } from "sonner";
 import { ImportPreviewStep } from "@/features/products/components/import-preview-step";
 import { ImportResultStep } from "@/features/products/components/import-result";
 import {
@@ -11,6 +12,8 @@ import { ImportUploadMapStep } from "@/features/products/components/import-uploa
 import { useImportCommit } from "@/features/products/hooks/use-import-commit";
 import { useImportPreview } from "@/features/products/hooks/use-import-preview";
 import { useImportTemplate } from "@/features/products/hooks/use-import-template";
+import { useImportVariantCommit } from "@/features/products/hooks/use-import-variant-commit";
+import { getImportVariantColumns } from "@/features/products/lib/import-variant-columns";
 import {
   autoMapColumns,
   getUnmappedRequiredColumns,
@@ -18,14 +21,28 @@ import {
   type ColumnMapping,
 } from "@/features/products/lib/import-map-columns";
 import {
+  autoMapVariantColumns,
+  getUnmappedRequiredVariantColumns,
+  type VariantColumnMapping,
+} from "@/features/products/lib/import-variant-map-columns";
+import { buildImportVariantRows } from "@/features/products/lib/import-variant-rows";
+import {
+  hasVariantPreviewErrors,
+  previewImportVariantsAsync,
+} from "@/features/products/lib/import-variant-validate";
+import {
   buildImportRows,
-  parseSpreadsheet,
+  parseSpreadsheetWorkbook,
   SpreadsheetParseError,
   type ParsedSheet,
 } from "@/features/products/lib/import-parse-sheet";
 import { extractImportErrors } from "@/features/products/lib/import-row-errors";
 import { downloadImportTemplate } from "@/features/products/lib/import-template-xlsx";
-import type { ImportResult } from "@/features/products/types";
+import type {
+  ImportResult,
+  ImportVariantCommitResult,
+  ImportVariantPreview,
+} from "@/features/products/types";
 import { isApiError } from "@/shared/api/error-handler";
 import { useLocaleStore } from "@/stores/locale.store";
 
@@ -34,6 +51,10 @@ interface ImportTabProps {
 }
 
 function emptyMapping(): ColumnMapping {
+  return {};
+}
+
+function emptyVariantMapping(): VariantColumnMapping {
   return {};
 }
 
@@ -46,63 +67,129 @@ export function ImportTab({ onGoToProducts }: ImportTabProps) {
   const templateQuery = useImportTemplate();
   const previewMutation = useImportPreview();
   const commitMutation = useImportCommit();
+  const variantCommitMutation = useImportVariantCommit();
+
+  const variantColumns = useMemo(() => getImportVariantColumns(t), [t]);
 
   const [step, setStep] = useState<ImportWizardStep>(1);
   const [isDownloading, setIsDownloading] = useState(false);
   const [isParsing, setIsParsing] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const [fileName, setFileName] = useState<string | null>(null);
-  const [parsed, setParsed] = useState<ParsedSheet | null>(null);
+  const [parsedProducts, setParsedProducts] = useState<ParsedSheet | null>(null);
+  const [parsedVariants, setParsedVariants] = useState<ParsedSheet | null>(null);
+  const [isMultiSheet, setIsMultiSheet] = useState(false);
   const [mapping, setMapping] = useState<ColumnMapping>(emptyMapping);
+  const [variantMapping, setVariantMapping] =
+    useState<VariantColumnMapping>(emptyVariantMapping);
   const [applyDefaultHandling, setApplyDefaultHandling] = useState(false);
   const [parseError, setParseError] = useState<string | null>(null);
   const [preview, setPreview] = useState<ImportResult | null>(null);
+  const [variantPreview, setVariantPreview] =
+    useState<ImportVariantPreview | null>(null);
   const [commitResult, setCommitResult] = useState<ImportResult | null>(null);
+  const [variantCommitResult, setVariantCommitResult] =
+    useState<ImportVariantCommitResult | null>(null);
+  const [isVariantPreviewing, setIsVariantPreviewing] = useState(false);
 
   const columns = templateQuery.data;
-  const showHandlingDefault = Boolean(parsed) && !hasHandlingMapped(mapping);
+  const hasProductRows = (parsedProducts?.rows.length ?? 0) > 0;
+  const hasVariantRows = (parsedVariants?.rows.length ?? 0) > 0;
+  const showHandlingDefault =
+    Boolean(parsedProducts) && hasProductRows && !hasHandlingMapped(mapping);
+
   const unmappedRequired = useMemo(
     () =>
-      parsed && columns
+      parsedProducts && columns && hasProductRows
         ? getUnmappedRequiredColumns(
             mapping,
             columns,
             showHandlingDefault && applyDefaultHandling,
           )
         : [],
-    [applyDefaultHandling, columns, mapping, parsed, showHandlingDefault],
+    [
+      applyDefaultHandling,
+      columns,
+      hasProductRows,
+      mapping,
+      parsedProducts,
+      showHandlingDefault,
+    ],
+  );
+
+  const unmappedRequiredVariants = useMemo(
+    () =>
+      parsedVariants && hasVariantRows
+        ? getUnmappedRequiredVariantColumns(variantMapping, variantColumns)
+        : [],
+    [hasVariantRows, parsedVariants, variantColumns, variantMapping],
   );
 
   const importRows = useMemo(() => {
-    if (!parsed) return [];
+    if (!parsedProducts || !hasProductRows) return [];
     return buildImportRows(
-      parsed,
+      parsedProducts,
       mapping,
       showHandlingDefault && applyDefaultHandling,
     );
-  }, [applyDefaultHandling, mapping, parsed, showHandlingDefault]);
+  }, [
+    applyDefaultHandling,
+    hasProductRows,
+    mapping,
+    parsedProducts,
+    showHandlingDefault,
+  ]);
+
+  const importVariantRows = useMemo(() => {
+    if (!parsedVariants || !hasVariantRows) return [];
+    return buildImportVariantRows(parsedVariants, variantMapping);
+  }, [hasVariantRows, parsedVariants, variantMapping]);
+
+  const productSkusInBatch = useMemo(
+    () =>
+      new Set(
+        importRows
+          .map((row) => String(row.sku ?? "").trim())
+          .filter(Boolean),
+      ),
+    [importRows],
+  );
 
   useEffect(() => {
     headingRef.current?.focus();
   }, [step]);
 
   useEffect(() => {
-    if (!parsed || !templateQuery.data) return;
+    if (!parsedProducts || !templateQuery.data) return;
     previewGeneration.current += 1;
-    setMapping(autoMapColumns(parsed.headers, templateQuery.data));
+    setMapping(autoMapColumns(parsedProducts.headers, templateQuery.data));
     setPreview(null);
+    setVariantPreview(null);
     setStep((current) => (current === 3 ? 2 : current));
-  }, [parsed, templateQuery.data]);
+  }, [parsedProducts, templateQuery.data]);
+
+  useEffect(() => {
+    if (!parsedVariants) return;
+    previewGeneration.current += 1;
+    setVariantMapping(autoMapVariantColumns(parsedVariants.headers, variantColumns));
+    setVariantPreview(null);
+    setStep((current) => (current === 3 ? 2 : current));
+  }, [parsedVariants, variantColumns]);
 
   const resetFileState = useCallback(() => {
     previewGeneration.current += 1;
     setFileName(null);
-    setParsed(null);
+    setParsedProducts(null);
+    setParsedVariants(null);
+    setIsMultiSheet(false);
     setMapping(emptyMapping());
+    setVariantMapping(emptyVariantMapping());
     setApplyDefaultHandling(false);
     setParseError(null);
     setPreview(null);
+    setVariantPreview(null);
     setCommitResult(null);
+    setVariantCommitResult(null);
     setIsDragging(false);
   }, []);
 
@@ -124,6 +211,7 @@ export function ImportTab({ onGoToProducts }: ImportTabProps) {
           enumPrompt: t("import.template.enumPrompt"),
         },
         locale,
+        t,
       );
     } finally {
       setIsDownloading(false);
@@ -136,18 +224,34 @@ export function ImportTab({ onGoToProducts }: ImportTabProps) {
       setIsParsing(true);
       setParseError(null);
       setPreview(null);
+      setVariantPreview(null);
       setCommitResult(null);
+      setVariantCommitResult(null);
 
       try {
-        const sheet = await parseSpreadsheet(file);
+        const workbook = await parseSpreadsheetWorkbook(file);
         setFileName(file.name);
-        setParsed(sheet);
-        setMapping(autoMapColumns(sheet.headers, columns ?? []));
+        setParsedProducts(workbook.products);
+        setParsedVariants(workbook.variants);
+        setIsMultiSheet(workbook.isMultiSheet);
+        setMapping(
+          workbook.products?.headers.length
+            ? autoMapColumns(workbook.products.headers, columns ?? [])
+            : emptyMapping(),
+        );
+        setVariantMapping(
+          workbook.variants?.headers.length
+            ? autoMapVariantColumns(workbook.variants.headers, variantColumns)
+            : emptyVariantMapping(),
+        );
         setApplyDefaultHandling(false);
       } catch (error) {
         setFileName(null);
-        setParsed(null);
+        setParsedProducts(null);
+        setParsedVariants(null);
+        setIsMultiSheet(false);
         setMapping(emptyMapping());
+        setVariantMapping(emptyVariantMapping());
 
         if (error instanceof SpreadsheetParseError) {
           const messages: Record<SpreadsheetParseError["code"], string> = {
@@ -163,33 +267,120 @@ export function ImportTab({ onGoToProducts }: ImportTabProps) {
         setIsParsing(false);
       }
     },
-    [columns, t],
+    [columns, t, variantColumns],
   );
 
   const runPreview = useCallback(async () => {
-    if (importRows.length === 0 || unmappedRequired.length > 0) return;
+    if (
+      (!hasProductRows && !hasVariantRows) ||
+      (hasProductRows && unmappedRequired.length > 0) ||
+      (hasVariantRows && unmappedRequiredVariants.length > 0)
+    ) {
+      return;
+    }
 
     const generation = previewGeneration.current + 1;
     previewGeneration.current = generation;
 
     try {
-      const result = await previewMutation.mutateAsync(importRows);
-      if (generation !== previewGeneration.current) return;
-      setPreview(result);
+      let productPreview: ImportResult | null = null;
+
+      if (hasProductRows) {
+        productPreview = await previewMutation.mutateAsync(importRows);
+        if (generation !== previewGeneration.current) return;
+      }
+
+      let nextVariantPreview: ImportVariantPreview | null = null;
+      if (hasVariantRows) {
+        setIsVariantPreviewing(true);
+        nextVariantPreview = await previewImportVariantsAsync(
+          importVariantRows,
+          productSkusInBatch,
+          t,
+        );
+        if (generation !== previewGeneration.current) return;
+      }
+
+      setPreview(
+        productPreview ?? {
+          dryRun: true,
+          totalRows: 0,
+          created: 0,
+          newCategories: [],
+          errors: [],
+        },
+      );
+      setVariantPreview(nextVariantPreview);
       goToStep(3);
     } catch {
       // Toast is handled in the mutation hook.
+    } finally {
+      setIsVariantPreviewing(false);
     }
-  }, [goToStep, importRows, previewMutation, unmappedRequired.length]);
+  }, [
+    goToStep,
+    hasProductRows,
+    hasVariantRows,
+    importRows,
+    importVariantRows,
+    previewMutation,
+    productSkusInBatch,
+    t,
+    unmappedRequired.length,
+    unmappedRequiredVariants.length,
+  ]);
 
   const handleCommit = useCallback(async () => {
-    if (!preview || preview.errors.length > 0 || importRows.length === 0) {
+    const productHasErrors = preview != null && preview.errors.length > 0;
+    const variantHasErrors =
+      variantPreview != null && hasVariantPreviewErrors(variantPreview);
+
+    if (
+      productHasErrors ||
+      variantHasErrors ||
+      (!hasProductRows && !hasVariantRows)
+    ) {
       return;
     }
 
     try {
-      const result = await commitMutation.mutateAsync(importRows);
-      setCommitResult(result);
+      let productResult: ImportResult = preview ?? {
+        dryRun: false,
+        totalRows: 0,
+        created: 0,
+        newCategories: [],
+        errors: [],
+      };
+
+      if (hasProductRows) {
+        productResult = await commitMutation.mutateAsync(importRows);
+      }
+
+      let nextVariantCommit: ImportVariantCommitResult | null = null;
+      if (hasVariantRows) {
+        nextVariantCommit =
+          await variantCommitMutation.mutateAsync(importVariantRows);
+
+        if (nextVariantCommit.errors.length > 0) {
+          setCommitResult(productResult);
+          setVariantCommitResult(nextVariantCommit);
+          toast.error(t("import.variants.toast.partialFailure"));
+          goToStep(4);
+          return;
+        }
+
+        if (nextVariantCommit.variantsApplied > 0) {
+          toast.success(
+            t("import.variants.toast.committed", {
+              count: nextVariantCommit.variantsApplied,
+              products: nextVariantCommit.productsUpdated,
+            }),
+          );
+        }
+      }
+
+      setCommitResult(productResult);
+      setVariantCommitResult(nextVariantCommit);
       goToStep(4);
     } catch (error) {
       if (isApiError(error, 422)) {
@@ -207,12 +398,27 @@ export function ImportTab({ onGoToProducts }: ImportTabProps) {
         );
       }
     }
-  }, [commitMutation, goToStep, importRows, preview]);
+  }, [
+    commitMutation,
+    goToStep,
+    hasProductRows,
+    hasVariantRows,
+    importRows,
+    importVariantRows,
+    preview,
+    t,
+    variantCommitMutation,
+    variantPreview,
+  ]);
 
   const handleImportAnother = useCallback(() => {
     resetFileState();
     goToStep(2);
   }, [goToStep, resetFileState]);
+
+  const isPreviewing = previewMutation.isPending || isVariantPreviewing;
+  const isCommitting =
+    commitMutation.isPending || variantCommitMutation.isPending;
 
   return (
     <section className="space-y-6" aria-labelledby="import-wizard-title">
@@ -226,11 +432,12 @@ export function ImportTab({ onGoToProducts }: ImportTabProps) {
         <ImportTemplateStep
           headingRef={headingRef}
           columns={columns ?? []}
+          variantColumns={variantColumns}
           isLoading={templateQuery.isLoading}
           isError={templateQuery.isError}
           isDownloading={isDownloading}
           onRetry={() => void templateQuery.refetch()}
-          onDownload={handleDownload}
+          onDownload={() => void handleDownload()}
           onContinue={() => goToStep(2)}
         />
       ) : null}
@@ -239,22 +446,33 @@ export function ImportTab({ onGoToProducts }: ImportTabProps) {
         <ImportUploadMapStep
           headingRef={headingRef}
           columns={columns ?? []}
+          variantColumns={variantColumns}
           fileName={fileName}
-          parsed={parsed}
+          parsed={parsedProducts}
+          parsedVariants={parsedVariants}
+          isMultiSheet={isMultiSheet}
           mapping={mapping}
+          variantMapping={variantMapping}
           applyDefaultHandling={applyDefaultHandling}
           showHandlingDefault={showHandlingDefault}
           unmappedRequired={unmappedRequired}
+          unmappedRequiredVariants={unmappedRequiredVariants}
           parseError={parseError}
           isParsing={isParsing}
           isDragging={isDragging}
-          isPreviewing={previewMutation.isPending}
+          isPreviewing={isPreviewing}
           onDraggingChange={setIsDragging}
           onFile={(file) => void handleFile(file)}
           onMappingChange={(next) => {
             previewGeneration.current += 1;
             setMapping(next);
             setPreview(null);
+            setVariantPreview(null);
+          }}
+          onVariantMappingChange={(next) => {
+            previewGeneration.current += 1;
+            setVariantMapping(next);
+            setVariantPreview(null);
           }}
           onApplyDefaultHandlingChange={(value) => {
             setApplyDefaultHandling(value);
@@ -272,8 +490,10 @@ export function ImportTab({ onGoToProducts }: ImportTabProps) {
           rows={importRows}
           mapping={mapping}
           result={preview}
-          isPreviewing={previewMutation.isPending}
-          isCommitting={commitMutation.isPending}
+          variantPreview={variantPreview}
+          hasProductRows={hasProductRows}
+          isPreviewing={isPreviewing}
+          isCommitting={isCommitting}
           onBack={() => goToStep(2)}
           onPreviewAgain={() => void runPreview()}
           onCommit={() => void handleCommit()}
@@ -284,6 +504,7 @@ export function ImportTab({ onGoToProducts }: ImportTabProps) {
         <ImportResultStep
           headingRef={headingRef}
           result={commitResult}
+          variantResult={variantCommitResult}
           onGoToProducts={onGoToProducts}
           onImportAnother={handleImportAnother}
         />

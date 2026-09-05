@@ -20,7 +20,7 @@
   },
   "toolbar": {
     "title": "كتalog المنتجات",
-    "searchPlaceholder": "بحث بالاسم أو SKU أو الباركود…",
+    "searchPlaceholder": "بحث بالاسم أو SKU أو الباركود أو المتغير…",
     "sortLabel": "ترتيب",
     "handlingLabel": "نوع المعالجة",
     "handlingAll": "جميع أنواع المعالجة",
@@ -63,7 +63,17 @@
     "noImage": "بدون صورة",
     "noBarcode": "—",
     "noCategory": "—",
-    "weightUnit": "كجم"
+    "weightUnit": "كجم",
+    "variantsCount_zero": "لا متغيرات",
+    "variantsCount_one": "متغير واحد",
+    "variantsCount_two": "متغيران",
+    "variantsCount_few": "{{count}} متغيرات",
+    "variantsCount_many": "{{count}} متغيراً",
+    "variantsCount_other": "{{count}} متغير",
+    "variantsExpand": "عرض متغيرات {{name}}",
+    "variantsCollapse": "إخفاء متغيرات {{name}}",
+    "variantsListLabel": "المتغيرات",
+    "variantPriceSameAsProduct": "نفس سعر المنتج"
   },
   "pagination": {
     "label": "ترقيم المنتجات",
@@ -129,6 +139,48 @@
     "categoryPlaceholder": "بدون — غير مصنّف",
     "categoryHint": "فئة تصنيف اختيارية.",
     "saving": "جاري الحفظ…",
+    "variants": {
+      "legend": "المتغيرات",
+      "toggleLabel": "هذا المنتج له متغيرات",
+      "toggleHint": "المتغيرات تسميات بسعر اختياري — الشحن ما زال يستخدم SKU ووزن المنتج.",
+      "createHint": "عرّف محاور الخيارات، ثم حدّد سعراً لكل تركيبة. السعر الفارغ يعني نفس سعر المنتج.",
+      "editHint": "عدّل تسميات وأسعار المتغيرات. الترتيب هنا هو ترتيب العرض.",
+      "axisName": "اسم الخيار",
+      "axisNamePlaceholder": "مثال: اللون",
+      "axisValue": "القيمة",
+      "axisValuePlaceholder": "مثال: أحمر",
+      "addAxis": "إضافة خيار",
+      "removeAxis": "إزالة الخيار {{name}}",
+      "addAxisValue": "إضافة قيمة إلى {{name}}",
+      "removeAxisValue": "إزالة القيمة {{value}} من {{name}}",
+      "combinationCount": "{{count}} تركيبة",
+      "combinationCountLive": "{{count}} تركيبة متغير",
+      "tableCaption": "تركيبات المتغيرات",
+      "columnLabel": "التسمية",
+      "columnPrice": "السعر",
+      "pricePlaceholder": "نفس سعر المنتج",
+      "priceHint": "اتركه فارغاً لاستخدام سعر المنتج.",
+      "addRow": "إضافة متغير",
+      "removeRow": "إزالة المتغير {{name}}",
+      "moveUp": "نقل {{name}} لأعلى",
+      "moveDown": "نقل {{name}} لأسفل",
+      "rowName": "تسمية المتغير",
+      "rowNamePlaceholder": "مثال: أحمر / وسط",
+      "emptyCreate": "أضف خياراً واحداً على الأقل بقيم لتوليد المتغيرات.",
+      "emptyEdit": "لا متغيرات بعد — أضف واحداً أو أوقف المتغيرات لحذفها جميعاً.",
+      "validation": {
+        "nameRequired": "تسمية المتغير مطلوبة",
+        "nameMax": "تسمية المتغير يجب ألا تتجاوز {{max}} حرفاً",
+        "duplicateName": "هذه التسمية مستخدمة بالفعل",
+        "priceInvalid": "السعر يجب أن يكون رقماً صالحاً",
+        "priceMinZero": "السعر يجب أن يكون 0 أو أكثر",
+        "priceMax": "السعر يجب ألا يتجاوز {{max}}",
+        "priceDecimals": "السعر يسمح بمنزلتين عشريتين كحد أقصى",
+        "maxCount": "الحد الأقصى {{max}} متغيراً للمنتج الواحد",
+        "combinationLimit": "{{count}} تركيبة تتجاوز الحد {{max}}",
+        "axisNameRequired": "سمّ كل خيار له قيم"
+      }
+    },
     "notFoundTitle": "المنتج غير موجود",
     "notFoundDescription": "ربما حُذف هذا المنتج أو لم يعد لديك صلاحية الوصول.",
     "validation": {
@@ -311,6 +363,57 @@
       "committed": "تم استيراد {{count}} منتجات",
       "commitFailed": "تعذّر استيراد المنتجات",
       "nothingWritten": "رُفضت بعض الصفوف، لذلك لم يُستورد شيء"
+    },
+    "variants": {
+      "templateTitle": "اختياري: ورقة المتغيرات",
+      "templateDescription": "القالب المُحمَّل يتضمن ورقة ثانية باسم Variants. كل صف يضيف أو يستبدل تسميات المتغيرات لـ SKU منتج. اترك سعر المتغير فارغاً لاستخدام سعر المنتج.",
+      "sheetTitle": "ورقة المتغيرات",
+      "productsSheetTitle": "ورقة المنتجات",
+      "singleSheetHint": "تمت قراءة صفوف المتغيرات من ورقة مخصصة في هذا الملف.",
+      "mappingTitle": "مطابقة أعمدة المتغيرات",
+      "mappingDescription": "طابق عناوين ورقة المتغيرات. SKU المنتج يجب أن يطابق منتجاً موجوداً أو SKU في ورقة المنتجات.",
+      "requiredUnmapped": "اربط كل عمود متغير مطلوب قبل المعاينة.",
+      "rowCount": "{{count}} صف متغير جاهز",
+      "rowCountTruncated": "سيُرسل {{sent}} من أصل {{total}} صف متغير",
+      "previewTitle": "معاينة استيراد المتغيرات",
+      "previewDescription": "{{rows}} صف متغير عبر {{products}} منتجات.",
+      "replaceHint": "الاستيراد يستبدل قائمة المتغيرات كاملة لكل SKU — التسميات غير الموجودة في الورقة ستُحذف.",
+      "errorsSummary": "{{count}} صفوف متغير فيها مشاكل",
+      "errorsNone": "كل صفوف المتغيرات تبدو صحيحة.",
+      "errorsTableCaption": "مشاكل صفوف المتغيرات",
+      "commitFailed": "تعذّر تطبيق المتغيرات على هذا المنتج",
+      "resultApplied": "تم تطبيق {{variants}} متغيراً على {{products}} منتجات",
+      "resultPartialFailure": "تعذّر تطبيق بعض المتغيرات",
+      "columns": {
+        "productSku": {
+          "label": "SKU المنتج",
+          "example": "DOC-SHIRT-001"
+        },
+        "variantName": {
+          "label": "تسمية المتغير",
+          "example": "أحمر / وسط"
+        },
+        "variantPrice": {
+          "label": "سعر المتغير",
+          "example": "140"
+        }
+      },
+      "validation": {
+        "productSkuRequired": "SKU المنتج مطلوب",
+        "productSkuNotFound": "لا يوجد منتج بهذا SKU في الكتalog أو في هذا الاستيراد",
+        "variantNameRequired": "تسمية المتغير مطلوبة",
+        "variantNameMax": "تسمية المتغير يجب ألا تتجاوز {{max}} حرفاً",
+        "duplicateName": "هذه التسمية مستخدمة بالفعل لنفس المنتج",
+        "priceInvalid": "سعر المتغير يجب أن يكون رقماً صالحاً",
+        "priceMinZero": "سعر المتغير يجب أن يكون 0 أو أكثر",
+        "priceMax": "سعر المتغير يجب ألا يتجاوز {{max}}",
+        "priceDecimals": "سعر المتغير يسمح بمنزلتين عشريتين كحد أقصى",
+        "maxPerProduct": "هذا المنتج سيكون له {{count}} متغيراً — الحد {{max}}"
+      },
+      "toast": {
+        "committed": "تم تطبيق {{count}} متغيراً على {{products}} منتجات",
+        "partialFailure": "تم استيراد المنتجات، لكن بعض المتغيرات فشلت"
+      }
     }
   }
 }

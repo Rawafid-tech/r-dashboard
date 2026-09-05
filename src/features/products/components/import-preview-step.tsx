@@ -3,8 +3,15 @@ import { AlertCircle, ArrowLeft, ArrowRight, CheckCircle2, FolderPlus, Loader2 }
 import { useTranslation } from "react-i18next";
 import { ImportPreviewGrid } from "@/features/products/components/import-preview-grid";
 import { ImportStepHeading } from "@/features/products/components/import-stepper";
+import { ImportVariantPreviewSection } from "@/features/products/components/import-variant-preview-section";
 import { getMappedKeys, type ColumnMapping } from "@/features/products/lib/import-map-columns";
-import type { ImportRow, ImportResult, ImportTemplateColumn } from "@/features/products/types";
+import { hasVariantPreviewErrors } from "@/features/products/lib/import-variant-validate";
+import type {
+  ImportRow,
+  ImportResult,
+  ImportTemplateColumn,
+  ImportVariantPreview,
+} from "@/features/products/types";
 import { Button } from "@/shared/components/ui";
 
 interface ImportPreviewStepProps {
@@ -13,6 +20,8 @@ interface ImportPreviewStepProps {
   rows: ImportRow[];
   mapping: ColumnMapping;
   result: ImportResult;
+  variantPreview: ImportVariantPreview | null;
+  hasProductRows: boolean;
   isPreviewing: boolean;
   isCommitting: boolean;
   onBack: () => void;
@@ -26,6 +35,8 @@ export function ImportPreviewStep({
   rows,
   mapping,
   result,
+  variantPreview,
+  hasProductRows,
   isPreviewing,
   isCommitting,
   onBack,
@@ -35,7 +46,10 @@ export function ImportPreviewStep({
   const { t, i18n } = useTranslation("products");
   const isRtl = i18n.dir() === "rtl";
   const BackIcon = isRtl ? ArrowRight : ArrowLeft;
-  const hasErrors = result.errors.length > 0;
+  const productHasErrors = result.errors.length > 0;
+  const variantHasErrors =
+    variantPreview != null && hasVariantPreviewErrors(variantPreview);
+  const hasErrors = productHasErrors || variantHasErrors;
   const rowErrorCount = new Set(
     result.errors
       .map((error) => error.row)
@@ -52,64 +66,74 @@ export function ImportPreviewStep({
         description={t("import.preview.description")}
       />
 
-      <div
-        className="space-y-3 rounded-xl border border-border bg-card p-4"
-        aria-live="polite"
-      >
-        <div className="flex items-start gap-3">
-          <FolderPlus
-            className="mt-0.5 size-5 shrink-0 text-primary"
-            aria-hidden="true"
-          />
-          <div className="space-y-2">
-            <p className="text-sm font-semibold text-foreground">
-              {result.newCategories.length > 0
-                ? t("import.preview.newCategoriesTitle", {
-                    count: result.newCategories.length,
-                  })
-                : t("import.preview.newCategoriesNone")}
+      {hasProductRows ? (
+        <>
+          <div
+            className="space-y-3 rounded-xl border border-border bg-card p-4"
+            aria-live="polite"
+          >
+            <div className="flex items-start gap-3">
+              <FolderPlus
+                className="mt-0.5 size-5 shrink-0 text-primary"
+                aria-hidden="true"
+              />
+              <div className="space-y-2">
+                <p className="text-sm font-semibold text-foreground">
+                  {result.newCategories.length > 0
+                    ? t("import.preview.newCategoriesTitle", {
+                        count: result.newCategories.length,
+                      })
+                    : t("import.preview.newCategoriesNone")}
+                </p>
+                {result.newCategories.length > 0 ? (
+                  <ul className="flex flex-wrap gap-2">
+                    {result.newCategories.map((path) => (
+                      <li
+                        key={path}
+                        className="rounded-md bg-primary/10 px-2 py-1 text-xs font-medium text-primary"
+                      >
+                        {path}
+                      </li>
+                    ))}
+                  </ul>
+                ) : null}
+              </div>
+            </div>
+
+            <p className="flex items-start gap-2 text-sm">
+              {productHasErrors ? (
+                <AlertCircle
+                  className="mt-0.5 size-4 shrink-0 text-destructive"
+                  aria-hidden="true"
+                />
+              ) : (
+                <CheckCircle2
+                  className="mt-0.5 size-4 shrink-0 text-success"
+                  aria-hidden="true"
+                />
+              )}
+              <span
+                className={productHasErrors ? "text-destructive" : "text-foreground"}
+              >
+                {productHasErrors
+                  ? t("import.preview.errorsSummary", { count: rowErrorCount })
+                  : t("import.preview.errorsNone")}
+              </span>
             </p>
-            {result.newCategories.length > 0 ? (
-              <ul className="flex flex-wrap gap-2">
-                {result.newCategories.map((path) => (
-                  <li
-                    key={path}
-                    className="rounded-md bg-primary/10 px-2 py-1 text-xs font-medium text-primary"
-                  >
-                    {path}
-                  </li>
-                ))}
-              </ul>
-            ) : null}
           </div>
-        </div>
 
-        <p className="flex items-start gap-2 text-sm">
-          {hasErrors ? (
-            <AlertCircle
-              className="mt-0.5 size-4 shrink-0 text-destructive"
-              aria-hidden="true"
-            />
-          ) : (
-            <CheckCircle2
-              className="mt-0.5 size-4 shrink-0 text-success"
-              aria-hidden="true"
-            />
-          )}
-          <span className={hasErrors ? "text-destructive" : "text-foreground"}>
-            {hasErrors
-              ? t("import.preview.errorsSummary", { count: rowErrorCount })
-              : t("import.preview.errorsNone")}
-          </span>
-        </p>
-      </div>
+          <ImportPreviewGrid
+            rows={rows}
+            columns={columns}
+            errors={result.errors}
+            mappedKeys={mappedKeys}
+          />
+        </>
+      ) : null}
 
-      <ImportPreviewGrid
-        rows={rows}
-        columns={columns}
-        errors={result.errors}
-        mappedKeys={mappedKeys}
-      />
+      {variantPreview ? (
+        <ImportVariantPreviewSection preview={variantPreview} />
+      ) : null}
 
       <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap">
         <Button

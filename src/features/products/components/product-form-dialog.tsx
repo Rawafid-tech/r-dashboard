@@ -1,19 +1,32 @@
 import { Loader2 } from "lucide-react";
-import { useEffect, useId, useMemo, useState } from "react";
+import { useEffect, useId, useMemo, useRef, useState } from "react";
 import { Controller } from "react-hook-form";
 import { useTranslation } from "react-i18next";
+import { toast } from "sonner";
 import { DimensionInput } from "@/features/shipping-boxes/components/dimension-input";
 import { ProductCategorySelect } from "@/features/products/components/product-category-select";
 import { ProductImageField } from "@/features/products/components/product-image-field";
+import {
+  hasVariantFormErrors,
+  ProductVariantsEditor,
+  type ProductVariantsEditorHandle,
+} from "@/features/products/components/product-variants-editor";
 import { useCreateProduct } from "@/features/products/hooks/use-create-product";
 import { useProduct } from "@/features/products/hooks/use-product";
 import { useProductCategories } from "@/features/products/hooks/use-product-categories";
+import { useReplaceProductVariants } from "@/features/products/hooks/use-replace-product-variants";
 import { useUpdateProduct } from "@/features/products/hooks/use-update-product";
-import { handleProductFormError } from "@/features/products/lib/product-form-errors";
 import {
+  handleProductFormError,
+  handleVariantFormError,
+  isVariantsFieldError,
+} from "@/features/products/lib/product-form-errors";
+import {
+  toCreateProductPayload,
   toProductFormValues,
   toProductPayload,
 } from "@/features/products/lib/product-payload";
+import type { VariantFormErrors } from "@/features/products/lib/product-variants";
 import {
   createProductFormSchema,
   EMPTY_PRODUCT_FORM_VALUES,
@@ -70,8 +83,11 @@ export function ProductFormDialog({
   const categoriesQuery = useProductCategories({ enabled: open });
   const createMutation = useCreateProduct();
   const updateMutation = useUpdateProduct(productId ?? "");
+  const replaceVariantsMutation = useReplaceProductVariants(productId ?? "");
+  const variantsEditorRef = useRef<ProductVariantsEditorHandle>(null);
 
   const [imagePreviewUrl, setImagePreviewUrl] = useState<string | null>(null);
+  const [variantErrors, setVariantErrors] = useState<VariantFormErrors>({});
 
   const schema = useMemo(
     () => createProductFormSchema(t),
@@ -87,7 +103,7 @@ export function ProductFormDialog({
     setError,
     setValue,
     watch,
-    formState: { errors, isSubmitting },
+    formState: { errors, isSubmitting, isDirty },
   } = useAppForm({
     schema,
     defaultValues: EMPTY_PRODUCT_FORM_VALUES,
@@ -100,6 +116,7 @@ export function ProductFormDialog({
     if (!open) {
       reset(EMPTY_PRODUCT_FORM_VALUES);
       setImagePreviewUrl(null);
+      setVariantErrors({});
       return;
     }
 
@@ -116,7 +133,10 @@ export function ProductFormDialog({
   }, [open, mode, product, productQuery.data, reset]);
 
   const busy =
-    isSubmitting || createMutation.isPending || updateMutation.isPending;
+    isSubmitting ||
+    createMutation.isPending ||
+    updateMutation.isPending ||
+    replaceVariantsMutation.isPending;
   const isLoading =
     open && mode === "edit" && productQuery.isLoading && !productQuery.data;
 
@@ -127,19 +147,88 @@ export function ProductFormDialog({
   };
 
   const onSubmit = handleSubmit(async (values: ProductFormValues) => {
-    const payload = toProductPayload(values);
+    const editor = variantsEditorRef.current;
+    const variantValidation = editor?.validate() ?? {};
+    if (hasVariantFormErrors(variantValidation)) {
+      setVariantErrors(variantValidation);
+      return;
+    }
+
+    setVariantErrors({});
+    const variantRequests = editor?.getVariantRequests() ?? [];
 
     try {
       if (mode === "create") {
-        await createMutation.mutateAsync(payload);
-      } else if (productId) {
-        await updateMutation.mutateAsync(payload);
+        try {
+          await createMutation.mutateAsync(
+            toCreateProductPayload(values, variantRequests),
+          );
+        } catch (error) {
+          if (isVariantsFieldError(error)) {
+            const editorState = variantsEditorRef.current;
+            if (editorState) {
+              setVariantErrors(
+                handleVariantFormError(error, editorState.getRowIds()),
+              );
+            }
+            return;
+          }
+          throw error;
+        }
+        onOpenChange(false);
+        return;
       }
+
+      if (!productId || !editor) return;
+
+      const productPayload = toProductPayload(values);
+      const variantsDirty = editor.isDirty();
+
+      if (isDirty) {
+        await updateMutation.mutateAsync(productPayload);
+      }
+
+      if (variantsDirty) {
+        try {
+          await replaceVariantsMutation.mutateAsync({
+            variants: variantRequests,
+          });
+        } catch (error) {
+          setVariantErrors(
+            handleVariantFormError(error, editor.getRowIds()),
+          );
+          if (isDirty) {
+            toast.success(t("toast.updated"));
+          }
+          return;
+        }
+      }
+
+      if (variantsDirty && !isDirty) {
+        toast.success(t("toast.updated"));
+      }
+
       onOpenChange(false);
     } catch (error) {
+      if (isVariantsFieldError(error)) {
+        const editorState = variantsEditorRef.current;
+        if (editorState) {
+          setVariantErrors(
+            handleVariantFormError(error, editorState.getRowIds()),
+          );
+        }
+        return;
+      }
+
       handleProductFormError(error, setError);
     }
   });
+
+  const variantsResetKey = open
+    ? mode === "edit"
+      ? (productId ?? "edit")
+      : "create"
+    : "closed";
 
   const title =
     mode === "create" ? t("form.createTitle") : t("form.editTitle");
@@ -494,6 +583,16 @@ export function ProductFormDialog({
                   </Field>
                 </FieldGroup>
               </FieldSet>
+
+              <ProductVariantsEditor
+                ref={variantsEditorRef}
+                mode={mode}
+                formId={formId}
+                disabled={busy}
+                resetKey={variantsResetKey}
+                initialVariants={(productQuery.data ?? product)?.variants ?? []}
+                serverErrors={variantErrors}
+              />
 
               <FieldSet>
                 <FieldLegend>{t("form.categoryLegend")}</FieldLegend>

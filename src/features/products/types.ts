@@ -25,6 +25,27 @@ export interface ProductsListParams {
   categoryId?: string;
 }
 
+export const VARIANT_NAME_SEPARATOR = " / " as const;
+export const MAX_VARIANTS_PER_PRODUCT = 100;
+export const MAX_VARIANT_NAME_LENGTH = 100;
+export const MAX_VARIANT_PRICE = 9999999999.99;
+
+export interface ProductVariant {
+  id: string;
+  name: string;
+  price: number | null;
+  sortOrder: number;
+}
+
+export interface VariantRequest {
+  name: string;
+  price?: number | null;
+}
+
+export interface ReplaceVariantsPayload {
+  variants: VariantRequest[];
+}
+
 export interface Product {
   id: string;
   name: string;
@@ -42,6 +63,7 @@ export interface Product {
   imageUrl: string | null;
   categoryId: string | null;
   categoryName: string | null;
+  variants: ProductVariant[];
   createdAt: string;
   updatedAt: string;
 }
@@ -60,6 +82,10 @@ export interface ProductPayload {
   heightCm?: number;
   imageMediaId?: string;
   categoryId?: string;
+}
+
+export interface CreateProductPayload extends ProductPayload {
+  variants?: VariantRequest[];
 }
 
 export interface ProductCategory {
@@ -145,3 +171,39 @@ export interface ImportResult {
 }
 
 export const IMPORT_MAX_ROWS = 1000;
+export const IMPORT_MAX_VARIANT_ROWS = 5000;
+
+export const IMPORT_VARIANT_FIELD_KEYS = [
+  "productSku",
+  "variantName",
+  "variantPrice",
+] as const;
+
+export type ImportVariantFieldKey =
+  (typeof IMPORT_VARIANT_FIELD_KEYS)[number];
+
+export interface ImportVariantRow {
+  rowNumber: number;
+  productSku?: string;
+  variantName?: string;
+  variantPrice?: string | number;
+}
+
+export interface ImportVariantError {
+  row: number | null;
+  productSku: string | null;
+  reason: string;
+}
+
+export interface ImportVariantPreview {
+  totalRows: number;
+  productCount: number;
+  errors: ImportVariantError[];
+}
+
+export interface ImportVariantCommitResult {
+  totalRows: number;
+  productsUpdated: number;
+  variantsApplied: number;
+  errors: ImportVariantError[];
+}

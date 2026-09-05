@@ -4,6 +4,7 @@ import { getMappedKeys, type ColumnMapping } from "@/features/products/lib/impor
 import {
   IMPORT_FIELD_KEYS,
   IMPORT_MAX_ROWS,
+  IMPORT_MAX_VARIANT_ROWS,
   type ImportFieldKey,
   type ImportRow,
 } from "@/features/products/types";
@@ -34,6 +35,125 @@ export interface ParsedSheet {
   truncated: boolean;
 }
 
+export interface ParsedWorkbook {
+  products: ParsedSheet | null;
+  variants: ParsedSheet | null;
+  isMultiSheet: boolean;
+}
+
+const PRODUCTS_SHEET_NAMES = ["products", "product", "منتجات"];
+const VARIANTS_SHEET_NAMES = ["variants", "variant", "المتغيرات", "متغيرات"];
+
+function normalizeSheetName(value: string): string {
+  return value.trim().toLowerCase();
+}
+
+function findSheetName(
+  workbook: XLSX.WorkBook,
+  candidates: string[],
+): string | undefined {
+  for (const candidate of candidates) {
+    const match = workbook.SheetNames.find(
+      (name) => normalizeSheetName(name) === normalizeSheetName(candidate),
+    );
+    if (match) return match;
+  }
+  return undefined;
+}
+
+function extractSheetFromWorkbook(
+  workbook: XLSX.WorkBook,
+  sheetName: string,
+  maxRows: number,
+): ParsedSheet | null {
+  const sheet = workbook.Sheets[sheetName];
+  if (!sheet) return null;
+
+  const matrix = XLSX.utils.sheet_to_json<unknown[]>(sheet, {
+    header: 1,
+    raw: false,
+    defval: "",
+    blankrows: true,
+  });
+
+  if (matrix.length === 0) return null;
+
+  let headerIndex = -1;
+  for (let index = 0; index < matrix.length; index += 1) {
+    if (!isBlankRow(matrix[index] ?? [])) {
+      headerIndex = index;
+      break;
+    }
+  }
+
+  if (headerIndex < 0) return null;
+
+  const headers = (matrix[headerIndex] ?? []).map((cell) =>
+    String(cell ?? "").trim(),
+  );
+
+  const dataRows: ParsedSheetRow[] = [];
+  for (let index = headerIndex + 1; index < matrix.length; index += 1) {
+    const raw = matrix[index] ?? [];
+    if (isBlankRow(raw)) continue;
+
+    dataRows.push({
+      rowNumber: index + 1,
+      cells: raw.map(toCellValue),
+    });
+  }
+
+  if (dataRows.length === 0) {
+    return {
+      headers,
+      rows: [],
+      totalDataRows: 0,
+      truncated: false,
+    };
+  }
+
+  const truncated = dataRows.length > maxRows;
+
+  return {
+    headers,
+    rows: truncated ? dataRows.slice(0, maxRows) : dataRows,
+    totalDataRows: dataRows.length,
+    truncated,
+  };
+}
+
+function parseWorkbook(workbook: XLSX.WorkBook): ParsedWorkbook {
+  const variantsSheet = findSheetName(workbook, VARIANTS_SHEET_NAMES);
+  const productsSheet =
+    findSheetName(workbook, PRODUCTS_SHEET_NAMES) ??
+    workbook.SheetNames.find((name) => name !== variantsSheet);
+
+  const products = productsSheet
+    ? extractSheetFromWorkbook(workbook, productsSheet, IMPORT_MAX_ROWS)
+    : null;
+
+  const variants = variantsSheet
+    ? extractSheetFromWorkbook(
+        workbook,
+        variantsSheet,
+        IMPORT_MAX_VARIANT_ROWS,
+      )
+    : null;
+
+  const hasProductRows = (products?.rows.length ?? 0) > 0;
+  const hasVariantRows = (variants?.rows.length ?? 0) > 0;
+
+  if (!hasProductRows && !hasVariantRows) {
+    throw new SpreadsheetParseError("empty");
+  }
+
+  return {
+    products,
+    variants: hasVariantRows ? variants : null,
+    isMultiSheet: Boolean(variantsSheet),
+  };
+}
+
 export function isAcceptedSpreadsheet(file: File): boolean {
   const name = file.name.toLowerCase();
   return ACCEPTED_EXTENSIONS.some((ext) => name.endsWith(ext));
@@ -59,65 +179,16 @@ function toCellValue(cell: unknown): string | number {
 }
 
 function extractSheet(workbook: XLSX.WorkBook): ParsedSheet {
-  const sheetName = workbook.SheetNames[0];
-  if (!sheetName) {
+  const parsed = parseWorkbook(workbook);
+  if (!parsed.products?.rows.length) {
     throw new SpreadsheetParseError("empty");
   }
-
-  const sheet = workbook.Sheets[sheetName];
-  if (!sheet) {
-    throw new SpreadsheetParseError("empty");
-  }
-
-  const matrix = XLSX.utils.sheet_to_json<unknown[]>(sheet, {
-    header: 1,
-    raw: false,
-    defval: "",
-    blankrows: true,
-  });
-
-  let headerIndex = -1;
-  for (let index = 0; index < matrix.length; index += 1) {
-    if (!isBlankRow(matrix[index] ?? [])) {
-      headerIndex = index;
-      break;
-    }
-  }
-
-  if (headerIndex < 0) {
-    throw new SpreadsheetParseError("empty");
-  }
-
-  const headers = (matrix[headerIndex] ?? []).map((cell) =>
-    String(cell ?? "").trim(),
-  );
-
-  const dataRows: ParsedSheetRow[] = [];
-  for (let index = headerIndex + 1; index < matrix.length; index += 1) {
-    const raw = matrix[index] ?? [];
-    if (isBlankRow(raw)) continue;
-
-    dataRows.push({
-      rowNumber: index + 1,
-      cells: raw.map(toCellValue),
-    });
-  }
-
-  if (dataRows.length === 0) {
-    throw new SpreadsheetParseError("empty");
-  }
-
-  const truncated = dataRows.length > IMPORT_MAX_ROWS;
-
-  return {
-    headers,
-    rows: truncated ? dataRows.slice(0, IMPORT_MAX_ROWS) : dataRows,
-    totalDataRows: dataRows.length,
-    truncated,
-  };
+  return parsed.products;
 }
 
-export async function parseSpreadsheet(file: File): Promise<ParsedSheet> {
+export async function parseSpreadsheetWorkbook(
+  file: File,
+): Promise<ParsedWorkbook> {
   if (!isAcceptedSpreadsheet(file)) {
     throw new SpreadsheetParseError("invalidType");
   }
@@ -133,12 +204,18 @@ export async function parseSpreadsheet(file: File): Promise<ParsedSheet> {
         FS: detectCsvSeparator(text),
         raw: false,
       });
-    } else {
-      const buffer = await file.arrayBuffer();
-      workbook = XLSX.read(buffer, { type: "array", raw: false });
+
+      const products = extractSheet(workbook);
+      return {
+        products,
+        variants: null,
+        isMultiSheet: false,
+      };
     }
 
-    return extractSheet(workbook);
+    const buffer = await file.arrayBuffer();
+    workbook = XLSX.read(buffer, { type: "array", raw: false });
+    return parseWorkbook(workbook);
   } catch (error) {
     if (error instanceof SpreadsheetParseError) {
       throw error;
@@ -146,6 +223,14 @@ export async function parseSpreadsheet(file: File): Promise<ParsedSheet> {
 
     throw new SpreadsheetParseError("unreadable");
   }
+}
+
+export async function parseSpreadsheet(file: File): Promise<ParsedSheet> {
+  const workbook = await parseSpreadsheetWorkbook(file);
+  if (!workbook.products?.rows.length) {
+    throw new SpreadsheetParseError("empty");
+  }
+  return workbook.products;
 }
 
 function isImportField(key: string): key is ImportFieldKey {
