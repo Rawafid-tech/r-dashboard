@@ -21,7 +21,7 @@ export interface PlanFeature {
 export interface PublicPlan {
   code: string;
   name: string;
-  description: string;
+  description: string | null;
   highlighted: boolean;
   customPricing: boolean;
   tiers: PlanTier[];
@@ -39,4 +39,24 @@ export interface Subscription {
   startsAt: string;
   endsAt: string | null;
   status: SubscriptionStatus;
+  autoRenew: boolean;
+  graceUntil: string | null;
+}
+
+export interface CreateSubscriptionRequest {
+  planCode: string;
+  shipmentsPerMonth: number;
+  billingPeriod: BillingPeriod;
+}
+
+export interface PatchAutoRenewRequest {
+  autoRenew: boolean;
+}
+
+export interface CheckoutSelection {
+  planCode: string;
+  planName: string;
+  shipmentsPerMonth: number;
+  billingPeriod: BillingPeriod;
+  price: number;
 }

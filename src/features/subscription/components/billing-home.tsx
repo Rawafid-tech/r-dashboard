@@ -1,19 +1,20 @@
 import { useTranslation } from "react-i18next";
 import { useSettings } from "@/features/account/hooks/use-settings";
 import { BillingErrorState } from "@/features/subscription/components/billing-error-state";
+import { BillingGraceBanner } from "@/features/subscription/components/billing-grace-banner";
 import { BillingHero } from "@/features/subscription/components/billing-hero";
 import { BillingPageSkeleton } from "@/features/subscription/components/billing-page-skeleton";
-import {
-  BillingSnapshotNotice,
-  BillingUpgradePanel,
-} from "@/features/subscription/components/billing-upgrade-panel";
-import { SubscriptionPlanCard } from "@/features/subscription/components/subscription-plan-card";
+import { BillingCurrentPlanCard } from "@/features/subscription/components/billing-current-plan-card";
+import { BillingPlansSection } from "@/features/subscription/components/billing-plans-section";
 import { useSubscription } from "@/features/subscription/hooks/use-subscription";
+import { useLocaleStore } from "@/stores/locale.store";
 
 export function BillingHome() {
   const { t } = useTranslation("billing");
   const subscriptionQuery = useSubscription();
   const settingsQuery = useSettings();
+  const locale = useLocaleStore((state) => state.locale);
+  const intlLocale = locale === "ar" ? "ar-EG" : "en-US";
 
   const isLoading =
     subscriptionQuery.isLoading ||
@@ -25,7 +26,8 @@ export function BillingHome() {
     Promise.all([subscriptionQuery.refetch(), settingsQuery.refetch()]);
 
   const subscription = subscriptionQuery.data;
-  const isFree = subscription?.planCode === "FREE";
+  const currency = settingsQuery.data?.currency;
+  const dateFormat = settingsQuery.data?.dateFormat;
 
   return (
     <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-4 py-6 sm:px-6 sm:py-8">
@@ -40,7 +42,7 @@ export function BillingHome() {
         <BillingPageSkeleton />
       ) : (
         <>
-          <BillingHero planName={subscription?.planName} />
+          <BillingHero />
 
           {isError ? (
             <BillingErrorState
@@ -51,21 +53,31 @@ export function BillingHome() {
 
           {subscription && !isError ? (
             <div id="billing-main" className="space-y-6">
-              <section aria-labelledby="billing-plan-title">
-                <h2 id="billing-plan-title" className="sr-only">
-                  {t("plan.sectionTitle")}
-                </h2>
-                <SubscriptionPlanCard
+              {subscription.graceUntil ? (
+                <BillingGraceBanner
                   subscription={subscription}
-                  currency={settingsQuery.data?.currency}
-                  dateFormat={settingsQuery.data?.dateFormat}
+                  currency={currency}
+                  dateFormat={dateFormat}
+                  intlLocale={intlLocale}
+                />
+              ) : null}
+
+              <section aria-labelledby="billing-current-plan-title">
+                <h2 id="billing-current-plan-title" className="sr-only">
+                  {t("layout.currentPlan")}
+                </h2>
+                <BillingCurrentPlanCard
+                  subscription={subscription}
+                  currency={currency}
+                  dateFormat={dateFormat}
                 />
               </section>
 
-              <div className="grid gap-4 lg:grid-cols-2">
-                <BillingUpgradePanel isFreePlan={isFree} />
-                <BillingSnapshotNotice className="h-full lg:col-span-1" />
-              </div>
+              <BillingPlansSection
+                subscription={subscription}
+                currency={currency}
+                className="border-t border-border pt-6"
+              />
             </div>
           ) : null}
         </>

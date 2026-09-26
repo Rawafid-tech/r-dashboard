@@ -2,6 +2,7 @@ import { z } from "zod";
 import type { TFunction } from "i18next";
 import {
   DateFormat,
+  NotificationLanguage,
   Theme,
 } from "@/shared/types/enums";
 import {
@@ -27,6 +28,10 @@ const homePageValues = DEFAULT_HOME_PAGES.map((item) => item.value) as [
   ...string[],
 ];
 const timezoneValues = [...SETTINGS_TIMEZONES] as [string, ...string[]];
+const notificationLanguageValues = Object.values(NotificationLanguage) as [
+  NotificationLanguage,
+  ...NotificationLanguage[],
+];
 
 export function createProfileSchema(t: TFunction<"settings">) {
   return z.object({
@@ -85,6 +90,9 @@ export function createPreferencesSchema(t: TFunction<"settings">) {
       errorMap: () => ({ message: t("validation.timezone") }),
     }),
     dateFormat: z.enum(dateFormatValues, {
+      errorMap: () => ({ message: t("validation.required") }),
+    }),
+    language: z.enum(notificationLanguageValues, {
       errorMap: () => ({ message: t("validation.required") }),
     }),
     mapLat: z.string().optional().or(z.literal("")),

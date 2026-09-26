@@ -11,6 +11,7 @@ import {
   Skeleton,
 } from "@/shared/components/ui";
 import { formatCurrency, formatDate } from "@/shared/lib/formatters";
+import { getSubscriptionPeriodContext } from "@/features/subscription/lib/subscription-period-label";
 import type { Subscription } from "@/features/subscription/types";
 import { useLocaleStore } from "@/stores/locale.store";
 
@@ -47,19 +48,64 @@ export function SubscriptionOverviewCard({
   subscription,
 }: SubscriptionOverviewCardProps) {
   const { t } = useTranslation("dashboard");
+  const { t: tBilling } = useTranslation("billing");
   const locale = useLocaleStore((state) => state.locale);
+  const intlLocale = locale === "ar" ? "ar-EG" : "en-US";
 
   const isFree = subscription?.planCode === "FREE";
   const billingLabel = subscription?.billingPeriod
     ? t(`billingPeriod.${subscription.billingPeriod}`)
     : t("cards.subscription.openEnded");
 
+  const periodContext = subscription
+    ? getSubscriptionPeriodContext(subscription)
+    : null;
+
+  const inGrace = periodContext?.kind === "grace";
+
+  const renewalValue = (() => {
+    if (!subscription || !periodContext) return "—";
+
+    if (periodContext.kind === "open") {
+      return billingLabel;
+    }
+
+    const formattedDate = periodContext.date
+      ? formatDate(periodContext.date)
+      : "—";
+
+    if (periodContext.kind === "grace") {
+      return tBilling("period.grace", { date: formattedDate });
+    }
+
+    if (periodContext.kind === "ending") {
+      return tBilling("period.ending", { date: formattedDate });
+    }
+
+    const priceLabel = formatCurrency(
+      subscription.price,
+      "EGP",
+      intlLocale,
+    );
+    return tBilling("period.renewing", {
+      date: formattedDate,
+      price: priceLabel,
+    });
+  })();
+
   return (
     <Card className="h-full">
       <CardHeader className="flex-row items-start justify-between gap-3 space-y-0">
         <CardTitle>{t("cards.subscription.title")}</CardTitle>
         {subscription ? (
-          <Badge variant="success">{t(`subscriptionStatus.${subscription.status}`)}</Badge>
+          <div className="flex flex-wrap gap-1.5">
+            <Badge variant={inGrace ? "warning" : "success"}>
+              {t(`subscriptionStatus.${subscription.status}`)}
+            </Badge>
+            {inGrace ? (
+              <Badge variant="warning">{tBilling("plan.graceBadge")}</Badge>
+            ) : null}
+          </div>
         ) : null}
       </CardHeader>
       <CardContent className="space-y-3">
@@ -85,12 +131,12 @@ export function SubscriptionOverviewCard({
             <p className="text-xs text-muted-foreground">
               {t("cards.subscription.price")}
             </p>
-            <p className="font-medium">
+            <p className="font-medium" dir="ltr">
               {subscription
                 ? formatCurrency(
                     subscription.price,
                     "EGP",
-                    locale === "ar" ? "ar-EG" : "en-US",
+                    intlLocale,
                   )
                 : "—"}
             </p>
@@ -99,15 +145,13 @@ export function SubscriptionOverviewCard({
 
         <div>
           <p className="text-xs text-muted-foreground">
-            {isFree
-              ? t("cards.subscription.validity")
-              : t("cards.subscription.renewal")}
+            {inGrace
+              ? tBilling("plan.graceBadge")
+              : isFree
+                ? t("cards.subscription.validity")
+                : t("cards.subscription.renewal")}
           </p>
-          <p className="font-medium">
-            {subscription?.endsAt
-              ? formatDate(subscription.endsAt)
-              : billingLabel}
-          </p>
+          <p className="font-medium">{renewalValue}</p>
         </div>
       </CardContent>
       <CardFooter>

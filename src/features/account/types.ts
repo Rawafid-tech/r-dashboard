@@ -1,4 +1,4 @@
-import type { Theme, FontScale, DateFormat } from "@/shared/types/enums";
+import type { Theme, FontScale, DateFormat, NotificationLanguage } from "@/shared/types/enums";
 
 export interface UpdateProfileRequest {
   firstName: string;
@@ -13,6 +13,7 @@ export interface UserSettings {
   defaultHomePage: string;
   timezone: string;
   dateFormat: DateFormat;
+  language: NotificationLanguage;
   mapLat: number | null;
   mapLng: number | null;
   country: string;
@@ -25,6 +26,7 @@ export interface UpdateSettingsRequest {
   defaultHomePage: string;
   timezone: string;
   dateFormat: DateFormat;
+  language?: NotificationLanguage;
   mapLat?: number | null;
   mapLng?: number | null;
 }

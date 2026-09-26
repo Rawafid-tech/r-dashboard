@@ -81,6 +81,13 @@ export type DateFormat = (typeof DateFormat)[keyof typeof DateFormat];
 export const FontScale = [80, 90, 100, 110, 120] as const;
 export type FontScale = (typeof FontScale)[number];
 
+export const NotificationLanguage = {
+  EN: "EN",
+  AR: "AR",
+} as const;
+export type NotificationLanguage =
+  (typeof NotificationLanguage)[keyof typeof NotificationLanguage];
+
 export const SenderLocationStatus = {
   ACTIVE: "ACTIVE",
   INACTIVE: "INACTIVE",

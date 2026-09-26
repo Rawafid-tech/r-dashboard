@@ -1,11 +1,16 @@
 {
   "metaTitle": "Billing & plan — Rawafid",
-  "metaDescription": "Review your current plan, subscription details, and upgrade options in Rawafid.",
+  "metaDescription": "Manage your subscription, choose a plan, and pay from your Rawafid wallet balance.",
   "skipToContent": "Skip to main content",
   "hero": {
     "eyebrow": "Billing & subscription",
-    "title": "Your plan & subscription",
-    "description": "See your current plan details — shipment volume, price, and validity dates. Plan changes are handled by the Rawafid team until self-serve checkout is available."
+    "title": "Billing & subscription",
+    "description": "Your current plan, renewal settings, and available upgrades — paid from your wallet balance.",
+    "walletBalance": "Wallet"
+  },
+  "layout": {
+    "currentPlan": "Current plan",
+    "changePlan": "Change plan"
   },
   "plan": {
     "sectionTitle": "Current plan details",
@@ -19,11 +24,22 @@
     "renewal": "Renews / expires",
     "openEnded": "No expiry",
     "freeHint": "Free plan with no end date",
-    "renewalHint": "Expires on {{date}}",
-    "expiringSoon": "Expiring soon — {{date}}",
+    "renewalHint": "Renews on {{date}} — {{price}}",
+    "expiringSoon": "Renews soon — {{date}}",
+    "endingHint": "Your plan ends on {{date}}",
+    "endingSoon": "Ending soon — {{date}}",
+    "graceHint": "Renewal deadline — {{date}}",
+    "graceSoon": "Grace period ends soon — {{date}}",
     "startedAt": "Started on",
     "validUntil": "Valid until",
-    "endsAt": "Ends / renews on"
+    "endsAt": "Ends / renews on",
+    "graceBadge": "Renewal pending"
+  },
+  "period": {
+    "renewing": "Renews on {{date}} — {{price}}",
+    "ending": "Your plan ends on {{date}}",
+    "grace": "We could not renew — deadline {{date}}",
+    "open": "No expiry"
   },
   "billingPeriod": {
     "MONTHLY": "Monthly",
@@ -34,20 +50,106 @@
     "REPLACED": "Replaced",
     "EXPIRED": "Expired"
   },
+  "wallet": {
+    "title": "Wallet balance",
+    "description": "Plans are paid from your prepaid wallet balance.",
+    "viewWallet": "View wallet & transactions",
+    "insufficientHint": "Not enough balance — contact Rawafid support to add funds."
+  },
+  "plans": {
+    "sectionTitle": "Choose a plan",
+    "sectionDescription": "Pick a shipment volume and billing cycle. Payment is taken from your wallet when you confirm.",
+    "currentBadge": "Current plan",
+    "recommended": "Popular",
+    "perMonth": "/ month",
+    "perYear": "/ year",
+    "shipmentsLabel": "Shipments / month",
+    "billingCycle": "Billing cycle",
+    "priceLabel": "Price",
+    "subscribe": "Subscribe",
+    "changePlan": "Change plan",
+    "currentPlan": "Current plan",
+    "contactUs": "Contact us",
+    "customPricingHint": "Custom pricing — reach out to discuss options.",
+    "ownerOnlyHint": "Only the account owner can subscribe or change plans.",
+    "staffHint": "You can view billing details. Plan changes require the account owner.",
+    "loading": "Loading plans…",
+    "loadError": "Could not load plans",
+    "retry": "Try again",
+    "unlimited": "Unlimited",
+    "table": {
+      "plan": "Plan",
+      "shipments": "Shipments / month",
+      "price": "Price",
+      "action": "Action"
+    }
+  },
+  "checkout": {
+    "title": "Confirm subscription",
+    "titleChange": "Confirm plan change",
+    "description": "You will be charged {{amount}} from your wallet.",
+    "descriptionFree": "You will move to the free plan at no charge.",
+    "forfeitureWarning": "Your current period ends now and is not refunded. You will be charged {{amount}} for a new {{period}}.",
+    "balanceBefore": "Balance before",
+    "balanceAfter": "Balance after",
+    "chargeAmount": "Amount to charge",
+    "confirm": "Confirm & pay",
+    "confirmFree": "Confirm change",
+    "cancel": "Cancel",
+    "processing": "Processing…",
+    "success": "Subscription updated.",
+    "supportNote": "To add balance to your wallet, contact Rawafid support.",
+    "errors": {
+      "alreadyOnPlan": "You are already on this plan.",
+      "changeInProgress": "Another change was in progress. Please try again.",
+      "insufficientBalance": "Insufficient wallet balance. Contact Rawafid support to add funds.",
+      "planNotFound": "Plan not found.",
+      "invalidTier": "This plan does not include that shipment volume.",
+      "planNotAssignable": "This plan cannot be purchased.",
+      "ownerOnly": "Only the account owner can change the subscription.",
+      "generic": "Could not update subscription. Please try again."
+    }
+  },
+  "grace": {
+    "title": "Renewal could not be completed",
+    "description": "We could not renew your {{planName}} subscription. The renewal costs {{price}} and we were unable to take it from your wallet.",
+    "deadline": "Your plan stays active until {{date}}. We try again each day until then. If renewal has not gone through by that date, your account moves to the Free plan.",
+    "ownerEmailNote": "The account owner has been emailed about this. If you are not the owner, you may not have received it.",
+    "contactSupport": "Contact Rawafid support to add wallet balance."
+  },
+  "autoRenew": {
+    "title": "Automatic renewal",
+    "description": "When enabled, your plan renews from your wallet at the end of each period.",
+    "enabledLabel": "Auto-renew is on",
+    "disabledLabel": "Auto-renew is off",
+    "ownerOnlyHint": "Only the account owner can change renewal settings.",
+    "enabledSuccess": "Automatic renewal turned on.",
+    "disabledSuccess": "Automatic renewal turned off.",
+    "errors": {
+      "ownerOnly": "Only the account owner can change renewal settings.",
+      "generic": "Could not update renewal setting. Please try again."
+    }
+  },
+  "cancel": {
+    "title": "Turn off automatic renewal?",
+    "description": "Your plan stays active until {{date}}, then your account returns to the free plan. You will not be charged again.",
+    "confirm": "Turn off renewal",
+    "keep": "Keep renewal on"
+  },
   "upgrade": {
-    "title": "Upgrade or change plan",
-    "freeTitle": "Ready to grow?",
-    "description": "Plan changes are currently handled by the Rawafid team. Reach out and we will help you pick the right shipment volume for your store.",
-    "freeDescription": "You are on the free plan. When your shipment volume grows, our team can move you to a paid tier that fits.",
+    "title": "Need a custom plan?",
+    "freeTitle": "Questions about plans?",
+    "description": "For custom pricing or help choosing a tier, our team is here to help.",
+    "freeDescription": "Not sure which plan fits? We can help you pick the right shipment volume.",
     "benefits": [
       "Pick a shipment volume that matches your store",
       "Monthly or yearly billing to suit your needs",
       "Direct support from the Rawafid team"
     ],
-    "contactCta": "Contact us to upgrade",
+    "contactCta": "Contact Rawafid support",
     "supportEmail": "Or email us at {{email}}",
-    "mailSubject": "Plan upgrade request — Rawafid",
-    "mailBody": "Hi Rawafid team,\n\nI would like to upgrade my plan or discuss subscription options.\n\nThank you."
+    "mailSubject": "Plan question — Rawafid",
+    "mailBody": "Hi Rawafid team,\n\nI have a question about subscription plans.\n\nThank you."
   },
   "notice": {
     "title": "Snapshot of your current deal",

@@ -56,6 +56,8 @@
     "defaultHomePage": "Default home page",
     "timezone": "Timezone",
     "dateFormat": "Date format",
+    "notificationLanguage": "Email & notification language",
+    "notificationLanguageHint": "Language for subscription emails and notifications sent by Rawafid. This does not change the app interface language.",
     "mapLat": "Latitude (optional)",
     "mapLng": "Longitude (optional)",
     "mapHint": "Default map starting point — leave empty to use system defaults.",
@@ -81,6 +83,10 @@
     "DD_MM_YYYY": "DD / MM / YYYY",
     "MM_DD_YYYY": "MM / DD / YYYY",
     "YYYY_MM_DD": "YYYY / MM / DD"
+  },
+  "notificationLanguage": {
+    "EN": "English",
+    "AR": "Arabic"
   },
   "fontScale": {
     "80": "Extra small",

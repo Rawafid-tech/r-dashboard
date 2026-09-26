@@ -18,7 +18,7 @@ import {
   SelectValue,
 } from "@/shared/components/ui";
 import { useAppForm } from "@/shared/hooks/use-app-form";
-import { DateFormat, Theme, type FontScale } from "@/shared/types/enums";
+import { DateFormat, NotificationLanguage, Theme, type FontScale } from "@/shared/types/enums";
 import {
   DEFAULT_HOME_PAGES,
   FONT_SCALE_OPTIONS,
@@ -81,6 +81,7 @@ export function PreferencesSettingsForm({ settings }: PreferencesSettingsFormPro
       defaultHomePage: "home",
       timezone: "Africa/Cairo",
       dateFormat: DateFormat.DD_MM_YYYY,
+      language: NotificationLanguage.EN,
       mapLat: "",
       mapLng: "",
     },
@@ -96,6 +97,7 @@ export function PreferencesSettingsForm({ settings }: PreferencesSettingsFormPro
       defaultHomePage: settings.defaultHomePage,
       timezone: settings.timezone,
       dateFormat: settings.dateFormat,
+      language: settings.language ?? NotificationLanguage.EN,
       mapLat: settings.mapLat != null ? String(settings.mapLat) : "",
       mapLng: settings.mapLng != null ? String(settings.mapLng) : "",
     });
@@ -120,7 +122,7 @@ export function PreferencesSettingsForm({ settings }: PreferencesSettingsFormPro
     }
 
     try {
-      await updateMutation.mutateAsync({
+      const payload = {
         theme: values.theme,
         fontScale: Number(values.fontScale) as FontScale,
         defaultHomePage: values.defaultHomePage,
@@ -128,7 +130,17 @@ export function PreferencesSettingsForm({ settings }: PreferencesSettingsFormPro
         dateFormat: values.dateFormat,
         mapLat,
         mapLng,
-      });
+      };
+
+      const storedLanguage = settings?.language ?? NotificationLanguage.EN;
+      if (values.language !== storedLanguage) {
+        await updateMutation.mutateAsync({
+          ...payload,
+          language: values.language,
+        });
+      } else {
+        await updateMutation.mutateAsync(payload);
+      }
     } catch (error) {
       applyPreferencesFieldErrors(error, setError);
     }
@@ -283,6 +295,36 @@ export function PreferencesSettingsForm({ settings }: PreferencesSettingsFormPro
               )}
             />
             <FieldError>{errors.dateFormat?.message}</FieldError>
+          </Field>
+
+          <Field data-invalid={!!errors.language || undefined}>
+            <FieldLabel htmlFor={`${formId}-language`}>
+              {t("fields.notificationLanguage")}
+            </FieldLabel>
+            <Controller
+              control={control}
+              name="language"
+              render={({ field }) => (
+                <Select
+                  value={field.value}
+                  onValueChange={field.onChange}
+                  disabled={busy || !settings}
+                >
+                  <SelectTrigger id={`${formId}-language`} className="h-9 w-full">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent position="popper" align="start">
+                    {Object.values(NotificationLanguage).map((language) => (
+                      <SelectItem key={language} value={language}>
+                        {t(`notificationLanguage.${language}`)}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              )}
+            />
+            <FieldDescription>{t("fields.notificationLanguageHint")}</FieldDescription>
+            <FieldError>{errors.language?.message}</FieldError>
           </Field>
 
           <div className="grid gap-4 sm:grid-cols-2">
