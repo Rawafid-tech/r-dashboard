@@ -9,6 +9,8 @@ import {
 } from "@/shared/components/ui";
 import { formatCurrency, formatDate } from "@/shared/lib/formatters";
 import type { Wallet as WalletData } from "@/features/wallet/types";
+import { WalletTopUpDialog } from "@/features/wallet/components/wallet-topup-dialog";
+import { useMerchantPermissions } from "@/shared/hooks/use-merchant-permissions";
 
 interface WalletBalanceCardProps {
   wallet: WalletData;
@@ -22,6 +24,8 @@ export function WalletBalanceCard({
   dateFormat = "DD_MM_YYYY",
 }: WalletBalanceCardProps) {
   const { t } = useTranslation("wallet");
+  const { canTopUpWallet } = useMerchantPermissions();
+
   const formattedBalance = formatCurrency(
     wallet.balance,
     wallet.currency,
@@ -38,18 +42,27 @@ export function WalletBalanceCard({
         >
           <Wallet className="size-5" />
         </span>
-        <div className="min-w-0 space-y-1">
+        <div className="min-w-0 flex-1 space-y-1">
           <CardTitle className="text-base font-medium text-muted-foreground">
             {t("balance.title")}
           </CardTitle>
           <p
             className="text-3xl font-semibold tracking-tight text-foreground tabular-nums sm:text-4xl"
-            dir="ltr"
             aria-label={formattedBalance}
           >
-            {formattedBalance}
+            <span dir="ltr" className="inline-block">
+              {formattedBalance}
+            </span>
           </p>
         </div>
+        {canTopUpWallet ? (
+          <div className="shrink-0 self-center">
+            <WalletTopUpDialog
+              currency={wallet.currency}
+              intlLocale={intlLocale}
+            />
+          </div>
+        ) : null}
       </CardHeader>
       <CardContent className="pt-4">
         <p className="text-sm text-muted-foreground">

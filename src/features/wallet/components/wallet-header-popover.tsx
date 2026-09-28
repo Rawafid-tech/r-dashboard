@@ -3,6 +3,7 @@ import { ArrowLeft, Wallet } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import { useWallet } from "@/features/wallet/hooks/use-wallet";
+import { WalletTopUpDialog } from "@/features/wallet/components/wallet-topup-dialog";
 import {
   Button,
   Popover,
@@ -26,7 +27,7 @@ export function WalletHeaderPopover() {
   const locale = useLocaleStore((state) => state.locale);
   const intlLocale = locale === "ar" ? "ar-EG" : "en-US";
   const isMobile = useIsMobile();
-  const { hasPermission, isLoading: isPermissionsLoading } =
+  const { hasPermission, canTopUpWallet, isLoading: isPermissionsLoading } =
     useMerchantPermissions();
   const canReadWallet = hasPermission(MerchantPermission.WALLET_READ);
 
@@ -104,8 +105,10 @@ export function WalletHeaderPopover() {
           {walletQuery.isLoading && !wallet ? (
             <Skeleton className="h-4 w-16" />
           ) : formattedBalance ? (
-            <span dir="ltr" className="truncate tabular-nums font-medium">
-              {formattedBalance}
+            <span className="truncate tabular-nums font-medium">
+              <span dir="ltr" className="inline-block">
+                {formattedBalance}
+              </span>
             </span>
           ) : (
             <span className="text-muted-foreground">—</span>
@@ -136,11 +139,12 @@ export function WalletHeaderPopover() {
                 <Skeleton className="mt-2 h-7 w-28" />
               ) : formattedBalance ? (
                 <p
-                  dir="ltr"
                   className="mt-1 text-xl font-semibold tabular-nums text-foreground"
                   aria-live="polite"
                 >
-                  {formattedBalance}
+                  <span dir="ltr" className="inline-block">
+                    {formattedBalance}
+                  </span>
                 </p>
               ) : (
                 <p className="mt-1 text-sm text-destructive" role="alert">
@@ -164,7 +168,13 @@ export function WalletHeaderPopover() {
           </p>
         </div>
 
-        <div className="border-t border-border/70 bg-muted/20 p-3">
+        <div className="border-t border-border/70 bg-muted/20 p-3 flex flex-col gap-2">
+          {canTopUpWallet ? (
+            <WalletTopUpDialog
+              currency={wallet?.currency ?? "EGP"}
+              intlLocale={intlLocale}
+            />
+          ) : null}
           <Button
             asChild
             variant="secondary"

@@ -15,9 +15,10 @@
     "triggerLabel": "Wallet balance",
     "totalBalance": "Total balance",
     "updatedAt": "Updated {{date}}",
-    "hint": "Subscriptions and renewals are paid from this balance. To add funds, contact Rawafid support.",
+    "hint": "Subscriptions and renewals are paid from this balance.",
     "loadError": "Could not load balance",
-    "viewWallet": "View wallet & transactions"
+    "viewWallet": "View wallet & transactions",
+    "topUp": "Top up"
   },
   "toolbar": {
     "title": "Transaction history",
@@ -88,5 +89,61 @@
   "amount": {
     "creditAria": "Credit of {{amount}}",
     "debitAria": "Debit of {{amount}}"
+  },
+  "topup": {
+    "button": "Top up",
+    "dialogTitle": "Add funds to your wallet",
+    "dialogDescription": "Enter an amount to add to your wallet. You'll be taken to a secure checkout page to complete your payment.",
+    "amountLabel": "Amount",
+    "amountPlaceholder": "e.g. 100.00",
+    "minHint": "Minimum top-up: {{amount}}",
+    "currencyLabel": "Currency",
+    "submit": "Continue to payment",
+    "submitting": "Redirecting to checkout…",
+    "cancel": "Cancel",
+    "errorBelowMinimum": "Amount is below the minimum top-up of {{amount}}",
+    "errorGatewayDown": "Payment provider is currently unavailable. Please try again in a moment.",
+    "errorGeneric": "Something went wrong. Please try again.",
+    "errorInvalidAmount": "Please enter a valid amount greater than zero."
+  },
+  "payments": {
+    "title": "Payment history",
+    "caption": "Payment history",
+    "noPayments": "No payments yet",
+    "noPaymentsDescription": "Your payment history will appear here once you make your first top-up.",
+    "date": "Date",
+    "method": "Method",
+    "amount": "Amount",
+    "status": "Status",
+    "actions": "Actions",
+    "resume": "Resume payment",
+    "resumeLabel": "Resume pending payment of {{amount}}",
+    "viewDetails": "View payment details",
+    "refreshing": "Refreshing payment status…",
+    "settlingHint": "Payment received — your balance will update shortly.",
+    "status_PENDING": "Waiting for payment",
+    "status_COMPLETED": "Completed",
+    "status_FAILED": "Failed",
+    "status_NEEDS_REVIEW": "Under review",
+    "creditedSettling": "Settling",
+    "failureReasonLabel": "Provider message",
+    "methodFallback": "Card / Wallet",
+    "detail": {
+      "title": "Payment details",
+      "id": "Payment ID",
+      "gateway": "Gateway",
+      "method": "Method",
+      "amount": "Amount",
+      "currency": "Currency",
+      "status": "Status",
+      "credited": "Credited to wallet",
+      "creditedYes": "Yes",
+      "creditedNo": "Not yet",
+      "failureReason": "Failure reason",
+      "createdAt": "Date",
+      "updatedAt": "Last updated",
+      "copyId": "Copy payment ID",
+      "copied": "Copied"
+    }
   }
 }

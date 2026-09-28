@@ -15,9 +15,10 @@
     "triggerLabel": "رصيد المحفظة",
     "totalBalance": "إجمالي الرصيد",
     "updatedAt": "آخر تحديث {{date}}",
-    "hint": "الاشتراكات وتجديدها تُخصم من هذا الرصيد. لإضافة رصيد، تواصل مع دعم روافد.",
+    "hint": "الاشتراكات وتجديدها تُخصم من هذا الرصيد.",
     "loadError": "تعذّر تحميل الرصيد",
-    "viewWallet": "عرض المحفظة والمعاملات"
+    "viewWallet": "عرض المحفظة والمعاملات",
+    "topUp": "شحن الرصيد"
   },
   "toolbar": {
     "title": "سجل المعاملات",
@@ -88,5 +89,61 @@
   "amount": {
     "creditAria": "إضافة {{amount}}",
     "debitAria": "خصم {{amount}}"
+  },
+  "topup": {
+    "button": "شحن الرصيد",
+    "dialogTitle": "إضافة رصيد إلى محفظتك",
+    "dialogDescription": "أدخل المبلغ المراد إضافته. ستُنقل إلى صفحة دفع آمنة لإتمام العملية.",
+    "amountLabel": "المبلغ",
+    "amountPlaceholder": "مثال: 100.00",
+    "minHint": "الحد الأدنى للشحن: {{amount}}",
+    "currencyLabel": "العملة",
+    "submit": "متابعة إلى الدفع",
+    "submitting": "جارٍ التحويل إلى صفحة الدفع…",
+    "cancel": "إلغاء",
+    "errorBelowMinimum": "المبلغ أقل من الحد الأدنى للشحن البالغ {{amount}}",
+    "errorGatewayDown": "مزود الدفع غير متاح حالياً. من فضلك حاول مرة أخرى بعد قليل.",
+    "errorGeneric": "حدث خطأ ما. من فضلك حاول مرة أخرى.",
+    "errorInvalidAmount": "من فضلك أدخل مبلغاً صحيحاً أكبر من صفر."
+  },
+  "payments": {
+    "title": "سجل المدفوعات",
+    "caption": "سجل المدفوعات",
+    "noPayments": "لا توجد مدفوعات بعد",
+    "noPaymentsDescription": "سيظهر سجل مدفوعاتك هنا بعد أول عملية شحن.",
+    "date": "التاريخ",
+    "method": "وسيلة الدفع",
+    "amount": "المبلغ",
+    "status": "الحالة",
+    "actions": "إجراءات",
+    "resume": "استكمال الدفع",
+    "resumeLabel": "استكمال دفع معلق بقيمة {{amount}}",
+    "viewDetails": "عرض تفاصيل الدفع",
+    "refreshing": "جارٍ تحديث حالة الدفع…",
+    "settlingHint": "تم استلام الدفع — سيتم تحديث رصيدك قريباً.",
+    "status_PENDING": "بانتظار الدفع",
+    "status_COMPLETED": "مكتمل",
+    "status_FAILED": "فشل",
+    "status_NEEDS_REVIEW": "قيد المراجعة",
+    "creditedSettling": "جارٍ التسوية",
+    "failureReasonLabel": "رسالة المزود",
+    "methodFallback": "بطاقة / محفظة",
+    "detail": {
+      "title": "تفاصيل الدفع",
+      "id": "معرّف الدفع",
+      "gateway": "البوابة",
+      "method": "وسيلة الدفع",
+      "amount": "المبلغ",
+      "currency": "العملة",
+      "status": "الحالة",
+      "credited": "رُصد في المحفظة",
+      "creditedYes": "نعم",
+      "creditedNo": "لم يُرصد بعد",
+      "failureReason": "سبب الفشل",
+      "createdAt": "التاريخ",
+      "updatedAt": "آخر تحديث",
+      "copyId": "نسخ معرّف الدفع",
+      "copied": "تم النسخ"
+    }
   }
 }

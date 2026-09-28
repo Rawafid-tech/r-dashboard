@@ -169,10 +169,15 @@ function DetailItem({
     <div className={className}>
       <dt className="text-xs font-medium text-muted-foreground">{label}</dt>
       <dd
-        dir={dir}
         className={`mt-1 text-sm text-foreground ${valueClassName ?? ""}`}
       >
-        {value}
+        {dir ? (
+          <span dir={dir} className="inline-block">
+            {value}
+          </span>
+        ) : (
+          value
+        )}
       </dd>
     </div>
   );
