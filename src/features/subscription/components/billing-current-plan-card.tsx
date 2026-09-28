@@ -157,12 +157,12 @@ export function BillingCurrentPlanCard({
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
             {/* Shipments */}
             <Stat label={t("plan.shipments")}>
-              <span dir="ltr">{shipmentsLabel}</span>
+              <span>{shipmentsLabel}</span>
             </Stat>
 
             {/* Price */}
             <Stat label={t("plan.price")}>
-              <span dir={isFree ? undefined : "ltr"}>
+              <span>
                 {isFree ? t("plan.freePrice") : priceLabel}
               </span>
             </Stat>
@@ -188,7 +188,6 @@ export function BillingCurrentPlanCard({
               ) : (
                 <span
                   className="mt-0.5 truncate text-sm font-semibold tabular-nums text-primary"
-                  dir="ltr"
                 >
                   {balanceLabel ?? "—"}
                 </span>

@@ -135,12 +135,17 @@ export function BillingPlansSection({
       {/* Plans grid */}
       {!plansQuery.isLoading && !plansQuery.isError && sortedPlans.length ? (
         <div
-          className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3"
+          className={cn(
+            "grid gap-5",
+            sortedPlans.length >= 4
+              ? "grid-cols-1 sm:grid-cols-2 lg:grid-cols-4"
+              : "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3",
+          )}
           role="list"
           aria-label={t("plans.sectionTitle")}
         >
           {sortedPlans.map((plan) => (
-            <div key={plan.code} role="listitem">
+            <div key={plan.code} role="listitem" className="h-full">
               <BillingPlanCard
                 plan={plan}
                 subscription={subscription}

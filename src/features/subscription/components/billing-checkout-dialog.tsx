@@ -103,7 +103,7 @@ export function BillingCheckoutDialog({
             <dl className="rounded-lg border border-border/60 bg-muted/20 p-4 text-sm">
               <div className="flex justify-between gap-3">
                 <dt className="text-muted-foreground">{selection.planName}</dt>
-                <dd className="font-medium" dir="ltr">
+                <dd className="font-medium">
                   {selection.shipmentsPerMonth.toLocaleString(intlLocale)}{" "}
                   {t("plans.shipmentsLabel").toLowerCase()}
                 </dd>
@@ -117,7 +117,7 @@ export function BillingCheckoutDialog({
               {!isFree ? (
                 <div className="mt-2 flex justify-between gap-3 border-t border-border/60 pt-2">
                   <dt className="font-medium">{t("checkout.chargeAmount")}</dt>
-                  <dd className="font-semibold tabular-nums" dir="ltr">
+                  <dd className="font-semibold tabular-nums">
                     {formattedCharge}
                   </dd>
                 </div>
@@ -142,7 +142,7 @@ export function BillingCheckoutDialog({
                   <dt className="text-xs text-muted-foreground">
                     {t("checkout.balanceBefore")}
                   </dt>
-                  <dd className="mt-1 font-semibold tabular-nums" dir="ltr">
+                  <dd className="mt-1 font-semibold tabular-nums">
                     {formattedBefore}
                   </dd>
                 </div>
@@ -150,7 +150,7 @@ export function BillingCheckoutDialog({
                   <dt className="text-xs text-muted-foreground">
                     {t("checkout.balanceAfter")}
                   </dt>
-                  <dd className="mt-1 font-semibold tabular-nums" dir="ltr">
+                  <dd className="mt-1 font-semibold tabular-nums">
                     {formattedAfter}
                   </dd>
                 </div>
