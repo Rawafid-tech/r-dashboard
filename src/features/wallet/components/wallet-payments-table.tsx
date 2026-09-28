@@ -1,12 +1,18 @@
-import { useMemo, useState } from "react";
-import { ExternalLink, Eye } from "lucide-react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { AxiosError } from "axios";
+import { ExternalLink, Eye, RotateCcw } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { toast } from "sonner";
 import {
   DataTable,
   type DataTableColumn,
 } from "@/shared/components/data-display/data-table";
 import { WalletPaymentDetailSheet } from "@/features/wallet/components/wallet-payment-detail-sheet";
 import { PaymentStatusBadge } from "@/features/wallet/components/wallet-payment-status-badge";
+import {
+  parseTopUpMinimumError,
+  useTopUpMutation,
+} from "@/features/wallet/hooks/use-topup-mutation";
 import type { Payment } from "@/features/wallet/types";
 import { Button } from "@/shared/components/ui";
 import { formatCurrency, formatDate } from "@/shared/lib/formatters";
@@ -36,6 +42,54 @@ export function WalletPaymentsTable({
 }: WalletPaymentsTableProps) {
   const { t } = useTranslation(["wallet", "common"]);
   const [selectedPayment, setSelectedPayment] = useState<Payment | null>(null);
+  const [retryingId, setRetryingId] = useState<string | null>(null);
+  const retryMutation = useTopUpMutation();
+  const mountedRef = useRef(true);
+
+  useEffect(() => {
+    mountedRef.current = true;
+    return () => {
+      mountedRef.current = false;
+    };
+  }, []);
+
+  const retryPayment = (payment: Payment) => {
+    if (retryMutation.isPending) return;
+
+    setRetryingId(payment.id);
+    retryMutation.mutate(
+      { amount: payment.amount },
+      {
+        onError: (error) => {
+          if (!mountedRef.current) return;
+
+          const minimumError = parseTopUpMinimumError(error);
+          if (minimumError) {
+            toast.error(
+              t("topup.errorBelowMinimum", {
+                amount: formatCurrency(
+                  minimumError.minimum,
+                  minimumError.currency,
+                  intlLocale,
+                ),
+              }),
+            );
+            return;
+          }
+
+          if (error instanceof AxiosError && error.response?.status === 502) {
+            toast.error(t("topup.errorGatewayDown"));
+            return;
+          }
+
+          toast.error(t("topup.errorGeneric"));
+        },
+        onSettled: () => {
+          if (mountedRef.current) setRetryingId(null);
+        },
+      },
+    );
+  };
 
   const columns = useMemo<DataTableColumn<Payment>[]>(
     () => [
@@ -120,6 +174,56 @@ export function WalletPaymentsTable({
     [dateFormat, intlLocale, t],
   );
 
+  const renderPaymentRetry = (
+    payment: Payment,
+    formattedAmount: string,
+    presentation: "icon" | "labeled",
+  ) => {
+    const retrying = retryMutation.isPending && retryingId === payment.id;
+
+    if (payment.status === "FAILED") {
+      return (
+        <Button
+          type="button"
+          variant={presentation === "icon" ? "ghost" : "outline"}
+          size={presentation === "icon" ? "icon-sm" : "sm"}
+          disabled={retryMutation.isPending}
+          aria-busy={retrying || undefined}
+          aria-label={
+            retrying
+              ? t("payments.tryAgainBusy")
+              : t("payments.tryAgainLabel", { amount: formattedAmount })
+          }
+          onClick={() => retryPayment(payment)}
+        >
+          <RotateCcw className="size-4" aria-hidden="true" />
+          {presentation === "labeled"
+            ? retrying
+              ? t("payments.tryAgainBusy")
+              : t("payments.tryAgain")
+            : null}
+        </Button>
+      );
+    }
+
+    if (!payment.checkoutUrl) return null;
+
+    return (
+      <Button
+        type="button"
+        variant={presentation === "icon" ? "ghost" : "outline"}
+        size={presentation === "icon" ? "icon-sm" : "sm"}
+        aria-label={t("payments.resumeLabel", { amount: formattedAmount })}
+        onClick={() => {
+          window.location.href = payment.checkoutUrl!;
+        }}
+      >
+        <ExternalLink className="size-4" aria-hidden="true" />
+        {presentation === "labeled" ? t("payments.resume") : null}
+      </Button>
+    );
+  };
+
   return (
     <>
       <DataTable
@@ -191,23 +295,7 @@ export function WalletPaymentsTable({
                 </div>
 
                 <div className="flex flex-wrap gap-2">
-                  {/* Resume button: only visible when checkoutUrl is present (PENDING) */}
-                  {payment.checkoutUrl ? (
-                    <Button
-                      type="button"
-                      variant="outline"
-                      size="sm"
-                      aria-label={t("payments.resumeLabel", {
-                        amount: formattedAmount,
-                      })}
-                      onClick={() => {
-                        window.location.href = payment.checkoutUrl!;
-                      }}
-                    >
-                      <ExternalLink className="size-4" aria-hidden="true" />
-                      {t("payments.resume")}
-                    </Button>
-                  ) : null}
+                  {renderPaymentRetry(payment, formattedAmount, "labeled")}
 
                   <Button
                     type="button"
@@ -231,22 +319,7 @@ export function WalletPaymentsTable({
           );
           return (
             <div className="flex items-center gap-1">
-              {/* Resume: rendered from checkoutUrl presence — no status logic needed */}
-              {payment.checkoutUrl ? (
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="icon-sm"
-                  aria-label={t("payments.resumeLabel", {
-                    amount: formattedAmount,
-                  })}
-                  onClick={() => {
-                    window.location.href = payment.checkoutUrl!;
-                  }}
-                >
-                  <ExternalLink className="size-4" aria-hidden="true" />
-                </Button>
-              ) : null}
+              {renderPaymentRetry(payment, formattedAmount, "icon")}
               <Button
                 type="button"
                 variant="ghost"

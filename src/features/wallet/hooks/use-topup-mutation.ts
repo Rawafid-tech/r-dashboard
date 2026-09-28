@@ -25,9 +25,11 @@ export function parseTopUpMinimumError(
 }
 
 /**
- * Mutation for POST /api/payments/.
+ * Mutation for POST /api/payments/topup.
  *
- * On success → redirects the browser to the single-use Paymob checkout URL.
+ * On success → redirects the browser to the single-use hosted checkout URL.
+ * The URL is opaque. Do not parse it or embed it; 3-D Secure needs a full page.
+ * A failed checkout cannot be reused — call this again for a new URL.
  * Caller is responsible for showing field-level errors (minimum / structural).
  *
  * The mutation does NOT invalidate caches on success because the redirect
@@ -41,7 +43,7 @@ export function useTopUpMutation() {
     mutationFn: (body: TopUpRequest) => createTopUp(body),
     onSuccess: (data) => {
       // Optimistically invalidate so the returned data is fresh
-      // when the user comes back from Paymob.
+      // when the user comes back from checkout.
       void queryClient.invalidateQueries({ queryKey: walletKeys.all });
       void queryClient.invalidateQueries({ queryKey: paymentsKeys.all });
 

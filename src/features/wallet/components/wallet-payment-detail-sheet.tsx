@@ -2,6 +2,7 @@ import { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { PaymentStatusBadge } from "@/features/wallet/components/wallet-payment-status-badge";
+import { getPaymentGatewayLabel } from "@/features/wallet/lib/payment-gateway-label";
 import type { Payment } from "@/features/wallet/types";
 import {
   Button,
@@ -86,6 +87,11 @@ export function WalletPaymentDetailSheet({
             <DetailItem
               label={t("payments.detail.currency")}
               value={payment.currency}
+              dir="ltr"
+            />
+            <DetailItem
+              label={t("payments.detail.gateway")}
+              value={getPaymentGatewayLabel(payment.gateway, t)}
               dir="ltr"
             />
 

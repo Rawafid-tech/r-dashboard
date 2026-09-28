@@ -41,6 +41,8 @@
     "balanceAfter": "الرصيد بعد",
     "actions": "إجراءات",
     "viewDetails": "عرض تفاصيل {{label}}",
+    "refund": "استرداد",
+    "refundLabel": "استرداد {{label}} بقيمة {{amount}}",
     "noNote": "لا يوجد سبب",
     "noNoteHint": "خصم تلقائي — لم يُدخل سبب"
   },
@@ -51,6 +53,7 @@
     "SUBSCRIPTION_RENEWAL": "تجديد الاشتراك",
     "TOP_UP": "شحن رصيد",
     "REFUND": "استرداد",
+    "refundOf": "استرداد — {{charge}} ({{date}})",
     "unknownCredit": "إضافة",
     "unknownDebit": "خصم"
   },
@@ -118,6 +121,13 @@
     "actions": "إجراءات",
     "resume": "استكمال الدفع",
     "resumeLabel": "استكمال دفع معلق بقيمة {{amount}}",
+    "tryAgain": "حاول مرة أخرى",
+    "tryAgainLabel": "حاول مرة أخرى بدفعة جديدة بقيمة {{amount}}",
+    "tryAgainBusy": "جارٍ بدء دفعة جديدة…",
+    "gateways": {
+      "KASHIER": "Kashier",
+      "PAYMOB": "Paymob"
+    },
     "viewDetails": "عرض تفاصيل الدفع",
     "refreshing": "جارٍ تحديث حالة الدفع…",
     "settlingHint": "تم استلام الدفع — سيتم تحديث رصيدك قريباً.",

@@ -152,7 +152,9 @@
       "assignFailed": "تعذّر تعيين الاشتراك",
       "companyNotFound": "الشركة غير موجودة",
       "walletAdjusted": "تم تحديث رصيد المحفظة",
-      "walletAdjustFailed": "تعذّر تحديث رصيد المحفظة"
+      "walletAdjustFailed": "تعذّر تحديث رصيد المحفظة",
+      "walletRefunded": "تمت إضافة الاسترداد إلى المحفظة",
+      "walletRefundFailed": "تعذّر استرداد هذا المبلغ"
     },
     "planCodes": {
       "FREE": "مجاني",
@@ -275,9 +277,21 @@
         "submitting": "جاري الحفظ…",
         "cancel": "إلغاء",
         "createdBy": "معرّف الموظف",
+        "refundTitle": "استرداد مبلغ",
+        "refundDescription": "يُضاف المبلغ إلى محفظة {{company}} على روافد. لا يُعاد المال إلى البطاقة ولا يتغير الاشتراك.",
+        "refundChargeLabel": "الخصم",
+        "refundable": "قابل للاسترداد: {{remaining}} من {{total}}",
+        "refundAmountLabel": "المبلغ",
+        "refundAmountHint": "مُعبأ بكامل المبلغ القابل للاسترداد. الحد الأقصى {{remaining}}.",
+        "refundNoteLabel": "السبب الذي سيقرأه التاجر",
+        "refundNotePlaceholder": "اشرح هذا الاسترداد — سيراه التاجر في محفظته.",
+        "refundNoteHint": "مطلوب. يظهر للتاجر في صف الاسترداد.",
+        "refundSubmit": "استرداد إلى المحفظة",
+        "refundSubmitting": "جارٍ الاسترداد…",
         "validation": {
           "amount": "أدخل مبلغاً صالحاً",
           "amountDecimals": "استخدم منزلتين عشريتين كحد أقصى",
+          "amountAboveRefundable": "أدخل مبلغاً لا يتجاوز الرصيد القابل للاسترداد",
           "noteRequired": "السبب مطلوب",
           "noteMax": "يجب ألا يتجاوز السبب 500 حرف"
         }

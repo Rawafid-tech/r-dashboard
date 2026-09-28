@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import {
   formatSignedWalletAmount,
-  getWalletTransactionTypeLabel,
+  getWalletTransactionDisplayLabel,
 } from "@/features/wallet/lib/wallet-transaction-label";
 import type { WalletTransaction } from "@/features/wallet/types";
 import {
@@ -18,6 +18,7 @@ import { formatCurrency, formatDate } from "@/shared/lib/formatters";
 
 interface WalletTransactionDetailSheetProps {
   transaction: WalletTransaction | null;
+  transactions?: readonly WalletTransaction[];
   currency: string;
   intlLocale: string;
   dateFormat?: "DD_MM_YYYY" | "MM_DD_YYYY" | "YYYY_MM_DD";
@@ -27,6 +28,7 @@ interface WalletTransactionDetailSheetProps {
 
 export function WalletTransactionDetailSheet({
   transaction,
+  transactions = [],
   currency,
   intlLocale,
   dateFormat = "DD_MM_YYYY",
@@ -51,10 +53,11 @@ export function WalletTransactionDetailSheet({
 
   if (!transaction) return null;
 
-  const typeLabel = getWalletTransactionTypeLabel(
-    transaction.type,
-    transaction.direction,
+  const typeLabel = getWalletTransactionDisplayLabel(
+    transaction,
+    transactions,
     t,
+    (iso) => formatDate(iso, dateFormat),
   );
   const signedAmount = formatSignedWalletAmount(
     transaction.amount,

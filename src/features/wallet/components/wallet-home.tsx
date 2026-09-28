@@ -34,7 +34,7 @@ const PAGE_SIZE = 20;
 const PAYMENTS_PAGE_SIZE = 20;
 
 /**
- * After Paymob redirects the browser back to /wallet, the balance credit
+ * After checkout redirects the browser back to /wallet, the balance credit
  * may not yet have landed (server-side job runs separately). We poll the
  * wallet balance a small, capped number of times, then stop — the contract
  * says "cap it — a few seconds, then fall back to 'we'll update shortly'".
@@ -103,7 +103,7 @@ export function WalletHome() {
   );
 
   // ─── Post-redirect polling ────────────────────────────────────────────────
-  // When Paymob redirects back to /wallet the browser may arrive before the
+  // When checkout redirects back to /wallet the browser may arrive before the
   // server-side credit has been applied. We re-fetch the balance a few times
   // (capped) so the customer sees an updated balance without manual refresh.
   // We do NOT show a "payment succeeded" message based on the redirect alone.
@@ -112,7 +112,7 @@ export function WalletHome() {
 
   useEffect(() => {
     // Only poll if we detect a `payment_id` query param — signature that
-    // Paymob sent the customer back. Remove it immediately so a page refresh
+    // The gateway sent the customer back. Remove it immediately so a page refresh
     // doesn't re-trigger the poll.
     const paymentId = searchParams.get("payment_id");
     if (!paymentId) return;
@@ -183,6 +183,7 @@ export function WalletHome() {
   };
 
   const handlePaymentsPageChange = (nextPage: number) => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     paymentsQuery; // kept for future pagination — currently uses default page 0
     void nextPage;
   };
@@ -248,7 +249,6 @@ export function WalletHome() {
                     <h2 id="wallet-payments-title" className="text-lg font-semibold text-foreground">
                       {t("payments.title")}
                     </h2>
-                    <p className="text-sm text-muted-foreground">{t("payments.caption")}</p>
                   </header>
                   <WalletPaymentsTable
                     payments={payments}

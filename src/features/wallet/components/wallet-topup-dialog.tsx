@@ -31,11 +31,11 @@ interface WalletTopUpDialogProps {
 }
 
 /**
- * Dialog that collects a top-up amount and redirects to Paymob checkout.
+ * Dialog that collects a top-up amount and redirects to hosted checkout.
  *
  * Rules enforced by this component:
  * - No card form (card data never touches our origin)
- * - No iframe (Paymob needs full-page navigation for 3DS)
+ * - No iframe (3-D Secure needs a full-page navigation)
  * - Minimum is read from the server's 400 response — never hardcoded
  * - Amount is validated client-side first, then server response is used
  *   as the authoritative floor

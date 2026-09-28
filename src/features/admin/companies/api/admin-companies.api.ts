@@ -7,10 +7,12 @@ import type {
   AdminCompany,
   AssignSubscriptionRequest,
 } from "@/features/admin/companies/types";
+import { sumRefundedCents } from "@/features/wallet/lib/wallet-refund";
 import type {
   AdminWallet,
   AdminWalletTransaction,
   WalletAdjustmentRequest,
+  WalletRefundRequest,
   WalletTransactionsListParams,
 } from "@/features/wallet/types";
 
@@ -77,6 +79,57 @@ export async function getAdminCompanyWalletTransactions(
     PaginatedResponse<AdminWalletTransaction>
   >(`/api/admin/companies/${companyId}/wallet/transactions`, { params });
   return data;
+}
+
+const REFUND_PAGE_SIZE = 100;
+const MAX_REFUND_PAGES = 20;
+
+/**
+ * Pages through REFUND rows and sums them per charge, in cents.
+ * A truncated index can only over-state what is left; the server still rejects an over-refund.
+ */
+export async function listAdminCompanyRefundTotals(
+  companyId: string,
+): Promise<Record<string, number>> {
+  const totals: Record<string, number> = {};
+  let page = 0;
+  let totalPages = 1;
+
+  while (page < totalPages && page < MAX_REFUND_PAGES) {
+    const data = await getAdminCompanyWalletTransactions(companyId, {
+      page,
+      size: REFUND_PAGE_SIZE,
+      sort: "CREATED_AT",
+      direction: "DESC",
+      type: "REFUND",
+    });
+
+    const pageTotals = sumRefundedCents(data.content);
+    for (const [chargeId, cents] of Object.entries(pageTotals)) {
+      totals[chargeId] = (totals[chargeId] ?? 0) + cents;
+    }
+
+    totalPages = data.totalPages;
+    if (data.content.length === 0) break;
+    page += 1;
+  }
+
+  return totals;
+}
+
+export async function refundAdminCompanyWallet(
+  companyId: string,
+  transactionId: string,
+  body: WalletRefundRequest,
+): Promise<AdminWalletTransaction> {
+  const response = await apiClient.post<AdminWalletTransaction>(
+    `/api/admin/companies/${companyId}/wallet/transactions/${transactionId}/refunds`,
+    body,
+    {
+      validateStatus: (status) => status === 200 || status === 201,
+    },
+  );
+  return response.data;
 }
 
 export async function adjustAdminCompanyWallet(

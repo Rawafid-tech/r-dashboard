@@ -31,6 +31,8 @@ export interface WalletTransaction {
   balanceAfter: number;
   referenceType: string | null;
   referenceId: string | null;
+  /** On a REFUND, the charge this credit gives money back against. Null on every other type. */
+  refundedTransactionId: string | null;
   note: string | null;
   createdAt: string;
 }
@@ -54,11 +56,17 @@ export interface WalletAdjustmentRequest {
   note: string;
 }
 
+export interface WalletRefundRequest {
+  requestId: string;
+  amount: number;
+  note: string;
+}
+
 // ─── Payments / Top-Up ───────────────────────────────────────────────────────
 
 export type PaymentStatus = "PENDING" | "COMPLETED" | "FAILED" | "NEEDS_REVIEW";
 
-export type PaymentGateway = "PAYMOB" | (string & {});
+export type PaymentGateway = "PAYMOB" | "KASHIER" | (string & {});
 
 export type PaymentPurpose = "WALLET_TOP_UP" | (string & {});
 

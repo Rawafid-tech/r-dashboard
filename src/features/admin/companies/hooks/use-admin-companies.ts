@@ -19,6 +19,8 @@ export const adminCompaniesQueryKeys = {
     [...adminCompaniesQueryKeys.all, "wallet", companyId] as const,
   walletTransactions: (companyId: string, params: WalletTransactionsListParams) =>
     [...adminCompaniesQueryKeys.wallet(companyId), "transactions", params] as const,
+  walletRefunds: (companyId: string) =>
+    [...adminCompaniesQueryKeys.wallet(companyId), "refunds"] as const,
 };
 
 export function useAdminCompanies(params: AdminCompaniesListParams) {

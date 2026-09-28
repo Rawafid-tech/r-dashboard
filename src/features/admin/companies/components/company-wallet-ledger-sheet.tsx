@@ -1,6 +1,8 @@
-import { useCallback, useEffect, useMemo } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSearchParams } from "react-router-dom";
+import { CompanyWalletRefundDialog } from "@/features/admin/companies/components/company-wallet-refund-dialog";
+import { useAdminCompanyWalletRefunds } from "@/features/admin/companies/hooks/use-admin-company-wallet-refunds";
 import { useAdminCompanyWalletTransactions } from "@/features/admin/companies/hooks/use-admin-company-wallet-transactions";
 import { WalletEmptyState } from "@/features/wallet/components/wallet-empty-state";
 import { WalletTransactionsTable } from "@/features/wallet/components/wallet-transactions-table";
@@ -11,6 +13,11 @@ import {
   readWalletTypeFilter,
   type WalletSortOption,
 } from "@/features/wallet/lib/wallet-list-params";
+import {
+  getRefundableCents,
+  sumRefundedCents,
+} from "@/features/wallet/lib/wallet-refund";
+import type { WalletTransaction } from "@/features/wallet/types";
 import {
   Sheet,
   SheetContent,
@@ -33,6 +40,7 @@ interface CompanyWalletLedgerSheetProps {
   currency: string;
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  canManage?: boolean;
 }
 
 export function CompanyWalletLedgerSheet({
@@ -41,6 +49,7 @@ export function CompanyWalletLedgerSheet({
   currency,
   open,
   onOpenChange,
+  canManage = false,
 }: CompanyWalletLedgerSheetProps) {
   const { t } = useTranslation(["admin", "wallet"]);
   const locale = useLocaleStore((state) => state.locale);
@@ -91,6 +100,16 @@ export function CompanyWalletLedgerSheet({
     queryParams,
     { enabled: open },
   );
+  const refundsQuery = useAdminCompanyWalletRefunds(companyId, {
+    enabled: open && canManage,
+  });
+  const [refundCharge, setRefundCharge] = useState<WalletTransaction | null>(
+    null,
+  );
+
+  useEffect(() => {
+    if (!open) setRefundCharge(null);
+  }, [open]);
 
   useEffect(() => {
     if (!open) return;
@@ -130,10 +149,32 @@ export function CompanyWalletLedgerSheet({
     });
   };
 
-  const transactions = transactionsQuery.data?.content ?? [];
+  const transactions = useMemo(
+    () => transactionsQuery.data?.content ?? [],
+    [transactionsQuery.data?.content],
+  );
   const hasFilters = Boolean(typeFilter);
+  const refundedCentsByChargeId = useMemo(() => {
+    if (!canManage) return undefined;
+    if (refundsQuery.isSuccess) return refundsQuery.data;
+    if (refundsQuery.isError) return sumRefundedCents(transactions);
+    return {};
+  }, [
+    canManage,
+    refundsQuery.data,
+    refundsQuery.isError,
+    refundsQuery.isSuccess,
+    transactions,
+  ]);
+  const refundableCents = refundCharge
+    ? getRefundableCents(
+        refundCharge.amount,
+        refundedCentsByChargeId?.[refundCharge.id] ?? 0,
+      )
+    : 0;
 
   return (
+    <>
     <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetContent
         side="bottom"
@@ -169,11 +210,30 @@ export function CompanyWalletLedgerSheet({
               onPageChange={handlePageChange}
               isFetching={transactionsQuery.isFetching}
               showCreatedBy
+              onRefund={canManage ? setRefundCharge : undefined}
+              refundedCentsByChargeId={refundedCentsByChargeId}
+              refundsPending={canManage && refundsQuery.isLoading}
               emptyState={<WalletEmptyState hasFilters={hasFilters} />}
             />
           )}
         </div>
       </SheetContent>
     </Sheet>
+
+    {canManage && refundCharge ? (
+      <CompanyWalletRefundDialog
+        key={`${refundCharge.id}-${refundableCents}`}
+        companyId={companyId}
+        companyName={companyName}
+        currency={currency}
+        charge={refundCharge}
+        refundableCents={refundableCents}
+        open
+        onOpenChange={(next) => {
+          if (!next) setRefundCharge(null);
+        }}
+      />
+    ) : null}
+    </>
   );
 }

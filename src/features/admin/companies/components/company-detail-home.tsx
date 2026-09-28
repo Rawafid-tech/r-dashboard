@@ -139,6 +139,7 @@ export function CompanyDetailHome() {
             companyName={companyQuery.data.name}
             currency={currency}
             open={ledgerOpen}
+            canManage={canManageWallet}
             onOpenChange={setLedgerOpen}
           />
         </div>

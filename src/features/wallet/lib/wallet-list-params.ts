@@ -16,6 +16,8 @@ export const WALLET_TRANSACTION_TYPE_FILTERS: WalletTransactionType[] = [
   "ADMIN_DEBIT",
   "SUBSCRIPTION_NEW",
   "SUBSCRIPTION_RENEWAL",
+  "TOP_UP",
+  "REFUND",
 ];
 
 export function parseWalletSortOption(option: WalletSortOption): {

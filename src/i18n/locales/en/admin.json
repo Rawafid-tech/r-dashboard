@@ -152,7 +152,9 @@
       "assignFailed": "Could not assign subscription",
       "companyNotFound": "Company not found",
       "walletAdjusted": "Wallet balance updated",
-      "walletAdjustFailed": "Could not update wallet balance"
+      "walletAdjustFailed": "Could not update wallet balance",
+      "walletRefunded": "Refund added to the wallet",
+      "walletRefundFailed": "Could not refund this charge"
     },
     "planCodes": {
       "FREE": "Free",
@@ -275,9 +277,21 @@
         "submitting": "Saving…",
         "cancel": "Cancel",
         "createdBy": "Staff ID",
+        "refundTitle": "Refund a charge",
+        "refundDescription": "Add the amount back to {{company}}'s Rawafid wallet. This does not return money to a card and does not change the subscription.",
+        "refundChargeLabel": "Charge",
+        "refundable": "Refundable: {{remaining}} of {{total}}",
+        "refundAmountLabel": "Amount",
+        "refundAmountHint": "Prefilled with the full refundable amount. Maximum {{remaining}}.",
+        "refundNoteLabel": "Reason the merchant will read",
+        "refundNotePlaceholder": "Explain this refund — the merchant will see it on their wallet.",
+        "refundNoteHint": "Required. Shown to the merchant on the refund row.",
+        "refundSubmit": "Refund to wallet",
+        "refundSubmitting": "Refunding…",
         "validation": {
           "amount": "Enter a valid amount",
           "amountDecimals": "Use at most two decimal places",
+          "amountAboveRefundable": "Enter an amount up to the refundable balance",
           "noteRequired": "A reason is required",
           "noteMax": "Reason must be 500 characters or fewer"
         }

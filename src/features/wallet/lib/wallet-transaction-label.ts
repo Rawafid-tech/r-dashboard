@@ -1,6 +1,7 @@
 import type { TFunction } from "i18next";
 import { formatCurrency } from "@/shared/lib/formatters";
 import type {
+  WalletTransaction,
   WalletTransactionDirection,
   WalletTransactionType,
 } from "@/features/wallet/types";
@@ -28,6 +29,43 @@ export function getWalletTransactionTypeLabel(
   return direction === "CREDIT"
     ? t("transactionTypes.unknownCredit")
     : t("transactionTypes.unknownDebit");
+}
+
+type WalletTransactionLabelSource = Pick<
+  WalletTransaction,
+  "id" | "type" | "direction" | "createdAt" | "refundedTransactionId"
+>;
+
+/**
+ * Refunds name the charge they reverse when that row is already on the
+ * current page. There is no single-transaction endpoint, so a charge on
+ * another page stays the plain "Refund" label.
+ */
+export function getWalletTransactionDisplayLabel(
+  transaction: WalletTransactionLabelSource,
+  transactions: readonly WalletTransactionLabelSource[],
+  t: TFunction<"wallet">,
+  formatChargeDate: (iso: string) => string,
+): string {
+  const base = getWalletTransactionTypeLabel(
+    transaction.type,
+    transaction.direction,
+    t,
+  );
+
+  if (transaction.type !== "REFUND" || !transaction.refundedTransactionId) {
+    return base;
+  }
+
+  const charge = transactions.find(
+    (row) => row.id === transaction.refundedTransactionId,
+  );
+  if (!charge) return base;
+
+  return t("transactionTypes.refundOf", {
+    charge: getWalletTransactionTypeLabel(charge.type, charge.direction, t),
+    date: formatChargeDate(charge.createdAt),
+  });
 }
 
 export function formatSignedWalletAmount(

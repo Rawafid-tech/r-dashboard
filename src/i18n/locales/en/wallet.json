@@ -41,6 +41,8 @@
     "balanceAfter": "Balance after",
     "actions": "Actions",
     "viewDetails": "View details for {{label}}",
+    "refund": "Refund",
+    "refundLabel": "Refund {{label}} of {{amount}}",
     "noNote": "No note provided",
     "noNoteHint": "Automatic charge — no note was entered"
   },
@@ -51,6 +53,7 @@
     "SUBSCRIPTION_RENEWAL": "Subscription renewal",
     "TOP_UP": "Top up",
     "REFUND": "Refund",
+    "refundOf": "Refund — {{charge}} ({{date}})",
     "unknownCredit": "Credit",
     "unknownDebit": "Debit"
   },
@@ -118,6 +121,13 @@
     "actions": "Actions",
     "resume": "Resume payment",
     "resumeLabel": "Resume pending payment of {{amount}}",
+    "tryAgain": "Try again",
+    "tryAgainLabel": "Try again with a new payment of {{amount}}",
+    "tryAgainBusy": "Starting a new payment…",
+    "gateways": {
+      "KASHIER": "Kashier",
+      "PAYMOB": "Paymob"
+    },
     "viewDetails": "View payment details",
     "refreshing": "Refreshing payment status…",
     "settlingHint": "Payment received — your balance will update shortly.",

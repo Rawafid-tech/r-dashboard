@@ -1,6 +1,6 @@
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import type { ReactNode } from "react";
-import { Eye } from "lucide-react";
+import { Eye, Undo2 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import {
   DataTable,
@@ -9,10 +9,11 @@ import {
 import { WalletToolbar } from "@/features/wallet/components/wallet-toolbar";
 import { WalletTransactionDetailSheet } from "@/features/wallet/components/wallet-transaction-detail-sheet";
 import type { WalletSortOption } from "@/features/wallet/lib/wallet-list-params";
+import { getRefundableCents } from "@/features/wallet/lib/wallet-refund";
 import {
   formatSignedWalletAmount,
   getSignedWalletAmountClassName,
-  getWalletTransactionTypeLabel,
+  getWalletTransactionDisplayLabel,
   truncateAdminId,
 } from "@/features/wallet/lib/wallet-transaction-label";
 import type { AdminWalletTransaction, WalletTransaction } from "@/features/wallet/types";
@@ -36,6 +37,12 @@ interface WalletTransactionsTableProps {
   isFetching?: boolean;
   emptyState?: ReactNode;
   showCreatedBy?: boolean;
+  /** Admin ledger only. Merchant history omits this, so no refund action is offered. */
+  onRefund?: (transaction: WalletTransaction) => void;
+  /** Cents already refunded against each charge id. */
+  refundedCentsByChargeId?: Record<string, number>;
+  /** Disable refund actions while the refund index is still loading. */
+  refundsPending?: boolean;
 }
 
 export function WalletTransactionsTable({
@@ -55,10 +62,29 @@ export function WalletTransactionsTable({
   isFetching,
   emptyState,
   showCreatedBy = false,
+  onRefund,
+  refundedCentsByChargeId,
+  refundsPending = false,
 }: WalletTransactionsTableProps) {
   const { t } = useTranslation(["wallet", "common", "admin"]);
   const [selectedTransaction, setSelectedTransaction] =
     useState<WalletTransaction | null>(null);
+
+  const formatChargeDate = useCallback(
+    (iso: string) => formatDate(iso, dateFormat),
+    [dateFormat],
+  );
+
+  const labelFor = useCallback(
+    (transaction: WalletTransaction) =>
+      getWalletTransactionDisplayLabel(
+        transaction,
+        transactions,
+        t,
+        formatChargeDate,
+      ),
+    [formatChargeDate, t, transactions],
+  );
 
   const columns = useMemo<DataTableColumn<WalletTransaction>[]>(
     () => [
@@ -81,11 +107,7 @@ export function WalletTransactionsTable({
         header: t("table.type"),
         cell: (transaction) => (
           <span className="font-medium text-foreground">
-            {getWalletTransactionTypeLabel(
-              transaction.type,
-              transaction.direction,
-              t,
-            )}
+            {labelFor(transaction)}
           </span>
         ),
       },
@@ -172,8 +194,39 @@ export function WalletTransactionsTable({
           ]
         : []),
     ],
-    [currency, dateFormat, intlLocale, showCreatedBy, t],
+    [currency, dateFormat, intlLocale, labelFor, showCreatedBy, t],
   );
+
+  const renderRefundAction = (
+    transaction: WalletTransaction,
+    presentation: "icon" | "labeled",
+  ) => {
+    if (!onRefund || transaction.direction !== "DEBIT") return null;
+
+    const remaining = getRefundableCents(
+      transaction.amount,
+      refundedCentsByChargeId?.[transaction.id] ?? 0,
+    );
+    if (!refundsPending && remaining <= 0) return null;
+
+    const label = labelFor(transaction);
+    const amountLabel = formatCurrency(transaction.amount, currency, intlLocale);
+
+    return (
+      <Button
+        type="button"
+        variant={presentation === "icon" ? "ghost" : "outline"}
+        size={presentation === "icon" ? "icon-sm" : "sm"}
+        disabled={refundsPending}
+        aria-busy={refundsPending || undefined}
+        aria-label={t("table.refundLabel", { label, amount: amountLabel })}
+        onClick={() => onRefund(transaction)}
+      >
+        <Undo2 className="size-4" aria-hidden="true" />
+        {presentation === "labeled" ? t("table.refund") : null}
+      </Button>
+    );
+  };
 
   return (
     <>
@@ -218,11 +271,7 @@ export function WalletTransactionsTable({
         }}
         mobile={{
           renderRow: (transaction) => {
-            const label = getWalletTransactionTypeLabel(
-              transaction.type,
-              transaction.direction,
-              t,
-            );
+            const label = labelFor(transaction);
             const signed = formatSignedWalletAmount(
               transaction.amount,
               transaction.direction,
@@ -257,37 +306,39 @@ export function WalletTransactionsTable({
                 {transaction.note ? (
                   <p className="text-sm text-muted-foreground">{transaction.note}</p>
                 ) : null}
-                <Button
-                  type="button"
-                  variant="outline"
-                  size="sm"
-                  className="self-start"
-                  onClick={() => setSelectedTransaction(transaction)}
-                >
-                  <Eye className="size-4" aria-hidden="true" />
-                  {t("table.viewDetails", { label })}
-                </Button>
+                <div className="flex flex-wrap gap-2">
+                  {renderRefundAction(transaction, "labeled")}
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    className="self-start"
+                    onClick={() => setSelectedTransaction(transaction)}
+                  >
+                    <Eye className="size-4" aria-hidden="true" />
+                    {t("table.viewDetails", { label })}
+                  </Button>
+                </div>
               </article>
             );
           },
         }}
         rowActions={(transaction) => {
-          const label = getWalletTransactionTypeLabel(
-            transaction.type,
-            transaction.direction,
-            t,
-          );
+          const label = labelFor(transaction);
 
           return (
-            <Button
-              type="button"
-              variant="ghost"
-              size="icon-sm"
-              onClick={() => setSelectedTransaction(transaction)}
-              aria-label={t("table.viewDetails", { label })}
-            >
-              <Eye className="size-4" aria-hidden="true" />
-            </Button>
+            <div className="flex items-center gap-1">
+              {renderRefundAction(transaction, "icon")}
+              <Button
+                type="button"
+                variant="ghost"
+                size="icon-sm"
+                onClick={() => setSelectedTransaction(transaction)}
+                aria-label={t("table.viewDetails", { label })}
+              >
+                <Eye className="size-4" aria-hidden="true" />
+              </Button>
+            </div>
           );
         }}
         actionsColumnHeader={
@@ -298,6 +349,7 @@ export function WalletTransactionsTable({
 
       <WalletTransactionDetailSheet
         transaction={selectedTransaction}
+        transactions={transactions}
         currency={currency}
         intlLocale={intlLocale}
         dateFormat={dateFormat}
