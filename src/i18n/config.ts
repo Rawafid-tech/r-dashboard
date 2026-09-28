@@ -26,6 +26,8 @@ import productsAr from "./locales/ar/products.json";
 import productsEn from "./locales/en/products.json";
 import walletAr from "./locales/ar/wallet.json";
 import walletEn from "./locales/en/wallet.json";
+import ordersAr from "./locales/ar/orders.json";
+import ordersEn from "./locales/en/orders.json";
 
 const resources = {
   ar: {
@@ -41,6 +43,7 @@ const resources = {
     shippingBoxes: shippingBoxesAr,
     products: productsAr,
     wallet: walletAr,
+    orders: ordersAr,
   },
   en: {
     common: commonEn,
@@ -55,6 +58,7 @@ const resources = {
     shippingBoxes: shippingBoxesEn,
     products: productsEn,
     wallet: walletEn,
+    orders: ordersEn,
   },
 };
 
@@ -65,7 +69,7 @@ i18n
     resources,
     fallbackLng: "ar",
     defaultNS: "common",
-    ns: ["common", "auth", "dashboard", "settings", "billing", "admin", "roles", "users", "locations", "shippingBoxes", "products", "wallet"],
+    ns: ["common", "auth", "dashboard", "settings", "billing", "admin", "roles", "users", "locations", "shippingBoxes", "products", "wallet", "orders"],
     interpolation: {
       escapeValue: false,
     },

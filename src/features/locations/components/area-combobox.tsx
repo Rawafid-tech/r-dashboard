@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import {
   useCallback,
   useEffect,
@@ -33,8 +34,9 @@ interface AreaComboboxFieldProps {
   governorateId: string;
   disabled?: boolean;
   invalid?: boolean;
-  label: string;
+  label: ReactNode;
   hint?: string;
+  required?: boolean;
 }
 
 function filterAreasLocally(
@@ -61,6 +63,7 @@ export function AreaComboboxField({
   invalid,
   label,
   hint,
+  required = false,
 }: AreaComboboxFieldProps) {
   const { t } = useTranslation("locations");
   const locale = useLocaleStore((state) => state.locale);
@@ -186,7 +189,7 @@ export function AreaComboboxField({
               aria-autocomplete="list"
               aria-activedescendant={activeDescendantId}
               aria-invalid={invalid || undefined}
-              aria-label={label}
+              aria-required={required || undefined}
               value={value}
               disabled={disabled || !hasGovernorate}
               placeholder={

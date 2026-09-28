@@ -9,6 +9,7 @@
     "users": "Users",
     "roles": "Roles",
     "shipments": "Shipments",
+    "orders": "Orders",
     "returns": "Returns",
     "products": "Products",
     "wallet": "Wallet",

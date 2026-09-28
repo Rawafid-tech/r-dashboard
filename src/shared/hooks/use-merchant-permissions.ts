@@ -12,6 +12,7 @@ export const MerchantPermission = {
   PAGE_PRODUCTS: "page:products",
   PAGE_SHIPPING_BOXES: "page:shippingBoxes",
   PAGE_WALLET: "page:wallet",
+  PAGE_ORDERS: "page:orders",
   USER_READ: "user:read",
   USER_MANAGE: "user:manage",
   USER_INVITE_REVEAL: "user:invite:reveal",
@@ -26,6 +27,8 @@ export const MerchantPermission = {
   SHIPPING_BOX_MANAGE: "shippingBox:manage",
   WALLET_READ: "wallet:read",
   WALLET_TOPUP: "wallet:topup",
+  ORDER_READ: "order:read",
+  ORDER_MANAGE: "order:manage",
 } as const;
 
 export type MerchantPermissionCode =
@@ -85,5 +88,7 @@ export function useMerchantPermissions() {
     canReadWallet: hasPermission(MerchantPermission.WALLET_READ),
     canTopUpWallet:
       isOwner || hasPermission(MerchantPermission.WALLET_TOPUP),
+    canReadOrders: hasPermission(MerchantPermission.ORDER_READ),
+    canManageOrders: hasPermission(MerchantPermission.ORDER_MANAGE),
   };
 }

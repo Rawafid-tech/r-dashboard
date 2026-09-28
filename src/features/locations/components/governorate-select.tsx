@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 import {
   FieldDescription,
@@ -17,9 +18,10 @@ interface GovernorateSelectFieldProps {
   onChange: (value: string) => void;
   disabled?: boolean;
   invalid?: boolean;
-  label: string;
+  label: ReactNode;
   placeholder: string;
   hint?: string;
+  required?: boolean;
 }
 
 export function GovernorateSelectField({
@@ -31,6 +33,7 @@ export function GovernorateSelectField({
   label,
   placeholder,
   hint,
+  required = false,
 }: GovernorateSelectFieldProps) {
   const { t } = useTranslation("locations");
   const locale = useLocaleStore((state) => state.locale);
@@ -52,7 +55,7 @@ export function GovernorateSelectField({
       >
         <SelectTrigger
           id={id}
-          aria-label={label}
+          aria-required={required || undefined}
           aria-invalid={invalid || undefined}
           className="w-full"
         >

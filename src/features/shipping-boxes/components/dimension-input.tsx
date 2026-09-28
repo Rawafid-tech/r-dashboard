@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import { Minus, Plus } from "lucide-react";
 import { useId } from "react";
 import { Button, Input } from "@/shared/components/ui";
@@ -9,7 +10,8 @@ const MAX = 999.99;
 
 interface DimensionInputProps {
   id: string;
-  label: string;
+  label: ReactNode;
+  required?: boolean;
   value: string;
   onChange: (value: string) => void;
   onBlur?: () => void;
@@ -31,6 +33,7 @@ export function DimensionInput({
   unitLabel,
   decreaseLabel,
   increaseLabel,
+  required = false,
 }: DimensionInputProps) {
   const unitId = useId();
 
@@ -72,6 +75,7 @@ export function DimensionInput({
             disabled={disabled}
             autoComplete="off"
             aria-invalid={invalid || undefined}
+            aria-required={required || undefined}
             aria-describedby={unitId}
             className="min-w-0 flex-1 text-start tabular-nums"
             onChange={(event) => onChange(event.target.value)}

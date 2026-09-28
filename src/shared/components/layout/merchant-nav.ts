@@ -1,5 +1,6 @@
 import {
   Box,
+  ClipboardList,
   CreditCard,
   LayoutDashboard,
   MapPin,
@@ -65,6 +66,13 @@ export const MERCHANT_NAV_ITEMS: MerchantNavItem[] = [
     icon: MapPin,
     enabled: true,
     permissionCode: "page:senderLocations",
+  },
+  {
+    key: "orders",
+    href: "/orders",
+    icon: ClipboardList,
+    enabled: true,
+    permissionCode: "page:orders",
   },
   { key: "shipments", href: "/shipments", icon: Package, enabled: false },
   { key: "returns", href: "/returns", icon: RefreshCcw, enabled: false },
