@@ -47,6 +47,12 @@ const AdminPlanDetailPage = lazy(() =>
   })),
 );
 
+const AdminCarriersPage = lazy(() =>
+  import("@/app/admin/carriers-page").then((m) => ({
+    default: m.AdminCarriersPage,
+  })),
+);
+
 const AdminUsersPage = lazy(() =>
   import("@/app/admin/users-page").then((m) => ({
     default: m.AdminUsersPage,
@@ -98,6 +104,10 @@ export const adminRoutes: RouteObject[] = [
           {
             path: "/admin/plans/:planId",
             element: <AdminPlanDetailPage />,
+          },
+          {
+            path: "/admin/carriers",
+            element: <AdminCarriersPage />,
           },
           {
             path: "/admin/users",

@@ -10,6 +10,7 @@ export function parseApiError(error: unknown): ApiError {
       status: data.status || error.response.status,
       detail: data.detail || "An unexpected error occurred",
       instance: data.instance || "",
+      field: typeof data.field === "string" ? data.field : undefined,
       errors: data.errors,
     };
   }

@@ -60,6 +60,7 @@
       "home": "Overview",
       "companies": "Companies",
       "plans": "Plans",
+      "carriers": "Carriers",
       "users": "Users"
     }
   },
@@ -92,7 +93,41 @@
       "users": {
         "title": "Users & moderation",
         "description": "Browse users, suspend accounts, and verify channels."
+      },
+      "carriers": {
+        "title": "Shipping partners",
+        "description": "Turn carrier adapters on or off for merchant connections."
       }
+    }
+  },
+  "carriers": {
+    "metaTitle": "Shipping partners — Rawafid Admin",
+    "metaDescription": "Enable or disable carrier adapters that merchants can connect.",
+    "skipToContent": "Skip to carriers",
+    "hero": {
+      "title": "Shipping partners",
+      "subtitle": "Merchants only see carriers that are enabled and running in this deployment."
+    },
+    "listLabel": "Carriers",
+    "running": "Running",
+    "notRunning": "No adapter",
+    "enabled": "Enabled",
+    "disabled": "Disabled",
+    "enable": "Enable {{name}}",
+    "disable": "Disable {{name}}",
+    "notRunningHint": "This deployment has no adapter, so merchants cannot see it.",
+    "manageHint": "Enabled carriers appear on the merchant connections screen.",
+    "readOnlyHint": "Support can view carriers. Only a super admin can change them.",
+    "empty": "No carriers are configured.",
+    "errors": {
+      "loadFailed": "Could not load carriers",
+      "loadFailedHint": "Check your connection and try again.",
+      "retry": "Retry"
+    },
+    "toast": {
+      "enabled": "Carrier enabled",
+      "disabled": "Carrier disabled",
+      "failed": "Could not update the carrier"
     }
   },
   "companies": {

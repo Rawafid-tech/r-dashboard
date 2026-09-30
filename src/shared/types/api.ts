@@ -12,6 +12,8 @@ export interface ApiError {
   status: number;
   detail: string;
   instance: string;
+  /** Some endpoints name a single invalid field instead of `errors[]`. */
+  field?: string;
   errors?: ValidationError[];
 }
 

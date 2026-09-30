@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { ArrowUpRight, Building2, CreditCard, Users } from "lucide-react";
+import { ArrowUpRight, Building2, CreditCard, Truck, Users } from "lucide-react";
 import { Link } from "react-router-dom";
 import {
   Badge,
@@ -18,6 +18,7 @@ import { cn } from "@/shared/lib/utils";
 const MODULES = [
   { key: "plans", icon: CreditCard, href: "/admin/plans" },
   { key: "companies", icon: Building2, href: "/admin/companies" },
+  { key: "carriers", icon: Truck, href: "/admin/carriers" },
   { key: "users", icon: Users, href: "/admin/users" },
 ] as const;
 

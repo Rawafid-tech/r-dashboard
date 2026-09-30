@@ -11,6 +11,7 @@ export const MerchantPermission = {
   PAGE_SENDER_LOCATIONS: "page:senderLocations",
   PAGE_PRODUCTS: "page:products",
   PAGE_SHIPPING_BOXES: "page:shippingBoxes",
+  PAGE_SHIPPING_PARTNERS: "page:shippingPartners",
   PAGE_WALLET: "page:wallet",
   PAGE_ORDERS: "page:orders",
   USER_READ: "user:read",
@@ -25,6 +26,8 @@ export const MerchantPermission = {
   PRODUCT_MANAGE: "product:manage",
   SHIPPING_BOX_READ: "shippingBox:read",
   SHIPPING_BOX_MANAGE: "shippingBox:manage",
+  CARRIER_CONNECTION_READ: "carrierConnection:read",
+  CARRIER_CONNECTION_MANAGE: "carrierConnection:manage",
   WALLET_READ: "wallet:read",
   WALLET_TOPUP: "wallet:topup",
   ORDER_READ: "order:read",
@@ -84,6 +87,12 @@ export function useMerchantPermissions() {
     canReadShippingBoxes: hasPermission(MerchantPermission.SHIPPING_BOX_READ),
     canManageShippingBoxes: hasPermission(
       MerchantPermission.SHIPPING_BOX_MANAGE,
+    ),
+    canReadShippingPartners: hasPermission(
+      MerchantPermission.CARRIER_CONNECTION_READ,
+    ),
+    canManageShippingPartners: hasPermission(
+      MerchantPermission.CARRIER_CONNECTION_MANAGE,
     ),
     canReadWallet: hasPermission(MerchantPermission.WALLET_READ),
     canTopUpWallet:

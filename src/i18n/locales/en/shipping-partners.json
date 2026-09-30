@@ -1,0 +1,136 @@
+{
+  "metaTitle": "Shipping partners — Rawafid",
+  "metaDescription": "Connect your own carrier accounts and manage which ones are active for shipments.",
+  "skipToContent": "Skip to shipping partners",
+  "hero": {
+    "title": "Shipping partners",
+    "subtitle": "Connect your own carrier account. Rawafid checks the key with the carrier and stores it encrypted.",
+    "totalLabel": "Connections"
+  },
+  "tabs": {
+    "label": "Shipping partner views",
+    "available": "More connections",
+    "connected": "Connected"
+  },
+  "catalog": {
+    "title": "Carriers you can connect",
+    "connect": "Connect",
+    "emptyTitle": "No carriers available",
+    "emptyDescription": "When a shipping partner is enabled for your account, it will show up here.",
+    "loadFailed": "Could not load shipping partners",
+    "loadFailedHint": "Check your connection and try again.",
+    "retry": "Retry"
+  },
+  "toolbar": {
+    "title": "Connected accounts",
+    "searchPlaceholder": "Search by connection or carrier…",
+    "activeLabel": "Status",
+    "activeAll": "All connections",
+    "activeOnly": "Show active only",
+    "sortLabel": "Sort",
+    "sort": {
+      "createdDesc": "Newest first",
+      "createdAsc": "Oldest first",
+      "nameAsc": "Name A–Z",
+      "nameDesc": "Name Z–A"
+    }
+  },
+  "table": {
+    "caption": "Connected shipping partners",
+    "name": "Connection",
+    "carrier": "Carrier",
+    "credential": "API key",
+    "status": "Status",
+    "verified": "Last checked",
+    "actions": "Actions",
+    "active": "Active",
+    "inactive": "Inactive",
+    "activate": "Activate {{name}}",
+    "deactivate": "Deactivate {{name}}",
+    "carrierDisabled": "This carrier is turned off. You can deactivate or remove the connection, but not turn it back on.",
+    "edit": "Edit",
+    "remove": "Remove",
+    "openMenu": "Actions for {{name}}"
+  },
+  "pagination": {
+    "label": "Connected accounts pagination",
+    "summary": "Showing {{start}}–{{end}} of {{total}}",
+    "pageOf": "Page {{current}} of {{total}}"
+  },
+  "empty": {
+    "title": "No connections yet",
+    "description": "Open More connections and link a carrier account you already have.",
+    "searchTitle": "No matching connections",
+    "searchDescription": "Try another name, or clear the active filter."
+  },
+  "errors": {
+    "loadFailed": "Could not load connections",
+    "loadFailedHint": "Check your connection and try again.",
+    "retry": "Retry"
+  },
+  "actions": {
+    "edit": "Edit",
+    "remove": "Remove"
+  },
+  "form": {
+    "createTitle": "Connect {{carrier}}",
+    "editTitle": "Edit {{name}}",
+    "createDescription": "Test the key first. Settings are saved only after the carrier accepts it.",
+    "editDescription": "Leave the key blank to keep the saved one. A new key or a different pickup location is checked with the carrier again.",
+    "loading": "Loading connection…",
+    "stepsLabel": "Connection steps",
+    "stepCredentials": "Credentials",
+    "stepSettings": "Settings",
+    "stepHeading": "Step {{current}} of {{total}}: {{label}}",
+    "showSecret": "Show {{label}}",
+    "hideSecret": "Hide {{label}}",
+    "secretPlaceholder": "Paste the key from your carrier account",
+    "keepSavedKey": "Leave blank to keep the saved key",
+    "test": "Test connection",
+    "testing": "Testing…",
+    "testSuccess": "Connection accepted. {{count}} pickup locations found.",
+    "testSuccessNone": "Connection accepted. The carrier will use its own default pickup location.",
+    "retry": "Try again",
+    "required": "This field is required",
+    "requiredSuffix": "required",
+    "name": "Connection name",
+    "namePlaceholder": "e.g. Bosta main",
+    "nameRequired": "Enter a name for this connection",
+    "nameTooLong": "Use at most {{max}} characters",
+    "textTooLong": "Use at most {{max}} characters",
+    "invalidOption": "Choose one of the listed values",
+    "invalidPickup": "Choose a pickup location from this account",
+    "active": "Active",
+    "activeHint": "Inactive connections stay saved but are not used.",
+    "useAccountDefault": "Use the account default",
+    "unset": "Not set",
+    "pickupHint": "Test the connection to load pickup locations.",
+    "pickupAddress": "{{name}}, {{address}}",
+    "testRequired": "Test the connection before saving.",
+    "retestRequired": "Test the new key before saving.",
+    "retestForPickup": "Test the connection before changing the pickup location.",
+    "back": "Back",
+    "save": "Save connection",
+    "saving": "Saving…",
+    "cancel": "Cancel"
+  },
+  "delete": {
+    "title": "Remove connection",
+    "description": "Remove {{name}}? The saved key is deleted here. Your account at the carrier is not changed.",
+    "cancel": "Cancel",
+    "confirm": "Remove",
+    "deleting": "Removing…"
+  },
+  "toast": {
+    "created": "Connection saved",
+    "updated": "Connection updated",
+    "activated": "Connection activated",
+    "deactivated": "Connection deactivated",
+    "deleted": "Connection removed",
+    "savedStatusFailed": "Settings were saved, but the active status could not be changed.",
+    "notFound": "Connection not found",
+    "toggleFailed": "Could not change the connection status",
+    "deleteFailed": "Could not remove the connection",
+    "saveFailed": "Could not save the connection"
+  }
+}

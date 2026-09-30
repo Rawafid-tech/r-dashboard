@@ -6,6 +6,7 @@ import {
   MapPin,
   Package,
   RefreshCcw,
+  Truck,
   Settings,
   Shield,
   ShoppingBag,
@@ -59,6 +60,13 @@ export const MERCHANT_NAV_ITEMS: MerchantNavItem[] = [
     icon: Box,
     enabled: true,
     permissionCode: "page:shippingBoxes",
+  },
+  {
+    key: "shippingPartners",
+    href: "/shipping-partners",
+    icon: Truck,
+    enabled: true,
+    permissionCode: "page:shippingPartners",
   },
   {
     key: "locations",

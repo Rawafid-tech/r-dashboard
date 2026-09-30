@@ -1,0 +1,136 @@
+{
+  "metaTitle": "شركات الشحن — روافد",
+  "metaDescription": "اربط حسابك عند شركة الشحن وحدد الحسابات المستخدمة في الشحنات.",
+  "skipToContent": "تخطي إلى شركات الشحن",
+  "hero": {
+    "title": "شركات الشحن",
+    "subtitle": "اربط حسابك أنت عند شركة الشحن. روافد تتحقق من المفتاح مع الشركة وتخزنه مشفّرًا.",
+    "totalLabel": "الحسابات"
+  },
+  "tabs": {
+    "label": "أقسام شركات الشحن",
+    "available": "شركات متاحة",
+    "connected": "حساباتي"
+  },
+  "catalog": {
+    "title": "شركات يمكن ربطها",
+    "connect": "ربط",
+    "emptyTitle": "لا توجد شركات متاحة",
+    "emptyDescription": "عندما تُتاح شركة شحن لحسابك ستظهر هنا.",
+    "loadFailed": "تعذر تحميل شركات الشحن",
+    "loadFailedHint": "تحقق من الاتصال ثم أعد المحاولة.",
+    "retry": "إعادة المحاولة"
+  },
+  "toolbar": {
+    "title": "الحسابات المتصلة",
+    "searchPlaceholder": "ابحث باسم الحساب أو الشركة…",
+    "activeLabel": "الحالة",
+    "activeAll": "كل الحسابات",
+    "activeOnly": "النشطة فقط",
+    "sortLabel": "الترتيب",
+    "sort": {
+      "createdDesc": "الأحدث أولًا",
+      "createdAsc": "الأقدم أولًا",
+      "nameAsc": "الاسم أ–ي",
+      "nameDesc": "الاسم ي–أ"
+    }
+  },
+  "table": {
+    "caption": "حسابات شركات الشحن",
+    "name": "الحساب",
+    "carrier": "الشركة",
+    "credential": "مفتاح API",
+    "status": "الحالة",
+    "verified": "آخر تحقق",
+    "actions": "إجراءات",
+    "active": "نشط",
+    "inactive": "متوقف",
+    "activate": "تفعيل {{name}}",
+    "deactivate": "إيقاف {{name}}",
+    "carrierDisabled": "هذه الشركة متوقفة. يمكنك إيقاف الاتصال أو حذفه، لكن لا يمكن إعادة تفعيله.",
+    "edit": "تعديل",
+    "remove": "حذف",
+    "openMenu": "إجراءات {{name}}"
+  },
+  "pagination": {
+    "label": "ترقيم الحسابات المتصلة",
+    "summary": "عرض {{start}}–{{end}} من {{total}}",
+    "pageOf": "صفحة {{current}} من {{total}}"
+  },
+  "empty": {
+    "title": "لا توجد حسابات بعد",
+    "description": "من تبويب شركات متاحة اربط حسابك عند شركة الشحن.",
+    "searchTitle": "لا توجد نتائج مطابقة",
+    "searchDescription": "جرّب اسمًا آخر، أو أزل فلتر النشطة فقط."
+  },
+  "errors": {
+    "loadFailed": "تعذر تحميل الحسابات",
+    "loadFailedHint": "تحقق من الاتصال ثم أعد المحاولة.",
+    "retry": "إعادة المحاولة"
+  },
+  "actions": {
+    "edit": "تعديل",
+    "remove": "حذف"
+  },
+  "form": {
+    "createTitle": "ربط {{carrier}}",
+    "editTitle": "تعديل {{name}}",
+    "createDescription": "اختبر المفتاح أولًا. الإعدادات تُحفظ فقط بعد أن تقبلها شركة الشحن.",
+    "editDescription": "اترك المفتاح فارغًا للإبقاء على المحفوظ. المفتاح الجديد أو مكان استلام مختلف يُعاد التحقق منه مع الشركة.",
+    "loading": "جارٍ تحميل الاتصال…",
+    "stepsLabel": "خطوات الربط",
+    "stepCredentials": "بيانات الدخول",
+    "stepSettings": "الإعدادات",
+    "stepHeading": "الخطوة {{current}} من {{total}}: {{label}}",
+    "showSecret": "إظهار {{label}}",
+    "hideSecret": "إخفاء {{label}}",
+    "secretPlaceholder": "الصق المفتاح من حساب شركة الشحن",
+    "keepSavedKey": "اتركه فارغًا للإبقاء على المفتاح المحفوظ",
+    "test": "اختبار الاتصال",
+    "testing": "جارٍ الاختبار…",
+    "testSuccess": "تم قبول الاتصال. تم العثور على {{count}} أماكن استلام.",
+    "testSuccessNone": "تم قبول الاتصال. ستستخدم الشركة مكان الاستلام الافتراضي لحسابك.",
+    "retry": "حاول مرة أخرى",
+    "required": "هذا الحقل مطلوب",
+    "requiredSuffix": "مطلوب",
+    "name": "اسم الحساب",
+    "namePlaceholder": "مثال: بوستة الرئيسي",
+    "nameRequired": "أدخل اسمًا لهذا الحساب",
+    "nameTooLong": "استخدم {{max}} حرفًا كحد أقصى",
+    "textTooLong": "استخدم {{max}} حرفًا كحد أقصى",
+    "invalidOption": "اختر قيمة من القائمة",
+    "invalidPickup": "اختر مكان استلام من هذا الحساب",
+    "active": "نشط",
+    "activeHint": "الاتصال المتوقف يبقى محفوظًا ولا يُستخدم.",
+    "useAccountDefault": "استخدام الافتراضي في الحساب",
+    "unset": "بدون تحديد",
+    "pickupHint": "اختبر الاتصال لتحميل أماكن الاستلام.",
+    "pickupAddress": "{{name}}، {{address}}",
+    "testRequired": "اختبر الاتصال قبل الحفظ.",
+    "retestRequired": "اختبر المفتاح الجديد قبل الحفظ.",
+    "retestForPickup": "اختبر الاتصال قبل تغيير مكان الاستلام.",
+    "back": "رجوع",
+    "save": "حفظ الحساب",
+    "saving": "جارٍ الحفظ…",
+    "cancel": "إلغاء"
+  },
+  "delete": {
+    "title": "حذف الاتصال",
+    "description": "حذف {{name}}؟ يُحذف المفتاح المحفوظ هنا. حسابك عند شركة الشحن لا يتغير.",
+    "cancel": "إلغاء",
+    "confirm": "حذف",
+    "deleting": "جارٍ الحذف…"
+  },
+  "toast": {
+    "created": "تم حفظ الاتصال",
+    "updated": "تم تحديث الاتصال",
+    "activated": "تم تفعيل الاتصال",
+    "deactivated": "تم إيقاف الاتصال",
+    "deleted": "تم حذف الاتصال",
+    "savedStatusFailed": "حُفظت الإعدادات، لكن تعذر تغيير حالة التفعيل.",
+    "notFound": "الاتصال غير موجود",
+    "toggleFailed": "تعذر تغيير حالة الاتصال",
+    "deleteFailed": "تعذر حذف الاتصال",
+    "saveFailed": "تعذر حفظ الاتصال"
+  }
+}

@@ -17,6 +17,7 @@
     "integrations": "التكاملات",
     "locations": "مواقع المرسل",
     "shippingBoxes": "صناديق الشحن",
+    "shippingPartners": "شركات الشحن",
     "shippingRates": "أسعار الشحن"
   },
   "auth": {

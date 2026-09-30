@@ -17,6 +17,7 @@
     "integrations": "Integrations",
     "locations": "Sender locations",
     "shippingBoxes": "Shipping Boxes",
+    "shippingPartners": "Shipping partners",
     "shippingRates": "Shipping Rates"
   },
   "auth": {
