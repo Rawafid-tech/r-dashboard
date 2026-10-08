@@ -5,3 +5,75 @@ export interface AdminCarrier {
   enabled: boolean;
   running: boolean;
 }
+
+export interface CarrierPlaceName {
+  id?: string;
+  nameEn?: string | null;
+  nameAr?: string | null;
+  primary?: boolean;
+}
+
+export interface CarrierRegion {
+  id: string;
+  governorateId?: string | null;
+  city: CarrierPlaceName;
+  zone: CarrierPlaceName;
+  districtId: string;
+  districtNameEn?: string | null;
+  districtNameAr?: string | null;
+  pickupAvailable: boolean;
+  dropOffAvailable: boolean;
+  active: boolean;
+  changedAt?: string | null;
+}
+
+export interface CarrierRegionsListParams {
+  governorateId?: string;
+  unmapped?: boolean;
+  active?: boolean;
+  search?: string;
+  page?: number;
+  size?: number;
+}
+
+export interface CarrierUnmappedCityObject {
+  id?: string;
+  nameEn?: string | null;
+  nameAr?: string | null;
+  name?: string | null;
+}
+
+export type CarrierUnmappedCity = string | CarrierUnmappedCityObject;
+
+export interface CarrierRegionsSyncResult {
+  added: number;
+  updated: number;
+  retired: number;
+  total: number;
+  unmappedCities: CarrierUnmappedCity[];
+}
+
+export type RegionResolveMethod = "DISTRICT" | "ZONE" | "HEAD" | "NONE";
+
+export interface RegionResolveDistrict {
+  districtId?: string;
+  districtNameEn?: string | null;
+  districtNameAr?: string | null;
+  zone?: CarrierPlaceName | null;
+  city?: CarrierPlaceName | null;
+  pickupAvailable?: boolean;
+  dropOffAvailable?: boolean;
+  active?: boolean;
+}
+
+export interface RegionResolveResult {
+  method: RegionResolveMethod;
+  text: string;
+  district: RegionResolveDistrict | null;
+  fallbackCity: CarrierPlaceName | null;
+}
+
+export interface RegionResolveRequest {
+  governorateId: string;
+  district: string;
+}

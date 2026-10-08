@@ -1,4 +1,6 @@
+import { ArrowUpRight } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { Link } from "react-router-dom";
 import { CarrierMark } from "@/features/shipping-partners/components/carrier-mark";
 import { carrierDisplayName } from "@/features/shipping-partners/lib/carrier-label";
 import { useAdminCarriers } from "@/features/admin/carriers/hooks/use-admin-carriers";
@@ -78,7 +80,10 @@ export function AdminCarriersHome() {
         ) : null}
 
         {!carriersQuery.isError && carriers.length > 0 ? (
-          <ul className="flex flex-col gap-3" aria-label={t("carriers.listLabel")}>
+          <ul
+            className="grid gap-4 lg:grid-cols-2"
+            aria-label={t("carriers.listLabel")}
+          >
             {carriers.map((carrier) => (
               <CarrierRow
                 key={carrier.code}
@@ -121,24 +126,68 @@ function CarrierRow({
     locale,
   );
   const hintId = `admin-carrier-${carrier.code}-hint`;
+  const switchId = `admin-carrier-${carrier.code}-enabled`;
+  const hint = !carrier.running
+    ? t("carriers.notRunningHint")
+    : canManage
+      ? t("carriers.manageHint")
+      : t("carriers.readOnlyHint");
 
   return (
-    <li className="flex flex-col gap-3 rounded-xl border border-border/70 bg-card p-4 shadow-sm sm:flex-row sm:items-center">
-      <CarrierMark code={carrier.code} name={name} />
-      <div className="min-w-0 flex-1">
-        <p className="font-medium text-foreground">{name}</p>
-        <p className="text-xs text-muted-foreground" dir="ltr">
-          {carrier.code}
-        </p>
+    <li className="flex h-full flex-col overflow-hidden rounded-xl border border-border/70 bg-card shadow-sm">
+      <div className="flex flex-1 gap-3 p-4">
+        <CarrierMark
+          code={carrier.code}
+          name={name}
+          className="size-12 shrink-0 text-sm"
+        />
+        <div className="min-w-0 flex-1">
+          <div className="flex flex-wrap items-start justify-between gap-x-3 gap-y-2">
+            <div className="min-w-0">
+              <p className="truncate text-base font-semibold text-foreground">
+                {name}
+              </p>
+              <p
+                className="mt-0.5 w-fit font-mono text-[11px] uppercase tracking-wide text-muted-foreground"
+                dir="ltr"
+              >
+                {carrier.code}
+              </p>
+            </div>
+            <div className="flex flex-wrap gap-1.5">
+              <Badge variant={carrier.running ? "success" : "warning"}>
+                {carrier.running
+                  ? t("carriers.running")
+                  : t("carriers.notRunning")}
+              </Badge>
+              <Badge variant={carrier.enabled ? "success" : "muted"}>
+                {carrier.enabled
+                  ? t("carriers.enabled")
+                  : t("carriers.disabled")}
+              </Badge>
+            </div>
+          </div>
+          <p
+            id={hintId}
+            className="mt-3 text-sm leading-relaxed text-muted-foreground"
+          >
+            {hint}
+          </p>
+        </div>
       </div>
-      <div className="flex flex-wrap items-center gap-2">
-        <Badge variant={carrier.running ? "success" : "warning"}>
-          {carrier.running ? t("carriers.running") : t("carriers.notRunning")}
-        </Badge>
-        <Badge variant={carrier.enabled ? "success" : "muted"}>
-          {carrier.enabled ? t("carriers.enabled") : t("carriers.disabled")}
-        </Badge>
+
+      <div className="mt-auto flex flex-wrap items-center justify-between gap-3 border-t border-border/60 bg-muted/20 px-4 py-3">
+        <Button asChild variant="outline" size="sm">
+          <Link
+            to={`/admin/carriers/${encodeURIComponent(carrier.code)}/regions`}
+            aria-label={t("carriers.viewRegions", { name })}
+          >
+            {t("carriers.viewRegionsShort")}
+            <ArrowUpRight aria-hidden="true" />
+          </Link>
+        </Button>
         <Switch
+          id={switchId}
           checked={carrier.enabled}
           disabled={!canManage || pending}
           onCheckedChange={onToggle}
@@ -149,13 +198,6 @@ function CarrierRow({
           aria-describedby={hintId}
         />
       </div>
-      <p id={hintId} className="text-xs text-muted-foreground sm:max-w-xs">
-        {!carrier.running
-          ? t("carriers.notRunningHint")
-          : canManage
-            ? t("carriers.manageHint")
-            : t("carriers.readOnlyHint")}
-      </p>
     </li>
   );
 }

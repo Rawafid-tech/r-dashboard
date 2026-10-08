@@ -53,6 +53,12 @@ const AdminCarriersPage = lazy(() =>
   })),
 );
 
+const AdminCarrierRegionsPage = lazy(() =>
+  import("@/app/admin/carrier-regions-page").then((m) => ({
+    default: m.AdminCarrierRegionsPage,
+  })),
+);
+
 const AdminUsersPage = lazy(() =>
   import("@/app/admin/users-page").then((m) => ({
     default: m.AdminUsersPage,
@@ -108,6 +114,10 @@ export const adminRoutes: RouteObject[] = [
           {
             path: "/admin/carriers",
             element: <AdminCarriersPage />,
+          },
+          {
+            path: "/admin/carriers/:code/regions",
+            element: <AdminCarrierRegionsPage />,
           },
           {
             path: "/admin/users",

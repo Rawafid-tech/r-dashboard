@@ -128,6 +128,111 @@
       "enabled": "Carrier enabled",
       "disabled": "Carrier disabled",
       "failed": "Could not update the carrier"
+    },
+    "viewRegions": "Coverage for {{name}}",
+    "viewRegionsShort": "Coverage",
+    "regions": {
+      "metaTitle": "{{name}} coverage — Rawafid Admin",
+      "metaDescription": "Review {{name}} cities, zones, and districts, and check where an address would be booked.",
+      "skipToContent": "Skip to coverage",
+      "loading": "Loading districts",
+      "back": "Back to shipping partners",
+      "hero": {
+        "title": "{{name}} coverage",
+        "titleFallback": "Carrier coverage",
+        "subtitle": "The carrier's own cities, zones, and districts. A weekly sync keeps them current.",
+        "totalLabel": "Matching districts"
+      },
+      "sync": {
+        "action": "Sync now",
+        "pending": "Syncing…",
+        "hint": "Downloads this carrier's geography. Bosta can take a few seconds. A failed sync changes nothing.",
+        "readOnly": "Support can view coverage. Only a super admin can sync.",
+        "success": "Coverage updated",
+        "failed": "Could not sync coverage",
+        "notResponding": "The shipping partner is not responding. Nothing was changed.",
+        "summary": "Added {{added}}, updated {{updated}}, retired {{retired}}. {{total}} districts on file.",
+        "unmappedTitle": "Some cities could not be placed",
+        "unmappedHint": "{{count}} carrier cities are not inside one of our governorates, so their districts never match an address.",
+        "showUnmapped": "Show unmapped districts"
+      },
+      "toolbar": {
+        "title": "Filter districts",
+        "searchPlaceholder": "City, zone, or district in Arabic or English…",
+        "searchLabel": "Search coverage",
+        "governorateLabel": "Governorate",
+        "governorateAll": "All governorates",
+        "statusLabel": "Status",
+        "unmappedLabel": "Unmapped cities only",
+        "status": {
+          "all": "Active and retired",
+          "active": "Active only",
+          "retired": "Retired only"
+        }
+      },
+      "table": {
+        "caption": "Carrier districts",
+        "district": "District",
+        "zone": "Zone",
+        "city": "City",
+        "governorate": "Governorate",
+        "changed": "Last change",
+        "secondaryCity": "Secondary city",
+        "noDropOff": "No delivery",
+        "noPickup": "No pickup",
+        "active": "Active",
+        "retired": "Retired",
+        "unmapped": "Unmapped"
+      },
+      "pagination": {
+        "label": "Districts pagination",
+        "summary": "Showing {{start}}–{{end}} of {{total}} districts",
+        "pageOf": "Page {{current}} of {{total}}"
+      },
+      "empty": {
+        "title": "No districts yet",
+        "description": "Sync this carrier to download its geography. Retired districts stay listed and are never deleted.",
+        "filteredTitle": "No matching districts",
+        "filteredDescription": "Try another governorate or spelling. Search tolerates small differences, including Arabic spelling."
+      },
+      "errors": {
+        "loadFailed": "Could not load coverage",
+        "loadFailedHint": "Check your connection and try again.",
+        "retry": "Try again",
+        "governorates": "Could not load governorates. Search still works."
+      },
+      "resolve": {
+        "open": "Check address",
+        "close": "Close",
+        "title": "Where would this address go?",
+        "description": "Pick a governorate and type a district the way a booking would. This does not create a shipment.",
+        "governorateLabel": "Governorate",
+        "governoratePlaceholder": "Choose a governorate",
+        "districtLabel": "District or area",
+        "districtPlaceholder": "For example, Sidi Beshr",
+        "submit": "Check address",
+        "pending": "Checking…",
+        "governorateRequired": "Choose a governorate.",
+        "districtRequired": "Type a district or area name.",
+        "resultLabel": "Resolve result",
+        "typed": "You typed",
+        "matched": "Booking would send",
+        "fallback": "No confident district. Booking sends this primary city plus the typed name, and the carrier resolves it:",
+        "noCity": "This carrier has no city in that governorate, so the address cannot be placed.",
+        "failed": "Could not check this address",
+        "methods": {
+          "DISTRICT": "Exact district",
+          "ZONE": "Zone name",
+          "HEAD": "Shared name",
+          "NONE": "No confident match"
+        },
+        "methodHelp": {
+          "DISTRICT": "The text is a district's own name.",
+          "ZONE": "The text is a zone name. A district in that zone stands in for it.",
+          "HEAD": "The text starts district names that all sit in one zone.",
+          "NONE": "Candidates were not confident enough to pick one hub. We never guess between two zones."
+        }
+      }
     }
   },
   "companies": {
