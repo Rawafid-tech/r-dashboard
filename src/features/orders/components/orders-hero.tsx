@@ -9,7 +9,9 @@ interface OrdersHeroProps {
   counts?: OrderCounts;
   onTabChange: (tab: OrdersListTab) => void;
   onAdd: () => void;
+  onCreateShipment?: () => void;
   canManage?: boolean;
+  canBookShipment?: boolean;
 }
 
 function tabCount(
@@ -34,7 +36,9 @@ export function OrdersHero({
   counts,
   onTabChange,
   onAdd,
+  onCreateShipment,
   canManage = true,
+  canBookShipment = false,
 }: OrdersHeroProps) {
   const { t } = useTranslation("orders");
   const tabs: OrdersListTab[] = [
@@ -57,11 +61,20 @@ export function OrdersHero({
             {t("hero.subtitle")}
           </p>
         </div>
-        {canManage ? (
-          <Button type="button" className="shrink-0" onClick={onAdd}>
-            <Plus aria-hidden="true" />
-            {t("hero.add")}
-          </Button>
+        {canManage || canBookShipment ? (
+          <div className="flex shrink-0 flex-wrap gap-2">
+            {canBookShipment && onCreateShipment ? (
+              <Button type="button" variant="outline" onClick={onCreateShipment}>
+                {t("hero.createShipment")}
+              </Button>
+            ) : null}
+            {canManage ? (
+              <Button type="button" onClick={onAdd}>
+                <Plus aria-hidden="true" />
+                {t("hero.add")}
+              </Button>
+            ) : null}
+          </div>
         ) : null}
       </div>
 

@@ -46,6 +46,10 @@ const SORT_LABEL_KEYS: Record<OrdersSortOption, string> = {
 interface OrdersToolbarProps {
   search: string;
   sortOption: OrdersSortOption;
+  selectedCount?: number;
+  canBulkBook?: boolean;
+  onBulkBook?: () => void;
+  onClearSelection?: () => void;
   governorateFilter: string;
   senderLocationFilter: string;
   paymentMethodFilter: string;
@@ -70,6 +74,10 @@ interface OrdersToolbarProps {
 export function OrdersToolbar({
   search,
   sortOption,
+  selectedCount = 0,
+  canBulkBook = false,
+  onBulkBook,
+  onClearSelection,
   governorateFilter,
   senderLocationFilter,
   paymentMethodFilter,
@@ -110,6 +118,31 @@ export function OrdersToolbar({
       aria-label={t("toolbar.title")}
       className="flex w-full flex-col gap-4 rounded-xl border border-border bg-card p-4"
     >
+      {selectedCount > 0 && canBulkBook ? (
+        <div
+          className="flex flex-col gap-2 rounded-lg border border-primary/25 bg-primary/5 px-3 py-2.5 sm:flex-row sm:items-center sm:justify-between"
+          role="status"
+          aria-live="polite"
+        >
+          <p className="text-sm font-medium text-foreground">
+            {t("toolbar.selectionSummary", { count: selectedCount })}
+          </p>
+          <div className="flex flex-wrap gap-2">
+            <Button type="button" size="sm" onClick={onBulkBook} disabled={disabled}>
+              {t("toolbar.withMyRates")}
+            </Button>
+            <Button
+              type="button"
+              size="sm"
+              variant="outline"
+              onClick={onClearSelection}
+              disabled={disabled}
+            >
+              {t("toolbar.clearSelection")}
+            </Button>
+          </div>
+        </div>
+      ) : null}
       <div className="flex flex-col gap-3 lg:flex-row lg:items-center">
         <div className="relative min-w-0 flex-1">
           <Label htmlFor="orders-search" className="sr-only">

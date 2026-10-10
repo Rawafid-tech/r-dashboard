@@ -6,7 +6,8 @@
     "title": "الطلبات",
     "subtitle": "دفتر الطلبات — أضف الطلبات، احجز الشحن عبر شركائك، واطبع البوليصات.",
     "totalLabel": "الطلبات المعروضة",
-    "add": "إضافة طلب"
+    "add": "إضافة طلب",
+    "createShipment": "إنشاء شحنة"
   },
   "tabs": {
     "label": "حالة الطلب",
@@ -47,6 +48,10 @@
     "maxValue": "أعلى قيمة للطلب",
     "valuePlaceholder": "أي قيمة",
     "clearFilters": "مسح التصفية",
+    "selectionSummary": "{{count}} طلب محدد",
+    "withMyRates": "إنشاء شحنة — بأسعاري",
+    "clearSelection": "إلغاء التحديد",
+    "selectionLimit": "يمكنك حجز {{max}} طلب كحد أقصى دفعة واحدة.",
     "sort": {
       "orderDateDesc": "أحدث تاريخ طلب",
       "orderDateAsc": "أقدم تاريخ طلب",
@@ -69,7 +74,9 @@
     "weight": "الوزن",
     "weightUnit": "كجم",
     "actions": "إجراءات",
-    "openMenu": "إجراءات للطلب {{number}}"
+    "openMenu": "إجراءات للطلب {{number}}",
+    "selectAll": "تحديد كل الطلبات القابلة للحجز في هذه الصفحة",
+    "selectRow": "تحديد الطلب {{number}}"
   },
   "pagination": {
     "label": "ترقيم الطلبات",

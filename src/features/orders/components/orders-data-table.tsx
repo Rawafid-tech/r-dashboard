@@ -8,11 +8,16 @@ import { OrdersToolbar } from "@/features/orders/components/orders-toolbar";
 import type { OrdersSortOption } from "@/features/orders/lib/orders-list-params";
 import type { OrderListRow } from "@/features/orders/types";
 import { getGovernorateLabel } from "@/features/locations/lib/location-form-errors";
+import { isOrderSelectableForBooking } from "@/features/orders/lib/order-selection";
 import {
   DataTable,
   type DataTableColumn,
 } from "@/shared/components/data-display/data-table";
-import { Button } from "@/shared/components/ui";
+import { Button, Checkbox } from "@/shared/components/ui";
+import {
+  MerchantPermission,
+  useMerchantPermissions,
+} from "@/shared/hooks/use-merchant-permissions";
 import { formatCurrency, formatDate } from "@/shared/lib/formatters";
 import { useLocaleStore } from "@/stores/locale.store";
 import { useSettings } from "@/features/account/hooks/use-settings";
@@ -45,6 +50,11 @@ interface OrdersDataTableProps {
   pageSize: number;
   onPageChange: (page: number) => void;
   onRowAction: (action: OrderRowAction, order: OrderListRow) => void;
+  selectedIds?: Set<string>;
+  onToggleRow?: (order: OrderListRow, selected: boolean) => void;
+  onToggleAllOnPage?: (orders: OrderListRow[], selected: boolean) => void;
+  onBulkBook?: () => void;
+  onClearSelection?: () => void;
   isFetching?: boolean;
   emptyState?: ReactNode;
 }
@@ -77,6 +87,11 @@ export function OrdersDataTable({
   pageSize,
   onPageChange,
   onRowAction,
+  selectedIds,
+  onToggleRow,
+  onToggleAllOnPage,
+  onBulkBook,
+  onClearSelection,
   isFetching,
   emptyState,
 }: OrdersDataTableProps) {
@@ -85,9 +100,64 @@ export function OrdersDataTable({
   const intlLocale = locale === "ar" ? "ar-EG" : "en-US";
   const settingsQuery = useSettings();
   const dateFormat = settingsQuery.data?.dateFormat ?? "DD_MM_YYYY";
+  const { hasPermission } = useMerchantPermissions();
+  const canBulkBook = hasPermission(MerchantPermission.SHIPMENT_MANAGE);
+  const selectionEnabled =
+    canBulkBook && Boolean(selectedIds && onToggleRow && onToggleAllOnPage);
+
+  const selectableOnPage = useMemo(
+    () => orders.filter((order) => isOrderSelectableForBooking(order)),
+    [orders],
+  );
+
+  const allSelectableSelected =
+    selectableOnPage.length > 0 &&
+    selectableOnPage.every((order) => selectedIds?.has(order.id));
+
+  const someSelectableSelected =
+    selectableOnPage.some((order) => selectedIds?.has(order.id)) &&
+    !allSelectableSelected;
+
+  const selectAllHeader = selectionEnabled ? (
+    <Checkbox
+      checked={
+        allSelectableSelected
+          ? true
+          : someSelectableSelected
+            ? "indeterminate"
+            : false
+      }
+      onCheckedChange={(checked) =>
+        onToggleAllOnPage!(selectableOnPage, checked === true)
+      }
+      disabled={selectableOnPage.length === 0}
+      aria-label={t("table.selectAll")}
+    />
+  ) : null;
 
   const columns = useMemo<DataTableColumn<OrderListRow>[]>(
-    () => [
+    () => {
+      const base: DataTableColumn<OrderListRow>[] = [];
+
+      if (selectionEnabled) {
+        base.push({
+          id: "select",
+          header: selectAllHeader,
+          cell: (order) =>
+            isOrderSelectableForBooking(order) ? (
+              <Checkbox
+                checked={selectedIds?.has(order.id) ?? false}
+                onCheckedChange={(checked) =>
+                  onToggleRow!(order, checked === true)
+                }
+                aria-label={t("table.selectRow", { number: order.orderNumber })}
+              />
+            ) : null,
+          className: "w-10",
+        });
+      }
+
+      base.push(
       {
         id: "orderNumber",
         header: t("table.orderNumber"),
@@ -190,8 +260,21 @@ export function OrdersDataTable({
           <OrderRowActionsMenu order={order} onAction={onRowAction} />
         ),
       },
+    );
+
+      return base;
+    },
+    [
+      t,
+      locale,
+      dateFormat,
+      intlLocale,
+      onRowAction,
+      selectionEnabled,
+      selectAllHeader,
+      selectedIds,
+      onToggleRow,
     ],
-    [t, locale, dateFormat, intlLocale, onRowAction],
   );
 
   return (
@@ -211,6 +294,10 @@ export function OrdersDataTable({
           <OrdersToolbar
             search={search}
             sortOption={sortOption}
+            selectedCount={selectedIds?.size ?? 0}
+            canBulkBook={selectionEnabled}
+            onBulkBook={selectionEnabled ? onBulkBook : undefined}
+            onClearSelection={selectionEnabled ? onClearSelection : undefined}
             governorateFilter={governorateFilter}
             senderLocationFilter={senderLocationFilter}
             paymentMethodFilter={paymentMethodFilter}

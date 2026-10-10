@@ -1,7 +1,11 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { toast } from "sonner";
 import { useSearchParams } from "react-router-dom";
-import { CreateShipmentFlow } from "@/features/shipments/components/create-shipment-flow";
+import { CreateShipmentWizardDialog } from "@/features/shipments/components/create-shipment-wizard-dialog";
+import { WithMyRatesBookingDialog } from "@/features/shipments/components/with-my-rates-booking-dialog";
+import { MAX_BULK_BOOKING_LINES } from "@/features/shipments/lib/bulk-preview-lines";
+import { isOrderSelectableForBooking } from "@/features/orders/lib/order-selection";
 import { OrderCancelDialog } from "@/features/orders/components/order-cancel-dialog";
 import { OrderFormSheet } from "@/features/orders/components/order-form-sheet";
 import type { OrderRowAction } from "@/features/orders/components/order-row-actions-menu";
@@ -46,6 +50,7 @@ export function OrdersHome() {
   const { t } = useTranslation("orders");
   const { hasPermission } = useMerchantPermissions();
   const canManage = hasPermission(MerchantPermission.ORDER_MANAGE);
+  const canBookShipment = hasPermission(MerchantPermission.SHIPMENT_MANAGE);
 
   const [searchParams, setSearchParams] = useSearchParams();
   const updateParams = useCallback(
@@ -89,7 +94,13 @@ export function OrdersHome() {
 
   const [formState, setFormState] = useState<FormState>(null);
   const [orderToCancel, setOrderToCancel] = useState<OrderListRow | null>(null);
-  const [orderToBook, setOrderToBook] = useState<OrderListRow | null>(null);
+  const [bulkBookOrderIds, setBulkBookOrderIds] = useState<string[] | null>(
+    null,
+  );
+  const [selectedOrderIds, setSelectedOrderIds] = useState<Set<string>>(
+    () => new Set(),
+  );
+  const [wizardOpen, setWizardOpen] = useState(false);
 
   const queryParams = useMemo(
     () => ({
@@ -174,7 +185,7 @@ export function OrdersHome() {
         setOrderToCancel(order);
         break;
       case "createShipment":
-        setOrderToBook(order);
+        setBulkBookOrderIds([order.id]);
         break;
       default:
         break;
@@ -183,6 +194,45 @@ export function OrdersHome() {
 
   const isInitialLoading = ordersQuery.isLoading && !ordersQuery.data;
   const orders = ordersQuery.data?.content ?? [];
+
+  const handleToggleRow = (order: OrderListRow, selected: boolean) => {
+    if (!isOrderSelectableForBooking(order)) return;
+    setSelectedOrderIds((current) => {
+      const next = new Set(current);
+      if (selected) {
+        if (next.size >= MAX_BULK_BOOKING_LINES) {
+          toast.error(t("toolbar.selectionLimit", { max: MAX_BULK_BOOKING_LINES }));
+          return current;
+        }
+        next.add(order.id);
+      } else {
+        next.delete(order.id);
+      }
+      return next;
+    });
+  };
+
+  const handleToggleAllOnPage = (rows: OrderListRow[], selected: boolean) => {
+    setSelectedOrderIds((current) => {
+      const next = new Set(current);
+      if (selected) {
+        for (const row of rows) {
+          if (!isOrderSelectableForBooking(row)) continue;
+          if (next.size >= MAX_BULK_BOOKING_LINES) break;
+          next.add(row.id);
+        }
+      } else {
+        rows.forEach((row) => next.delete(row.id));
+      }
+      return next;
+    });
+  };
+
+  const handleBulkBookSelected = () => {
+    const ids = [...selectedOrderIds];
+    if (ids.length === 0) return;
+    setBulkBookOrderIds(ids);
+  };
   const hasSearch = debouncedSearch.length > 0;
   const hasFilters =
     Boolean(governorateFilter) ||
@@ -211,7 +261,9 @@ export function OrdersHome() {
             counts={countsQuery.data}
             onTabChange={handleTabChange}
             onAdd={() => setFormState({ mode: "create", order: null })}
+            onCreateShipment={() => setWizardOpen(true)}
             canManage={canManage}
+            canBookShipment={canBookShipment}
           />
 
           {ordersQuery.isError ? (
@@ -277,6 +329,11 @@ export function OrdersHome() {
                 pageSize={ordersQuery.data?.size ?? PAGE_SIZE}
                 onPageChange={handlePageChange}
                 onRowAction={handleRowAction}
+                selectedIds={selectedOrderIds}
+                onToggleRow={handleToggleRow}
+                onToggleAllOnPage={handleToggleAllOnPage}
+                onBulkBook={handleBulkBookSelected}
+                onClearSelection={() => setSelectedOrderIds(new Set())}
                 isFetching={ordersQuery.isFetching}
                 emptyState={
                   <OrdersEmptyState hasSearch={hasSearch} hasFilters={hasFilters} />
@@ -305,15 +362,33 @@ export function OrdersHome() {
         }}
       />
 
-      <CreateShipmentFlow
-        order={orderToBook}
-        open={orderToBook !== null}
+      <WithMyRatesBookingDialog
+        orderIds={bulkBookOrderIds ?? []}
+        open={bulkBookOrderIds !== null}
         onOpenChange={(open) => {
-          if (!open) setOrderToBook(null);
+          if (!open) {
+            setBulkBookOrderIds(null);
+            setSelectedOrderIds(new Set());
+          }
         }}
-        onEditOrder={(order) => {
-          setOrderToBook(null);
-          setFormState({ mode: "edit", order });
+        onEditOrder={(orderId) => {
+          const order = orders.find((row) => row.id === orderId);
+          setBulkBookOrderIds(null);
+          if (order) {
+            setFormState({ mode: "edit", order });
+          }
+        }}
+      />
+
+      <CreateShipmentWizardDialog
+        open={wizardOpen}
+        onOpenChange={setWizardOpen}
+        onEditOrder={(orderId) => {
+          const order = orders.find((row) => row.id === orderId);
+          setWizardOpen(false);
+          if (order) {
+            setFormState({ mode: "edit", order });
+          }
         }}
       />
     </div>

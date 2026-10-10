@@ -1,4 +1,5 @@
 import type {
+  BulkPreviewLineRequest,
   ShipmentPreviewParams,
   ShipmentDistrictsParams,
   ShipmentsListParams,
@@ -15,6 +16,9 @@ export const shipmentKeys = {
   previews: () => [...shipmentKeys.all, "preview"] as const,
   preview: (params: ShipmentPreviewParams) =>
     [...shipmentKeys.previews(), params] as const,
+  bulkPreviews: () => [...shipmentKeys.all, "bulk-preview"] as const,
+  bulkPreview: (lines: BulkPreviewLineRequest[]) =>
+    [...shipmentKeys.bulkPreviews(), lines] as const,
   districts: () => [...shipmentKeys.all, "districts"] as const,
   districtSearch: (params: ShipmentDistrictsParams) =>
     [...shipmentKeys.districts(), params] as const,

@@ -29,7 +29,7 @@ import {
   EMPTY_ORDER_PACKAGE,
   type OrderFormValues,
 } from "@/features/orders/schema";
-import type { OrderListRow } from "@/features/orders/types";
+import type { Order, OrderListRow } from "@/features/orders/types";
 import { useProducts } from "@/features/products/hooks/use-products";
 import type { Product } from "@/features/products/types";
 import { DimensionInput } from "@/features/shipping-boxes/components/dimension-input";
@@ -94,6 +94,14 @@ interface OrderFormSheetProps {
   listRow: OrderListRow | null;
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  /** Render form body without an outer dialog (inside a parent wizard). */
+  presentation?: "standalone" | "embedded";
+  /** When set, successful save calls this instead of always closing. */
+  onOrderSaved?: (order: Order) => void;
+  closeOnSave?: boolean;
+  onFormStepChange?: (step: 1 | 2) => void;
+  /** When opening, start on this form step (wizard back from booking). */
+  initialFormStep?: 1 | 2;
 }
 
 export function OrderFormSheet({
@@ -102,6 +110,11 @@ export function OrderFormSheet({
   listRow,
   open,
   onOpenChange,
+  presentation = "standalone",
+  onOrderSaved,
+  closeOnSave = true,
+  onFormStepChange,
+  initialFormStep,
 }: OrderFormSheetProps) {
   const { t, i18n } = useTranslation("orders");
   const { t: tCommon } = useTranslation("common");
@@ -203,7 +216,7 @@ export function OrderFormSheet({
 
     if (mode === "create") {
       reset(EMPTY_ORDER_FORM_VALUES);
-      setStep(1);
+      setStep(initialFormStep ?? 1);
       setSubmitError(null);
       setLockedAsBooked(false);
       return;
@@ -212,8 +225,8 @@ export function OrderFormSheet({
     const source = orderQuery.data;
     if (!source) return;
     reset(toOrderFormValues(source));
-    setStep(1);
-  }, [open, mode, orderQuery.data, reset]);
+    setStep(initialFormStep ?? 1);
+  }, [open, mode, orderQuery.data, reset, initialFormStep]);
 
   useEffect(() => {
     setLockedAsBooked(false);
@@ -269,6 +282,10 @@ export function OrderFormSheet({
     bodyRef.current?.scrollTo({ top: 0 });
   }, [step]);
 
+  useEffect(() => {
+    onFormStepChange?.(step);
+  }, [step, onFormStepChange]);
+
   const handleSave = async () => {
     if (readOnly) return;
 
@@ -306,12 +323,18 @@ export function OrderFormSheet({
 
     try {
       const payload = toOrderPayload(values);
+      let saved: Order;
       if (mode === "create") {
-        await createMutation.mutateAsync(payload);
+        saved = await createMutation.mutateAsync(payload);
       } else if (isEdit && resolvedId) {
-        await updateMutation.mutateAsync(payload);
+        saved = await updateMutation.mutateAsync(payload);
+      } else {
+        return;
       }
-      onOpenChange(false);
+      onOrderSaved?.(saved);
+      if (closeOnSave) {
+        onOpenChange(false);
+      }
     } catch (error) {
       const message = handleOrderFormError(error, setError);
       const detail = message || parseApiError(error).detail || t("toast.saveFailed");
@@ -353,18 +376,15 @@ export function OrderFormSheet({
             number: orderQuery.data?.orderNumber ?? listRow?.orderNumber ?? "",
           });
 
-  return (
-    <Dialog
-      open={open}
-      onOpenChange={(next) => {
-        if (isSaving) return;
-        onOpenChange(next);
-      }}
-    >
+  if (presentation === "embedded" && !open) {
+    return null;
+  }
+
+  const sheetContent = (
       <DialogContent
         size="w7"
         className="flex max-h-[min(92dvh,960px)] flex-col gap-0 overflow-hidden p-0"
-        showCloseButton={!isSaving}
+        showCloseButton={presentation === "standalone" && !isSaving}
         closeLabel={tCommon("common.close")}
       >
         <DialogHeader className="border-b border-border/60 px-6 py-4 pe-12">
@@ -1214,6 +1234,21 @@ export function OrderFormSheet({
           </div>
         </DialogFooter>
       </DialogContent>
+  );
+
+  if (presentation === "embedded") {
+    return sheetContent;
+  }
+
+  return (
+    <Dialog
+      open={open}
+      onOpenChange={(next) => {
+        if (isSaving) return;
+        onOpenChange(next);
+      }}
+    >
+      {sheetContent}
     </Dialog>
   );
 }

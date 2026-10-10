@@ -6,7 +6,8 @@
     "title": "Orders",
     "subtitle": "Your order book — add orders, book shipments with your carriers, and print labels.",
     "totalLabel": "Orders in view",
-    "add": "Add order"
+    "add": "Add order",
+    "createShipment": "Create shipment"
   },
   "tabs": {
     "label": "Order status",
@@ -47,6 +48,10 @@
     "maxValue": "Max order value",
     "valuePlaceholder": "Any",
     "clearFilters": "Clear filters",
+    "selectionSummary": "{{count}} orders selected",
+    "withMyRates": "Create shipment — With My Rates",
+    "clearSelection": "Clear selection",
+    "selectionLimit": "You can book up to {{max}} orders at once.",
     "sort": {
       "orderDateDesc": "Newest order date",
       "orderDateAsc": "Oldest order date",
@@ -69,7 +74,9 @@
     "weight": "Weight",
     "weightUnit": "kg",
     "actions": "Actions",
-    "openMenu": "Actions for {{number}}"
+    "openMenu": "Actions for {{number}}",
+    "selectAll": "Select all bookable orders on this page",
+    "selectRow": "Select order {{number}}"
   },
   "pagination": {
     "label": "Orders pagination",

@@ -61,8 +61,8 @@ why).
 
 **Unhide now:** the four tabs above on Shipments, the timeline on the shipment detail, and the
 Delivered / Returned tabs on Orders.
-**Still hidden:** *On Hold*, *Track* (a public tracking page), *Notify*, pickup scheduling, bulk
-booking, returns/exchanges booked by the merchant.
+**Still hidden:** *On Hold*, *Track* (a public tracking page), *Notify*, pickup scheduling,
+returns/exchanges booked by the merchant. Bulk booking is built (`bulk-booking.md`).
 
 No new permissions: tracking is read with `shipment:read`.
 

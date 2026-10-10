@@ -2,6 +2,7 @@ import type {
   Order,
   OrderCounts,
   OrderListRow,
+  OrderPackagePayload,
   OrderPayload,
   OrdersListParams,
 } from "@/features/orders/types";
@@ -43,5 +44,18 @@ export async function updateOrder(
 
 export async function cancelOrder(id: string): Promise<Order> {
   const { data } = await apiClient.post<Order>(`/api/orders/${id}/cancel`);
+  return data;
+}
+
+export async function updateOrderPackages(
+  id: string,
+  packages: OrderPackagePayload[],
+  signal?: AbortSignal,
+): Promise<Order> {
+  const { data } = await apiClient.put<Order>(
+    `/api/orders/${encodeURIComponent(id)}/packages`,
+    { packages },
+    { signal },
+  );
   return data;
 }

@@ -1,6 +1,10 @@
 import type {
   BatchLabelsPayload,
   BookShipmentPayload,
+  BulkBookPayload,
+  BulkBookResponse,
+  BulkPreviewPayload,
+  BulkPreviewResponse,
   Shipment,
   ShipmentCounts,
   ShipmentDistrict,
@@ -76,6 +80,32 @@ export async function getShipmentPreview(
   const { data } = await apiClient.get<ShipmentPreview>(
     "/api/shipments/preview",
     { params, signal },
+  );
+  return data;
+}
+
+export async function postShipmentPreview(
+  payload: BulkPreviewPayload,
+  signal?: AbortSignal,
+): Promise<BulkPreviewResponse> {
+  const { data } = await apiClient.post<BulkPreviewResponse>(
+    "/api/shipments/preview",
+    payload,
+    { signal },
+  );
+  return data;
+}
+
+const BULK_BOOK_TIMEOUT_MS = 90_000;
+
+export async function postBulkShipments(
+  payload: BulkBookPayload,
+  signal?: AbortSignal,
+): Promise<BulkBookResponse> {
+  const { data } = await apiClient.post<BulkBookResponse>(
+    "/api/shipments/bulk",
+    payload,
+    { signal, timeout: BULK_BOOK_TIMEOUT_MS },
   );
   return data;
 }

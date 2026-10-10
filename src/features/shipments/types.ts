@@ -155,6 +155,7 @@ export interface ShipmentQuota {
   limit: number;
   used: number;
   remaining: number;
+  needed?: number;
 }
 
 export interface ShipmentPreviewAddress {
@@ -192,4 +193,115 @@ export interface BookShipmentPayload {
 
 export interface BatchLabelsPayload {
   shipmentIds: string[];
+}
+
+/** Request line for POST /api/shipments/preview (bulk). */
+export interface BulkPreviewLineRequest {
+  orderId: string;
+  connectionId?: string;
+  districtId?: string;
+}
+
+export interface BulkPreviewPayload {
+  lines: BulkPreviewLineRequest[];
+}
+
+export interface BulkPreviewLocationRef {
+  senderLocationId?: string;
+  name?: string;
+  governorate: {
+    id: string;
+    code: string;
+    nameEn: string;
+    nameAr: string;
+  };
+}
+
+export interface BulkPreviewToRef {
+  governorate: {
+    id: string;
+    code: string;
+    nameEn: string;
+    nameAr: string;
+  };
+  area: string;
+}
+
+export interface BulkPreviewLineError {
+  code?: string;
+  message: string;
+  status?: number;
+}
+
+export interface BulkPreviewLine {
+  orderId: string;
+  order: ShipmentPreviewOrder | null;
+  from: BulkPreviewLocationRef;
+  to: BulkPreviewToRef;
+  packagesCount: number;
+  totalWeightKg: number;
+  connection: ShipmentConnectionRef | null;
+  address: ShipmentPreviewAddress | null;
+  problems: ShipmentProblem[];
+  bookable: boolean;
+  error: BulkPreviewLineError | null;
+}
+
+export interface BulkPreviewQuota extends ShipmentQuota {
+  needed: number;
+}
+
+export interface BulkPreviewResponse {
+  lines: BulkPreviewLine[];
+  quota: BulkPreviewQuota | null;
+}
+
+/** Request line for POST /api/shipments/bulk. */
+export interface BulkBookLineRequest {
+  orderId: string;
+  connectionId: string;
+  districtId?: string | null;
+}
+
+export interface BulkBookPayload {
+  lines: BulkBookLineRequest[];
+}
+
+export type BulkBookOutcome = "BOOKED" | "BOOKING" | "REJECTED";
+
+export interface BulkBookRowError {
+  code: string;
+  message: string;
+  status: number;
+  details?: Record<string, unknown> & {
+    suggestions?: ShipmentDistrict[];
+    limit?: number;
+    shipmentId?: string;
+    reason?: string;
+    problems?: ShipmentProblem[];
+  };
+}
+
+export interface BulkBookResultRow {
+  orderId: string;
+  outcome: BulkBookOutcome;
+  shipment: Shipment | null;
+  error: BulkBookRowError | null;
+}
+
+export interface BulkBookResponse {
+  results: BulkBookResultRow[];
+  booked: number;
+  rejected: number;
+}
+
+/** Client-side draft while editing the bulk booking modal. */
+export interface BulkBookingLineDraft {
+  orderId: string;
+  connectionId?: string;
+  districtId?: string;
+  removed?: boolean;
+  /** Set after bulk submit for rows still in the modal. */
+  bulkError?: string | null;
+  bulkOutcome?: BulkBookOutcome | null;
 }
