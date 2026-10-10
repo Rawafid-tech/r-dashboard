@@ -17,7 +17,9 @@ function tabCount(
   counts: OrderCounts | undefined,
 ): number | undefined {
   if (!counts) return undefined;
-  if (tab === "all") return counts.PENDING + counts.CANCELLED;
+  if (tab === "all") {
+    return counts.PENDING + counts.BOOKED + counts.CANCELLED;
+  }
   return counts[tab];
 }
 
@@ -29,7 +31,7 @@ export function OrdersHero({
   canManage = true,
 }: OrdersHeroProps) {
   const { t } = useTranslation("orders");
-  const tabs: OrdersListTab[] = ["all", "CANCELLED", "PENDING"];
+  const tabs: OrdersListTab[] = ["all", "PENDING", "BOOKED", "CANCELLED"];
 
   return (
     <header className="space-y-5">

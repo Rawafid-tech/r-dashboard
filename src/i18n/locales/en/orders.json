@@ -4,19 +4,21 @@
   "skipToContent": "Skip to orders list",
   "hero": {
     "title": "Orders",
-    "subtitle": "Your order book for manual orders — receiver, products, and packages in one place. Shipment booking comes later.",
+    "subtitle": "Your order book — add orders, book shipments with your carriers, and print labels.",
     "totalLabel": "Orders in view",
     "add": "Add order"
   },
   "tabs": {
     "label": "Order status",
     "PENDING": "Pending",
+    "BOOKED": "Booked",
     "CANCELLED": "Cancelled",
     "all": "All",
     "count": "{{count}} orders"
   },
   "status": {
     "PENDING": "Pending",
+    "BOOKED": "Booked",
     "CANCELLED": "Cancelled"
   },
   "payment": {
@@ -84,7 +86,8 @@
   "actions": {
     "view": "View",
     "edit": "Edit",
-    "cancel": "Cancel order"
+    "cancel": "Cancel order",
+    "createShipment": "Create shipment"
   },
   "cancel": {
     "title": "Cancel this order?",

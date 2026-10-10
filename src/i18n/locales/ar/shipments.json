@@ -1,0 +1,135 @@
+{
+  "metaTitle": "الشحنات — روافد",
+  "metaDescription": "احجز الطلبات عبر شركاء الشحن، اطبع بوليصات الشحن، وألغِ قبل الاستلام.",
+  "skipToContent": "انتقل إلى الشحنات",
+  "hero": {
+    "title": "الشحنات",
+    "subtitle": "الشحنات المحجوزة عبر شركات التوصيل المتصلة. تحديثات التتبع ستظهر في إصدار لاحق."
+  },
+  "tabs": {
+    "label": "حالة الشحنة",
+    "count": "{{count}} شحنة",
+    "BOOKED": "محجوز",
+    "CANCELLED": "ملغى",
+    "FAILED": "فشل",
+    "BOOKING": "قيد التأكيد"
+  },
+  "toolbar": {
+    "title": "تصفية الشحنات",
+    "searchPlaceholder": "رقم الطلب، التتبع، المستلم…",
+    "clearSearch": "مسح البحث",
+    "datePlaceholder": "اختر تاريخاً",
+    "selectionSummary": "{{count}} شحنة محددة",
+    "connectionLabel": "الاتصال",
+    "connectionAll": "كل الاتصالات",
+    "dateFrom": "من",
+    "dateTo": "إلى",
+    "sortLabel": "ترتيب",
+    "printLabels": "طباعة البوليصات",
+    "printLabelsCount": "طباعة البوليصات ({{count}})",
+    "clearSelection": "مسح التحديد",
+    "clearFilters": "مسح التصفية",
+    "sort": {
+      "createdDesc": "الأحدث إنشاءً",
+      "createdAsc": "الأقدم إنشاءً",
+      "bookedDesc": "الأحدث حجزاً",
+      "bookedAsc": "الأقدم حجزاً"
+    }
+  },
+  "table": {
+    "caption": "قائمة الشحنات",
+    "selectAll": "تحديد كل الشحنات المحجوزة في هذه الصفحة",
+    "selectRow": "تحديد الشحنة {{tracking}}",
+    "orderNumber": "الطلب",
+    "tracking": "التتبع",
+    "receiver": "المستلم",
+    "connection": "الاتصال",
+    "cod": "التحصيل",
+    "status": "الحالة",
+    "bookedAt": "تاريخ الحجز",
+    "createdAt": "تاريخ الإنشاء",
+    "carrierState": "حالة الناقل",
+    "actions": "إجراءات",
+    "openMenu": "إجراءات للطلب {{number}}"
+  },
+  "status": {
+    "BOOKING": "قيد التأكيد",
+    "BOOKED": "محجوز",
+    "FAILED": "فشل",
+    "CANCELLED": "ملغى"
+  },
+  "actions": {
+    "printLabel": "طباعة البوليصة",
+    "cancel": "إلغاء الشحنة"
+  },
+  "empty": {
+    "title": "لا توجد شحنات بعد",
+    "description": "احجز طلباً معلقاً من شاشة الطلبات لإنشاء أول شحنة.",
+    "searchTitle": "لا توجد شحنات مطابقة",
+    "searchDescription": "جرّب بحثاً أو فلتراً مختلفاً."
+  },
+  "errors": {
+    "loadFailed": "تعذّر تحميل الشحنات",
+    "loadFailedHint": "تحقق من الاتصال وحاول مرة أخرى.",
+    "retry": "إعادة المحاولة"
+  },
+  "cancel": {
+    "title": "إلغاء الشحنة؟",
+    "description": "يلغي الحجز لدى شريك الشحن ويعيد الطلب {{number}} إلى معلّق.",
+    "confirm": "إلغاء الشحنة",
+    "confirming": "جاري الإلغاء…",
+    "dismiss": "الإبقاء على الشحنة"
+  },
+  "toast": {
+    "booked": "تم الحجز — رقم التتبع {{tracking}}",
+    "cancelled": "تم إلغاء شحنة الطلب {{number}}",
+    "cancelFailed": "تعذّر إلغاء الشحنة",
+    "labelFailed": "تعذّر فتح البوليصة",
+    "labelPopupBlocked": "اسمح بالنوافذ المنبثقة لفتح ملف PDF",
+    "batchMixedConnections": "اختر شحنات من اتصال واحد فقط، أو اطبع على دفعات (حتى 50 في المرة).",
+    "batchEmpty": "حدّد شحنة محجوزة واحدة على الأقل للطباعة.",
+    "batchTooMany": "يمكنك طباعة حتى 50 بوليصة دفعة واحدة."
+  },
+  "booking": {
+    "connectionTitle": "اختر اتصالاً",
+    "connectionDescription": "حدّد حساب شريك الشحن الذي سيحجز هذا الطلب.",
+    "confirmTitle": "تأكيد الشحنة",
+    "confirmDescription": "راجع المطابقة وأصلح أي مشكلة قبل الحجز.",
+    "noConnectionsTitle": "لا توجد اتصالات نشطة",
+    "noConnectionsDescription": "اربط شريك شحن وفعّله قبل الحجز.",
+    "goToPartners": "شركاء الشحن",
+    "districtLabel": "حي التسليم",
+    "districtHint": "ابحث في أحياء الناقل لهذه المحافظة.",
+    "districtPlaceholder": "اكتب للبحث عن الأحياء…",
+    "matchedDistrict": "منطقة مطابقة",
+    "suggestions": "أحياء مقترحة",
+    "problemsTitle": "أصلح قبل الحجز",
+    "editOrder": "تعديل الطلب",
+    "quota": "{{used}} من {{limit}} شحنة هذا الشهر",
+    "quotaUnlimited": "الخطة {{plan}}",
+    "quotaExceeded": "تم استخدام حد الشحنات الشهري",
+    "upgradePlan": "ترقية الخطة",
+    "subscriptionRequired": "جدّد اشتراكك لحجز الشحنات.",
+    "book": "حجز الشحنة",
+    "booking": "جاري الحجز…",
+    "close": "إغلاق",
+    "back": "رجوع",
+    "confirmingTitle": "تأكيد من الناقل",
+    "confirmingDescription": "شريك الشحن يؤكد الحجز. عادةً يستغرق ذلك دقائق.",
+    "confirmingLive": "الحالة: {{status}}",
+    "printLabel": "طباعة البوليصة",
+    "viewShipments": "عرض الشحنات",
+    "bookAgainBlocked": "لا تحجز مرة أخرى حتى نعرف النتيجة."
+  },
+  "pagination": {
+    "label": "ترقيم الشحنات",
+    "summary": "{{start}}–{{end}} من {{total}}",
+    "pageOf": "صفحة {{current}} من {{total}}"
+  },
+  "orderSection": {
+    "title": "الشحنات",
+    "empty": "لا توجد شحنات لهذا الطلب بعد.",
+    "loadFailed": "تعذّر تحميل الشحنات",
+    "viewAll": "فتح الشحنات"
+  }
+}

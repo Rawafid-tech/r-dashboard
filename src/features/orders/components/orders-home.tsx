@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSearchParams } from "react-router-dom";
+import { CreateShipmentFlow } from "@/features/shipments/components/create-shipment-flow";
 import { OrderCancelDialog } from "@/features/orders/components/order-cancel-dialog";
 import { OrderFormSheet } from "@/features/orders/components/order-form-sheet";
 import type { OrderRowAction } from "@/features/orders/components/order-row-actions-menu";
@@ -88,6 +89,7 @@ export function OrdersHome() {
 
   const [formState, setFormState] = useState<FormState>(null);
   const [orderToCancel, setOrderToCancel] = useState<OrderListRow | null>(null);
+  const [orderToBook, setOrderToBook] = useState<OrderListRow | null>(null);
 
   const queryParams = useMemo(
     () => ({
@@ -170,6 +172,9 @@ export function OrdersHome() {
         break;
       case "cancel":
         setOrderToCancel(order);
+        break;
+      case "createShipment":
+        setOrderToBook(order);
         break;
       default:
         break;
@@ -297,6 +302,18 @@ export function OrdersHome() {
         open={orderToCancel !== null}
         onOpenChange={(open) => {
           if (!open) setOrderToCancel(null);
+        }}
+      />
+
+      <CreateShipmentFlow
+        order={orderToBook}
+        open={orderToBook !== null}
+        onOpenChange={(open) => {
+          if (!open) setOrderToBook(null);
+        }}
+        onEditOrder={(order) => {
+          setOrderToBook(null);
+          setFormState({ mode: "edit", order });
         }}
       />
     </div>

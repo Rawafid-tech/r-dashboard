@@ -26,6 +26,13 @@ const CANCELLED_EDIT_MARKERS = [
   "ملغى ولا يمكن تعديله",
 ] as const;
 
+const BOOKED_EDIT_MARKERS = [
+  "already booked",
+  "cancelled or already booked",
+  "محجوز",
+  "ملغى أو محجوز",
+] as const;
+
 export function isDuplicateOrderNumberConflict(error: unknown): boolean {
   if (!isApiError(error, 409)) return false;
   const detail = parseApiError(error).detail;
@@ -42,6 +49,12 @@ export function isCancelledOrderEdit(error: unknown): boolean {
   if (!isApiError(error, 409)) return false;
   const detail = parseApiError(error).detail;
   return CANCELLED_EDIT_MARKERS.some((marker) => detail.includes(marker));
+}
+
+export function isBookedOrderEdit(error: unknown): boolean {
+  if (!isApiError(error, 409)) return false;
+  const detail = parseApiError(error).detail;
+  return BOOKED_EDIT_MARKERS.some((marker) => detail.includes(marker));
 }
 
 function trimOptional(value: string | undefined): string | undefined {
@@ -297,7 +310,11 @@ export function handleOrderFormError(
     return detail;
   }
 
-  if (isCancelledOrderEdit(error) || isConcurrentOrderChange(error)) {
+  if (
+    isCancelledOrderEdit(error) ||
+    isBookedOrderEdit(error) ||
+    isConcurrentOrderChange(error)
+  ) {
     return parseApiError(error).detail;
   }
 

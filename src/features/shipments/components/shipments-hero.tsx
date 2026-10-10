@@ -1,0 +1,89 @@
+import { useTranslation } from "react-i18next";
+import type { ShipmentCounts, ShipmentsListTab } from "@/features/shipments/types";
+import { cn } from "@/shared/lib/utils";
+
+interface ShipmentsHeroProps {
+  activeTab: ShipmentsListTab;
+  counts?: ShipmentCounts;
+  onTabChange: (tab: ShipmentsListTab) => void;
+}
+
+const TABS: ShipmentsListTab[] = [
+  "BOOKED",
+  "CANCELLED",
+  "FAILED",
+  "BOOKING",
+];
+
+function tabCount(
+  tab: ShipmentsListTab,
+  counts: ShipmentCounts | undefined,
+): number | undefined {
+  if (!counts) return undefined;
+  return counts[tab];
+}
+
+export function ShipmentsHero({
+  activeTab,
+  counts,
+  onTabChange,
+}: ShipmentsHeroProps) {
+  const { t } = useTranslation("shipments");
+
+  return (
+    <header className="space-y-5">
+      <div className="min-w-0 space-y-1">
+        <h1 className="text-xl font-semibold tracking-tight text-foreground sm:text-2xl">
+          {t("hero.title")}
+        </h1>
+        <p className="max-w-2xl text-sm leading-6 text-muted-foreground">
+          {t("hero.subtitle")}
+        </p>
+      </div>
+
+      <div
+        className="-mb-px flex w-full gap-1 overflow-x-auto border-b border-border"
+        role="tablist"
+        aria-label={t("tabs.label")}
+      >
+        {TABS.map((tab) => {
+          const isActive = activeTab === tab;
+          const count = tabCount(tab, counts);
+
+          return (
+            <button
+              key={tab}
+              id={`shipments-tab-${tab}`}
+              type="button"
+              role="tab"
+              aria-selected={isActive}
+              aria-controls="shipments-main"
+              className={cn(
+                "relative flex shrink-0 items-center gap-2 border-b-2 px-3 py-2.5 text-sm font-medium transition-colors outline-none focus-visible:ring-2 focus-visible:ring-ring/40",
+                isActive
+                  ? "border-primary text-foreground"
+                  : "border-transparent text-muted-foreground hover:text-foreground",
+              )}
+              onClick={() => onTabChange(tab)}
+            >
+              {t(`tabs.${tab}`)}
+              {typeof count === "number" ? (
+                <span
+                  className={cn(
+                    "inline-flex min-w-5 items-center justify-center rounded-full px-1.5 text-xs tabular-nums",
+                    isActive
+                      ? "bg-primary/15 text-primary"
+                      : "bg-muted text-muted-foreground",
+                  )}
+                  aria-label={t("tabs.count", { count })}
+                >
+                  {count.toLocaleString("en-US")}
+                </span>
+              ) : null}
+            </button>
+          );
+        })}
+      </div>
+    </header>
+  );
+}

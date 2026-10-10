@@ -14,7 +14,7 @@ import {
 } from "@/shared/hooks/use-merchant-permissions";
 import type { OrderListRow } from "@/features/orders/types";
 
-export type OrderRowAction = "view" | "edit" | "cancel";
+export type OrderRowAction = "view" | "edit" | "cancel" | "createShipment";
 
 interface OrderRowActionsMenuProps {
   order: OrderListRow;
@@ -28,8 +28,8 @@ export function OrderRowActionsMenu({
   const { t } = useTranslation("orders");
   const { hasPermission } = useMerchantPermissions();
   const canManage = hasPermission(MerchantPermission.ORDER_MANAGE);
-  const isCancelled = order.status === "CANCELLED";
-
+  const canBookShipment = hasPermission(MerchantPermission.SHIPMENT_MANAGE);
+  const isPending = order.status === "PENDING";
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -46,12 +46,17 @@ export function OrderRowActionsMenu({
         <DropdownMenuItem onSelect={() => onAction("view", order)}>
           {t("actions.view")}
         </DropdownMenuItem>
-        {canManage && !isCancelled ? (
+        {canBookShipment && isPending ? (
+          <DropdownMenuItem onSelect={() => onAction("createShipment", order)}>
+            {t("actions.createShipment")}
+          </DropdownMenuItem>
+        ) : null}
+        {canManage && isPending ? (
           <DropdownMenuItem onSelect={() => onAction("edit", order)}>
             {t("actions.edit")}
           </DropdownMenuItem>
         ) : null}
-        {canManage && !isCancelled ? (
+        {canManage && isPending ? (
           <>
             <DropdownMenuSeparator />
             <DropdownMenuItem

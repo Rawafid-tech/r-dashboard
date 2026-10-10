@@ -9,9 +9,11 @@ import { useSenderLocations } from "@/features/locations/hooks/use-sender-locati
 import { useCreateOrder } from "@/features/orders/hooks/use-create-order";
 import { useOrder } from "@/features/orders/hooks/use-order";
 import { useUpdateOrder } from "@/features/orders/hooks/use-update-order";
+import { OrderShipmentsSection } from "@/features/orders/components/order-shipments-section";
 import {
   applyZodIssues,
   handleOrderFormError,
+  isBookedOrderEdit,
   isConcurrentOrderChange,
   serverErrorOnStep1,
   summarizeZodIssues,
@@ -120,7 +122,9 @@ export function OrderFormSheet({
   const readOnly =
     isView ||
     listRow?.status === "CANCELLED" ||
-    orderQuery.data?.status === "CANCELLED";
+    listRow?.status === "BOOKED" ||
+    orderQuery.data?.status === "CANCELLED" ||
+    orderQuery.data?.status === "BOOKED";
   const createMutation = useCreateOrder();
   const updateMutation = useUpdateOrder(resolvedId ?? "");
 
@@ -296,7 +300,7 @@ export function OrderFormSheet({
       const detail = message || parseApiError(error).detail || t("toast.saveFailed");
       setSubmitError(detail);
       if (serverErrorOnStep1(error)) setStep(1);
-      if (isConcurrentOrderChange(error)) {
+      if (isConcurrentOrderChange(error) || isBookedOrderEdit(error)) {
         toast.error(detail);
         void orderQuery.refetch();
       } else if (isApiError(error, 422) || !getFieldErrors(error)) {
@@ -1091,6 +1095,10 @@ export function OrderFormSheet({
                       <FieldError errors={[errors.packages.root]} />
                     ) : null}
                   </div>
+
+                  {readOnly && resolvedId ? (
+                    <OrderShipmentsSection orderId={resolvedId} />
+                  ) : null}
                 </FieldSet>
               </div>
             </form>

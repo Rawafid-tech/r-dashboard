@@ -1,0 +1,135 @@
+{
+  "metaTitle": "Shipments — Rawafid",
+  "metaDescription": "Book orders with your shipping partners, print airway bills, and cancel before pickup.",
+  "skipToContent": "Skip to shipments",
+  "hero": {
+    "title": "Shipments",
+    "subtitle": "Shipments booked through your connected carriers. Tracking updates will appear in a later release."
+  },
+  "tabs": {
+    "label": "Shipment status",
+    "count": "{{count}} shipments",
+    "BOOKED": "Booked",
+    "CANCELLED": "Cancelled",
+    "FAILED": "Failed",
+    "BOOKING": "Confirming"
+  },
+  "toolbar": {
+    "title": "Filter shipments",
+    "searchPlaceholder": "Order #, tracking, receiver…",
+    "clearSearch": "Clear search",
+    "datePlaceholder": "Pick a date",
+    "selectionSummary": "{{count}} shipments selected",
+    "connectionLabel": "Connection",
+    "connectionAll": "All connections",
+    "dateFrom": "From",
+    "dateTo": "To",
+    "sortLabel": "Sort",
+    "printLabels": "Print labels",
+    "printLabelsCount": "Print labels ({{count}})",
+    "clearSelection": "Clear selection",
+    "clearFilters": "Clear filters",
+    "sort": {
+      "createdDesc": "Newest created",
+      "createdAsc": "Oldest created",
+      "bookedDesc": "Newest booked",
+      "bookedAsc": "Oldest booked"
+    }
+  },
+  "table": {
+    "caption": "Shipments list",
+    "selectAll": "Select all booked shipments on this page",
+    "selectRow": "Select shipment {{tracking}}",
+    "orderNumber": "Order",
+    "tracking": "Tracking",
+    "receiver": "Receiver",
+    "connection": "Connection",
+    "cod": "COD",
+    "status": "Status",
+    "bookedAt": "Booked",
+    "createdAt": "Created",
+    "carrierState": "Carrier status",
+    "actions": "Actions",
+    "openMenu": "Actions for order {{number}}"
+  },
+  "status": {
+    "BOOKING": "Confirming",
+    "BOOKED": "Booked",
+    "FAILED": "Failed",
+    "CANCELLED": "Cancelled"
+  },
+  "actions": {
+    "printLabel": "Print label",
+    "cancel": "Cancel shipment"
+  },
+  "empty": {
+    "title": "No shipments yet",
+    "description": "Book a pending order from Orders to create your first shipment.",
+    "searchTitle": "No shipments match",
+    "searchDescription": "Try a different search or filter."
+  },
+  "errors": {
+    "loadFailed": "Could not load shipments",
+    "loadFailedHint": "Check your connection and try again.",
+    "retry": "Retry"
+  },
+  "cancel": {
+    "title": "Cancel shipment?",
+    "description": "This cancels the booking with the shipping partner and returns order {{number}} to pending.",
+    "confirm": "Cancel shipment",
+    "confirming": "Cancelling…",
+    "dismiss": "Keep shipment"
+  },
+  "toast": {
+    "booked": "Shipment booked — tracking {{tracking}}",
+    "cancelled": "Shipment cancelled for order {{number}}",
+    "cancelFailed": "Could not cancel shipment",
+    "labelFailed": "Could not open label",
+    "labelPopupBlocked": "Allow pop-ups to open the label PDF",
+    "batchMixedConnections": "Select shipments from one connection only, or print in separate batches (up to 50 each).",
+    "batchEmpty": "Select at least one booked shipment to print.",
+    "batchTooMany": "You can print up to 50 labels at once."
+  },
+  "booking": {
+    "connectionTitle": "Choose a connection",
+    "connectionDescription": "Pick which shipping partner account should book this order.",
+    "confirmTitle": "Confirm shipment",
+    "confirmDescription": "Review the match and fix any issues before booking.",
+    "noConnectionsTitle": "No active connections",
+    "noConnectionsDescription": "Connect and activate a shipping partner before booking.",
+    "goToPartners": "Shipping partners",
+    "districtLabel": "Delivery district",
+    "districtHint": "Search the carrier's districts for this governorate.",
+    "districtPlaceholder": "Type to search districts…",
+    "matchedDistrict": "Matched area",
+    "suggestions": "Suggested districts",
+    "problemsTitle": "Fix before booking",
+    "editOrder": "Edit order",
+    "quota": "{{used}} of {{limit}} shipments this month",
+    "quotaUnlimited": "Plan {{plan}}",
+    "quotaExceeded": "Monthly shipment limit reached",
+    "upgradePlan": "Upgrade plan",
+    "subscriptionRequired": "Renew your subscription to book shipments.",
+    "book": "Book shipment",
+    "booking": "Booking…",
+    "close": "Close",
+    "back": "Back",
+    "confirmingTitle": "Confirming with carrier",
+    "confirmingDescription": "The shipping partner is confirming this booking. This usually takes a few minutes.",
+    "confirmingLive": "Status: {{status}}",
+    "printLabel": "Print label",
+    "viewShipments": "View shipments",
+    "bookAgainBlocked": "Do not book again until we know the outcome."
+  },
+  "pagination": {
+    "label": "Shipments pagination",
+    "summary": "{{start}}–{{end}} of {{total}}",
+    "pageOf": "Page {{current}} of {{total}}"
+  },
+  "orderSection": {
+    "title": "Shipments",
+    "empty": "No shipments for this order yet.",
+    "loadFailed": "Could not load shipments",
+    "viewAll": "Open shipments"
+  }
+}

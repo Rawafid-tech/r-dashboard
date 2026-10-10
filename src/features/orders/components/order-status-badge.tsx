@@ -10,7 +10,13 @@ export function OrderStatusBadge({ status }: OrderStatusBadgeProps) {
   const { t } = useTranslation("orders");
 
   const variant =
-    status === "PENDING" ? "warning" : status === "CANCELLED" ? "muted" : "muted";
+    status === "PENDING"
+      ? "warning"
+      : status === "BOOKED"
+        ? "secondary"
+        : status === "CANCELLED"
+          ? "muted"
+          : "muted";
 
   return (
     <Badge variant={variant}>
