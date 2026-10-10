@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import type { ShipmentRowAction } from "@/features/shipments/components/shipment-row-actions-menu";
 import { ShipmentCancelDialog } from "@/features/shipments/components/shipment-cancel-dialog";
 import { ShipmentsDataTable } from "@/features/shipments/components/shipments-data-table";
@@ -12,8 +12,10 @@ import { ShipmentsPageSkeleton } from "@/features/shipments/components/shipments
 import { useBatchShipmentLabels, useShipmentLabel } from "@/features/shipments/hooks/use-shipment-label";
 import { useShipmentCounts } from "@/features/shipments/hooks/use-shipment-counts";
 import { useShipments } from "@/features/shipments/hooks/use-shipments";
+import { statusesForTab } from "@/features/shipments/lib/shipment-actions";
 import {
   DEFAULT_SHIPMENTS_SORT,
+  DEFAULT_SHIPMENTS_TAB,
   localDateToInstantEndExclusive,
   localDateToInstantStart,
   parseShipmentsSortOption,
@@ -34,6 +36,7 @@ const MAX_BATCH_LABELS = 50;
 
 export function ShipmentsHome() {
   const { t } = useTranslation("shipments");
+  const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const [selectedIds, setSelectedIds] = useState<Set<string>>(() => new Set());
   const [shipmentToCancel, setShipmentToCancel] = useState<Shipment | null>(
@@ -83,7 +86,7 @@ export function ShipmentsHome() {
       size: PAGE_SIZE,
       sort,
       direction,
-      status: activeTab,
+      status: statusesForTab(activeTab),
       search: debouncedSearch || undefined,
       connectionId: connectionFilter || undefined,
       orderId: orderFilter || undefined,
@@ -132,7 +135,7 @@ export function ShipmentsHome() {
 
   const handleTabChange = (tab: ShipmentsListTab) => {
     updateParams({
-      tab: tab === "BOOKED" ? null : tab,
+      tab: tab === DEFAULT_SHIPMENTS_TAB ? null : tab,
       page: null,
     });
   };
@@ -208,6 +211,9 @@ export function ShipmentsHome() {
 
   const handleRowAction = (action: ShipmentRowAction, shipment: Shipment) => {
     switch (action) {
+      case "view":
+        navigate(`/shipments/${encodeURIComponent(shipment.id)}`);
+        break;
       case "print":
         void labelMutation.mutateAsync({
           id: shipment.id,

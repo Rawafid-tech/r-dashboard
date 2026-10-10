@@ -1,6 +1,9 @@
 import type { ReactNode } from "react";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
+import { Link } from "react-router-dom";
+import { ShipmentIssueBadge } from "@/features/shipments/components/shipment-issue-badge";
+import { canPrintShipmentLabel } from "@/features/shipments/lib/shipment-actions";
 import { CarrierMark } from "@/features/shipping-partners/components/carrier-mark";
 import { ShipmentRowActionsMenu } from "@/features/shipments/components/shipment-row-actions-menu";
 import type { ShipmentRowAction } from "@/features/shipments/components/shipment-row-actions-menu";
@@ -90,27 +93,32 @@ export function ShipmentsDataTable({
   const { hasPermission } = useMerchantPermissions();
   const canPrintBatch = hasPermission(MerchantPermission.SHIPMENT_READ);
 
-  const bookedOnPage = useMemo(
-    () => shipments.filter((row) => row.status === "BOOKED"),
+  const printableOnPage = useMemo(
+    () => shipments.filter((row) => canPrintShipmentLabel(row.status)),
     [shipments],
   );
 
-  const allBookedSelected =
-    bookedOnPage.length > 0 &&
-    bookedOnPage.every((row) => selectedIds.has(row.id));
+  const allPrintableSelected =
+    printableOnPage.length > 0 &&
+    printableOnPage.every((row) => selectedIds.has(row.id));
 
-  const someBookedSelected =
-    bookedOnPage.some((row) => selectedIds.has(row.id)) && !allBookedSelected;
+  const somePrintableSelected =
+    printableOnPage.some((row) => selectedIds.has(row.id)) &&
+    !allPrintableSelected;
 
   const selectAllHeader = (
     <Checkbox
       checked={
-        allBookedSelected ? true : someBookedSelected ? "indeterminate" : false
+        allPrintableSelected
+          ? true
+          : somePrintableSelected
+            ? "indeterminate"
+            : false
       }
       onCheckedChange={(checked) =>
-        onToggleAllOnPage(bookedOnPage, checked === true)
+        onToggleAllOnPage(printableOnPage, checked === true)
       }
-      disabled={bookedOnPage.length === 0}
+      disabled={printableOnPage.length === 0}
       aria-label={t("table.selectAll")}
     />
   );
@@ -123,7 +131,7 @@ export function ShipmentsDataTable({
         id: "select",
         header: selectAllHeader,
         cell: (shipment) =>
-          shipment.status === "BOOKED" ? (
+          canPrintShipmentLabel(shipment.status) ? (
             <Checkbox
               checked={selectedIds.has(shipment.id)}
               onCheckedChange={(checked) =>
@@ -151,11 +159,22 @@ export function ShipmentsDataTable({
       {
         id: "tracking",
         header: t("table.tracking"),
-        cell: (shipment) => (
-          <span className="tabular-nums">
-            {shipment.trackingNumber ?? "—"}
-          </span>
-        ),
+        cell: (shipment) =>
+          shipment.trackingNumber ? (
+            <Link
+              to={`/shipments/${encodeURIComponent(shipment.id)}`}
+              className="tabular-nums font-medium text-primary underline-offset-4 hover:underline focus-visible:rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/40"
+            >
+              {shipment.trackingNumber}
+            </Link>
+          ) : (
+            <Link
+              to={`/shipments/${encodeURIComponent(shipment.id)}`}
+              className="text-muted-foreground underline-offset-4 hover:text-foreground hover:underline focus-visible:rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/40"
+            >
+              {t("table.viewShipment")}
+            </Link>
+          ),
       },
       {
         id: "receiver",
@@ -201,6 +220,9 @@ export function ShipmentsDataTable({
         cell: (shipment) => (
           <div className="space-y-1">
             <ShipmentStatusBadge status={shipment.status} />
+            {shipment.issue ? (
+              <ShipmentIssueBadge issue={shipment.issue} />
+            ) : null}
             {shipment.carrierState?.label ? (
               <p className="max-w-48 truncate text-xs text-muted-foreground">
                 {shipment.carrierState.label}
@@ -229,8 +251,8 @@ export function ShipmentsDataTable({
 
     return base;
   }, [
-    allBookedSelected,
-    bookedOnPage,
+    allPrintableSelected,
+    printableOnPage,
     canPrintBatch,
     dateFormat,
     intlLocale,
@@ -240,7 +262,7 @@ export function ShipmentsDataTable({
     onToggleRow,
     selectAllHeader,
     selectedIds,
-    someBookedSelected,
+    somePrintableSelected,
     t,
   ]);
 

@@ -14,9 +14,13 @@ export function OrderStatusBadge({ status }: OrderStatusBadgeProps) {
       ? "warning"
       : status === "BOOKED"
         ? "secondary"
-        : status === "CANCELLED"
-          ? "muted"
-          : "muted";
+        : status === "DELIVERED"
+          ? "success"
+          : status === "RETURNED"
+            ? "muted"
+            : status === "CANCELLED"
+              ? "muted"
+              : "muted";
 
   return (
     <Badge variant={variant}>

@@ -1,4 +1,10 @@
-export const ORDER_STATUS_VALUES = ["PENDING", "BOOKED", "CANCELLED"] as const;
+export const ORDER_STATUS_VALUES = [
+  "PENDING",
+  "BOOKED",
+  "DELIVERED",
+  "RETURNED",
+  "CANCELLED",
+] as const;
 export type OrderStatus = (typeof ORDER_STATUS_VALUES)[number];
 
 export const ORDER_PAYMENT_METHOD_VALUES = ["COD", "PREPAID"] as const;
@@ -6,7 +12,13 @@ export type OrderPaymentMethod = (typeof ORDER_PAYMENT_METHOD_VALUES)[number];
 
 export type OrdersSortField = "ORDER_DATE" | "CREATED_AT" | "ORDER_VALUE";
 
-export type OrdersListTab = "all" | "PENDING" | "BOOKED" | "CANCELLED";
+export type OrdersListTab =
+  | "all"
+  | "PENDING"
+  | "BOOKED"
+  | "DELIVERED"
+  | "RETURNED"
+  | "CANCELLED";
 
 export interface OrdersListParams {
   page?: number;

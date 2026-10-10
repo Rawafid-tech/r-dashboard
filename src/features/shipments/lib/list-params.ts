@@ -1,5 +1,4 @@
 import type {
-  ShipmentStatus,
   ShipmentsListTab,
   ShipmentsSortField,
 } from "@/features/shipments/types";
@@ -13,7 +12,7 @@ export type ShipmentsSortOption =
 
 export const DEFAULT_SHIPMENTS_SORT: ShipmentsSortOption = "CREATED_AT_DESC";
 
-export const DEFAULT_SHIPMENTS_TAB: ShipmentsListTab = "BOOKED";
+export const DEFAULT_SHIPMENTS_TAB: ShipmentsListTab = "AWAITING_PICKUP";
 
 const ALLOWED_SORT_OPTIONS: ShipmentsSortOption[] = [
   "CREATED_AT_DESC",
@@ -22,12 +21,20 @@ const ALLOWED_SORT_OPTIONS: ShipmentsSortOption[] = [
   "BOOKED_AT_ASC",
 ];
 
-const ALLOWED_TABS: ShipmentStatus[] = [
-  "BOOKED",
-  "CANCELLED",
-  "FAILED",
+const ALLOWED_TABS: ShipmentsListTab[] = [
+  "AWAITING_PICKUP",
+  "CURRENTLY_SHIPPING",
+  "DELIVERED",
+  "RETURNED",
   "BOOKING",
+  "FAILED",
+  "CANCELLED",
 ];
+
+/** Legacy URL tab values from the booking-only release. */
+const LEGACY_TAB_ALIASES: Record<string, ShipmentsListTab> = {
+  BOOKED: "AWAITING_PICKUP",
+};
 
 export function parseShipmentsSortOption(option: ShipmentsSortOption): {
   sort: ShipmentsSortField;
@@ -48,8 +55,12 @@ export function readShipmentsSortOption(
 }
 
 export function readShipmentsTab(value: string | null): ShipmentsListTab {
-  if (value && ALLOWED_TABS.includes(value as ShipmentStatus)) {
-    return value as ShipmentsListTab;
+  if (value) {
+    const legacy = LEGACY_TAB_ALIASES[value];
+    if (legacy) return legacy;
+    if (ALLOWED_TABS.includes(value as ShipmentsListTab)) {
+      return value as ShipmentsListTab;
+    }
   }
   return DEFAULT_SHIPMENTS_TAB;
 }

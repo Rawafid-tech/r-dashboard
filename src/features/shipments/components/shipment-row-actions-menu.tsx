@@ -1,5 +1,9 @@
 import { MoreHorizontal } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import {
+  canCancelShipment,
+  canPrintShipmentLabel,
+} from "@/features/shipments/lib/shipment-actions";
 import type { Shipment } from "@/features/shipments/types";
 import {
   Button,
@@ -14,7 +18,7 @@ import {
   useMerchantPermissions,
 } from "@/shared/hooks/use-merchant-permissions";
 
-export type ShipmentRowAction = "print" | "cancel";
+export type ShipmentRowAction = "view" | "print" | "cancel";
 
 interface ShipmentRowActionsMenuProps {
   shipment: Shipment;
@@ -29,7 +33,8 @@ export function ShipmentRowActionsMenu({
   const { hasPermission } = useMerchantPermissions();
   const canRead = hasPermission(MerchantPermission.SHIPMENT_READ);
   const canManage = hasPermission(MerchantPermission.SHIPMENT_MANAGE);
-  const isBooked = shipment.status === "BOOKED";
+  const canPrint = canPrintShipmentLabel(shipment.status);
+  const canCancel = canCancelShipment(shipment.status);
 
   if (!canRead && !canManage) {
     return null;
@@ -50,12 +55,17 @@ export function ShipmentRowActionsMenu({
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-48">
-        {canRead && isBooked ? (
+        {canRead ? (
+          <DropdownMenuItem onSelect={() => onAction("view", shipment)}>
+            {t("actions.viewDetails")}
+          </DropdownMenuItem>
+        ) : null}
+        {canRead && canPrint ? (
           <DropdownMenuItem onSelect={() => onAction("print", shipment)}>
             {t("actions.printLabel")}
           </DropdownMenuItem>
         ) : null}
-        {canManage && isBooked ? (
+        {canManage && canCancel ? (
           <>
             <DropdownMenuSeparator />
             <DropdownMenuItem

@@ -1,7 +1,9 @@
 import { Loader2, Printer } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
+import { ShipmentIssueBadge } from "@/features/shipments/components/shipment-issue-badge";
 import { ShipmentStatusBadge } from "@/features/shipments/components/shipment-status-badge";
+import { canPrintShipmentLabel } from "@/features/shipments/lib/shipment-actions";
 import { useShipmentLabel } from "@/features/shipments/hooks/use-shipment-label";
 import { useShipments } from "@/features/shipments/hooks/use-shipments";
 import {
@@ -71,13 +73,21 @@ export function OrderShipmentsSection({ orderId }: OrderShipmentsSectionProps) {
               key={shipment.id}
               className="flex flex-wrap items-center justify-between gap-2 rounded-md border border-border/60 bg-background px-3 py-2 text-sm"
             >
-              <div className="min-w-0 space-y-0.5">
-                <p className="font-medium tabular-nums">
-                  {shipment.trackingNumber ?? "—"}
-                </p>
-                <ShipmentStatusBadge status={shipment.status} />
+              <div className="min-w-0 space-y-1">
+                <Link
+                  to={`/shipments/${encodeURIComponent(shipment.id)}`}
+                  className="font-medium tabular-nums text-primary underline-offset-4 hover:underline focus-visible:rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/40"
+                >
+                  {shipment.trackingNumber ?? t("shipments:table.viewShipment")}
+                </Link>
+                <div className="flex flex-wrap items-center gap-1.5">
+                  <ShipmentStatusBadge status={shipment.status} />
+                  {shipment.issue ? (
+                    <ShipmentIssueBadge issue={shipment.issue} />
+                  ) : null}
+                </div>
               </div>
-              {canReadLabels && shipment.status === "BOOKED" ? (
+              {canReadLabels && canPrintShipmentLabel(shipment.status) ? (
                 <Button
                   type="button"
                   size="sm"

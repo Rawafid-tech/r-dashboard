@@ -12,6 +12,8 @@
     "label": "Order status",
     "PENDING": "Pending",
     "BOOKED": "Booked",
+    "DELIVERED": "Delivered",
+    "RETURNED": "Returned",
     "CANCELLED": "Cancelled",
     "all": "All",
     "count": "{{count}} orders"
@@ -19,6 +21,8 @@
   "status": {
     "PENDING": "Pending",
     "BOOKED": "Booked",
+    "DELIVERED": "Delivered",
+    "RETURNED": "Returned",
     "CANCELLED": "Cancelled"
   },
   "payment": {
@@ -108,6 +112,7 @@
     "editTitle": "Edit {{number}}",
     "viewTitle": "Order {{number}}",
     "bookedLock": "This order is booked with a shipping partner. Cancel its shipment before you can edit or cancel the order.",
+    "deliveredLock": "This order was delivered and can no longer be changed.",
     "stepsLabel": "Order form steps",
     "stepKicker": "Step {{number}}",
     "step1Title": "Receiver and address",

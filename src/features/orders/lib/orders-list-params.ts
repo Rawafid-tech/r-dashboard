@@ -37,7 +37,13 @@ export function readOrdersSortOption(value: string | null): OrdersSortOption {
 }
 
 export function readOrdersTab(value: string | null): OrdersListTab {
-  if (value === "PENDING" || value === "BOOKED" || value === "CANCELLED") {
+  if (
+    value === "PENDING" ||
+    value === "BOOKED" ||
+    value === "DELIVERED" ||
+    value === "RETURNED" ||
+    value === "CANCELLED"
+  ) {
     return value;
   }
   return "all";

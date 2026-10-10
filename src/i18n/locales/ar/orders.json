@@ -12,6 +12,8 @@
     "label": "حالة الطلب",
     "PENDING": "قيد الانتظار",
     "BOOKED": "محجوز",
+    "DELIVERED": "تم التسليم",
+    "RETURNED": "مرتجع",
     "CANCELLED": "ملغي",
     "all": "الكل",
     "count": "{{count}} طلب"
@@ -19,6 +21,8 @@
   "status": {
     "PENDING": "قيد الانتظار",
     "BOOKED": "محجوز",
+    "DELIVERED": "تم التسليم",
+    "RETURNED": "مرتجع",
     "CANCELLED": "ملغي"
   },
   "payment": {
@@ -108,6 +112,7 @@
     "editTitle": "تعديل {{number}}",
     "viewTitle": "الطلب {{number}}",
     "bookedLock": "هذا الطلب محجوز لدى شريك الشحن. ألغِ الشحنة أولاً قبل تعديل الطلب أو إلغائه.",
+    "deliveredLock": "تم توصيل هذا الطلب ولم يعد من الممكن تعديله.",
     "stepsLabel": "خطوات نموذج الطلب",
     "stepKicker": "الخطوة {{number}}",
     "step1Title": "المستلم والعنوان",

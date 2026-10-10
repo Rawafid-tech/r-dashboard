@@ -1,18 +1,21 @@
 {
   "metaTitle": "Shipments — Rawafid",
-  "metaDescription": "Book orders with your shipping partners, print airway bills, and cancel before pickup.",
+  "metaDescription": "Track shipments with your carriers, print labels, and cancel before pickup.",
   "skipToContent": "Skip to shipments",
   "hero": {
     "title": "Shipments",
-    "subtitle": "Shipments booked through your connected carriers. Tracking updates will appear in a later release."
+    "subtitle": "Follow each shipment from pickup through delivery or return. Updates refresh when you open a shipment or return to this page."
   },
   "tabs": {
     "label": "Shipment status",
     "count": "{{count}} shipments",
-    "BOOKED": "Booked",
-    "CANCELLED": "Cancelled",
+    "AWAITING_PICKUP": "Awaiting pickup",
+    "CURRENTLY_SHIPPING": "Currently shipping",
+    "DELIVERED": "Delivered",
+    "RETURNED": "Returned",
+    "BOOKING": "Confirming",
     "FAILED": "Failed",
-    "BOOKING": "Confirming"
+    "CANCELLED": "Cancelled"
   },
   "toolbar": {
     "title": "Filter shipments",
@@ -38,10 +41,11 @@
   },
   "table": {
     "caption": "Shipments list",
-    "selectAll": "Select all booked shipments on this page",
+    "selectAll": "Select all printable shipments on this page",
     "selectRow": "Select shipment {{tracking}}",
     "orderNumber": "Order",
     "tracking": "Tracking",
+    "viewShipment": "View shipment",
     "receiver": "Receiver",
     "connection": "Connection",
     "cod": "COD",
@@ -54,13 +58,66 @@
   },
   "status": {
     "BOOKING": "Confirming",
-    "BOOKED": "Booked",
+    "BOOKED": "Awaiting pickup",
+    "IN_TRANSIT": "In transit",
+    "RETURNING": "Returning",
+    "DELIVERED": "Delivered",
+    "RETURNED": "Returned",
+    "LOST": "Lost",
     "FAILED": "Failed",
     "CANCELLED": "Cancelled"
   },
+  "issue": {
+    "badge": "Delivery issue reported by carrier"
+  },
   "actions": {
+    "viewDetails": "View details",
     "printLabel": "Print label",
     "cancel": "Cancel shipment"
+  },
+  "timeline": {
+    "states": {
+      "AWAITING_PICKUP": "Awaiting pickup",
+      "IN_TRANSIT": "In transit",
+      "RETURNING": "Returning to sender",
+      "EXCEPTION": "Delivery exception",
+      "DELIVERED": "Delivered",
+      "RETURNED": "Returned to merchant",
+      "LOST": "Lost or damaged",
+      "CANCELLED": "Cancelled",
+      "IGNORED": "Carrier update"
+    }
+  },
+  "detail": {
+    "skipToContent": "Skip to shipment details",
+    "metaTitle": "Shipment {{id}} — Rawafid",
+    "metaDescription": "Shipment tracking timeline, carrier status, and label actions.",
+    "backToList": "Back to shipments",
+    "noTracking": "No tracking number yet",
+    "carrierState": "Carrier: {{label}}",
+    "refreshing": "Updating…",
+    "summary": {
+      "title": "Summary",
+      "order": "Order",
+      "receiver": "Receiver",
+      "connection": "Connection",
+      "cod": "COD",
+      "attempts": "Delivery attempts",
+      "issue": "Current issue",
+      "bookedAt": "Booked",
+      "pickedUpAt": "Picked up",
+      "deliveredAt": "Delivered",
+      "returnedAt": "Returned",
+      "lastUpdateAt": "Last carrier update"
+    },
+    "timeline": {
+      "heading": "Tracking timeline",
+      "label": "Carrier tracking events",
+      "empty": "No tracking events yet. Check again after the carrier reports an update.",
+      "sourceWebhook": "Carrier",
+      "sourcePoll": "Polled",
+      "pollHint": "Time shown is when we last asked the carrier, not necessarily when the event happened."
+    }
   },
   "empty": {
     "title": "No shipments yet",
@@ -87,7 +144,7 @@
     "labelFailed": "Could not open label",
     "labelPopupBlocked": "Allow pop-ups to open the label PDF",
     "batchMixedConnections": "Select shipments from one connection only, or print in separate batches (up to 50 each).",
-    "batchEmpty": "Select at least one booked shipment to print.",
+    "batchEmpty": "Select at least one shipment with a printable label.",
     "batchTooMany": "You can print up to 50 labels at once."
   },
   "booking": {

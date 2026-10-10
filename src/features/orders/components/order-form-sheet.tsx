@@ -14,6 +14,7 @@ import {
   applyZodIssues,
   handleOrderFormError,
   isBookedOrderEdit,
+  isDeliveredOrderEdit,
   isConcurrentOrderChange,
   serverErrorOnStep1,
   summarizeZodIssues,
@@ -109,6 +110,7 @@ export function OrderFormSheet({
   const [step, setStep] = useState<1 | 2>(1);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [lockedAsBooked, setLockedAsBooked] = useState(false);
+  const [lockedAsDelivered, setLockedAsDelivered] = useState(false);
   const [productSearch, setProductSearch] = useState("");
   const debouncedProductSearch = useDebounce(productSearch.trim(), 300);
 
@@ -124,9 +126,14 @@ export function OrderFormSheet({
     lockedAsBooked ||
     listRow?.status === "BOOKED" ||
     orderQuery.data?.status === "BOOKED";
+  const isDelivered =
+    lockedAsDelivered ||
+    listRow?.status === "DELIVERED" ||
+    orderQuery.data?.status === "DELIVERED";
   const readOnly =
     isView ||
     isBooked ||
+    isDelivered ||
     listRow?.status === "CANCELLED" ||
     orderQuery.data?.status === "CANCELLED";
   const createMutation = useCreateOrder();
@@ -314,6 +321,10 @@ export function OrderFormSheet({
         setLockedAsBooked(true);
         toast.error(detail);
         void orderQuery.refetch();
+      } else if (isDeliveredOrderEdit(error)) {
+        setLockedAsDelivered(true);
+        toast.error(detail);
+        void orderQuery.refetch();
       } else if (isConcurrentOrderChange(error)) {
         toast.error(detail);
         void orderQuery.refetch();
@@ -359,9 +370,11 @@ export function OrderFormSheet({
         <DialogHeader className="border-b border-border/60 px-6 py-4 pe-12">
           <DialogTitle>{title}</DialogTitle>
           <DialogDescription className="sr-only">
-            {isBooked
-              ? t("form.bookedLock")
-              : step === 1
+            {isDelivered
+              ? t("form.deliveredLock")
+              : isBooked
+                ? t("form.bookedLock")
+                : step === 1
                 ? t("form.step1Description")
                 : t("form.step2Description")}
           </DialogDescription>
@@ -396,7 +409,14 @@ export function OrderFormSheet({
             </li>
           </ol>
           <p className="pt-2 text-xs text-muted-foreground">{t("form.requiredHint")}</p>
-          {isBooked ? (
+          {isDelivered ? (
+            <p
+              role="status"
+              className="mt-3 rounded-lg border border-border bg-muted/40 px-4 py-3 text-sm text-foreground"
+            >
+              {t("form.deliveredLock")}
+            </p>
+          ) : isBooked ? (
             <p
               role="status"
               className="mt-3 rounded-lg border border-warning/30 bg-warning/10 px-4 py-3 text-sm text-foreground"

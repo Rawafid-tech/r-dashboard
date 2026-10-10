@@ -29,7 +29,10 @@ export function OrderRowActionsMenu({
   const { hasPermission } = useMerchantPermissions();
   const canManage = hasPermission(MerchantPermission.ORDER_MANAGE);
   const canBookShipment = hasPermission(MerchantPermission.SHIPMENT_MANAGE);
-  const isPending = order.status === "PENDING";
+  const canCreateShipment =
+    order.status === "PENDING" || order.status === "RETURNED";
+  const canEditOrCancel =
+    order.status === "PENDING" || order.status === "RETURNED";
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -46,17 +49,17 @@ export function OrderRowActionsMenu({
         <DropdownMenuItem onSelect={() => onAction("view", order)}>
           {t("actions.view")}
         </DropdownMenuItem>
-        {canBookShipment && isPending ? (
+        {canBookShipment && canCreateShipment ? (
           <DropdownMenuItem onSelect={() => onAction("createShipment", order)}>
             {t("actions.createShipment")}
           </DropdownMenuItem>
         ) : null}
-        {canManage && isPending ? (
+        {canManage && canEditOrCancel ? (
           <DropdownMenuItem onSelect={() => onAction("edit", order)}>
             {t("actions.edit")}
           </DropdownMenuItem>
         ) : null}
-        {canManage && isPending ? (
+        {canManage && canEditOrCancel ? (
           <>
             <DropdownMenuSeparator />
             <DropdownMenuItem

@@ -21,6 +21,20 @@ export function formatDate(
   }
 }
 
+export function formatDateTime(
+  isoString: string,
+  format: DateFormat = "DD_MM_YYYY",
+  locale: string = "en-US",
+): string {
+  const date = new Date(isoString);
+  const datePart = formatDate(isoString, format);
+  const timePart = new Intl.DateTimeFormat(locale, {
+    hour: "2-digit",
+    minute: "2-digit",
+  }).format(date);
+  return `${datePart} ${timePart}`;
+}
+
 export function formatCurrency(
   amount: number,
   currency: string = "EGP",

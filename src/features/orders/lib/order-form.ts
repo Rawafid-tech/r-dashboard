@@ -34,6 +34,11 @@ const BOOKED_EDIT_MARKERS = [
   "ملغى أو محجوز",
 ] as const;
 
+const DELIVERED_EDIT_MARKERS = [
+  "was delivered and can no longer be changed",
+  "تم توصيل هذا الطلب",
+] as const;
+
 export function isDuplicateOrderNumberConflict(error: unknown): boolean {
   if (!isApiError(error, 409)) return false;
   const detail = parseApiError(error).detail;
@@ -56,6 +61,12 @@ export function isBookedOrderEdit(error: unknown): boolean {
   if (!isApiError(error, 409)) return false;
   const detail = parseApiError(error).detail;
   return BOOKED_EDIT_MARKERS.some((marker) => detail.includes(marker));
+}
+
+export function isDeliveredOrderEdit(error: unknown): boolean {
+  if (!isApiError(error, 409)) return false;
+  const detail = parseApiError(error).detail;
+  return DELIVERED_EDIT_MARKERS.some((marker) => detail.includes(marker));
 }
 
 function trimOptional(value: string | undefined): string | undefined {

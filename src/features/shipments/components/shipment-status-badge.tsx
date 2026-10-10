@@ -10,13 +10,19 @@ export function ShipmentStatusBadge({ status }: ShipmentStatusBadgeProps) {
   const { t } = useTranslation("shipments");
 
   const variant =
-    status === "BOOKED"
+    status === "DELIVERED"
       ? "success"
-      : status === "BOOKING"
-        ? "warning"
-        : status === "FAILED"
-          ? "destructive"
-          : "muted";
+      : status === "BOOKED"
+        ? "secondary"
+        : status === "IN_TRANSIT" || status === "RETURNING"
+          ? "warning"
+          : status === "BOOKING"
+            ? "warning"
+            : status === "FAILED" || status === "LOST"
+              ? "destructive"
+              : status === "RETURNED"
+                ? "muted"
+                : "muted";
 
   return <Badge variant={variant}>{t(`status.${status}`)}</Badge>;
 }

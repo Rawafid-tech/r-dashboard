@@ -12,12 +12,43 @@ import type {
 import { apiClient } from "@/shared/api/client";
 import type { PaginatedResponse } from "@/shared/types/api";
 
+function serializeShipmentsListParams(params: ShipmentsListParams): string {
+  const search = new URLSearchParams();
+
+  const append = (key: string, value: string | number | undefined) => {
+    if (value === undefined || value === "") return;
+    search.append(key, String(value));
+  };
+
+  append("page", params.page);
+  append("size", params.size);
+  append("sort", params.sort);
+  append("direction", params.direction);
+  append("connectionId", params.connectionId);
+  append("orderId", params.orderId);
+  append("from", params.from);
+  append("to", params.to);
+  append("search", params.search);
+
+  if (params.status) {
+    const statuses = Array.isArray(params.status)
+      ? params.status
+      : [params.status];
+    statuses.forEach((status) => search.append("status", status));
+  }
+
+  return search.toString();
+}
+
 export async function getShipments(
   params: ShipmentsListParams = {},
 ): Promise<PaginatedResponse<Shipment>> {
   const { data } = await apiClient.get<PaginatedResponse<Shipment>>(
     "/api/shipments",
-    { params },
+    {
+      params,
+      paramsSerializer: () => serializeShipmentsListParams(params),
+    },
   );
   return data;
 }

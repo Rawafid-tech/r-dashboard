@@ -1,5 +1,6 @@
 import { useTranslation } from "react-i18next";
 import type { ShipmentCounts, ShipmentsListTab } from "@/features/shipments/types";
+import { tabCountFromCounts } from "@/features/shipments/lib/shipment-actions";
 import { cn } from "@/shared/lib/utils";
 
 interface ShipmentsHeroProps {
@@ -9,19 +10,14 @@ interface ShipmentsHeroProps {
 }
 
 const TABS: ShipmentsListTab[] = [
-  "BOOKED",
-  "CANCELLED",
-  "FAILED",
+  "AWAITING_PICKUP",
+  "CURRENTLY_SHIPPING",
+  "DELIVERED",
+  "RETURNED",
   "BOOKING",
+  "FAILED",
+  "CANCELLED",
 ];
-
-function tabCount(
-  tab: ShipmentsListTab,
-  counts: ShipmentCounts | undefined,
-): number | undefined {
-  if (!counts) return undefined;
-  return counts[tab];
-}
 
 export function ShipmentsHero({
   activeTab,
@@ -48,7 +44,7 @@ export function ShipmentsHero({
       >
         {TABS.map((tab) => {
           const isActive = activeTab === tab;
-          const count = tabCount(tab, counts);
+          const count = tabCountFromCounts(tab, counts);
 
           return (
             <button
