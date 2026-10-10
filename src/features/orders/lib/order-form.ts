@@ -27,6 +27,7 @@ const CANCELLED_EDIT_MARKERS = [
 ] as const;
 
 const BOOKED_EDIT_MARKERS = [
+  "booked with a shipping partner",
   "already booked",
   "cancelled or already booked",
   "محجوز",

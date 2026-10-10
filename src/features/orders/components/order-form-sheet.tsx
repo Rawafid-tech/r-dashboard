@@ -108,6 +108,7 @@ export function OrderFormSheet({
   const bodyRef = useRef<HTMLDivElement>(null);
   const [step, setStep] = useState<1 | 2>(1);
   const [submitError, setSubmitError] = useState<string | null>(null);
+  const [lockedAsBooked, setLockedAsBooked] = useState(false);
   const [productSearch, setProductSearch] = useState("");
   const debouncedProductSearch = useDebounce(productSearch.trim(), 300);
 
@@ -119,12 +120,15 @@ export function OrderFormSheet({
     enabled: open && Boolean(resolvedId) && mode !== "create",
   });
 
+  const isBooked =
+    lockedAsBooked ||
+    listRow?.status === "BOOKED" ||
+    orderQuery.data?.status === "BOOKED";
   const readOnly =
     isView ||
+    isBooked ||
     listRow?.status === "CANCELLED" ||
-    listRow?.status === "BOOKED" ||
-    orderQuery.data?.status === "CANCELLED" ||
-    orderQuery.data?.status === "BOOKED";
+    orderQuery.data?.status === "CANCELLED";
   const createMutation = useCreateOrder();
   const updateMutation = useUpdateOrder(resolvedId ?? "");
 
@@ -185,6 +189,7 @@ export function OrderFormSheet({
       reset(EMPTY_ORDER_FORM_VALUES);
       setStep(1);
       setSubmitError(null);
+      setLockedAsBooked(false);
       setProductSearch("");
       return;
     }
@@ -193,6 +198,7 @@ export function OrderFormSheet({
       reset(EMPTY_ORDER_FORM_VALUES);
       setStep(1);
       setSubmitError(null);
+      setLockedAsBooked(false);
       return;
     }
 
@@ -201,6 +207,10 @@ export function OrderFormSheet({
     reset(toOrderFormValues(source));
     setStep(1);
   }, [open, mode, orderQuery.data, reset]);
+
+  useEffect(() => {
+    setLockedAsBooked(false);
+  }, [resolvedId]);
 
   const applyProductToRow = useCallback(
     (index: number, product: Product) => {
@@ -300,7 +310,11 @@ export function OrderFormSheet({
       const detail = message || parseApiError(error).detail || t("toast.saveFailed");
       setSubmitError(detail);
       if (serverErrorOnStep1(error)) setStep(1);
-      if (isConcurrentOrderChange(error) || isBookedOrderEdit(error)) {
+      if (isBookedOrderEdit(error)) {
+        setLockedAsBooked(true);
+        toast.error(detail);
+        void orderQuery.refetch();
+      } else if (isConcurrentOrderChange(error)) {
         toast.error(detail);
         void orderQuery.refetch();
       } else if (isApiError(error, 422) || !getFieldErrors(error)) {
@@ -345,7 +359,11 @@ export function OrderFormSheet({
         <DialogHeader className="border-b border-border/60 px-6 py-4 pe-12">
           <DialogTitle>{title}</DialogTitle>
           <DialogDescription className="sr-only">
-            {step === 1 ? t("form.step1Description") : t("form.step2Description")}
+            {isBooked
+              ? t("form.bookedLock")
+              : step === 1
+                ? t("form.step1Description")
+                : t("form.step2Description")}
           </DialogDescription>
           <ol
             className="grid grid-cols-1 gap-2 pt-3 sm:grid-cols-[1fr_auto_1fr] sm:items-stretch"
@@ -378,6 +396,14 @@ export function OrderFormSheet({
             </li>
           </ol>
           <p className="pt-2 text-xs text-muted-foreground">{t("form.requiredHint")}</p>
+          {isBooked ? (
+            <p
+              role="status"
+              className="mt-3 rounded-lg border border-warning/30 bg-warning/10 px-4 py-3 text-sm text-foreground"
+            >
+              {t("form.bookedLock")}
+            </p>
+          ) : null}
         </DialogHeader>
 
         {isLoadingDetail ? (

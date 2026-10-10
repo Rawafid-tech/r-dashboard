@@ -107,6 +107,7 @@
     "createTitle": "Add order",
     "editTitle": "Edit {{number}}",
     "viewTitle": "Order {{number}}",
+    "bookedLock": "This order is booked with a shipping partner. Cancel its shipment before you can edit or cancel the order.",
     "stepsLabel": "Order form steps",
     "stepKicker": "Step {{number}}",
     "step1Title": "Receiver and address",

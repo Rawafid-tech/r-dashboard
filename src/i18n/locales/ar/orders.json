@@ -107,6 +107,7 @@
     "createTitle": "إضافة طلب",
     "editTitle": "تعديل {{number}}",
     "viewTitle": "الطلب {{number}}",
+    "bookedLock": "هذا الطلب محجوز لدى شريك الشحن. ألغِ الشحنة أولاً قبل تعديل الطلب أو إلغائه.",
     "stepsLabel": "خطوات نموذج الطلب",
     "stepKicker": "الخطوة {{number}}",
     "step1Title": "المستلم والعنوان",
