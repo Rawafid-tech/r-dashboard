@@ -269,60 +269,67 @@ export function ConnectionsDataTable({
                 pending={pendingToggleId === connection.id}
                 onToggle={onToggle}
               />
-              {canManage ? (
-                <div className="flex flex-wrap gap-2">
-                  {canEdit ? (
+              <div className="flex flex-wrap gap-2">
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={(event) =>
+                    onRowAction("pickupLocations", connection, event.currentTarget)
+                  }
+                >
+                  {t("actions.pickupLocations")}
+                </Button>
+                {canManage ? (
+                  <>
+                    {canEdit ? (
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        onClick={(event) =>
+                          onRowAction("edit", connection, event.currentTarget)
+                        }
+                      >
+                        <Pencil aria-hidden="true" />
+                        {t("table.edit")}
+                      </Button>
+                    ) : null}
                     <Button
                       type="button"
                       variant="outline"
                       size="sm"
                       onClick={(event) =>
-                        onRowAction("edit", connection, event.currentTarget)
+                        onRowAction("remove", connection, event.currentTarget)
                       }
                     >
-                      <Pencil aria-hidden="true" />
-                      {t("table.edit")}
+                      <Trash2 aria-hidden="true" />
+                      {t("table.remove")}
                     </Button>
-                  ) : null}
-                  <Button
-                    type="button"
-                    variant="outline"
-                    size="sm"
-                    onClick={(event) =>
-                      onRowAction("remove", connection, event.currentTarget)
-                    }
-                  >
-                    <Trash2 aria-hidden="true" />
-                    {t("table.remove")}
-                  </Button>
-                </div>
-              ) : null}
+                  </>
+                ) : null}
+              </div>
             </article>
           );
         },
       }}
-      rowActions={
-        canManage
-          ? (connection) => (
-              <ConnectionRowActionsMenu
-                connection={connection}
-                canEdit={isCarrierAvailable(connection.carrier.code)}
-                onAction={(action, row) => {
-                  const opener = document.activeElement;
-                  onRowAction(
-                    action,
-                    row,
-                    opener instanceof HTMLElement ? opener : document.body,
-                  );
-                }}
-              />
-            )
-          : undefined
-      }
+      rowActions={(connection) => (
+        <ConnectionRowActionsMenu
+          connection={connection}
+          canEdit={isCarrierAvailable(connection.carrier.code)}
+          canManage={canManage}
+          onAction={(action, row) => {
+            const opener = document.activeElement;
+            onRowAction(
+              action,
+              row,
+              opener instanceof HTMLElement ? opener : document.body,
+            );
+          }}
+        />
+      )}
       actionsColumnHeader={
-        canManage ? (
-          <span className="sr-only">{t("table.actions")}</span>
-        ) : undefined
+        <span className="sr-only">{t("table.actions")}</span>
       }
       emptyState={emptyState}
     />

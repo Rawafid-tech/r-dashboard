@@ -5,6 +5,10 @@ import { Link } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
 import { getShipment } from "@/features/shipments/api/shipments.api";
 import { ShipmentDistrictCombobox } from "@/features/shipments/components/shipment-district-combobox";
+import {
+  ShipmentPickupInfo,
+  ShipmentPickupProblemLink,
+} from "@/features/shipments/components/shipment-pickup-info";
 import { useBookShipment } from "@/features/shipments/hooks/use-book-shipment";
 import { shipmentKeys } from "@/features/shipments/hooks/query-keys";
 import { useShipmentPreview } from "@/features/shipments/hooks/use-shipment-preview";
@@ -12,6 +16,7 @@ import { getShipmentDistrictLabel } from "@/features/shipments/lib/district-labe
 import { parseShipmentBookingError } from "@/features/shipments/lib/shipment-booking-errors";
 import type { ShipmentDistrict } from "@/features/shipments/types";
 import { CarrierMark } from "@/features/shipping-partners/components/carrier-mark";
+import { useSenderLocations } from "@/features/locations/hooks/use-sender-locations";
 import { useCarrierConnections } from "@/features/shipping-partners/hooks/use-carrier-connections";
 import { carrierDisplayName } from "@/features/shipping-partners/lib/carrier-label";
 import type { CarrierConnection } from "@/features/shipping-partners/types";
@@ -69,6 +74,9 @@ export function CreateShipmentFlow({
     { active: true, size: 100 },
     { enabled: open },
   );
+  const senderLocationsQuery = useSenderLocations({ size: 1 }, { enabled: open });
+  const showDefaultPickupWarning =
+    (senderLocationsQuery.data?.totalElements ?? 0) > 1;
   const bookMutation = useBookShipment();
 
   const previewParams = useMemo(() => {
@@ -350,6 +358,14 @@ export function CreateShipmentFlow({
                     </p>
                   )}
 
+                  {preview.pickup ? (
+                    <ShipmentPickupInfo
+                      pickup={preview.pickup}
+                      connectionId={connection.id}
+                      showDefaultWarning={showDefaultPickupWarning}
+                    />
+                  ) : null}
+
                   {preview.address.district &&
                   preview.address.method !== "NONE" ? (
                     <div>
@@ -412,7 +428,17 @@ export function CreateShipmentFlow({
                       </p>
                       <ul className="mt-2 list-disc space-y-1 ps-4 text-muted-foreground">
                         {preview.problems.map((problem) => (
-                          <li key={problem.code}>{problem.message}</li>
+                          <li key={problem.code}>
+                            {problem.message}
+                            {problem.code === "PICKUP_LOCATION" ? (
+                              <>
+                                {" "}
+                                <ShipmentPickupProblemLink
+                                  connectionId={connection.id}
+                                />
+                              </>
+                            ) : null}
+                          </li>
                         ))}
                       </ul>
                     </div>

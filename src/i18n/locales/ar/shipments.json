@@ -108,7 +108,8 @@
       "pickedUpAt": "تم الاستلام",
       "deliveredAt": "تم التسليم",
       "returnedAt": "تاريخ المرتجع",
-      "lastUpdateAt": "آخر تحديث من الناقل"
+      "lastUpdateAt": "آخر تحديث من الناقل",
+      "collectedFrom": "يُستلم من"
     },
     "timeline": {
       "heading": "خط التتبع",
@@ -176,7 +177,10 @@
     "confirmingLive": "الحالة: {{status}}",
     "printLabel": "طباعة البوليصة",
     "viewShipments": "عرض الشحنات",
-    "bookAgainBlocked": "لا تحجز مرة أخرى حتى نعرف النتيجة."
+    "bookAgainBlocked": "لا تحجز مرة أخرى حتى نعرف النتيجة.",
+    "collectedFrom": "يُستلم من {{name}}",
+    "defaultPickupWarning": "غير مربوط: الاستلام من الافتراضي لهذا الاتصال.",
+    "openPickupMappings": "أماكن الاستلام"
   },
   "pagination": {
     "label": "ترقيم الشحنات",

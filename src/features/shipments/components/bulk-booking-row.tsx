@@ -2,6 +2,10 @@ import { Pencil, Trash2 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { getGovernorateLabel } from "@/features/locations/lib/location-form-errors";
 import { ShipmentDistrictCombobox } from "@/features/shipments/components/shipment-district-combobox";
+import {
+  ShipmentPickupInfo,
+  ShipmentPickupProblemLink,
+} from "@/features/shipments/components/shipment-pickup-info";
 import { getShipmentDistrictLabel } from "@/features/shipments/lib/district-label";
 import type {
   BulkBookingLineDraft,
@@ -31,6 +35,7 @@ interface BulkBookingRowProps {
   connectionSelectId: string;
   districtSelectId: string;
   canEditPackages: boolean;
+  showDefaultPickupWarning: boolean;
   disabled?: boolean;
   onConnectionChange: (connectionId: string) => void;
   onDistrictChange: (district: ShipmentDistrict | null) => void;
@@ -50,6 +55,7 @@ export function BulkBookingRow({
   connectionSelectId,
   districtSelectId,
   canEditPackages,
+  showDefaultPickupWarning,
   disabled,
   onConnectionChange,
   onDistrictChange,
@@ -124,9 +130,17 @@ export function BulkBookingRow({
           </div>
 
           <dl className="grid gap-3 text-sm sm:grid-cols-3">
-            <div className="text-start">
+            <div className="text-start sm:col-span-3">
               <dt className="text-muted-foreground">{t("bulkBooking.colRoute")}</dt>
               <dd className="mt-0.5 font-medium text-foreground">{routeLabel}</dd>
+              {previewLine?.pickup && previewLine.connection ? (
+                <ShipmentPickupInfo
+                  className="mt-2"
+                  pickup={previewLine.pickup}
+                  connectionId={previewLine.connection.id}
+                  showDefaultWarning={showDefaultPickupWarning}
+                />
+              ) : null}
             </div>
             <div className="text-start">
               <dt className="text-muted-foreground">{t("bulkBooking.colBoxes")}</dt>
@@ -233,7 +247,18 @@ export function BulkBookingRow({
               <p className="font-medium text-destructive">{t("booking.problemsTitle")}</p>
               <ul className="mt-2 list-disc space-y-1 ps-4 text-muted-foreground">
                 {previewLine!.problems.map((problem) => (
-                  <li key={problem.code}>{problem.message}</li>
+                  <li key={problem.code}>
+                    {problem.message}
+                    {problem.code === "PICKUP_LOCATION" &&
+                    previewLine?.connection ? (
+                      <>
+                        {" "}
+                        <ShipmentPickupProblemLink
+                          connectionId={previewLine.connection.id}
+                        />
+                      </>
+                    ) : null}
+                  </li>
                 ))}
               </ul>
               <Button

@@ -108,7 +108,8 @@
       "pickedUpAt": "Picked up",
       "deliveredAt": "Delivered",
       "returnedAt": "Returned",
-      "lastUpdateAt": "Last carrier update"
+      "lastUpdateAt": "Last carrier update",
+      "collectedFrom": "Collected from"
     },
     "timeline": {
       "heading": "Tracking timeline",
@@ -176,7 +177,10 @@
     "confirmingLive": "Status: {{status}}",
     "printLabel": "Print label",
     "viewShipments": "View shipments",
-    "bookAgainBlocked": "Do not book again until we know the outcome."
+    "bookAgainBlocked": "Do not book again until we know the outcome.",
+    "collectedFrom": "Collected from {{name}}",
+    "defaultPickupWarning": "Not mapped: collected from this connection's default.",
+    "openPickupMappings": "Pickup locations"
   },
   "pagination": {
     "label": "Shipments pagination",

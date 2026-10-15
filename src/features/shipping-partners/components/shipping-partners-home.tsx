@@ -4,12 +4,14 @@ import { useSearchParams } from "react-router-dom";
 import { CarrierCatalog } from "@/features/shipping-partners/components/carrier-catalog";
 import { ConnectionDeleteDialog } from "@/features/shipping-partners/components/connection-delete-dialog";
 import { ConnectionFormDialog } from "@/features/shipping-partners/components/connection-form-dialog";
+import { ConnectionPickupMappingsDialog } from "@/features/shipping-partners/components/connection-pickup-mappings-dialog";
 import type { ConnectionRowAction } from "@/features/shipping-partners/components/connection-row-actions-menu";
 import { ConnectionsDataTable } from "@/features/shipping-partners/components/connections-data-table";
 import { ConnectionsEmptyState } from "@/features/shipping-partners/components/connections-empty-state";
 import { ShippingPartnersErrorState } from "@/features/shipping-partners/components/shipping-partners-error-state";
 import { ShippingPartnersHero } from "@/features/shipping-partners/components/shipping-partners-hero";
 import { ShippingPartnersPageSkeleton } from "@/features/shipping-partners/components/shipping-partners-page-skeleton";
+import { getCarrierConnection } from "@/features/shipping-partners/api/shipping-partners.api";
 import { useCarrierConnections } from "@/features/shipping-partners/hooks/use-carrier-connections";
 import { useCarriers } from "@/features/shipping-partners/hooks/use-carriers";
 import { useToggleCarrierConnection } from "@/features/shipping-partners/hooks/use-toggle-carrier-connection";
@@ -84,6 +86,8 @@ export function ShippingPartnersHome() {
   const activeOnly = readActiveOnlyFilter(searchParams.get("active"));
   const [formState, setFormState] = useState<FormState>(null);
   const [connectionToDelete, setConnectionToDelete] =
+    useState<CarrierConnection | null>(null);
+  const [pickupMappingsConnection, setPickupMappingsConnection] =
     useState<CarrierConnection | null>(null);
 
   const carriersQuery = useCarriers();
@@ -177,6 +181,12 @@ export function ShippingPartnersHome() {
       return;
     }
 
+    if (action === "pickupLocations") {
+      restoreFocusRef.current = opener;
+      setPickupMappingsConnection(connection);
+      return;
+    }
+
     const carrier = carrierByCode.get(connection.carrier.code);
     if (!carrier) return;
     restoreFocusRef.current = opener;
@@ -190,6 +200,38 @@ export function ShippingPartnersHome() {
 
   const connections = connectionsQuery.data?.content ?? [];
   const hasSearch = debouncedSearch.length > 0;
+
+  const pickupConnectionParam = searchParams.get("pickupConnection");
+  useEffect(() => {
+    if (!pickupConnectionParam || tab !== "connected") return;
+    if (pickupMappingsConnection?.id === pickupConnectionParam) return;
+
+    const fromList = connections.find((item) => item.id === pickupConnectionParam);
+    if (fromList) {
+      setPickupMappingsConnection(fromList);
+      updateParams({ pickupConnection: null });
+      return;
+    }
+
+    if (connectionsQuery.isSuccess && !connectionsQuery.isFetching) {
+      void getCarrierConnection(pickupConnectionParam)
+        .then((connection) => {
+          setPickupMappingsConnection(connection);
+          updateParams({ pickupConnection: null });
+        })
+        .catch(() => {
+          updateParams({ pickupConnection: null });
+        });
+    }
+  }, [
+    pickupConnectionParam,
+    tab,
+    connections,
+    pickupMappingsConnection?.id,
+    connectionsQuery.isSuccess,
+    connectionsQuery.isFetching,
+    updateParams,
+  ]);
 
   return (
     <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-4 py-6 sm:px-6 sm:py-8">
@@ -301,6 +343,16 @@ export function ShippingPartnersHome() {
               window.requestAnimationFrame(() => node.focus());
             }
           }
+        }}
+      />
+
+      <ConnectionPickupMappingsDialog
+        connection={pickupMappingsConnection}
+        open={pickupMappingsConnection !== null}
+        canManage={canManage}
+        restoreFocusRef={restoreFocusRef}
+        onOpenChange={(next) => {
+          if (!next) setPickupMappingsConnection(null);
         }}
       />
     </div>

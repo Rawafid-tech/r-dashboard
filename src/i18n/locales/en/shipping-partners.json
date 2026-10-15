@@ -70,7 +70,29 @@
   },
   "actions": {
     "edit": "Edit",
-    "remove": "Remove"
+    "remove": "Remove",
+    "pickupLocations": "Pickup locations"
+  },
+  "pickupMappings": {
+    "title": "Pickup locations",
+    "description": "Choose where the carrier collects orders from each sender location. Unmapped locations use this connection's default pickup.",
+    "loading": "Loading pickup locations from the carrier…",
+    "loadFailed": "Could not load pickup locations",
+    "noCarrierLocations": "This shipping partner does not expose pickup locations on your account.",
+    "noSenderLocations": "Add a sender location first, then map it here.",
+    "tableCaption": "Sender location to carrier pickup mapping",
+    "colSender": "Sender location",
+    "colPickup": "Collected from",
+    "pickupFor": "Pickup location for {{name}}",
+    "defaultOption": "Connection default",
+    "defaultNamed": "Default: {{name}}",
+    "inactiveSender": "Inactive",
+    "offAccountWarning": "This pickup location is no longer on your carrier account. Bookings from this sender location will be refused until you choose another.",
+    "readOnlyHint": "You can view mappings. Saving changes requires manage access on shipping partners.",
+    "save": "Save mappings",
+    "saving": "Saving…",
+    "saved": "Pickup mappings saved",
+    "close": "Close"
   },
   "form": {
     "createTitle": "Connect {{carrier}}",

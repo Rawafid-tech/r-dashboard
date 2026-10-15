@@ -52,9 +52,31 @@ export interface CarrierConnection {
   active: boolean;
   credentialHint: string | null;
   options: Record<string, ConnectionOptionValue>;
+  /** Resolved name for `options.pickupLocationId` when the API provides it. */
+  pickupLocationName?: string | null;
   verifiedAt: string | null;
   createdAt: string;
   updatedAt: string;
+}
+
+export interface PickupLocationMapping {
+  senderLocationId: string;
+  pickupLocationId: string;
+  pickupLocationName: string | null;
+  onAccount: boolean;
+}
+
+export interface ConnectionPickupLocationsResponse {
+  locations: PickupLocation[];
+  defaultLocationId: string | null;
+  mappings: PickupLocationMapping[];
+}
+
+export interface UpdatePickupMappingsPayload {
+  mappings: Array<{
+    senderLocationId: string;
+    pickupLocationId: string;
+  }>;
 }
 
 export type CarrierConnectionsSortField = "CREATED_AT" | "NAME";

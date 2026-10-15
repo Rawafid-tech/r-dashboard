@@ -19,6 +19,7 @@ import type {
   BulkPreviewLine,
   ShipmentDistrict,
 } from "@/features/shipments/types";
+import { useSenderLocations } from "@/features/locations/hooks/use-sender-locations";
 import { useCarrierConnections } from "@/features/shipping-partners/hooks/use-carrier-connections";
 import { parseApiError } from "@/shared/api/error-handler";
 import {
@@ -82,6 +83,9 @@ export function WithMyRatesBookingDialog({
     { active: true, size: 100 },
     { enabled: open },
   );
+  const senderLocationsQuery = useSenderLocations({ size: 1 }, { enabled: open });
+  const showDefaultPickupWarning =
+    (senderLocationsQuery.data?.totalElements ?? 0) > 1;
   const previewQuery = useBulkShipmentPreview(drafts, { enabled: open });
   const bulkMutation = useBulkBookShipments();
   const batchLabelsMutation = useBatchShipmentLabels();
@@ -308,6 +312,7 @@ export function WithMyRatesBookingDialog({
                   connectionSelectId={`${formId}-conn-${draft.orderId}`}
                   districtSelectId={`${formId}-dist-${draft.orderId}`}
                   canEditPackages={canEditPackages}
+                  showDefaultPickupWarning={showDefaultPickupWarning}
                   disabled={bulkMutation.isPending}
                   onConnectionChange={(connectionId) =>
                     handleConnectionChange(draft.orderId, connectionId)

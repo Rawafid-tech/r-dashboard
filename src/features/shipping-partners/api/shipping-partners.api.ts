@@ -2,9 +2,11 @@ import type {
   Carrier,
   CarrierConnection,
   CarrierConnectionsListParams,
+  ConnectionPickupLocationsResponse,
   CreateCarrierConnectionPayload,
   TestConnectionResult,
   UpdateCarrierConnectionPayload,
+  UpdatePickupMappingsPayload,
 } from "@/features/shipping-partners/types";
 import { apiClient } from "@/shared/api/client";
 import type { PaginatedResponse } from "@/shared/types/api";
@@ -89,4 +91,26 @@ export async function deleteCarrierConnection(id: string): Promise<void> {
   await apiClient.delete(
     `/api/carrier-connections/${encodeURIComponent(id)}`,
   );
+}
+
+export async function getConnectionPickupLocations(
+  id: string,
+  signal?: AbortSignal,
+): Promise<ConnectionPickupLocationsResponse> {
+  const { data } = await apiClient.get<ConnectionPickupLocationsResponse>(
+    `/api/carrier-connections/${encodeURIComponent(id)}/pickup-locations`,
+    { signal },
+  );
+  return data;
+}
+
+export async function updateConnectionPickupMappings(
+  id: string,
+  payload: UpdatePickupMappingsPayload,
+): Promise<ConnectionPickupLocationsResponse> {
+  const { data } = await apiClient.put<ConnectionPickupLocationsResponse>(
+    `/api/carrier-connections/${encodeURIComponent(id)}/pickup-mappings`,
+    payload,
+  );
+  return data;
 }

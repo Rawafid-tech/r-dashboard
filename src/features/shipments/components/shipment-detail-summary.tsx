@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import { CarrierMark } from "@/features/shipping-partners/components/carrier-mark";
 import { ShipmentIssueBadge } from "@/features/shipments/components/shipment-issue-badge";
+import { formatPickupLocationLabel } from "@/features/shipments/lib/pickup-label";
 import { shipmentCarrierLabel } from "@/features/shipments/lib/shipment-connection-label";
 import type { Shipment } from "@/features/shipments/types";
 import { useSettings } from "@/features/account/hooks/use-settings";
@@ -72,6 +73,11 @@ export function ShipmentDetailSummary({ shipment }: ShipmentDetailSummaryProps) 
             {shipment.connection.name}
           </span>
         </DetailRow>
+        {shipment.pickup ? (
+          <DetailRow label={t("detail.summary.collectedFrom")}>
+            {formatPickupLocationLabel(shipment.pickup)}
+          </DetailRow>
+        ) : null}
         <DetailRow label={t("detail.summary.cod")}>
           {formatCurrency(shipment.codAmount, "EGP", intlLocale)}
         </DetailRow>

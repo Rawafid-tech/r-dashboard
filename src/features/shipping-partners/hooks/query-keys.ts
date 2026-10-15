@@ -12,4 +12,6 @@ export const carrierConnectionKeys = {
     [...carrierConnectionKeys.lists(), params] as const,
   details: () => [...carrierConnectionKeys.all, "detail"] as const,
   detail: (id: string) => [...carrierConnectionKeys.details(), id] as const,
+  pickupLocations: (id: string) =>
+    [...carrierConnectionKeys.all, "pickup-locations", id] as const,
 };

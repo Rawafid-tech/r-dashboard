@@ -10,17 +10,19 @@ import {
 } from "@/shared/components/ui";
 import type { CarrierConnection } from "@/features/shipping-partners/types";
 
-export type ConnectionRowAction = "edit" | "remove";
+export type ConnectionRowAction = "edit" | "remove" | "pickupLocations";
 
 interface ConnectionRowActionsMenuProps {
   connection: CarrierConnection;
   canEdit: boolean;
+  canManage: boolean;
   onAction: (action: ConnectionRowAction, connection: CarrierConnection) => void;
 }
 
 export function ConnectionRowActionsMenu({
   connection,
   canEdit,
+  canManage,
   onAction,
 }: ConnectionRowActionsMenuProps) {
   const { t } = useTranslation("shippingPartners");
@@ -37,19 +39,27 @@ export function ConnectionRowActionsMenu({
           <MoreHorizontal aria-hidden="true" />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-44">
-        {canEdit ? (
+      <DropdownMenuContent align="end" className="w-52">
+        <DropdownMenuItem
+          onSelect={() => onAction("pickupLocations", connection)}
+        >
+          {t("actions.pickupLocations")}
+        </DropdownMenuItem>
+        {canManage && canEdit ? <DropdownMenuSeparator /> : null}
+        {canManage && canEdit ? (
           <DropdownMenuItem onSelect={() => onAction("edit", connection)}>
             {t("actions.edit")}
           </DropdownMenuItem>
         ) : null}
-        {canEdit ? <DropdownMenuSeparator /> : null}
-        <DropdownMenuItem
-          variant="destructive"
-          onSelect={() => onAction("remove", connection)}
-        >
-          {t("actions.remove")}
-        </DropdownMenuItem>
+        {canManage ? <DropdownMenuSeparator /> : null}
+        {canManage ? (
+          <DropdownMenuItem
+            variant="destructive"
+            onSelect={() => onAction("remove", connection)}
+          >
+            {t("actions.remove")}
+          </DropdownMenuItem>
+        ) : null}
       </DropdownMenuContent>
     </DropdownMenu>
   );

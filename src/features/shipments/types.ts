@@ -103,6 +103,7 @@ export interface Shipment {
   receiverName: string;
   receiverPhone: string;
   connection: ShipmentConnectionRef;
+  pickup: ShipmentPickupRef | null;
   trackingNumber: string | null;
   carrierState: ShipmentCarrierState | null;
   district: ShipmentDistrict | null;
@@ -150,6 +151,17 @@ export interface ShipmentProblem {
   message: string;
 }
 
+export interface ShipmentPickupRef {
+  locationId: string;
+  name: string | null;
+}
+
+export type ShipmentPickupSource = "MAPPED" | "DEFAULT";
+
+export interface ShipmentPreviewPickup extends ShipmentPickupRef {
+  source: ShipmentPickupSource;
+}
+
 export interface ShipmentQuota {
   planCode: string;
   limit: number;
@@ -167,6 +179,7 @@ export interface ShipmentPreviewAddress {
 export interface ShipmentPreview {
   order: ShipmentPreviewOrder;
   connection: ShipmentConnectionRef;
+  pickup: ShipmentPreviewPickup | null;
   address: ShipmentPreviewAddress;
   problems: ShipmentProblem[];
   quota: ShipmentQuota | null;
@@ -241,6 +254,7 @@ export interface BulkPreviewLine {
   packagesCount: number;
   totalWeightKg: number;
   connection: ShipmentConnectionRef | null;
+  pickup: ShipmentPreviewPickup | null;
   address: ShipmentPreviewAddress | null;
   problems: ShipmentProblem[];
   bookable: boolean;
