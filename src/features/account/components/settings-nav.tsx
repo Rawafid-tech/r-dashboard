@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
+  Bell,
   Building2,
   Shield,
   SlidersHorizontal,
@@ -14,6 +15,7 @@ export const SETTINGS_SECTIONS = [
   "company",
   "security",
   "preferences",
+  "notifications",
 ] as const;
 
 export type SettingsSection = (typeof SETTINGS_SECTIONS)[number];
@@ -23,6 +25,7 @@ const SECTION_ICONS: Record<SettingsSection, LucideIcon> = {
   company: Building2,
   security: Shield,
   preferences: SlidersHorizontal,
+  notifications: Bell,
 };
 
 /** Header (3.5rem) + breathing room for sticky section nav. */

@@ -10,6 +10,7 @@ import { ShippingBoxesPage } from "@/app/merchant/shipping-boxes-page";
 import { ShippingPartnersPage } from "@/app/merchant/shipping-partners-page";
 import { ShipmentDetailPage } from "@/app/merchant/shipment-detail-page";
 import { ShipmentsPage } from "@/app/merchant/shipments-page";
+import { NotificationsPage } from "@/app/merchant/notifications-page";
 import { SettingsPage } from "@/app/merchant/settings-page";
 import { UsersPage } from "@/app/merchant/users-page";
 import { WalletPage } from "@/app/merchant/wallet-page";
@@ -61,6 +62,10 @@ export const merchantRoutes: RouteObject[] = [
       {
         path: "shipments/:shipmentId",
         element: <ShipmentDetailPage />,
+      },
+      {
+        path: "notifications",
+        element: <NotificationsPage />,
       },
       {
         path: "settings",

@@ -41,6 +41,10 @@ export function useMerchantShellBreadcrumbs(): ShellBreadcrumb[] {
       return [home, { label: t("nav.settings") }];
     }
 
+    if (pathname.startsWith("/notifications")) {
+      return [home, { label: t("nav.notifications") }];
+    }
+
     return [{ label: t("nav.dashboard") }];
   }, [pathname, t]);
 }

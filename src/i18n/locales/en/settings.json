@@ -12,7 +12,8 @@
     "profile": "Profile",
     "company": "Company",
     "security": "Security",
-    "preferences": "Preferences"
+    "preferences": "Preferences",
+    "notifications": "Notifications"
   },
   "sections": {
     "profile": {

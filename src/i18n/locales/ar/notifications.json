@@ -1,0 +1,81 @@
+{
+  "metaTitle": "الإشعارات — روافد",
+  "metaDescription": "اطّلع على تحديثات الشحنات وتنبيهات نشاط متجرك في روافد.",
+  "skipToContent": "تخطّ إلى الإشعارات",
+  "bell": {
+    "label": "الإشعارات",
+    "labelWithCount_zero": "الإشعارات",
+    "labelWithCount_one": "الإشعارات، {{count}} غير مقروء",
+    "labelWithCount_two": "الإشعارات، {{count}} غير مقروء",
+    "labelWithCount_few": "الإشعارات، {{count}} غير مقروء",
+    "labelWithCount_many": "الإشعارات، {{count}} غير مقروء",
+    "labelWithCount_other": "الإشعارات، {{count}} غير مقروء",
+    "unreadBadge": "{{count}} غير مقروء",
+    "title": "أحدث الإشعارات",
+    "markAll": "تعليم الكل كمقروء",
+    "viewAll": "عرض كل الإشعارات",
+    "emptyTitle": "لا جديد حالياً",
+    "emptyDescription": "ستظهر تحديثات الشحنات هنا عند حدوث أي تغيير.",
+    "loadError": "تعذّر تحميل الإشعارات",
+    "retry": "إعادة المحاولة"
+  },
+  "hero": {
+    "title": "الإشعارات",
+    "subtitle": "تحديثات الشحنات لفريقك — الأحدث أولاً. تبقى الإدخالات 90 يوماً.",
+    "unreadLabel": "غير مقروء",
+    "totalLabel": "الإجمالي"
+  },
+  "pagination": {
+    "label": "صفحات الإشعارات",
+    "summary": "{{start}}–{{end}} من {{total}}",
+    "pageOf": "{{current}} / {{total}}"
+  },
+  "filters": {
+    "all": "الكل",
+    "unread": "غير المقروء فقط",
+    "label": "تصفية الإشعارات"
+  },
+  "list": {
+    "markAll": "تعليم الكل كمقروء",
+    "unreadIndicator": "غير مقروء"
+  },
+  "empty": {
+    "title": "لا توجد إشعارات بعد",
+    "description": "عند تغيّر حالة الشحنات ستظهر هنا.",
+    "unreadTitle": "لا توجد إشعارات غير مقروءة",
+    "unreadDescription": "أنت على اطلاع. انتقل إلى الكل لتصفح السجل."
+  },
+  "errors": {
+    "loadFailed": "تعذّر تحميل الإشعارات",
+    "loadFailedHint": "تحقق من الاتصال وحاول مرة أخرى.",
+    "retry": "إعادة المحاولة",
+    "notFound": "الإشعار غير موجود",
+    "markReadFailed": "تعذّر تعليم الإشعار كمقروء",
+    "markAllFailed": "تعذّر تعليم الكل كمقروء"
+  },
+  "settings": {
+    "title": "الإشعارات",
+    "description": "اختر تحديثات الشحنات التي تصلك في التطبيق وبالبريد. يُرسل البريد بلغتك في إعدادات النظام.",
+    "columns": {
+      "topic": "الحدث",
+      "inApp": "في التطبيق",
+      "email": "البريد"
+    },
+    "inAppLabel": "{{topic}} — في التطبيق",
+    "emailLabel": "{{topic}} — بالبريد",
+    "resetDefaults": "إعادة للافتراضي",
+    "save": "حفظ التفضيلات",
+    "success": "تم حفظ تفضيلات الإشعارات",
+    "error": "تعذّر حفظ تفضيلات الإشعارات"
+  },
+  "topics": {
+    "SHIPMENT_PICKED_UP": "استلمت شركة الشحن الشحنة",
+    "SHIPMENT_DELIVERED": "تم تسليم الشحنة",
+    "SHIPMENT_RETURNED": "عادت الشحنة إليك",
+    "SHIPMENT_RETURNING": "الشحنة في طريقها للعودة",
+    "SHIPMENT_ISSUE": "مشكلة في محاولة التسليم",
+    "SHIPMENT_LOST": "فقدان أو تلف الشحنة",
+    "SHIPMENT_CANCELLED_BY_CARRIER": "ألغت شركة الشحن قبل الاستلام",
+    "SHIPMENT_BOOKING_FAILED": "فشل الحجز بعد التأكيد"
+  }
+}

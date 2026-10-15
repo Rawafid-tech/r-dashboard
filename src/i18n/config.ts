@@ -32,6 +32,8 @@ import ordersAr from "./locales/ar/orders.json";
 import ordersEn from "./locales/en/orders.json";
 import shipmentsAr from "./locales/ar/shipments.json";
 import shipmentsEn from "./locales/en/shipments.json";
+import notificationsAr from "./locales/ar/notifications.json";
+import notificationsEn from "./locales/en/notifications.json";
 
 const resources = {
   ar: {
@@ -50,6 +52,7 @@ const resources = {
     wallet: walletAr,
     orders: ordersAr,
     shipments: shipmentsAr,
+    notifications: notificationsAr,
   },
   en: {
     common: commonEn,
@@ -67,6 +70,7 @@ const resources = {
     wallet: walletEn,
     orders: ordersEn,
     shipments: shipmentsEn,
+    notifications: notificationsEn,
   },
 };
 
@@ -77,7 +81,7 @@ i18n
     resources,
     fallbackLng: "ar",
     defaultNS: "common",
-    ns: ["common", "auth", "dashboard", "settings", "billing", "admin", "roles", "users", "locations", "shippingBoxes", "shippingPartners", "products", "wallet", "orders", "shipments"],
+    ns: ["common", "auth", "dashboard", "settings", "billing", "admin", "roles", "users", "locations", "shippingBoxes", "shippingPartners", "products", "wallet", "orders", "shipments", "notifications"],
     interpolation: {
       escapeValue: false,
     },

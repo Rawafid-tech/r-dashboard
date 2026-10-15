@@ -1,4 +1,11 @@
-import { Building2, RefreshCw, Shield, SlidersHorizontal, UserRound } from "lucide-react";
+import {
+  Bell,
+  Building2,
+  RefreshCw,
+  Shield,
+  SlidersHorizontal,
+  UserRound,
+} from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/shared/components/ui";
 import { MerchantRole } from "@/shared/types/enums";
@@ -9,13 +16,14 @@ import { SettingsSectionCard } from "@/features/account/components/settings-sect
 import { ProfileSettingsForm } from "@/features/account/components/profile-settings-form";
 import { PasswordSettingsForm } from "@/features/account/components/password-settings-form";
 import { PreferencesSettingsForm } from "@/features/account/components/preferences-settings-form";
+import { NotificationPreferencesForm } from "@/features/notifications/components/notification-preferences-form";
 import { CompanySettingsForm } from "@/features/company/components/company-settings-form";
 import { useMe } from "@/features/account/hooks/use-me";
 import { useSettings } from "@/features/account/hooks/use-settings";
 import { useCompany } from "@/features/company/hooks/use-company";
 
 export function SettingsHome() {
-  const { t } = useTranslation("settings");
+  const { t } = useTranslation(["settings", "notifications"]);
   const meQuery = useMe();
   const companyQuery = useCompany();
   const settingsQuery = useSettings();
@@ -122,6 +130,15 @@ export function SettingsHome() {
             description={t("sections.preferences.description")}
           >
             <PreferencesSettingsForm settings={settingsQuery.data} />
+          </SettingsSectionCard>
+
+          <SettingsSectionCard
+            id="settings-notifications"
+            icon={Bell}
+            title={t("notifications:settings.title")}
+            description={t("notifications:settings.description")}
+          >
+            <NotificationPreferencesForm />
           </SettingsSectionCard>
         </div>
       </div>

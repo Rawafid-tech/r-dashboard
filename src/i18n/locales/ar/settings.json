@@ -12,7 +12,8 @@
     "profile": "الملف الشخصي",
     "company": "الشركة",
     "security": "الأمان",
-    "preferences": "التفضيلات"
+    "preferences": "التفضيلات",
+    "notifications": "الإشعارات"
   },
   "sections": {
     "profile": {

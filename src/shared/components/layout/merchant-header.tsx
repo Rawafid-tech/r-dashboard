@@ -15,6 +15,7 @@ import {
 } from "@/shared/components/ui";
 import { AuthLocaleThemeControls } from "@/features/auth/components/auth-locale-theme-controls";
 import { useLogout } from "@/features/auth/hooks/use-logout";
+import { NotificationBell } from "@/features/notifications/components/notification-bell";
 import { WalletHeaderPopover } from "@/features/wallet/components/wallet-header-popover";
 import { SidebarExpandButton } from "@/shared/components/layout/sidebar-toggle-button";
 import { MerchantAppBreadcrumbs } from "@/shared/components/layout/app-breadcrumbs";
@@ -82,6 +83,8 @@ export function MerchantHeader({
       </div>
 
       <AuthLocaleThemeControls />
+
+      <NotificationBell />
 
       <WalletHeaderPopover />
 

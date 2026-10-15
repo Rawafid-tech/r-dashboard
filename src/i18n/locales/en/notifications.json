@@ -1,0 +1,77 @@
+{
+  "metaTitle": "Notifications — Rawafid",
+  "metaDescription": "View shipment updates and activity alerts for your Rawafid workspace.",
+  "skipToContent": "Skip to notifications",
+  "bell": {
+    "label": "Notifications",
+    "labelWithCount_one": "Notifications, {{count}} unread",
+    "labelWithCount_other": "Notifications, {{count}} unread",
+    "unreadBadge": "{{count}} unread",
+    "title": "Recent notifications",
+    "markAll": "Mark all as read",
+    "viewAll": "View all notifications",
+    "emptyTitle": "You're all caught up",
+    "emptyDescription": "Shipment updates will appear here when something changes.",
+    "loadError": "Could not load notifications",
+    "retry": "Try again"
+  },
+  "hero": {
+    "title": "Notifications",
+    "subtitle": "Shipment updates for your team — newest first. Entries stay for 90 days.",
+    "unreadLabel": "Unread",
+    "totalLabel": "Total"
+  },
+  "pagination": {
+    "label": "Notifications pages",
+    "summary": "{{start}}–{{end}} of {{total}}",
+    "pageOf": "{{current}} / {{total}}"
+  },
+  "filters": {
+    "all": "All",
+    "unread": "Unread only",
+    "label": "Filter notifications"
+  },
+  "list": {
+    "markAll": "Mark all as read",
+    "unreadIndicator": "Unread"
+  },
+  "empty": {
+    "title": "No notifications yet",
+    "description": "When shipment statuses change, you'll see them here.",
+    "unreadTitle": "No unread notifications",
+    "unreadDescription": "You're caught up. Switch to all notifications to browse history."
+  },
+  "errors": {
+    "loadFailed": "Could not load notifications",
+    "loadFailedHint": "Check your connection and try again.",
+    "retry": "Try again",
+    "notFound": "Notification not found",
+    "markReadFailed": "Could not mark notification as read",
+    "markAllFailed": "Could not mark all as read"
+  },
+  "settings": {
+    "title": "Notifications",
+    "description": "Choose which shipment updates you get in the app and by email. Email uses your language in system settings.",
+    "columns": {
+      "topic": "Event",
+      "inApp": "In app",
+      "email": "Email"
+    },
+    "inAppLabel": "{{topic}} — in app",
+    "emailLabel": "{{topic}} — email",
+    "resetDefaults": "Reset to defaults",
+    "save": "Save preferences",
+    "success": "Notification preferences saved",
+    "error": "Could not save notification preferences"
+  },
+  "topics": {
+    "SHIPMENT_PICKED_UP": "Carrier picked up shipment",
+    "SHIPMENT_DELIVERED": "Shipment delivered",
+    "SHIPMENT_RETURNED": "Shipment returned to you",
+    "SHIPMENT_RETURNING": "Shipment on its way back",
+    "SHIPMENT_ISSUE": "Delivery attempt issue",
+    "SHIPMENT_LOST": "Shipment lost or damaged",
+    "SHIPMENT_CANCELLED_BY_CARRIER": "Carrier cancelled before pickup",
+    "SHIPMENT_BOOKING_FAILED": "Booking failed after the fact"
+  }
+}
