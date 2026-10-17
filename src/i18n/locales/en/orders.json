@@ -99,7 +99,8 @@
     "edit": "Edit",
     "cancel": "Cancel order",
     "createShipment": "Create shipment",
-    "bookReturn": "Return"
+    "bookReturn": "Return",
+    "bookExchange": "Exchange"
   },
   "cancel": {
     "title": "Cancel this order?",

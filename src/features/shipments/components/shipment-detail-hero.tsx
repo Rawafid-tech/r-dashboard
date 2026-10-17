@@ -59,7 +59,11 @@ export function ShipmentDetailHero({
             <span className="tabular-nums">
               {shipment.trackingNumber ?? t("detail.noTracking")}
             </span>
-            <ShipmentStatusBadge status={shipment.status} kind={kind} />
+            <ShipmentStatusBadge
+              status={shipment.status}
+              kind={kind}
+              swappedAt={shipment.exchange?.swappedAt}
+            />
             <ShipmentKindBadge shipment={shipment} />
             {isFetching ? (
               <span className="text-xs font-normal text-muted-foreground">

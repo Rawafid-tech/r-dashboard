@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { useSearchParams } from "react-router-dom";
+import { BookExchangeDialog } from "@/features/exchanges";
 import { BookReturnDialog } from "@/features/returns";
 import { CreateShipmentWizardDialog } from "@/features/shipments/components/create-shipment-wizard-dialog";
 import { WithMyRatesBookingDialog } from "@/features/shipments/components/with-my-rates-booking-dialog";
@@ -104,6 +105,10 @@ export function OrdersHome() {
     null,
   );
   const [returnOrder, setReturnOrder] = useState<{
+    id: string;
+    orderNumber: string;
+  } | null>(null);
+  const [exchangeOrder, setExchangeOrder] = useState<{
     id: string;
     orderNumber: string;
   } | null>(null);
@@ -223,6 +228,9 @@ export function OrdersHome() {
         break;
       case "bookReturn":
         setReturnOrder({ id: order.id, orderNumber: order.orderNumber });
+        break;
+      case "bookExchange":
+        setExchangeOrder({ id: order.id, orderNumber: order.orderNumber });
         break;
       default:
         break;
@@ -405,6 +413,15 @@ export function OrdersHome() {
         open={returnOrder !== null}
         onOpenChange={(open) => {
           if (!open) setReturnOrder(null);
+        }}
+      />
+
+      <BookExchangeDialog
+        orderId={exchangeOrder?.id ?? ""}
+        orderNumber={exchangeOrder?.orderNumber}
+        open={exchangeOrder !== null}
+        onOpenChange={(open) => {
+          if (!open) setExchangeOrder(null);
         }}
       />
 

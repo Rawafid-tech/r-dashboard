@@ -79,6 +79,9 @@
     "SHIPMENT_BOOKING_FAILED": "فشل الحجز بعد التأكيد",
     "SHIPMENT_RETURN_PICKED_UP": "تم استلام المرتجع من العميل",
     "SHIPMENT_RETURN_RECEIVED": "وصل المرتجع إلى موقعك",
-    "SHIPMENT_RETURN_FAILED": "تعذّر استلام المرتجع"
+    "SHIPMENT_RETURN_FAILED": "تعذّر استلام المرتجع",
+    "SHIPMENT_EXCHANGE_SWAPPED": "تم استبدال الطلب لدى العميل",
+    "SHIPMENT_EXCHANGE_COMPLETED": "وصلت المنتجات المستبدلة إليك",
+    "SHIPMENT_EXCHANGE_FAILED": "لم يتم الاستبدال"
   }
 }

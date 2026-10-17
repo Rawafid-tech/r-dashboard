@@ -315,7 +315,9 @@ export function BookReturnDialog({
                 <Link
                   to={`/shipments/${encodeURIComponent(preview.existingReturn.shipmentId)}`}
                 >
-                  {t("dialog.viewReturn")}
+                  {preview.existingReturn.kind === "EXCHANGE"
+                    ? t("dialog.viewExchange")
+                    : t("dialog.viewReturn")}
                 </Link>
               </Button>
             </div>

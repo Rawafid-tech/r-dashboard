@@ -1,5 +1,6 @@
 import {
   AlertTriangle,
+  ArrowLeftRight,
   Ban,
   CheckCircle2,
   Package,
@@ -58,6 +59,18 @@ const TOPIC_META: Record<NotificationTopic, NotificationTopicMeta> = {
     toneClassName: "bg-violet-500/10 text-violet-700 dark:text-violet-400",
   },
   SHIPMENT_RETURN_FAILED: {
+    icon: PackageX,
+    toneClassName: "bg-destructive/10 text-destructive",
+  },
+  SHIPMENT_EXCHANGE_SWAPPED: {
+    icon: ArrowLeftRight,
+    toneClassName: "bg-sky-500/10 text-sky-700 dark:text-sky-400",
+  },
+  SHIPMENT_EXCHANGE_COMPLETED: {
+    icon: PackageCheck,
+    toneClassName: "bg-emerald-500/10 text-emerald-700 dark:text-emerald-400",
+  },
+  SHIPMENT_EXCHANGE_FAILED: {
     icon: PackageX,
     toneClassName: "bg-destructive/10 text-destructive",
   },

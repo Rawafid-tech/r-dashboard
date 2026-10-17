@@ -247,6 +247,7 @@ export function ShipmentsDataTable({
               <ShipmentStatusBadge
                 status={shipment.status}
                 kind={getShipmentKind(shipment)}
+                swappedAt={shipment.exchange?.swappedAt}
               />
             </div>
             {shipment.issue ? (

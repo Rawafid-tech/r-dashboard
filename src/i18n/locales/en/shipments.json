@@ -27,6 +27,7 @@
     "kindAll": "All shipments",
     "kindDelivery": "Deliveries",
     "kindReturns": "Returns",
+    "kindExchanges": "Exchanges",
     "connectionLabel": "Connection",
     "connectionAll": "All connections",
     "dateFrom": "From",
@@ -61,7 +62,8 @@
     "openMenu": "Actions for order {{number}}"
   },
   "kind": {
-    "return": "Return"
+    "return": "Return",
+    "exchange": "Exchange"
   },
   "status": {
     "BOOKING": "Confirming",
@@ -78,6 +80,18 @@
       "BOOKED": "Awaiting pickup",
       "IN_TRANSIT": "On its way back",
       "RETURNED": "Received",
+      "CANCELLED": "Cancelled",
+      "LOST": "Lost",
+      "FAILED": "Failed"
+    },
+    "exchange": {
+      "BOOKING": "Booking…",
+      "BOOKED": "Awaiting pickup",
+      "IN_TRANSIT": "On its way to the customer",
+      "RETURNING": "Coming back, not exchanged",
+      "RETURNING_swapped": "Exchanged, coming back",
+      "RETURNED": "Not exchanged",
+      "RETURNED_swapped": "Exchanged",
       "CANCELLED": "Cancelled",
       "LOST": "Lost",
       "FAILED": "Failed"
@@ -99,6 +113,7 @@
       "EXCEPTION": "Delivery exception",
       "DELIVERED": "Delivered",
       "RETURNED": "Returned to merchant",
+      "SWAPPED": "Items collected from customer",
       "LOST": "Lost or damaged",
       "CANCELLED": "Cancelled",
       "IGNORED": "Carrier update"
@@ -135,6 +150,15 @@
       "refund": "Cash refund",
       "items": "Items",
       "pickupAddress": "Pickup from customer"
+    },
+    "exchange": {
+      "title": "Exchange details",
+      "reason": "Reason",
+      "collect": "Collected from customer",
+      "refund": "Refund to customer",
+      "items": "Items exchanged",
+      "address": "Delivery to customer",
+      "swappedAt": "Swapped at customer"
     },
     "timeline": {
       "heading": "Tracking timeline",

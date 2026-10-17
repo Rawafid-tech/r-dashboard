@@ -87,6 +87,7 @@ export function OrderShipmentsSection({ orderId }: OrderShipmentsSectionProps) {
                   <ShipmentStatusBadge
                     status={shipment.status}
                     kind={getShipmentKind(shipment)}
+                    swappedAt={shipment.exchange?.swappedAt}
                   />
                   {shipment.issue ? (
                     <ShipmentIssueBadge issue={shipment.issue} />

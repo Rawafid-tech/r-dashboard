@@ -33,6 +33,7 @@ function timelineIcon(state: ShipmentTimelineState) {
     case "RETURNED":
       return RotateCcw;
     case "RETURNING":
+    case "SWAPPED":
       return ArrowLeftRight;
     case "EXCEPTION":
       return AlertTriangle;

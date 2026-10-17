@@ -65,6 +65,7 @@ import {
 import { useDebounce } from "@/shared/hooks/use-debounce";
 import { cn } from "@/shared/lib/utils";
 import { SenderLocationStatus } from "@/shared/types/enums";
+import { BookExchangeDialog } from "@/features/exchanges";
 import { BookReturnDialog } from "@/features/returns";
 import {
   MerchantPermission,
@@ -132,6 +133,7 @@ export function OrderFormSheet({
   const [lockedAsBooked, setLockedAsBooked] = useState(false);
   const [lockedAsDelivered, setLockedAsDelivered] = useState(false);
   const [returnDialogOpen, setReturnDialogOpen] = useState(false);
+  const [exchangeDialogOpen, setExchangeDialogOpen] = useState(false);
   const [productSearch, setProductSearch] = useState("");
   const debouncedProductSearch = useDebounce(productSearch.trim(), 300);
 
@@ -1222,13 +1224,22 @@ export function OrderFormSheet({
           ) : readOnly ? (
             <>
               {isDelivered && canBookReturn && resolvedId ? (
-                <Button
-                  type="button"
-                  variant="secondary"
-                  onClick={() => setReturnDialogOpen(true)}
-                >
-                  {t("actions.bookReturn")}
-                </Button>
+                <>
+                  <Button
+                    type="button"
+                    variant="secondary"
+                    onClick={() => setExchangeDialogOpen(true)}
+                  >
+                    {t("actions.bookExchange")}
+                  </Button>
+                  <Button
+                    type="button"
+                    variant="secondary"
+                    onClick={() => setReturnDialogOpen(true)}
+                  >
+                    {t("actions.bookReturn")}
+                  </Button>
+                </>
               ) : null}
               <Button type="button" onClick={() => onOpenChange(false)}>
                 {tCommon("common.close")}
@@ -1267,11 +1278,24 @@ export function OrderFormSheet({
       />
     ) : null;
 
+  const exchangeDialog =
+    resolvedId && canBookReturn ? (
+      <BookExchangeDialog
+        orderId={resolvedId}
+        orderNumber={
+          listRow?.orderNumber ?? orderQuery.data?.orderNumber ?? undefined
+        }
+        open={exchangeDialogOpen}
+        onOpenChange={setExchangeDialogOpen}
+      />
+    ) : null;
+
   if (presentation === "embedded") {
     return (
       <>
         {sheetContent}
         {returnDialog}
+        {exchangeDialog}
       </>
     );
   }
@@ -1282,13 +1306,17 @@ export function OrderFormSheet({
         open={open}
         onOpenChange={(next) => {
           if (isSaving) return;
-          if (!next) setReturnDialogOpen(false);
+          if (!next) {
+            setReturnDialogOpen(false);
+            setExchangeDialogOpen(false);
+          }
           onOpenChange(next);
         }}
       >
         {sheetContent}
       </Dialog>
       {returnDialog}
+      {exchangeDialog}
     </>
   );
 }

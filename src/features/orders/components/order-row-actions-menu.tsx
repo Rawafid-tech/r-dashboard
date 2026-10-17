@@ -19,7 +19,8 @@ export type OrderRowAction =
   | "edit"
   | "cancel"
   | "createShipment"
-  | "bookReturn";
+  | "bookReturn"
+  | "bookExchange";
 
 interface OrderRowActionsMenuProps {
   order: OrderListRow;
@@ -58,6 +59,11 @@ export function OrderRowActionsMenu({
         {canBookShipment && canCreateShipment ? (
           <DropdownMenuItem onSelect={() => onAction("createShipment", order)}>
             {t("actions.createShipment")}
+          </DropdownMenuItem>
+        ) : null}
+        {canBookShipment && canBookReturn ? (
+          <DropdownMenuItem onSelect={() => onAction("bookExchange", order)}>
+            {t("actions.bookExchange")}
           </DropdownMenuItem>
         ) : null}
         {canBookShipment && canBookReturn ? (

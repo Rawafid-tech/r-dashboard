@@ -1,0 +1,78 @@
+{
+  "list": {
+    "metaTitle": "Exchanges — Rawafid",
+    "metaDescription": "Track same-item exchanges your carrier delivers and collects at the customer's door.",
+    "skipToContent": "Skip to exchanges",
+    "hero": {
+      "title": "Exchanges",
+      "subtitle": "Replacement shipments: the courier takes the new items from you, swaps them at the customer, and brings the old items back. Tracking opens the exchange; order numbers open the order."
+    },
+    "tabs": {
+      "label": "Exchange status"
+    },
+    "empty": {
+      "title": "No exchanges yet",
+      "description": "Book an exchange from a delivered order to see it here.",
+      "searchTitle": "No exchanges match",
+      "searchDescription": "Try a different search or filter."
+    }
+  },
+  "dialog": {
+    "title": "Book an exchange",
+    "titleForOrder": "Book an exchange — {{orderNumber}}",
+    "description": "In one trip the courier picks up the replacement from your pickup location, hands it to the customer, and collects the same items back.",
+    "existingReturn": "A return or exchange is already on its way for this order.",
+    "viewReturn": "View return shipment",
+    "viewExchange": "View exchange shipment",
+    "noConnections": "None of your shipping partners can exchange parcels.",
+    "connectPartner": "Connect a partner that supports exchanges",
+    "nothingLeft": "Nothing is left to take back on this order.",
+    "customerMoved": "Customer moved?",
+    "customerMovedHint": "Update the delivery address or phone only if they differ from the order.",
+    "itemsTitle": "Items to exchange",
+    "itemsHint": "Choose how many of each item the courier should swap (same product going out and coming back).",
+    "reasonLabel": "Reason (optional)",
+    "reasonPlaceholder": "Wrong size, faulty unit, etc.",
+    "notesLabel": "Notes for the courier (optional)",
+    "notesPlaceholder": "Bring size L",
+    "moneyLegend": "Price difference",
+    "moneyNone": "None",
+    "moneyCollect": "Collect from customer",
+    "moneyRefund": "Refund to customer",
+    "collectLabel": "Amount to collect (EGP)",
+    "collectHint": "The courier collects this from the customer in cash.",
+    "refundLabel": "Amount to refund (EGP)",
+    "refundHint": "Up to {{max}} EGP remaining on this order.",
+    "addressLineLabel": "Address line",
+    "buildingLabel": "Building",
+    "floorLabel": "Floor",
+    "apartmentLabel": "Apartment",
+    "phoneLabel": "Phone",
+    "submit": "Book exchange",
+    "submitting": "Booking…",
+    "retryWithoutRefund": "Book again without refund",
+    "close": "Close"
+  },
+  "toast": {
+    "booked": "Exchange booked — track {{tracking}}",
+    "booking": "Exchange sent to the carrier — confirmation soon"
+  },
+  "stepper": {
+    "decrease": "Decrease quantity",
+    "increase": "Increase quantity"
+  },
+  "validation": {
+    "districtRequired": "Choose a district for the customer's area.",
+    "phoneInvalid": "Enter a valid phone number (8–15 digits).",
+    "reasonTooLong": "Reason is too long.",
+    "notesTooLong": "Notes are too long.",
+    "collectInvalid": "Enter a valid amount to collect.",
+    "collectRequired": "Enter an amount to collect from the customer.",
+    "collectTooHigh": "The amount exceeds the carrier limit.",
+    "refundInvalid": "Enter a valid refund amount.",
+    "refundRequired": "Enter a refund amount for the customer.",
+    "refundTooHigh": "The refund can't exceed {{max}} EGP.",
+    "addressInvalid": "Address must be between 6 and 500 characters.",
+    "selectItems": "Select at least one item to exchange."
+  }
+}

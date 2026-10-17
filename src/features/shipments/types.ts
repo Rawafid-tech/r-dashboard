@@ -12,7 +12,7 @@ export const SHIPMENT_STATUS_VALUES = [
 
 export type ShipmentStatus = (typeof SHIPMENT_STATUS_VALUES)[number];
 
-export type ShipmentKind = "DELIVERY" | "RETURN_PICKUP";
+export type ShipmentKind = "DELIVERY" | "RETURN_PICKUP" | "EXCHANGE";
 
 export type ShipmentsListTab =
   | "AWAITING_PICKUP"
@@ -80,6 +80,7 @@ export const SHIPMENT_TIMELINE_STATE_VALUES = [
   "EXCEPTION",
   "DELIVERED",
   "RETURNED",
+  "SWAPPED",
   "LOST",
   "CANCELLED",
   "IGNORED",
@@ -120,11 +121,36 @@ export interface ReturnPickup {
   pickupAddress: ReturnPickupAddress | null;
 }
 
+export interface ExchangeItem {
+  orderItemId: string;
+  name: string;
+  sku: string | null;
+  quantity: number;
+}
+
+export interface ExchangeAddress {
+  addressLine: string | null;
+  buildingNumber: string | null;
+  floor: string | null;
+  apartment: string | null;
+  phone: string | null;
+}
+
+export interface Exchange {
+  reason: string | null;
+  collectAmount: number | null;
+  refundAmount: number | null;
+  items: ExchangeItem[];
+  address: ExchangeAddress | null;
+  swappedAt: string | null;
+}
+
 export interface Shipment {
   id: string;
   status: ShipmentStatus;
   kind?: ShipmentKind;
   returnPickup?: ReturnPickup | null;
+  exchange?: Exchange | null;
   order: ShipmentOrderRef;
   receiverName: string;
   receiverPhone: string;

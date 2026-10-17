@@ -32,7 +32,7 @@ export interface ReturnPreviewOrder {
 export interface ExistingReturnRef {
   shipmentId: string;
   status: ShipmentStatus;
-  kind: "RETURN_PICKUP";
+  kind: "RETURN_PICKUP" | "EXCHANGE";
 }
 
 export interface ReturnPreview {

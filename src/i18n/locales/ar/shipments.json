@@ -27,6 +27,7 @@
     "kindAll": "كل الشحنات",
     "kindDelivery": "التوصيل",
     "kindReturns": "المرتجعات",
+    "kindExchanges": "الاستبدال",
     "connectionLabel": "الاتصال",
     "connectionAll": "كل الاتصالات",
     "dateFrom": "من",
@@ -61,7 +62,8 @@
     "openMenu": "إجراءات للطلب {{number}}"
   },
   "kind": {
-    "return": "مرتجع"
+    "return": "مرتجع",
+    "exchange": "استبدال"
   },
   "status": {
     "BOOKING": "قيد التأكيد",
@@ -78,6 +80,18 @@
       "BOOKED": "بانتظار الاستلام",
       "IN_TRANSIT": "في طريق العودة",
       "RETURNED": "تم الاستلام",
+      "CANCELLED": "ملغى",
+      "LOST": "مفقود",
+      "FAILED": "فشل"
+    },
+    "exchange": {
+      "BOOKING": "جاري الحجز…",
+      "BOOKED": "بانتظار الاستلام",
+      "IN_TRANSIT": "في طريقها إلى العميل",
+      "RETURNING": "في طريق العودة، لم يتم الاستبدال",
+      "RETURNING_swapped": "تم الاستبدال، في طريق العودة",
+      "RETURNED": "لم يتم الاستبدال",
+      "RETURNED_swapped": "تم الاستبدال",
       "CANCELLED": "ملغى",
       "LOST": "مفقود",
       "FAILED": "فشل"
@@ -99,6 +113,7 @@
       "EXCEPTION": "استثناء تسليم",
       "DELIVERED": "تم التسليم",
       "RETURNED": "عاد للتاجر",
+      "SWAPPED": "تم جمع الأصناف من العميل",
       "LOST": "مفقود أو تالف",
       "CANCELLED": "ملغى",
       "IGNORED": "تحديث من الناقل"
@@ -135,6 +150,15 @@
       "refund": "مبلغ مسترد نقدًا",
       "items": "الأصناف",
       "pickupAddress": "الاستلام من العميل"
+    },
+    "exchange": {
+      "title": "تفاصيل الاستبدال",
+      "reason": "السبب",
+      "collect": "يُحصَّل من العميل",
+      "refund": "يُرد للعميل",
+      "items": "الأصناف المستبدلة",
+      "address": "التسليم للعميل",
+      "swappedAt": "تم الاستبدال لدى العميل"
     },
     "timeline": {
       "heading": "خط التتبع",

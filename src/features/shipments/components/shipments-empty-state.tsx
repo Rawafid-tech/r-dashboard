@@ -1,10 +1,10 @@
-import { Package, RotateCcw } from "lucide-react";
+import { ArrowLeftRight, Package, RotateCcw } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
 interface ShipmentsEmptyStateProps {
   hasSearch: boolean;
   hasFilters: boolean;
-  scope?: "shipments" | "returns";
+  scope?: "shipments" | "returns" | "exchanges";
 }
 
 export function ShipmentsEmptyState({
@@ -12,22 +12,29 @@ export function ShipmentsEmptyState({
   hasFilters,
   scope = "shipments",
 }: ShipmentsEmptyStateProps) {
-  const { t } = useTranslation(scope === "returns" ? "returns" : "shipments");
+  const listScope = scope === "returns" || scope === "exchanges";
+  const { t } = useTranslation(
+    scope === "returns"
+      ? "returns"
+      : scope === "exchanges"
+        ? "exchanges"
+        : "shipments",
+  );
 
   const title =
     hasSearch || hasFilters
-      ? scope === "returns"
+      ? listScope
         ? t("list.empty.searchTitle")
         : t("empty.searchTitle")
-      : scope === "returns"
+      : listScope
         ? t("list.empty.title")
         : t("empty.title");
   const description =
     hasSearch || hasFilters
-      ? scope === "returns"
+      ? listScope
         ? t("list.empty.searchDescription")
         : t("empty.searchDescription")
-      : scope === "returns"
+      : listScope
         ? t("list.empty.description")
         : t("empty.description");
 
@@ -39,6 +46,8 @@ export function ShipmentsEmptyState({
       >
         {scope === "returns" ? (
           <RotateCcw className="size-7" />
+        ) : scope === "exchanges" ? (
+          <ArrowLeftRight className="size-7" />
         ) : (
           <Package className="size-7" />
         )}

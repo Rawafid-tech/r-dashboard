@@ -36,6 +36,8 @@ import notificationsAr from "./locales/ar/notifications.json";
 import notificationsEn from "./locales/en/notifications.json";
 import returnsAr from "./locales/ar/returns.json";
 import returnsEn from "./locales/en/returns.json";
+import exchangesAr from "./locales/ar/exchanges.json";
+import exchangesEn from "./locales/en/exchanges.json";
 
 const resources = {
   ar: {
@@ -56,6 +58,7 @@ const resources = {
     shipments: shipmentsAr,
     notifications: notificationsAr,
     returns: returnsAr,
+    exchanges: exchangesAr,
   },
   en: {
     common: commonEn,
@@ -75,6 +78,7 @@ const resources = {
     shipments: shipmentsEn,
     notifications: notificationsEn,
     returns: returnsEn,
+    exchanges: exchangesEn,
   },
 };
 

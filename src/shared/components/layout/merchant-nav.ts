@@ -1,4 +1,5 @@
 import {
+  ArrowLeftRight,
   Box,
   ClipboardList,
   CreditCard,
@@ -93,6 +94,13 @@ export const MERCHANT_NAV_ITEMS: MerchantNavItem[] = [
     key: "returns",
     href: "/returns",
     icon: RefreshCcw,
+    enabled: true,
+    permissionCode: "page:shipments",
+  },
+  {
+    key: "exchanges",
+    href: "/exchanges",
+    icon: ArrowLeftRight,
     enabled: true,
     permissionCode: "page:shipments",
   },

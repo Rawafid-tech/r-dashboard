@@ -3,7 +3,7 @@ import type { ShipmentCounts, ShipmentsListTab } from "@/features/shipments/type
 import { tabCountFromCounts } from "@/features/shipments/lib/shipment-actions";
 import { cn } from "@/shared/lib/utils";
 
-export type ShipmentsHeroScope = "shipments" | "returns";
+export type ShipmentsHeroScope = "shipments" | "returns" | "exchanges";
 
 interface ShipmentsHeroProps {
   activeTab: ShipmentsListTab;
@@ -30,7 +30,14 @@ export function ShipmentsHero({
   scope = "shipments",
   mainPanelId = "shipments-main",
 }: ShipmentsHeroProps) {
-  const { t } = useTranslation(scope === "returns" ? "returns" : "shipments");
+  const listScope = scope === "returns" || scope === "exchanges";
+  const { t } = useTranslation(
+    scope === "returns"
+      ? "returns"
+      : scope === "exchanges"
+        ? "exchanges"
+        : "shipments",
+  );
   const { t: tShipmentsTabs } = useTranslation("shipments");
   const showTabCounts = scope === "shipments";
 
@@ -38,10 +45,10 @@ export function ShipmentsHero({
     <header className="space-y-5">
       <div className="min-w-0 space-y-1">
         <h1 className="text-xl font-semibold tracking-tight text-foreground sm:text-2xl">
-          {scope === "returns" ? t("list.hero.title") : t("hero.title")}
+          {listScope ? t("list.hero.title") : t("hero.title")}
         </h1>
         <p className="max-w-2xl text-sm leading-6 text-muted-foreground">
-          {scope === "returns" ? t("list.hero.subtitle") : t("hero.subtitle")}
+          {listScope ? t("list.hero.subtitle") : t("hero.subtitle")}
         </p>
       </div>
 
@@ -49,7 +56,7 @@ export function ShipmentsHero({
         className="-mb-px flex w-full gap-1 overflow-x-auto border-b border-border"
         role="tablist"
         aria-label={
-          scope === "returns" ? t("list.tabs.label") : t("tabs.label")
+          listScope ? t("list.tabs.label") : t("tabs.label")
         }
       >
         {TABS.map((tab) => {

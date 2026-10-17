@@ -75,6 +75,9 @@
     "SHIPMENT_BOOKING_FAILED": "Booking failed after the fact",
     "SHIPMENT_RETURN_PICKED_UP": "Return picked up from customer",
     "SHIPMENT_RETURN_RECEIVED": "Return received at your location",
-    "SHIPMENT_RETURN_FAILED": "Return could not be collected"
+    "SHIPMENT_RETURN_FAILED": "Return could not be collected",
+    "SHIPMENT_EXCHANGE_SWAPPED": "Exchange made at customer",
+    "SHIPMENT_EXCHANGE_COMPLETED": "Exchanged items back with you",
+    "SHIPMENT_EXCHANGE_FAILED": "Exchange did not happen"
   }
 }

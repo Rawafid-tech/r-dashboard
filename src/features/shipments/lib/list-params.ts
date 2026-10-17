@@ -23,6 +23,7 @@ const ALLOWED_KIND_FILTERS: ShipmentsKindFilter[] = [
   "all",
   "DELIVERY",
   "RETURN_PICKUP",
+  "EXCHANGE",
 ];
 
 export function readShipmentsKindFilter(

@@ -36,16 +36,33 @@ import {
 const PAGE_SIZE = 20;
 const MAX_BATCH_LABELS = 50;
 
-export type ShipmentsListScope = "shipments" | "returns";
+export type ShipmentsListScope = "shipments" | "returns" | "exchanges";
 
 interface ShipmentsHomeProps {
   scope?: ShipmentsListScope;
 }
 
 export function ShipmentsHome({ scope = "shipments" }: ShipmentsHomeProps) {
-  const isReturnsList = scope === "returns";
-  const { t } = useTranslation(isReturnsList ? "returns" : "shipments");
-  const mainPanelId = isReturnsList ? "returns-main" : "shipments-main";
+  const isKindScopedList = scope === "returns" || scope === "exchanges";
+  const scopedKind =
+    scope === "returns"
+      ? ("RETURN_PICKUP" as const)
+      : scope === "exchanges"
+        ? ("EXCHANGE" as const)
+        : undefined;
+  const listNamespace =
+    scope === "returns"
+      ? "returns"
+      : scope === "exchanges"
+        ? "exchanges"
+        : "shipments";
+  const { t } = useTranslation(listNamespace);
+  const mainPanelId =
+    scope === "returns"
+      ? "returns-main"
+      : scope === "exchanges"
+        ? "exchanges-main"
+        : "shipments-main";
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const [selectedIds, setSelectedIds] = useState<Set<string>>(() => new Set());
@@ -85,8 +102,8 @@ export function ShipmentsHome({ scope = "shipments" }: ShipmentsHomeProps) {
   const sortOption = readShipmentsSortOption(searchParams.get("sort"));
   const { sort, direction } = parseShipmentsSortOption(sortOption);
   const activeTab = readShipmentsTab(searchParams.get("tab"));
-  const kindFilter = isReturnsList
-    ? ("RETURN_PICKUP" as const)
+  const kindFilter = isKindScopedList
+    ? scopedKind!
     : readShipmentsKindFilter(searchParams.get("kind"));
   const connectionFilter = searchParams.get("connection") ?? "";
   const orderFilter = searchParams.get("order") ?? "";
@@ -100,8 +117,8 @@ export function ShipmentsHome({ scope = "shipments" }: ShipmentsHomeProps) {
       sort,
       direction,
       status: statusesForTab(activeTab),
-      kind: isReturnsList
-        ? "RETURN_PICKUP"
+      kind: isKindScopedList
+        ? scopedKind
         : kindFilter === "all"
           ? undefined
           : kindFilter,
@@ -116,6 +133,8 @@ export function ShipmentsHome({ scope = "shipments" }: ShipmentsHomeProps) {
       sort,
       direction,
       activeTab,
+      isKindScopedList,
+      scopedKind,
       kindFilter,
       debouncedSearch,
       connectionFilter,
@@ -251,7 +270,7 @@ export function ShipmentsHome({ scope = "shipments" }: ShipmentsHomeProps) {
     shipmentsQuery.isLoading && !shipmentsQuery.data;
   const hasSearch = debouncedSearch.length > 0;
   const hasFilters =
-    (!isReturnsList && kindFilter !== DEFAULT_SHIPMENTS_KIND) ||
+    (!isKindScopedList && kindFilter !== DEFAULT_SHIPMENTS_KIND) ||
     Boolean(connectionFilter) ||
     Boolean(orderFilter) ||
     Boolean(dateFrom) ||
@@ -263,7 +282,7 @@ export function ShipmentsHome({ scope = "shipments" }: ShipmentsHomeProps) {
         href={`#${mainPanelId}`}
         className="sr-only focus:not-sr-only focus:absolute focus:start-4 focus:top-4 focus:z-50 focus:rounded-lg focus:bg-primary focus:px-3 focus:py-2 focus:text-primary-foreground"
       >
-        {isReturnsList ? t("list.skipToContent") : t("skipToContent")}
+        {isKindScopedList ? t("list.skipToContent") : t("skipToContent")}
       </a>
 
       {isInitialLoading ? (
@@ -303,10 +322,10 @@ export function ShipmentsHome({ scope = "shipments" }: ShipmentsHomeProps) {
                 selectedIds={selectedIds}
                 onSearchChange={handleSearchChange}
                 onSortChange={handleSortChange}
-                showKindFilter={!isReturnsList}
-                linkOrderToView={isReturnsList}
+                showKindFilter={!isKindScopedList}
+                linkOrderToView={isKindScopedList}
                 onKindFilterChange={
-                  isReturnsList
+                  isKindScopedList
                     ? undefined
                     : (value) =>
                         updateParams({

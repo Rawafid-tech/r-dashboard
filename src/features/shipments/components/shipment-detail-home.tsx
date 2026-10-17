@@ -5,6 +5,7 @@ import { ShipmentCancelDialog } from "@/features/shipments/components/shipment-c
 import { ShipmentDetailHero } from "@/features/shipments/components/shipment-detail-hero";
 import { ShipmentDetailSkeleton } from "@/features/shipments/components/shipment-detail-skeleton";
 import { ShipmentDetailSummary } from "@/features/shipments/components/shipment-detail-summary";
+import { ShipmentExchangeSection } from "@/features/shipments/components/shipment-exchange-section";
 import { ShipmentReturnPickupSection } from "@/features/shipments/components/shipment-return-pickup-section";
 import { ShipmentDetailTimeline } from "@/features/shipments/components/shipment-detail-timeline";
 import { ShipmentsErrorState } from "@/features/shipments/components/shipments-error-state";
@@ -87,6 +88,7 @@ export function ShipmentDetailHome() {
           />
 
           <ShipmentReturnPickupSection shipment={shipment} />
+          <ShipmentExchangeSection shipment={shipment} />
 
           <div className="grid min-w-0 gap-6 lg:grid-cols-2">
             <div className="min-w-0">

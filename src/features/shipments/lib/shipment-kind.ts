@@ -9,3 +9,7 @@ export function getShipmentKind(
 export function isReturnPickup(shipment: Pick<Shipment, "kind">): boolean {
   return getShipmentKind(shipment) === "RETURN_PICKUP";
 }
+
+export function isExchange(shipment: Pick<Shipment, "kind">): boolean {
+  return getShipmentKind(shipment) === "EXCHANGE";
+}

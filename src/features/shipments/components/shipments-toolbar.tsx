@@ -244,6 +244,7 @@ export function ShipmentsToolbar({
                 <SelectItem value="all">{t("toolbar.kindAll")}</SelectItem>
                 <SelectItem value="DELIVERY">{t("toolbar.kindDelivery")}</SelectItem>
                 <SelectItem value="RETURN_PICKUP">{t("toolbar.kindReturns")}</SelectItem>
+                <SelectItem value="EXCHANGE">{t("toolbar.kindExchanges")}</SelectItem>
               </SelectContent>
             </Select>
           </FilterField>

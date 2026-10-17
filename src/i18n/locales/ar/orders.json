@@ -99,7 +99,8 @@
     "edit": "تعديل",
     "cancel": "إلغاء الطلب",
     "createShipment": "إنشاء شحنة",
-    "bookReturn": "مرتجع"
+    "bookReturn": "مرتجع",
+    "bookExchange": "استبدال"
   },
   "cancel": {
     "title": "إلغاء هذا الطلب؟",
