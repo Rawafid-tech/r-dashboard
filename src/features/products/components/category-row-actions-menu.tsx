@@ -1,18 +1,17 @@
-import { MoreHorizontal } from "lucide-react";
+import { Pencil, Trash2 } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import type { ProductCategory } from "@/features/products/types";
 import {
-  Button,
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/shared/components/ui";
+  TableRowActionsMenu,
+  TableRowActionsMenuContent,
+  TableRowActionsMenuItem,
+  TableRowActionsMenuSeparator,
+  TableRowActionsMenuTrigger,
+} from "@/shared/components/data-display/table-row-actions-menu";
 import {
   MerchantPermission,
   useMerchantPermissions,
 } from "@/shared/hooks/use-merchant-permissions";
-import type { ProductCategory } from "@/features/products/types";
 
 export type CategoryRowAction = "edit" | "delete";
 
@@ -33,29 +32,26 @@ export function CategoryRowActionsMenu({
   }
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button
-          type="button"
-          variant="ghost"
-          size="icon-sm"
-          aria-label={t("categories.tree.openMenu", { name: category.name })}
+    <TableRowActionsMenu>
+      <TableRowActionsMenuTrigger
+        ariaLabel={t("categories.tree.openMenu", { name: category.name })}
+      />
+      <TableRowActionsMenuContent>
+        <TableRowActionsMenuItem
+          icon={Pencil}
+          onSelect={() => onAction("edit", category)}
         >
-          <MoreHorizontal aria-hidden="true" />
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-44">
-        <DropdownMenuItem onSelect={() => onAction("edit", category)}>
           {t("categories.actions.rename")}
-        </DropdownMenuItem>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem
+        </TableRowActionsMenuItem>
+        <TableRowActionsMenuSeparator />
+        <TableRowActionsMenuItem
+          icon={Trash2}
           variant="destructive"
           onSelect={() => onAction("delete", category)}
         >
           {t("categories.actions.delete")}
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
+        </TableRowActionsMenuItem>
+      </TableRowActionsMenuContent>
+    </TableRowActionsMenu>
   );
 }

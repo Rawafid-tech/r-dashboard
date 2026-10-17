@@ -1,22 +1,20 @@
-import { MoreHorizontal } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
+import { CheckCircle2, Pencil, Star, UserX } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import type { SenderLocation } from "@/features/locations/types";
 import {
-  Button,
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/shared/components/ui";
+  TableRowActionsMenu,
+  TableRowActionsMenuContent,
+  TableRowActionsMenuItem,
+  TableRowActionsMenuSeparator,
+  TableRowActionsMenuTrigger,
+} from "@/shared/components/data-display/table-row-actions-menu";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/shared/components/ui";
 import {
   MerchantPermission,
   useMerchantPermissions,
 } from "@/shared/hooks/use-merchant-permissions";
 import { SenderLocationStatus } from "@/shared/types/enums";
-import type { SenderLocation } from "@/features/locations/types";
 
 export type LocationRowAction =
   | "edit"
@@ -28,6 +26,13 @@ interface LocationRowActionsMenuProps {
   location: SenderLocation;
   onAction: (action: LocationRowAction, location: SenderLocation) => void;
 }
+
+const LOCATION_ACTION_ICONS: Record<LocationRowAction, LucideIcon> = {
+  edit: Pencil,
+  setDefault: Star,
+  activate: CheckCircle2,
+  deactivate: UserX,
+};
 
 export function LocationRowActionsMenu({
   location,
@@ -81,18 +86,11 @@ export function LocationRowActionsMenu({
   if (items.length === 0) return null;
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button
-          type="button"
-          variant="ghost"
-          size="icon-sm"
-          aria-label={t("table.openMenu", { name: location.name })}
-        >
-          <MoreHorizontal aria-hidden="true" />
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-52">
+    <TableRowActionsMenu>
+      <TableRowActionsMenuTrigger
+        ariaLabel={t("table.openMenu", { name: location.name })}
+      />
+      <TableRowActionsMenuContent className="min-w-[13rem]">
         {items.map((item, index) => {
           const showSeparator =
             item.destructive &&
@@ -100,7 +98,8 @@ export function LocationRowActionsMenu({
             !items[index - 1]?.destructive;
 
           const menuItem = (
-            <DropdownMenuItem
+            <TableRowActionsMenuItem
+              icon={LOCATION_ACTION_ICONS[item.key]}
               variant={item.destructive ? "destructive" : "default"}
               disabled={item.disabled}
               onSelect={() => {
@@ -108,12 +107,12 @@ export function LocationRowActionsMenu({
               }}
             >
               {item.label}
-            </DropdownMenuItem>
+            </TableRowActionsMenuItem>
           );
 
           return (
             <div key={item.key}>
-              {showSeparator ? <DropdownMenuSeparator /> : null}
+              {showSeparator ? <TableRowActionsMenuSeparator /> : null}
               {item.disabled && item.tooltip ? (
                 <Tooltip>
                   <TooltipTrigger asChild>
@@ -127,7 +126,7 @@ export function LocationRowActionsMenu({
             </div>
           );
         })}
-      </DropdownMenuContent>
-    </DropdownMenu>
+      </TableRowActionsMenuContent>
+    </TableRowActionsMenu>
   );
 }

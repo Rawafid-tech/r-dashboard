@@ -1,18 +1,17 @@
-import { MoreHorizontal } from "lucide-react";
+import { Pencil, Trash2 } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import type { Product } from "@/features/products/types";
 import {
-  Button,
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/shared/components/ui";
+  TableRowActionsMenu,
+  TableRowActionsMenuContent,
+  TableRowActionsMenuItem,
+  TableRowActionsMenuSeparator,
+  TableRowActionsMenuTrigger,
+} from "@/shared/components/data-display/table-row-actions-menu";
 import {
   MerchantPermission,
   useMerchantPermissions,
 } from "@/shared/hooks/use-merchant-permissions";
-import type { Product } from "@/features/products/types";
 
 export type ProductRowAction = "edit" | "delete";
 
@@ -33,29 +32,26 @@ export function ProductRowActionsMenu({
   }
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button
-          type="button"
-          variant="ghost"
-          size="icon-sm"
-          aria-label={t("table.openMenu", { name: product.name })}
+    <TableRowActionsMenu>
+      <TableRowActionsMenuTrigger
+        ariaLabel={t("table.openMenu", { name: product.name })}
+      />
+      <TableRowActionsMenuContent>
+        <TableRowActionsMenuItem
+          icon={Pencil}
+          onSelect={() => onAction("edit", product)}
         >
-          <MoreHorizontal aria-hidden="true" />
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-44">
-        <DropdownMenuItem onSelect={() => onAction("edit", product)}>
           {t("actions.edit")}
-        </DropdownMenuItem>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem
+        </TableRowActionsMenuItem>
+        <TableRowActionsMenuSeparator />
+        <TableRowActionsMenuItem
+          icon={Trash2}
           variant="destructive"
           onSelect={() => onAction("delete", product)}
         >
           {t("actions.delete")}
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
+        </TableRowActionsMenuItem>
+      </TableRowActionsMenuContent>
+    </TableRowActionsMenu>
   );
 }

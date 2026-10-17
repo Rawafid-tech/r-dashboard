@@ -1,4 +1,4 @@
-import { MoreHorizontal } from "lucide-react";
+import { Ban, Eye, Printer } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import {
   canCancelShipment,
@@ -6,13 +6,12 @@ import {
 } from "@/features/shipments/lib/shipment-actions";
 import type { Shipment } from "@/features/shipments/types";
 import {
-  Button,
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/shared/components/ui";
+  TableRowActionsMenu,
+  TableRowActionsMenuContent,
+  TableRowActionsMenuItem,
+  TableRowActionsMenuSeparator,
+  TableRowActionsMenuTrigger,
+} from "@/shared/components/data-display/table-row-actions-menu";
 import {
   MerchantPermission,
   useMerchantPermissions,
@@ -41,42 +40,42 @@ export function ShipmentRowActionsMenu({
   }
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button
-          type="button"
-          variant="ghost"
-          size="icon-sm"
-          aria-label={t("table.openMenu", {
-            number: shipment.order.orderNumber,
-          })}
-        >
-          <MoreHorizontal aria-hidden="true" />
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-48">
+    <TableRowActionsMenu>
+      <TableRowActionsMenuTrigger
+        ariaLabel={t("table.openMenu", {
+          number: shipment.order.orderNumber,
+        })}
+      />
+      <TableRowActionsMenuContent>
         {canRead ? (
-          <DropdownMenuItem onSelect={() => onAction("view", shipment)}>
+          <TableRowActionsMenuItem
+            icon={Eye}
+            onSelect={() => onAction("view", shipment)}
+          >
             {t("actions.viewDetails")}
-          </DropdownMenuItem>
+          </TableRowActionsMenuItem>
         ) : null}
         {canRead && canPrint ? (
-          <DropdownMenuItem onSelect={() => onAction("print", shipment)}>
+          <TableRowActionsMenuItem
+            icon={Printer}
+            onSelect={() => onAction("print", shipment)}
+          >
             {t("actions.printLabel")}
-          </DropdownMenuItem>
+          </TableRowActionsMenuItem>
         ) : null}
         {canManage && canCancel ? (
           <>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem
+            <TableRowActionsMenuSeparator />
+            <TableRowActionsMenuItem
+              icon={Ban}
               variant="destructive"
               onSelect={() => onAction("cancel", shipment)}
             >
               {t("actions.cancel")}
-            </DropdownMenuItem>
+            </TableRowActionsMenuItem>
           </>
         ) : null}
-      </DropdownMenuContent>
-    </DropdownMenu>
+      </TableRowActionsMenuContent>
+    </TableRowActionsMenu>
   );
 }

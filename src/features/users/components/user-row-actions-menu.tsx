@@ -1,20 +1,28 @@
-import { MoreHorizontal } from "lucide-react";
-import { useTranslation } from "react-i18next";
+import type { LucideIcon } from "lucide-react";
 import {
-  Button,
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/shared/components/ui";
+  CheckCircle2,
+  KeyRound,
+  Link2,
+  Pencil,
+  Shield,
+  Trash2,
+  UserX,
+} from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { nextStatusAction } from "@/features/users/components/user-status-confirm-dialog";
+import type { CompanyUser } from "@/features/users/types";
+import {
+  TableRowActionsMenu,
+  TableRowActionsMenuContent,
+  TableRowActionsMenuItem,
+  TableRowActionsMenuSeparator,
+  TableRowActionsMenuTrigger,
+} from "@/shared/components/data-display/table-row-actions-menu";
 import {
   MerchantPermission,
   useMerchantPermissions,
 } from "@/shared/hooks/use-merchant-permissions";
 import { UserStatus } from "@/shared/types/enums";
-import type { CompanyUser } from "@/features/users/types";
 
 export type UserRowAction =
   | "edit"
@@ -30,6 +38,16 @@ interface UserRowActionsMenuProps {
   currentUserId?: string;
   onAction: (action: UserRowAction, user: CompanyUser) => void;
 }
+
+const USER_ACTION_ICONS: Record<UserRowAction, LucideIcon> = {
+  edit: Pencil,
+  role: Shield,
+  activate: CheckCircle2,
+  deactivate: UserX,
+  reveal: Link2,
+  setPassword: KeyRound,
+  delete: Trash2,
+};
 
 export function UserRowActionsMenu({
   user,
@@ -48,8 +66,11 @@ export function UserRowActionsMenu({
   const statusAction = nextStatusAction(user.status);
   const isSelf = currentUserId === user.id;
 
-  const items: Array<{ key: UserRowAction; label: string; destructive?: boolean }> =
-    [];
+  const items: Array<{
+    key: UserRowAction;
+    label: string;
+    destructive?: boolean;
+  }> = [];
 
   if (canManage) {
     items.push({ key: "edit", label: t("actions.edit") });
@@ -83,37 +104,35 @@ export function UserRowActionsMenu({
   if (items.length === 0) return null;
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button
-          type="button"
-          variant="ghost"
-          size="icon-sm"
-          aria-label={t("table.openMenu", { name: user.fullName })}
-        >
-          <MoreHorizontal aria-hidden="true" />
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-52">
+    <TableRowActionsMenu>
+      <TableRowActionsMenuTrigger
+        ariaLabel={t("table.openMenu", { name: user.fullName })}
+      />
+      <TableRowActionsMenuContent className="min-w-[13rem]">
         {items.map((item, index) => {
           const showSeparator =
             item.destructive &&
             index > 0 &&
             !items[index - 1]?.destructive;
 
+          const menuItem = (
+            <TableRowActionsMenuItem
+              icon={USER_ACTION_ICONS[item.key]}
+              variant={item.destructive ? "destructive" : "default"}
+              onSelect={() => onAction(item.key, user)}
+            >
+              {item.label}
+            </TableRowActionsMenuItem>
+          );
+
           return (
             <div key={item.key}>
-              {showSeparator ? <DropdownMenuSeparator /> : null}
-              <DropdownMenuItem
-                variant={item.destructive ? "destructive" : "default"}
-                onSelect={() => onAction(item.key, user)}
-              >
-                {item.label}
-              </DropdownMenuItem>
+              {showSeparator ? <TableRowActionsMenuSeparator /> : null}
+              {menuItem}
             </div>
           );
         })}
-      </DropdownMenuContent>
-    </DropdownMenu>
+      </TableRowActionsMenuContent>
+    </TableRowActionsMenu>
   );
 }

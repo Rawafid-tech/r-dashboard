@@ -1,18 +1,24 @@
-import { MoreHorizontal } from "lucide-react";
-import { useTranslation } from "react-i18next";
 import {
-  Button,
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/shared/components/ui";
+  ArrowLeftRight,
+  Eye,
+  PackagePlus,
+  Pencil,
+  RotateCcw,
+  XCircle,
+} from "lucide-react";
+import { useTranslation } from "react-i18next";
+import type { OrderListRow } from "@/features/orders/types";
+import {
+  TableRowActionsMenu,
+  TableRowActionsMenuContent,
+  TableRowActionsMenuItem,
+  TableRowActionsMenuSeparator,
+  TableRowActionsMenuTrigger,
+} from "@/shared/components/data-display/table-row-actions-menu";
 import {
   MerchantPermission,
   useMerchantPermissions,
 } from "@/shared/hooks/use-merchant-permissions";
-import type { OrderListRow } from "@/features/orders/types";
 
 export type OrderRowAction =
   | "view"
@@ -41,53 +47,62 @@ export function OrderRowActionsMenu({
   const canEditOrCancel =
     order.status === "PENDING" || order.status === "RETURNED";
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button
-          type="button"
-          variant="ghost"
-          size="icon-sm"
-          aria-label={t("table.openMenu", { number: order.orderNumber })}
+    <TableRowActionsMenu>
+      <TableRowActionsMenuTrigger
+        ariaLabel={t("table.openMenu", { number: order.orderNumber })}
+      />
+      <TableRowActionsMenuContent>
+        <TableRowActionsMenuItem
+          icon={Eye}
+          onSelect={() => onAction("view", order)}
         >
-          <MoreHorizontal aria-hidden="true" />
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-44">
-        <DropdownMenuItem onSelect={() => onAction("view", order)}>
           {t("actions.view")}
-        </DropdownMenuItem>
+        </TableRowActionsMenuItem>
         {canBookShipment && canCreateShipment ? (
-          <DropdownMenuItem onSelect={() => onAction("createShipment", order)}>
+          <TableRowActionsMenuItem
+            icon={PackagePlus}
+            onSelect={() => onAction("createShipment", order)}
+          >
             {t("actions.createShipment")}
-          </DropdownMenuItem>
+          </TableRowActionsMenuItem>
         ) : null}
         {canBookShipment && canBookReturn ? (
-          <DropdownMenuItem onSelect={() => onAction("bookExchange", order)}>
+          <TableRowActionsMenuItem
+            icon={ArrowLeftRight}
+            onSelect={() => onAction("bookExchange", order)}
+          >
             {t("actions.bookExchange")}
-          </DropdownMenuItem>
+          </TableRowActionsMenuItem>
         ) : null}
         {canBookShipment && canBookReturn ? (
-          <DropdownMenuItem onSelect={() => onAction("bookReturn", order)}>
+          <TableRowActionsMenuItem
+            icon={RotateCcw}
+            onSelect={() => onAction("bookReturn", order)}
+          >
             {t("actions.bookReturn")}
-          </DropdownMenuItem>
+          </TableRowActionsMenuItem>
         ) : null}
         {canManage && canEditOrCancel ? (
-          <DropdownMenuItem onSelect={() => onAction("edit", order)}>
+          <TableRowActionsMenuItem
+            icon={Pencil}
+            onSelect={() => onAction("edit", order)}
+          >
             {t("actions.edit")}
-          </DropdownMenuItem>
+          </TableRowActionsMenuItem>
         ) : null}
         {canManage && canEditOrCancel ? (
           <>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem
+            <TableRowActionsMenuSeparator />
+            <TableRowActionsMenuItem
+              icon={XCircle}
               variant="destructive"
               onSelect={() => onAction("cancel", order)}
             >
               {t("actions.cancel")}
-            </DropdownMenuItem>
+            </TableRowActionsMenuItem>
           </>
         ) : null}
-      </DropdownMenuContent>
-    </DropdownMenu>
+      </TableRowActionsMenuContent>
+    </TableRowActionsMenu>
   );
 }
