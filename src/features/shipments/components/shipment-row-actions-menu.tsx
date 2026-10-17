@@ -33,7 +33,7 @@ export function ShipmentRowActionsMenu({
   const { hasPermission } = useMerchantPermissions();
   const canRead = hasPermission(MerchantPermission.SHIPMENT_READ);
   const canManage = hasPermission(MerchantPermission.SHIPMENT_MANAGE);
-  const canPrint = canPrintShipmentLabel(shipment.status);
+  const canPrint = canPrintShipmentLabel(shipment);
   const canCancel = canCancelShipment(shipment.status);
 
   if (!canRead && !canManage) {

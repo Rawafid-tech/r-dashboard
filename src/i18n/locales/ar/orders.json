@@ -98,7 +98,8 @@
     "view": "عرض",
     "edit": "تعديل",
     "cancel": "إلغاء الطلب",
-    "createShipment": "إنشاء شحنة"
+    "createShipment": "إنشاء شحنة",
+    "bookReturn": "مرتجع"
   },
   "cancel": {
     "title": "إلغاء هذا الطلب؟",

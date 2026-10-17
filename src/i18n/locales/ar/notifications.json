@@ -76,6 +76,9 @@
     "SHIPMENT_ISSUE": "مشكلة في محاولة التسليم",
     "SHIPMENT_LOST": "فقدان أو تلف الشحنة",
     "SHIPMENT_CANCELLED_BY_CARRIER": "ألغت شركة الشحن قبل الاستلام",
-    "SHIPMENT_BOOKING_FAILED": "فشل الحجز بعد التأكيد"
+    "SHIPMENT_BOOKING_FAILED": "فشل الحجز بعد التأكيد",
+    "SHIPMENT_RETURN_PICKED_UP": "تم استلام المرتجع من العميل",
+    "SHIPMENT_RETURN_RECEIVED": "وصل المرتجع إلى موقعك",
+    "SHIPMENT_RETURN_FAILED": "تعذّر استلام المرتجع"
   }
 }

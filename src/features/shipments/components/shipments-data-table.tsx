@@ -7,9 +7,14 @@ import { canPrintShipmentLabel } from "@/features/shipments/lib/shipment-actions
 import { CarrierMark } from "@/features/shipping-partners/components/carrier-mark";
 import { ShipmentRowActionsMenu } from "@/features/shipments/components/shipment-row-actions-menu";
 import type { ShipmentRowAction } from "@/features/shipments/components/shipment-row-actions-menu";
+import { ShipmentKindBadge } from "@/features/shipments/components/shipment-kind-badge";
 import { ShipmentStatusBadge } from "@/features/shipments/components/shipment-status-badge";
+import { getShipmentKind } from "@/features/shipments/lib/shipment-kind";
 import { ShipmentsToolbar } from "@/features/shipments/components/shipments-toolbar";
-import type { ShipmentsSortOption } from "@/features/shipments/lib/list-params";
+import type {
+  ShipmentsKindFilter,
+  ShipmentsSortOption,
+} from "@/features/shipments/lib/list-params";
 import { shipmentCarrierLabel } from "@/features/shipments/lib/shipment-connection-label";
 import type { Shipment } from "@/features/shipments/types";
 import type { CarrierConnection } from "@/features/shipping-partners/types";
@@ -31,12 +36,14 @@ interface ShipmentsDataTableProps {
   connections: CarrierConnection[];
   search: string;
   sortOption: ShipmentsSortOption;
+  kindFilter: ShipmentsKindFilter;
   connectionFilter: string;
   dateFrom: string;
   dateTo: string;
   selectedIds: Set<string>;
   onSearchChange: (value: string) => void;
   onSortChange: (value: ShipmentsSortOption) => void;
+  onKindFilterChange: (value: ShipmentsKindFilter) => void;
   onConnectionFilterChange: (value: string) => void;
   onDateFromChange: (value: string) => void;
   onDateToChange: (value: string) => void;
@@ -61,12 +68,14 @@ export function ShipmentsDataTable({
   connections,
   search,
   sortOption,
+  kindFilter,
   connectionFilter,
   dateFrom,
   dateTo,
   selectedIds,
   onSearchChange,
   onSortChange,
+  onKindFilterChange,
   onConnectionFilterChange,
   onDateFromChange,
   onDateToChange,
@@ -94,7 +103,7 @@ export function ShipmentsDataTable({
   const canPrintBatch = hasPermission(MerchantPermission.SHIPMENT_READ);
 
   const printableOnPage = useMemo(
-    () => shipments.filter((row) => canPrintShipmentLabel(row.status)),
+    () => shipments.filter((row) => canPrintShipmentLabel(row)),
     [shipments],
   );
 
@@ -131,7 +140,7 @@ export function ShipmentsDataTable({
         id: "select",
         header: selectAllHeader,
         cell: (shipment) =>
-          canPrintShipmentLabel(shipment.status) ? (
+          canPrintShipmentLabel(shipment) ? (
             <Checkbox
               checked={selectedIds.has(shipment.id)}
               onCheckedChange={(checked) =>
@@ -219,7 +228,13 @@ export function ShipmentsDataTable({
         header: t("table.status"),
         cell: (shipment) => (
           <div className="space-y-1">
-            <ShipmentStatusBadge status={shipment.status} />
+            <div className="flex flex-wrap items-center gap-1">
+              <ShipmentKindBadge shipment={shipment} />
+              <ShipmentStatusBadge
+                status={shipment.status}
+                kind={getShipmentKind(shipment)}
+              />
+            </div>
             {shipment.issue ? (
               <ShipmentIssueBadge issue={shipment.issue} />
             ) : null}
@@ -285,6 +300,7 @@ export function ShipmentsDataTable({
           <ShipmentsToolbar
             search={search}
             sortOption={sortOption}
+            kindFilter={kindFilter}
             connectionFilter={connectionFilter}
             dateFrom={dateFrom}
             dateTo={dateTo}
@@ -294,6 +310,7 @@ export function ShipmentsDataTable({
             hasActiveFilters={hasActiveFilters}
             onSearchChange={onSearchChange}
             onSortChange={onSortChange}
+            onKindFilterChange={onKindFilterChange}
             onConnectionFilterChange={onConnectionFilterChange}
             onDateFromChange={onDateFromChange}
             onDateToChange={onDateToChange}

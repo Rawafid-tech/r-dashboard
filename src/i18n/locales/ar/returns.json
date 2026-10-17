@@ -1,0 +1,50 @@
+{
+  "dialog": {
+    "title": "حجز مرتجع",
+    "titleForOrder": "حجز مرتجع — {{orderNumber}}",
+    "description": "ستستلم شركة الشحن الأصناف من عميلك وتعيدها إلى موقع الاستلام الخاص بك.",
+    "existingReturn": "يوجد مرتجع لهذا الطلب في الطريق بالفعل.",
+    "viewReturn": "عرض شحنة المرتجع",
+    "noConnections": "لا يوجد لديك شريك شحن يستلم المرتجعات.",
+    "connectPartner": "اربط شريكًا يستلم المرتجعات",
+    "nothingLeft": "لا يتبقى شيء لإرجاعه في هذا الطلب.",
+    "customerMoved": "انتقل العميل؟",
+    "customerMovedHint": "حدّث عنوان الاستلام أو الهاتف فقط إذا كانا مختلفين عن الطلب.",
+    "itemsTitle": "الأصناف المراد إرجاعها",
+    "itemsHint": "اختر كم قطعة من كل صنف يجمعها المندوب.",
+    "reasonLabel": "السبب (اختياري)",
+    "reasonPlaceholder": "مقاس خاطئ، تالف، إلخ.",
+    "notesLabel": "ملاحظات للمندوب (اختياري)",
+    "notesPlaceholder": "اتصل قبل الزيارة",
+    "refundLabel": "مبلغ مسترد نقدًا عند الاستلام (اختياري)",
+    "refundHint": "حتى {{max}} جنيه متبقية على هذا الطلب.",
+    "refundDisabledHint": "قد لا يسمح حسابك لدى الشريك برد المبالغ في المرتجعات.",
+    "addressLineLabel": "سطر العنوان",
+    "buildingLabel": "المبنى",
+    "floorLabel": "الطابق",
+    "apartmentLabel": "الشقة",
+    "phoneLabel": "الهاتف",
+    "submit": "حجز المرتجع",
+    "submitting": "جاري الحجز…",
+    "retryWithoutRefund": "احجز مرة أخرى بدون مبلغ مسترد",
+    "close": "إغلاق"
+  },
+  "toast": {
+    "booked": "تم حجز المرتجع — تتبع {{tracking}}",
+    "booking": "أُرسل المرتجع إلى شركة الشحن — التأكيد قريبًا"
+  },
+  "stepper": {
+    "decrease": "تقليل الكمية",
+    "increase": "زيادة الكمية"
+  },
+  "validation": {
+    "districtRequired": "اختر منطقة لمنطقة العميل.",
+    "phoneInvalid": "أدخل رقم هاتف صالحًا (8–15 رقمًا).",
+    "reasonTooLong": "السبب طويل جدًا.",
+    "notesTooLong": "الملاحظات طويلة جدًا.",
+    "refundInvalid": "أدخل مبلغًا مستردًا صالحًا.",
+    "refundTooHigh": "لا يمكن أن يتجاوز المبلغ المسترد {{max}} جنيه.",
+    "addressInvalid": "يجب أن يكون العنوان بين 6 و500 حرف.",
+    "selectItems": "اختر صنفًا واحدًا على الأقل للإرجاع."
+  }
+}

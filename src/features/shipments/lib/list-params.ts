@@ -1,4 +1,5 @@
 import type {
+  ShipmentKind,
   ShipmentsListTab,
   ShipmentsSortField,
 } from "@/features/shipments/types";
@@ -13,6 +14,25 @@ export type ShipmentsSortOption =
 export const DEFAULT_SHIPMENTS_SORT: ShipmentsSortOption = "CREATED_AT_DESC";
 
 export const DEFAULT_SHIPMENTS_TAB: ShipmentsListTab = "AWAITING_PICKUP";
+
+export type ShipmentsKindFilter = "all" | ShipmentKind;
+
+export const DEFAULT_SHIPMENTS_KIND: ShipmentsKindFilter = "all";
+
+const ALLOWED_KIND_FILTERS: ShipmentsKindFilter[] = [
+  "all",
+  "DELIVERY",
+  "RETURN_PICKUP",
+];
+
+export function readShipmentsKindFilter(
+  value: string | null,
+): ShipmentsKindFilter {
+  if (value && ALLOWED_KIND_FILTERS.includes(value as ShipmentsKindFilter)) {
+    return value as ShipmentsKindFilter;
+  }
+  return DEFAULT_SHIPMENTS_KIND;
+}
 
 const ALLOWED_SORT_OPTIONS: ShipmentsSortOption[] = [
   "CREATED_AT_DESC",

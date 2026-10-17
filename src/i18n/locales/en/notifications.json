@@ -72,6 +72,9 @@
     "SHIPMENT_ISSUE": "Delivery attempt issue",
     "SHIPMENT_LOST": "Shipment lost or damaged",
     "SHIPMENT_CANCELLED_BY_CARRIER": "Carrier cancelled before pickup",
-    "SHIPMENT_BOOKING_FAILED": "Booking failed after the fact"
+    "SHIPMENT_BOOKING_FAILED": "Booking failed after the fact",
+    "SHIPMENT_RETURN_PICKED_UP": "Return picked up from customer",
+    "SHIPMENT_RETURN_RECEIVED": "Return received at your location",
+    "SHIPMENT_RETURN_FAILED": "Return could not be collected"
   }
 }

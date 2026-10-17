@@ -5,6 +5,7 @@ import { ShipmentCancelDialog } from "@/features/shipments/components/shipment-c
 import { ShipmentDetailHero } from "@/features/shipments/components/shipment-detail-hero";
 import { ShipmentDetailSkeleton } from "@/features/shipments/components/shipment-detail-skeleton";
 import { ShipmentDetailSummary } from "@/features/shipments/components/shipment-detail-summary";
+import { ShipmentReturnPickupSection } from "@/features/shipments/components/shipment-return-pickup-section";
 import { ShipmentDetailTimeline } from "@/features/shipments/components/shipment-detail-timeline";
 import { ShipmentsErrorState } from "@/features/shipments/components/shipments-error-state";
 import { useShipmentLabel } from "@/features/shipments/hooks/use-shipment-label";
@@ -85,10 +86,14 @@ export function ShipmentDetailHome() {
             onCancel={() => setCancelOpen(true)}
           />
 
-          <div className="grid gap-6 lg:grid-cols-2">
-            <ShipmentDetailSummary shipment={shipment} />
+          <ShipmentReturnPickupSection shipment={shipment} />
+
+          <div className="grid min-w-0 gap-6 lg:grid-cols-2">
+            <div className="min-w-0">
+              <ShipmentDetailSummary shipment={shipment} />
+            </div>
             <section
-              className="rounded-lg border border-border/70 bg-muted/20 p-4 sm:p-5"
+              className="min-w-0 rounded-lg border border-border/70 bg-muted/20 p-4 sm:p-5"
               aria-labelledby="shipment-timeline-heading"
             >
               <h2

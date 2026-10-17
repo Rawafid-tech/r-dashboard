@@ -23,6 +23,10 @@
     "clearSearch": "مسح البحث",
     "datePlaceholder": "اختر تاريخاً",
     "selectionSummary": "{{count}} شحنة محددة",
+    "kindLabel": "النوع",
+    "kindAll": "كل الشحنات",
+    "kindDelivery": "التوصيل",
+    "kindReturns": "المرتجعات",
     "connectionLabel": "الاتصال",
     "connectionAll": "كل الاتصالات",
     "dateFrom": "من",
@@ -56,6 +60,9 @@
     "actions": "إجراءات",
     "openMenu": "إجراءات للطلب {{number}}"
   },
+  "kind": {
+    "return": "مرتجع"
+  },
   "status": {
     "BOOKING": "قيد التأكيد",
     "BOOKED": "بانتظار الاستلام",
@@ -65,7 +72,16 @@
     "RETURNED": "مرتجع",
     "LOST": "مفقود",
     "FAILED": "فشل",
-    "CANCELLED": "ملغى"
+    "CANCELLED": "ملغى",
+    "returnPickup": {
+      "BOOKING": "جاري الحجز…",
+      "BOOKED": "بانتظار الاستلام",
+      "IN_TRANSIT": "في طريق العودة",
+      "RETURNED": "تم الاستلام",
+      "CANCELLED": "ملغى",
+      "LOST": "مفقود",
+      "FAILED": "فشل"
+    }
   },
   "issue": {
     "badge": "مشكلة تسليم أبلغ عنها الناقل"
@@ -109,7 +125,16 @@
       "deliveredAt": "تم التسليم",
       "returnedAt": "تاريخ المرتجع",
       "lastUpdateAt": "آخر تحديث من الناقل",
-      "collectedFrom": "يُستلم من"
+      "collectedFrom": "يُستلم من",
+      "returnedTo": "يُعاد إلى",
+      "refundAtPickup": "مبلغ مسترد عند الاستلام"
+    },
+    "returnPickup": {
+      "title": "تفاصيل المرتجع",
+      "reason": "السبب",
+      "refund": "مبلغ مسترد نقدًا",
+      "items": "الأصناف",
+      "pickupAddress": "الاستلام من العميل"
     },
     "timeline": {
       "heading": "خط التتبع",

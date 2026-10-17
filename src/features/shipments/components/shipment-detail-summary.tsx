@@ -5,6 +5,7 @@ import { CarrierMark } from "@/features/shipping-partners/components/carrier-mar
 import { ShipmentIssueBadge } from "@/features/shipments/components/shipment-issue-badge";
 import { formatPickupLocationLabel } from "@/features/shipments/lib/pickup-label";
 import { shipmentCarrierLabel } from "@/features/shipments/lib/shipment-connection-label";
+import { isReturnPickup } from "@/features/shipments/lib/shipment-kind";
 import type { Shipment } from "@/features/shipments/types";
 import { useSettings } from "@/features/account/hooks/use-settings";
 import { formatCurrency, formatDateTime } from "@/shared/lib/formatters";
@@ -74,13 +75,32 @@ export function ShipmentDetailSummary({ shipment }: ShipmentDetailSummaryProps) 
           </span>
         </DetailRow>
         {shipment.pickup ? (
-          <DetailRow label={t("detail.summary.collectedFrom")}>
+          <DetailRow
+            label={
+              isReturnPickup(shipment)
+                ? t("detail.summary.returnedTo")
+                : t("detail.summary.collectedFrom")
+            }
+          >
             {formatPickupLocationLabel(shipment.pickup)}
           </DetailRow>
         ) : null}
-        <DetailRow label={t("detail.summary.cod")}>
-          {formatCurrency(shipment.codAmount, "EGP", intlLocale)}
-        </DetailRow>
+        {isReturnPickup(shipment) ? (
+          shipment.returnPickup?.refundAmount != null &&
+          shipment.returnPickup.refundAmount > 0 ? (
+            <DetailRow label={t("detail.summary.refundAtPickup")}>
+              {formatCurrency(
+                shipment.returnPickup.refundAmount,
+                "EGP",
+                intlLocale,
+              )}
+            </DetailRow>
+          ) : null
+        ) : (
+          <DetailRow label={t("detail.summary.cod")}>
+            {formatCurrency(shipment.codAmount, "EGP", intlLocale)}
+          </DetailRow>
+        )}
         {typeof shipment.attempts === "number" ? (
           <DetailRow label={t("detail.summary.attempts")}>
             {shipment.attempts.toLocaleString(intlLocale)}

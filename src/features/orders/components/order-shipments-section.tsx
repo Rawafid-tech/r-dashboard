@@ -2,8 +2,10 @@ import { Loader2, Printer } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import { ShipmentIssueBadge } from "@/features/shipments/components/shipment-issue-badge";
+import { ShipmentKindBadge } from "@/features/shipments/components/shipment-kind-badge";
 import { ShipmentStatusBadge } from "@/features/shipments/components/shipment-status-badge";
 import { canPrintShipmentLabel } from "@/features/shipments/lib/shipment-actions";
+import { getShipmentKind } from "@/features/shipments/lib/shipment-kind";
 import { useShipmentLabel } from "@/features/shipments/hooks/use-shipment-label";
 import { useShipments } from "@/features/shipments/hooks/use-shipments";
 import {
@@ -81,13 +83,17 @@ export function OrderShipmentsSection({ orderId }: OrderShipmentsSectionProps) {
                   {shipment.trackingNumber ?? t("shipments:table.viewShipment")}
                 </Link>
                 <div className="flex flex-wrap items-center gap-1.5">
-                  <ShipmentStatusBadge status={shipment.status} />
+                  <ShipmentKindBadge shipment={shipment} />
+                  <ShipmentStatusBadge
+                    status={shipment.status}
+                    kind={getShipmentKind(shipment)}
+                  />
                   {shipment.issue ? (
                     <ShipmentIssueBadge issue={shipment.issue} />
                   ) : null}
                 </div>
               </div>
-              {canReadLabels && canPrintShipmentLabel(shipment.status) ? (
+              {canReadLabels && canPrintShipmentLabel(shipment) ? (
                 <Button
                   type="button"
                   size="sm"

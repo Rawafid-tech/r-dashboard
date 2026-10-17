@@ -14,7 +14,12 @@ import {
 } from "@/shared/hooks/use-merchant-permissions";
 import type { OrderListRow } from "@/features/orders/types";
 
-export type OrderRowAction = "view" | "edit" | "cancel" | "createShipment";
+export type OrderRowAction =
+  | "view"
+  | "edit"
+  | "cancel"
+  | "createShipment"
+  | "bookReturn";
 
 interface OrderRowActionsMenuProps {
   order: OrderListRow;
@@ -31,6 +36,7 @@ export function OrderRowActionsMenu({
   const canBookShipment = hasPermission(MerchantPermission.SHIPMENT_MANAGE);
   const canCreateShipment =
     order.status === "PENDING" || order.status === "RETURNED";
+  const canBookReturn = order.status === "DELIVERED";
   const canEditOrCancel =
     order.status === "PENDING" || order.status === "RETURNED";
   return (
@@ -52,6 +58,11 @@ export function OrderRowActionsMenu({
         {canBookShipment && canCreateShipment ? (
           <DropdownMenuItem onSelect={() => onAction("createShipment", order)}>
             {t("actions.createShipment")}
+          </DropdownMenuItem>
+        ) : null}
+        {canBookShipment && canBookReturn ? (
+          <DropdownMenuItem onSelect={() => onAction("bookReturn", order)}>
+            {t("actions.bookReturn")}
           </DropdownMenuItem>
         ) : null}
         {canManage && canEditOrCancel ? (

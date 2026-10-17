@@ -65,6 +65,11 @@ import {
 import { useDebounce } from "@/shared/hooks/use-debounce";
 import { cn } from "@/shared/lib/utils";
 import { SenderLocationStatus } from "@/shared/types/enums";
+import { BookReturnDialog } from "@/features/returns";
+import {
+  MerchantPermission,
+  useMerchantPermissions,
+} from "@/shared/hooks/use-merchant-permissions";
 import { toast } from "sonner";
 
 function RequiredMark() {
@@ -118,12 +123,15 @@ export function OrderFormSheet({
 }: OrderFormSheetProps) {
   const { t, i18n } = useTranslation("orders");
   const { t: tCommon } = useTranslation("common");
+  const { hasPermission } = useMerchantPermissions();
+  const canBookReturn = hasPermission(MerchantPermission.SHIPMENT_MANAGE);
   const formId = useId();
   const bodyRef = useRef<HTMLDivElement>(null);
   const [step, setStep] = useState<1 | 2>(1);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [lockedAsBooked, setLockedAsBooked] = useState(false);
   const [lockedAsDelivered, setLockedAsDelivered] = useState(false);
+  const [returnDialogOpen, setReturnDialogOpen] = useState(false);
   const [productSearch, setProductSearch] = useState("");
   const debouncedProductSearch = useDebounce(productSearch.trim(), 300);
 
@@ -1212,9 +1220,20 @@ export function OrderFormSheet({
               {readOnly ? tCommon("common.next") : tCommon("common.next")}
             </Button>
           ) : readOnly ? (
-            <Button type="button" onClick={() => onOpenChange(false)}>
-              {tCommon("common.close")}
-            </Button>
+            <>
+              {isDelivered && canBookReturn && resolvedId ? (
+                <Button
+                  type="button"
+                  variant="secondary"
+                  onClick={() => setReturnDialogOpen(true)}
+                >
+                  {t("actions.bookReturn")}
+                </Button>
+              ) : null}
+              <Button type="button" onClick={() => onOpenChange(false)}>
+                {tCommon("common.close")}
+              </Button>
+            </>
           ) : (
             <Button
               type="button"
@@ -1236,20 +1255,41 @@ export function OrderFormSheet({
       </DialogContent>
   );
 
+  const returnDialog =
+    resolvedId && canBookReturn ? (
+      <BookReturnDialog
+        orderId={resolvedId}
+        orderNumber={
+          listRow?.orderNumber ?? orderQuery.data?.orderNumber ?? undefined
+        }
+        open={returnDialogOpen}
+        onOpenChange={setReturnDialogOpen}
+      />
+    ) : null;
+
   if (presentation === "embedded") {
-    return sheetContent;
+    return (
+      <>
+        {sheetContent}
+        {returnDialog}
+      </>
+    );
   }
 
   return (
-    <Dialog
-      open={open}
-      onOpenChange={(next) => {
-        if (isSaving) return;
-        onOpenChange(next);
-      }}
-    >
-      {sheetContent}
-    </Dialog>
+    <>
+      <Dialog
+        open={open}
+        onOpenChange={(next) => {
+          if (isSaving) return;
+          if (!next) setReturnDialogOpen(false);
+          onOpenChange(next);
+        }}
+      >
+        {sheetContent}
+      </Dialog>
+      {returnDialog}
+    </>
   );
 }
 

@@ -1,7 +1,10 @@
 import type { ReactNode } from "react";
 import { ArrowUpDown, ChevronDown, Printer, Search, X } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import type { ShipmentsSortOption } from "@/features/shipments/lib/list-params";
+import type {
+  ShipmentsKindFilter,
+  ShipmentsSortOption,
+} from "@/features/shipments/lib/list-params";
 import type { CarrierConnection } from "@/features/shipping-partners/types";
 import { carrierDisplayName } from "@/features/shipping-partners/lib/carrier-label";
 import {
@@ -40,6 +43,7 @@ const SORT_LABEL_KEYS: Record<ShipmentsSortOption, string> = {
 interface ShipmentsToolbarProps {
   search: string;
   sortOption: ShipmentsSortOption;
+  kindFilter: ShipmentsKindFilter;
   connectionFilter: string;
   dateFrom: string;
   dateTo: string;
@@ -49,6 +53,7 @@ interface ShipmentsToolbarProps {
   hasActiveFilters?: boolean;
   onSearchChange: (value: string) => void;
   onSortChange: (value: ShipmentsSortOption) => void;
+  onKindFilterChange: (value: ShipmentsKindFilter) => void;
   onConnectionFilterChange: (value: string) => void;
   onDateFromChange: (value: string) => void;
   onDateToChange: (value: string) => void;
@@ -61,6 +66,7 @@ interface ShipmentsToolbarProps {
 export function ShipmentsToolbar({
   search,
   sortOption,
+  kindFilter,
   connectionFilter,
   dateFrom,
   dateTo,
@@ -70,6 +76,7 @@ export function ShipmentsToolbar({
   hasActiveFilters = false,
   onSearchChange,
   onSortChange,
+  onKindFilterChange,
   onConnectionFilterChange,
   onDateFromChange,
   onDateToChange,
@@ -212,7 +219,26 @@ export function ShipmentsToolbar({
         </div>
       </div>
 
-      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-3">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-4">
+        <FilterField id="shipments-kind-filter" label={t("toolbar.kindLabel")}>
+          <Select
+            value={kindFilter}
+            onValueChange={(value) =>
+              onKindFilterChange(value as ShipmentsKindFilter)
+            }
+            disabled={disabled}
+          >
+            <SelectTrigger id="shipments-kind-filter" className="h-9 w-full">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">{t("toolbar.kindAll")}</SelectItem>
+              <SelectItem value="DELIVERY">{t("toolbar.kindDelivery")}</SelectItem>
+              <SelectItem value="RETURN_PICKUP">{t("toolbar.kindReturns")}</SelectItem>
+            </SelectContent>
+          </Select>
+        </FilterField>
+
         <FilterField id="shipments-connection-filter" label={t("toolbar.connectionLabel")}>
           <Select
             value={connectionFilter || "all"}

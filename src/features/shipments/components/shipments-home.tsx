@@ -19,8 +19,10 @@ import {
   localDateToInstantEndExclusive,
   localDateToInstantStart,
   parseShipmentsSortOption,
+  readShipmentsKindFilter,
   readShipmentsSortOption,
   readShipmentsTab,
+  DEFAULT_SHIPMENTS_KIND,
 } from "@/features/shipments/lib/list-params";
 import type { Shipment, ShipmentsListTab } from "@/features/shipments/types";
 import { useCarrierConnections } from "@/features/shipping-partners/hooks/use-carrier-connections";
@@ -75,6 +77,7 @@ export function ShipmentsHome() {
   const sortOption = readShipmentsSortOption(searchParams.get("sort"));
   const { sort, direction } = parseShipmentsSortOption(sortOption);
   const activeTab = readShipmentsTab(searchParams.get("tab"));
+  const kindFilter = readShipmentsKindFilter(searchParams.get("kind"));
   const connectionFilter = searchParams.get("connection") ?? "";
   const orderFilter = searchParams.get("order") ?? "";
   const dateFrom = searchParams.get("from") ?? "";
@@ -87,6 +90,7 @@ export function ShipmentsHome() {
       sort,
       direction,
       status: statusesForTab(activeTab),
+      kind: kindFilter === "all" ? undefined : kindFilter,
       search: debouncedSearch || undefined,
       connectionId: connectionFilter || undefined,
       orderId: orderFilter || undefined,
@@ -98,6 +102,7 @@ export function ShipmentsHome() {
       sort,
       direction,
       activeTab,
+      kindFilter,
       debouncedSearch,
       connectionFilter,
       orderFilter,
@@ -131,7 +136,7 @@ export function ShipmentsHome() {
 
   useEffect(() => {
     setSelectedIds(new Set());
-  }, [activeTab, page, debouncedSearch, connectionFilter, orderFilter, dateFrom, dateTo]);
+  }, [activeTab, page, debouncedSearch, kindFilter, connectionFilter, orderFilter, dateFrom, dateTo]);
 
   const handleTabChange = (tab: ShipmentsListTab) => {
     updateParams({
@@ -232,6 +237,7 @@ export function ShipmentsHome() {
     shipmentsQuery.isLoading && !shipmentsQuery.data;
   const hasSearch = debouncedSearch.length > 0;
   const hasFilters =
+    kindFilter !== DEFAULT_SHIPMENTS_KIND ||
     Boolean(connectionFilter) ||
     Boolean(orderFilter) ||
     Boolean(dateFrom) ||
@@ -274,12 +280,19 @@ export function ShipmentsHome() {
                 connections={connectionsQuery.data?.content ?? []}
                 search={searchInput}
                 sortOption={sortOption}
+                kindFilter={kindFilter}
                 connectionFilter={connectionFilter}
                 dateFrom={dateFrom}
                 dateTo={dateTo}
                 selectedIds={selectedIds}
                 onSearchChange={handleSearchChange}
                 onSortChange={handleSortChange}
+                onKindFilterChange={(value) =>
+                  updateParams({
+                    kind: value === DEFAULT_SHIPMENTS_KIND ? null : value,
+                    page: null,
+                  })
+                }
                 onConnectionFilterChange={(value) =>
                   updateParams({ connection: value || null, page: null })
                 }
@@ -293,6 +306,7 @@ export function ShipmentsHome() {
                 onClearFilters={() => {
                   handleSearchChange("");
                   updateParams({
+                    kind: null,
                     connection: null,
                     from: null,
                     to: null,

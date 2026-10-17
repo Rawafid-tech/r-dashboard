@@ -9,7 +9,7 @@ import {
 import { useTranslation } from "react-i18next";
 import { useShipmentDistricts } from "@/features/shipments/hooks/use-shipment-districts";
 import { getShipmentDistrictLabel } from "@/features/shipments/lib/district-label";
-import type { ShipmentDistrict } from "@/features/shipments/types";
+import type { ShipmentDistrict, ShipmentKind } from "@/features/shipments/types";
 import {
   FieldDescription,
   Input,
@@ -29,6 +29,7 @@ interface ShipmentDistrictComboboxProps {
   onSelect: (district: ShipmentDistrict | null) => void;
   disabled?: boolean;
   invalid?: boolean;
+  kind?: ShipmentKind;
 }
 
 export function ShipmentDistrictCombobox({
@@ -39,6 +40,7 @@ export function ShipmentDistrictCombobox({
   onSelect,
   disabled,
   invalid,
+  kind,
 }: ShipmentDistrictComboboxProps) {
   const { t } = useTranslation("shipments");
   const locale = useLocaleStore((state) => state.locale);
@@ -55,6 +57,7 @@ export function ShipmentDistrictCombobox({
           connectionId,
           governorateId,
           search: debouncedSearch,
+          kind,
         }
       : null,
   );

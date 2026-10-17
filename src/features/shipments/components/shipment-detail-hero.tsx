@@ -6,6 +6,8 @@ import {
   canCancelShipment,
   canPrintShipmentLabel,
 } from "@/features/shipments/lib/shipment-actions";
+import { ShipmentKindBadge } from "@/features/shipments/components/shipment-kind-badge";
+import { getShipmentKind } from "@/features/shipments/lib/shipment-kind";
 import type { Shipment } from "@/features/shipments/types";
 import { PageHeader } from "@/shared/components/layout/page-header";
 import { Button } from "@/shared/components/ui";
@@ -33,7 +35,8 @@ export function ShipmentDetailHero({
   const { hasPermission } = useMerchantPermissions();
   const canRead = hasPermission(MerchantPermission.SHIPMENT_READ);
   const canManage = hasPermission(MerchantPermission.SHIPMENT_MANAGE);
-  const canPrint = canPrintShipmentLabel(shipment.status);
+  const canPrint = canPrintShipmentLabel(shipment);
+  const kind = getShipmentKind(shipment);
   const canCancel = canCancelShipment(shipment.status);
 
   return (
@@ -56,7 +59,8 @@ export function ShipmentDetailHero({
             <span className="tabular-nums">
               {shipment.trackingNumber ?? t("detail.noTracking")}
             </span>
-            <ShipmentStatusBadge status={shipment.status} />
+            <ShipmentStatusBadge status={shipment.status} kind={kind} />
+            <ShipmentKindBadge shipment={shipment} />
             {isFetching ? (
               <span className="text-xs font-normal text-muted-foreground">
                 {t("detail.refreshing")}

@@ -1,0 +1,50 @@
+{
+  "dialog": {
+    "title": "Book a return",
+    "titleForOrder": "Book a return — {{orderNumber}}",
+    "description": "The carrier will collect items from your customer and bring them back to your pickup location.",
+    "existingReturn": "A return is already on its way for this order.",
+    "viewReturn": "View return shipment",
+    "noConnections": "None of your shipping partners can collect returns.",
+    "connectPartner": "Connect a partner that collects returns",
+    "nothingLeft": "Nothing is left to return on this order.",
+    "customerMoved": "Customer moved?",
+    "customerMovedHint": "Update the pickup address or phone only if they differ from the order.",
+    "itemsTitle": "Items to return",
+    "itemsHint": "Choose how many of each item the courier should collect.",
+    "reasonLabel": "Reason (optional)",
+    "reasonPlaceholder": "Wrong size, damaged, etc.",
+    "notesLabel": "Notes for the courier (optional)",
+    "notesPlaceholder": "Call before coming",
+    "refundLabel": "Cash refund at pickup (optional)",
+    "refundHint": "Up to {{max}} EGP remaining on this order.",
+    "refundDisabledHint": "Your partner account may not allow refunds on returns.",
+    "addressLineLabel": "Address line",
+    "buildingLabel": "Building",
+    "floorLabel": "Floor",
+    "apartmentLabel": "Apartment",
+    "phoneLabel": "Phone",
+    "submit": "Book return",
+    "submitting": "Booking…",
+    "retryWithoutRefund": "Book again without refund",
+    "close": "Close"
+  },
+  "toast": {
+    "booked": "Return booked — tracking {{tracking}}",
+    "booking": "Return sent to the carrier — confirming shortly"
+  },
+  "stepper": {
+    "decrease": "Decrease quantity",
+    "increase": "Increase quantity"
+  },
+  "validation": {
+    "districtRequired": "Choose a district for the customer’s area.",
+    "phoneInvalid": "Enter a valid phone number (8–15 digits).",
+    "reasonTooLong": "Reason is too long.",
+    "notesTooLong": "Notes are too long.",
+    "refundInvalid": "Enter a valid refund amount.",
+    "refundTooHigh": "Refund cannot exceed {{max}} EGP.",
+    "addressInvalid": "Address must be between 6 and 500 characters.",
+    "selectItems": "Select at least one item to return."
+  }
+}

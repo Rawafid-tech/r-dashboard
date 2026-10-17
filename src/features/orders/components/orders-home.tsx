@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { useSearchParams } from "react-router-dom";
+import { BookReturnDialog } from "@/features/returns";
 import { CreateShipmentWizardDialog } from "@/features/shipments/components/create-shipment-wizard-dialog";
 import { WithMyRatesBookingDialog } from "@/features/shipments/components/with-my-rates-booking-dialog";
 import { MAX_BULK_BOOKING_LINES } from "@/features/shipments/lib/bulk-preview-lines";
@@ -97,6 +98,10 @@ export function OrdersHome() {
   const [bulkBookOrderIds, setBulkBookOrderIds] = useState<string[] | null>(
     null,
   );
+  const [returnOrder, setReturnOrder] = useState<{
+    id: string;
+    orderNumber: string;
+  } | null>(null);
   const [selectedOrderIds, setSelectedOrderIds] = useState<Set<string>>(
     () => new Set(),
   );
@@ -186,6 +191,9 @@ export function OrdersHome() {
         break;
       case "createShipment":
         setBulkBookOrderIds([order.id]);
+        break;
+      case "bookReturn":
+        setReturnOrder({ id: order.id, orderNumber: order.orderNumber });
         break;
       default:
         break;
@@ -359,6 +367,15 @@ export function OrdersHome() {
         open={orderToCancel !== null}
         onOpenChange={(open) => {
           if (!open) setOrderToCancel(null);
+        }}
+      />
+
+      <BookReturnDialog
+        orderId={returnOrder?.id ?? ""}
+        orderNumber={returnOrder?.orderNumber}
+        open={returnOrder !== null}
+        onOpenChange={(open) => {
+          if (!open) setReturnOrder(null);
         }}
       />
 

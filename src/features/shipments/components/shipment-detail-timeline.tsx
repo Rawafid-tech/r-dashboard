@@ -71,46 +71,59 @@ export function ShipmentDetailTimeline({
   }
 
   return (
-    <ol
-      className="relative space-y-0 border-s border-border ps-6"
-      aria-label={t("detail.timeline.label")}
-    >
+    <ol className="space-y-0" aria-label={t("detail.timeline.label")}>
       {visibleEntries.map((entry, index) => {
         const Icon = timelineIcon(entry.state);
         const isLatest = index === 0;
+        const isLast = index === visibleEntries.length - 1;
 
         return (
           <li
             key={`${entry.state}-${entry.occurredAt}-${index}`}
-            className="relative pb-6 last:pb-0"
+            className="flex gap-3"
           >
-            <span
-              className={cn(
-                "absolute -start-[calc(0.75rem+1px)] top-0.5 grid size-6 place-items-center rounded-full border bg-background",
-                isLatest ? "border-primary text-primary" : "border-border text-muted-foreground",
-              )}
+            <div
+              className="flex w-8 shrink-0 flex-col items-center self-stretch"
               aria-hidden="true"
             >
-              <Icon className="size-3.5" />
-            </span>
-            <div className="space-y-1">
-              <div className="flex flex-wrap items-center gap-2">
-                <p className="text-sm font-medium">
+              <span
+                className={cn(
+                  "relative z-10 grid size-8 shrink-0 place-items-center rounded-full border bg-background shadow-sm",
+                  isLatest
+                    ? "border-primary text-primary"
+                    : "border-border text-muted-foreground",
+                )}
+              >
+                <Icon className="size-4" />
+              </span>
+              {!isLast ? (
+                <span className="mt-1 w-px min-h-6 flex-1 bg-border" />
+              ) : null}
+            </div>
+
+            <div
+              className={cn(
+                "min-w-0 flex-1 space-y-1.5",
+                isLast ? "pb-0" : "pb-8",
+              )}
+            >
+              <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
+                <p className="text-sm font-medium leading-snug">
                   {t(`timeline.states.${entry.state}`)}
                 </p>
-                <Badge variant="outline" className="text-xs font-normal">
+                <Badge variant="outline" className="shrink-0 text-xs font-normal">
                   {entry.source === "WEBHOOK"
                     ? t("detail.timeline.sourceWebhook")
                     : t("detail.timeline.sourcePoll")}
                 </Badge>
               </div>
               {entry.carrierState?.label ? (
-                <p className="text-xs text-muted-foreground">
+                <p className="text-xs leading-relaxed text-muted-foreground break-words">
                   {entry.carrierState.label}
                 </p>
               ) : null}
               {entry.issue ? (
-                <ShipmentIssueBadge issue={entry.issue} className="max-w-full" />
+                <ShipmentIssueBadge issue={entry.issue} wrapReason className="max-w-full" />
               ) : null}
               <time
                 className="block text-xs tabular-nums text-muted-foreground"
@@ -119,7 +132,7 @@ export function ShipmentDetailTimeline({
                 {formatDateTime(entry.occurredAt, dateFormat, intlLocale)}
               </time>
               {entry.source === "POLL" ? (
-                <p className="text-xs text-muted-foreground">
+                <p className="text-pretty text-xs leading-relaxed text-muted-foreground">
                   {t("detail.timeline.pollHint")}
                 </p>
               ) : null}

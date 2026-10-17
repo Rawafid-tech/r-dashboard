@@ -1,4 +1,6 @@
+import { isReturnPickup } from "@/features/shipments/lib/shipment-kind";
 import type {
+  Shipment,
   ShipmentCounts,
   ShipmentStatus,
   ShipmentsListTab,
@@ -48,6 +50,9 @@ export function canCancelShipment(status: ShipmentStatus): boolean {
   return status === "BOOKED";
 }
 
-export function canPrintShipmentLabel(status: ShipmentStatus): boolean {
-  return LABEL_STATUSES.includes(status);
+export function canPrintShipmentLabel(
+  shipment: Pick<Shipment, "status" | "kind">,
+): boolean {
+  if (isReturnPickup(shipment)) return false;
+  return LABEL_STATUSES.includes(shipment.status);
 }

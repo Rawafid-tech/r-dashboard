@@ -23,6 +23,10 @@
     "clearSearch": "Clear search",
     "datePlaceholder": "Pick a date",
     "selectionSummary": "{{count}} shipments selected",
+    "kindLabel": "Type",
+    "kindAll": "All shipments",
+    "kindDelivery": "Deliveries",
+    "kindReturns": "Returns",
     "connectionLabel": "Connection",
     "connectionAll": "All connections",
     "dateFrom": "From",
@@ -56,6 +60,9 @@
     "actions": "Actions",
     "openMenu": "Actions for order {{number}}"
   },
+  "kind": {
+    "return": "Return"
+  },
   "status": {
     "BOOKING": "Confirming",
     "BOOKED": "Awaiting pickup",
@@ -65,7 +72,16 @@
     "RETURNED": "Returned",
     "LOST": "Lost",
     "FAILED": "Failed",
-    "CANCELLED": "Cancelled"
+    "CANCELLED": "Cancelled",
+    "returnPickup": {
+      "BOOKING": "Booking…",
+      "BOOKED": "Awaiting pickup",
+      "IN_TRANSIT": "On its way back",
+      "RETURNED": "Received",
+      "CANCELLED": "Cancelled",
+      "LOST": "Lost",
+      "FAILED": "Failed"
+    }
   },
   "issue": {
     "badge": "Delivery issue reported by carrier"
@@ -109,7 +125,16 @@
       "deliveredAt": "Delivered",
       "returnedAt": "Returned",
       "lastUpdateAt": "Last carrier update",
-      "collectedFrom": "Collected from"
+      "collectedFrom": "Collected from",
+      "returnedTo": "Returned to",
+      "refundAtPickup": "Refund at pickup"
+    },
+    "returnPickup": {
+      "title": "Return details",
+      "reason": "Reason",
+      "refund": "Cash refund",
+      "items": "Items",
+      "pickupAddress": "Pickup from customer"
     },
     "timeline": {
       "heading": "Tracking timeline",

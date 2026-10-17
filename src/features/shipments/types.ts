@@ -12,6 +12,8 @@ export const SHIPMENT_STATUS_VALUES = [
 
 export type ShipmentStatus = (typeof SHIPMENT_STATUS_VALUES)[number];
 
+export type ShipmentKind = "DELIVERY" | "RETURN_PICKUP";
+
 export type ShipmentsListTab =
   | "AWAITING_PICKUP"
   | "CURRENTLY_SHIPPING"
@@ -96,9 +98,33 @@ export interface ShipmentTimelineEntry {
   source: ShipmentTimelineSource;
 }
 
+export interface ReturnPickupItem {
+  orderItemId: string;
+  name: string;
+  sku: string | null;
+  quantity: number;
+}
+
+export interface ReturnPickupAddress {
+  addressLine: string | null;
+  buildingNumber: string | null;
+  floor: string | null;
+  apartment: string | null;
+  phone: string | null;
+}
+
+export interface ReturnPickup {
+  reason: string | null;
+  refundAmount: number | null;
+  items: ReturnPickupItem[];
+  pickupAddress: ReturnPickupAddress | null;
+}
+
 export interface Shipment {
   id: string;
   status: ShipmentStatus;
+  kind?: ShipmentKind;
+  returnPickup?: ReturnPickup | null;
   order: ShipmentOrderRef;
   receiverName: string;
   receiverPhone: string;
@@ -130,6 +156,7 @@ export interface ShipmentsListParams {
   sort?: ShipmentsSortField;
   direction?: "ASC" | "DESC";
   status?: ShipmentStatus | ShipmentStatus[];
+  kind?: ShipmentKind;
   connectionId?: string;
   orderId?: string;
   from?: string;
@@ -196,6 +223,7 @@ export interface ShipmentDistrictsParams {
   connectionId: string;
   governorateId: string;
   search?: string;
+  kind?: ShipmentKind;
 }
 
 export interface BookShipmentPayload {

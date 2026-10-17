@@ -49,6 +49,18 @@ const TOPIC_META: Record<NotificationTopic, NotificationTopicMeta> = {
     icon: AlertTriangle,
     toneClassName: "bg-destructive/10 text-destructive",
   },
+  SHIPMENT_RETURN_PICKED_UP: {
+    icon: Truck,
+    toneClassName: "bg-sky-500/10 text-sky-700 dark:text-sky-400",
+  },
+  SHIPMENT_RETURN_RECEIVED: {
+    icon: RotateCcw,
+    toneClassName: "bg-violet-500/10 text-violet-700 dark:text-violet-400",
+  },
+  SHIPMENT_RETURN_FAILED: {
+    icon: PackageX,
+    toneClassName: "bg-destructive/10 text-destructive",
+  },
 };
 
 export function getNotificationTopicMeta(

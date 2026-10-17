@@ -98,7 +98,8 @@
     "view": "View",
     "edit": "Edit",
     "cancel": "Cancel order",
-    "createShipment": "Create shipment"
+    "createShipment": "Create shipment",
+    "bookReturn": "Return"
   },
   "cancel": {
     "title": "Cancel this order?",

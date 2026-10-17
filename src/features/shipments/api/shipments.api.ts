@@ -28,6 +28,7 @@ function serializeShipmentsListParams(params: ShipmentsListParams): string {
   append("size", params.size);
   append("sort", params.sort);
   append("direction", params.direction);
+  append("kind", params.kind);
   append("connectionId", params.connectionId);
   append("orderId", params.orderId);
   append("from", params.from);
