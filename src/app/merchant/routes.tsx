@@ -9,6 +9,7 @@ import { RolesPage } from "@/app/merchant/roles-page";
 import { ShippingBoxesPage } from "@/app/merchant/shipping-boxes-page";
 import { ShippingPartnersPage } from "@/app/merchant/shipping-partners-page";
 import { ShipmentDetailPage } from "@/app/merchant/shipment-detail-page";
+import { ReturnsPage } from "@/app/merchant/returns-page";
 import { ShipmentsPage } from "@/app/merchant/shipments-page";
 import { NotificationsPage } from "@/app/merchant/notifications-page";
 import { SettingsPage } from "@/app/merchant/settings-page";
@@ -58,6 +59,10 @@ export const merchantRoutes: RouteObject[] = [
       {
         path: "shipments",
         element: <ShipmentsPage />,
+      },
+      {
+        path: "returns",
+        element: <ReturnsPage />,
       },
       {
         path: "shipments/:shipmentId",

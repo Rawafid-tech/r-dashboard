@@ -89,7 +89,13 @@ export const MERCHANT_NAV_ITEMS: MerchantNavItem[] = [
     enabled: true,
     permissionCode: "page:shipments",
   },
-  { key: "returns", href: "/returns", icon: RefreshCcw, enabled: false },
+  {
+    key: "returns",
+    href: "/returns",
+    icon: RefreshCcw,
+    enabled: true,
+    permissionCode: "page:shipments",
+  },
   {
     key: "wallet",
     href: "/wallet",

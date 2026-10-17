@@ -1,4 +1,22 @@
 {
+  "list": {
+    "metaTitle": "Returns — Rawafid",
+    "metaDescription": "Track return pickups from your customers back to your warehouse.",
+    "skipToContent": "Skip to returns",
+    "hero": {
+      "title": "Returns",
+      "subtitle": "Return pickups your carrier collects from customers and brings back to you. Tracking opens the return shipment; order numbers open the order."
+    },
+    "tabs": {
+      "label": "Return status"
+    },
+    "empty": {
+      "title": "No returns yet",
+      "description": "Book a return from a delivered order to see it here.",
+      "searchTitle": "No returns match",
+      "searchDescription": "Try a different search or filter."
+    }
+  },
   "dialog": {
     "title": "Book a return",
     "titleForOrder": "Book a return — {{orderNumber}}",

@@ -1,23 +1,35 @@
-import { Package } from "lucide-react";
+import { Package, RotateCcw } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
 interface ShipmentsEmptyStateProps {
   hasSearch: boolean;
   hasFilters: boolean;
+  scope?: "shipments" | "returns";
 }
 
 export function ShipmentsEmptyState({
   hasSearch,
   hasFilters,
+  scope = "shipments",
 }: ShipmentsEmptyStateProps) {
-  const { t } = useTranslation("shipments");
+  const { t } = useTranslation(scope === "returns" ? "returns" : "shipments");
 
   const title =
-    hasSearch || hasFilters ? t("empty.searchTitle") : t("empty.title");
+    hasSearch || hasFilters
+      ? scope === "returns"
+        ? t("list.empty.searchTitle")
+        : t("empty.searchTitle")
+      : scope === "returns"
+        ? t("list.empty.title")
+        : t("empty.title");
   const description =
     hasSearch || hasFilters
-      ? t("empty.searchDescription")
-      : t("empty.description");
+      ? scope === "returns"
+        ? t("list.empty.searchDescription")
+        : t("empty.searchDescription")
+      : scope === "returns"
+        ? t("list.empty.description")
+        : t("empty.description");
 
   return (
     <div className="flex flex-col items-center gap-3 px-4 py-16 text-center">
@@ -25,7 +37,11 @@ export function ShipmentsEmptyState({
         className="grid size-14 place-items-center rounded-2xl bg-muted/60 text-muted-foreground"
         aria-hidden="true"
       >
-        <Package className="size-7" />
+        {scope === "returns" ? (
+          <RotateCcw className="size-7" />
+        ) : (
+          <Package className="size-7" />
+        )}
       </div>
       <div className="max-w-md space-y-1">
         <h3 className="text-base font-semibold text-foreground">{title}</h3>

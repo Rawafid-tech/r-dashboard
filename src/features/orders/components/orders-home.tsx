@@ -33,11 +33,16 @@ import {
   MerchantPermission,
   useMerchantPermissions,
 } from "@/shared/hooks/use-merchant-permissions";
+import { useOrder } from "@/features/orders/hooks/use-order";
+import {
+  orderToListRow,
+} from "@/features/orders/lib/order-view-link";
 import {
   readPageIndex,
   shouldResetPageIndex,
   writePageIndex,
 } from "@/shared/lib/pagination-params";
+import { parseApiError } from "@/shared/api/error-handler";
 
 const PAGE_SIZE = 20;
 
@@ -102,6 +107,9 @@ export function OrdersHome() {
     id: string;
     orderNumber: string;
   } | null>(null);
+
+  const viewOrderId = searchParams.get("viewOrder");
+  const viewOrderQuery = useOrder(viewOrderId, { enabled: Boolean(viewOrderId) });
   const [selectedOrderIds, setSelectedOrderIds] = useState<Set<string>>(
     () => new Set(),
   );
@@ -140,6 +148,27 @@ export function OrdersHome() {
   );
 
   const ordersQuery = useOrders(queryParams);
+
+  useEffect(() => {
+    if (!viewOrderId) return;
+
+    if (viewOrderQuery.isError) {
+      toast.error(parseApiError(viewOrderQuery.error).detail);
+      updateParams({ viewOrder: null });
+      return;
+    }
+
+    if (!viewOrderQuery.data) return;
+
+    setFormState({ mode: "view", order: orderToListRow(viewOrderQuery.data) });
+    updateParams({ viewOrder: null });
+  }, [
+    viewOrderId,
+    viewOrderQuery.data,
+    viewOrderQuery.isError,
+    viewOrderQuery.error,
+    updateParams,
+  ]);
   const countsQuery = useOrderCounts();
 
   useEffect(() => {

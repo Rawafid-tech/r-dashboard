@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
+import { orderViewPath } from "@/features/orders/lib/order-view-link";
 import { CarrierMark } from "@/features/shipping-partners/components/carrier-mark";
 import { ShipmentIssueBadge } from "@/features/shipments/components/shipment-issue-badge";
 import { formatPickupLocationLabel } from "@/features/shipments/lib/pickup-label";
@@ -51,7 +52,7 @@ export function ShipmentDetailSummary({ shipment }: ShipmentDetailSummaryProps) 
       <dl className="space-y-3">
         <DetailRow label={t("detail.summary.order")}>
           <Link
-            to={`/orders?search=${encodeURIComponent(shipment.order.orderNumber)}`}
+            to={orderViewPath(shipment.order.id)}
             className="text-primary underline-offset-4 hover:underline"
           >
             {shipment.order.orderNumber}

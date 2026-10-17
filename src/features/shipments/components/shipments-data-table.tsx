@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
+import { orderViewPath } from "@/features/orders/lib/order-view-link";
 import { ShipmentIssueBadge } from "@/features/shipments/components/shipment-issue-badge";
 import { canPrintShipmentLabel } from "@/features/shipments/lib/shipment-actions";
 import { CarrierMark } from "@/features/shipping-partners/components/carrier-mark";
@@ -43,7 +44,7 @@ interface ShipmentsDataTableProps {
   selectedIds: Set<string>;
   onSearchChange: (value: string) => void;
   onSortChange: (value: ShipmentsSortOption) => void;
-  onKindFilterChange: (value: ShipmentsKindFilter) => void;
+  onKindFilterChange?: (value: ShipmentsKindFilter) => void;
   onConnectionFilterChange: (value: string) => void;
   onDateFromChange: (value: string) => void;
   onDateToChange: (value: string) => void;
@@ -61,6 +62,9 @@ interface ShipmentsDataTableProps {
   onRowAction: (action: ShipmentRowAction, shipment: Shipment) => void;
   isFetching?: boolean;
   emptyState?: ReactNode;
+  /** Link order # to open the order sheet on /orders (by id). */
+  linkOrderToView?: boolean;
+  showKindFilter?: boolean;
 }
 
 export function ShipmentsDataTable({
@@ -93,6 +97,8 @@ export function ShipmentsDataTable({
   onRowAction,
   isFetching,
   emptyState,
+  linkOrderToView = false,
+  showKindFilter = true,
 }: ShipmentsDataTableProps) {
   const { t } = useTranslation(["shipments", "common"]);
   const locale = useLocaleStore((state) => state.locale);
@@ -159,11 +165,19 @@ export function ShipmentsDataTable({
       {
         id: "orderNumber",
         header: t("table.orderNumber"),
-        cell: (shipment) => (
-          <span className="font-medium tabular-nums">
-            {shipment.order.orderNumber}
-          </span>
-        ),
+        cell: (shipment) =>
+          linkOrderToView ? (
+            <Link
+              to={orderViewPath(shipment.order.id)}
+              className="font-medium tabular-nums text-primary underline-offset-4 hover:underline focus-visible:rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/40"
+            >
+              {shipment.order.orderNumber}
+            </Link>
+          ) : (
+            <span className="font-medium tabular-nums">
+              {shipment.order.orderNumber}
+            </span>
+          ),
       },
       {
         id: "tracking",
@@ -278,6 +292,7 @@ export function ShipmentsDataTable({
     selectAllHeader,
     selectedIds,
     somePrintableSelected,
+    linkOrderToView,
     t,
   ]);
 
@@ -301,6 +316,7 @@ export function ShipmentsDataTable({
             search={search}
             sortOption={sortOption}
             kindFilter={kindFilter}
+            showKindFilter={showKindFilter}
             connectionFilter={connectionFilter}
             dateFrom={dateFrom}
             dateTo={dateTo}
@@ -310,7 +326,9 @@ export function ShipmentsDataTable({
             hasActiveFilters={hasActiveFilters}
             onSearchChange={onSearchChange}
             onSortChange={onSortChange}
-            onKindFilterChange={onKindFilterChange}
+            onKindFilterChange={
+              showKindFilter ? onKindFilterChange : undefined
+            }
             onConnectionFilterChange={onConnectionFilterChange}
             onDateFromChange={onDateFromChange}
             onDateToChange={onDateToChange}

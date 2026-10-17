@@ -3,10 +3,14 @@ import type { ShipmentCounts, ShipmentsListTab } from "@/features/shipments/type
 import { tabCountFromCounts } from "@/features/shipments/lib/shipment-actions";
 import { cn } from "@/shared/lib/utils";
 
+export type ShipmentsHeroScope = "shipments" | "returns";
+
 interface ShipmentsHeroProps {
   activeTab: ShipmentsListTab;
   counts?: ShipmentCounts;
   onTabChange: (tab: ShipmentsListTab) => void;
+  scope?: ShipmentsHeroScope;
+  mainPanelId?: string;
 }
 
 const TABS: ShipmentsListTab[] = [
@@ -23,24 +27,30 @@ export function ShipmentsHero({
   activeTab,
   counts,
   onTabChange,
+  scope = "shipments",
+  mainPanelId = "shipments-main",
 }: ShipmentsHeroProps) {
-  const { t } = useTranslation("shipments");
+  const { t } = useTranslation(scope === "returns" ? "returns" : "shipments");
+  const { t: tShipmentsTabs } = useTranslation("shipments");
+  const showTabCounts = scope === "shipments";
 
   return (
     <header className="space-y-5">
       <div className="min-w-0 space-y-1">
         <h1 className="text-xl font-semibold tracking-tight text-foreground sm:text-2xl">
-          {t("hero.title")}
+          {scope === "returns" ? t("list.hero.title") : t("hero.title")}
         </h1>
         <p className="max-w-2xl text-sm leading-6 text-muted-foreground">
-          {t("hero.subtitle")}
+          {scope === "returns" ? t("list.hero.subtitle") : t("hero.subtitle")}
         </p>
       </div>
 
       <div
         className="-mb-px flex w-full gap-1 overflow-x-auto border-b border-border"
         role="tablist"
-        aria-label={t("tabs.label")}
+        aria-label={
+          scope === "returns" ? t("list.tabs.label") : t("tabs.label")
+        }
       >
         {TABS.map((tab) => {
           const isActive = activeTab === tab;
@@ -53,7 +63,7 @@ export function ShipmentsHero({
               type="button"
               role="tab"
               aria-selected={isActive}
-              aria-controls="shipments-main"
+              aria-controls={mainPanelId}
               className={cn(
                 "relative flex shrink-0 items-center gap-2 border-b-2 px-3 py-2.5 text-sm font-medium transition-colors outline-none focus-visible:ring-2 focus-visible:ring-ring/40",
                 isActive
@@ -62,8 +72,8 @@ export function ShipmentsHero({
               )}
               onClick={() => onTabChange(tab)}
             >
-              {t(`tabs.${tab}`)}
-              {typeof count === "number" ? (
+              {tShipmentsTabs(`tabs.${tab}`)}
+              {showTabCounts && typeof count === "number" ? (
                 <span
                   className={cn(
                     "inline-flex min-w-5 items-center justify-center rounded-full px-1.5 text-xs tabular-nums",

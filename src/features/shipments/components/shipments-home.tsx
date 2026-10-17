@@ -36,8 +36,16 @@ import {
 const PAGE_SIZE = 20;
 const MAX_BATCH_LABELS = 50;
 
-export function ShipmentsHome() {
-  const { t } = useTranslation("shipments");
+export type ShipmentsListScope = "shipments" | "returns";
+
+interface ShipmentsHomeProps {
+  scope?: ShipmentsListScope;
+}
+
+export function ShipmentsHome({ scope = "shipments" }: ShipmentsHomeProps) {
+  const isReturnsList = scope === "returns";
+  const { t } = useTranslation(isReturnsList ? "returns" : "shipments");
+  const mainPanelId = isReturnsList ? "returns-main" : "shipments-main";
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const [selectedIds, setSelectedIds] = useState<Set<string>>(() => new Set());
@@ -77,7 +85,9 @@ export function ShipmentsHome() {
   const sortOption = readShipmentsSortOption(searchParams.get("sort"));
   const { sort, direction } = parseShipmentsSortOption(sortOption);
   const activeTab = readShipmentsTab(searchParams.get("tab"));
-  const kindFilter = readShipmentsKindFilter(searchParams.get("kind"));
+  const kindFilter = isReturnsList
+    ? ("RETURN_PICKUP" as const)
+    : readShipmentsKindFilter(searchParams.get("kind"));
   const connectionFilter = searchParams.get("connection") ?? "";
   const orderFilter = searchParams.get("order") ?? "";
   const dateFrom = searchParams.get("from") ?? "";
@@ -90,7 +100,11 @@ export function ShipmentsHome() {
       sort,
       direction,
       status: statusesForTab(activeTab),
-      kind: kindFilter === "all" ? undefined : kindFilter,
+      kind: isReturnsList
+        ? "RETURN_PICKUP"
+        : kindFilter === "all"
+          ? undefined
+          : kindFilter,
       search: debouncedSearch || undefined,
       connectionId: connectionFilter || undefined,
       orderId: orderFilter || undefined,
@@ -237,7 +251,7 @@ export function ShipmentsHome() {
     shipmentsQuery.isLoading && !shipmentsQuery.data;
   const hasSearch = debouncedSearch.length > 0;
   const hasFilters =
-    kindFilter !== DEFAULT_SHIPMENTS_KIND ||
+    (!isReturnsList && kindFilter !== DEFAULT_SHIPMENTS_KIND) ||
     Boolean(connectionFilter) ||
     Boolean(orderFilter) ||
     Boolean(dateFrom) ||
@@ -246,10 +260,10 @@ export function ShipmentsHome() {
   return (
     <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-4 py-6 sm:px-6 sm:py-8">
       <a
-        href="#shipments-main"
+        href={`#${mainPanelId}`}
         className="sr-only focus:not-sr-only focus:absolute focus:start-4 focus:top-4 focus:z-50 focus:rounded-lg focus:bg-primary focus:px-3 focus:py-2 focus:text-primary-foreground"
       >
-        {t("skipToContent")}
+        {isReturnsList ? t("list.skipToContent") : t("skipToContent")}
       </a>
 
       {isInitialLoading ? (
@@ -260,6 +274,8 @@ export function ShipmentsHome() {
             activeTab={activeTab}
             counts={countsQuery.data}
             onTabChange={handleTabChange}
+            scope={scope}
+            mainPanelId={mainPanelId}
           />
 
           {shipmentsQuery.isError ? (
@@ -271,7 +287,7 @@ export function ShipmentsHome() {
 
           {!shipmentsQuery.isError ? (
             <div
-              id="shipments-main"
+              id={mainPanelId}
               role="tabpanel"
               aria-labelledby={`shipments-tab-${activeTab}`}
             >
@@ -287,11 +303,17 @@ export function ShipmentsHome() {
                 selectedIds={selectedIds}
                 onSearchChange={handleSearchChange}
                 onSortChange={handleSortChange}
-                onKindFilterChange={(value) =>
-                  updateParams({
-                    kind: value === DEFAULT_SHIPMENTS_KIND ? null : value,
-                    page: null,
-                  })
+                showKindFilter={!isReturnsList}
+                linkOrderToView={isReturnsList}
+                onKindFilterChange={
+                  isReturnsList
+                    ? undefined
+                    : (value) =>
+                        updateParams({
+                          kind:
+                            value === DEFAULT_SHIPMENTS_KIND ? null : value,
+                          page: null,
+                        })
                 }
                 onConnectionFilterChange={(value) =>
                   updateParams({ connection: value || null, page: null })
@@ -328,6 +350,7 @@ export function ShipmentsHome() {
                   <ShipmentsEmptyState
                     hasSearch={hasSearch}
                     hasFilters={hasFilters}
+                    scope={scope}
                   />
                 }
               />
