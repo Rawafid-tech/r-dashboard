@@ -131,6 +131,43 @@
     },
     "viewRegions": "Coverage for {{name}}",
     "viewRegionsShort": "Coverage",
+    "addCarrier": "Add carrier",
+    "form": {
+      "createTitle": "Add shipping partner",
+      "createDescription": "Register a carrier on a shared platform. Delivery areas download right after it is created.",
+      "editTitle": "Edit shipping partner",
+      "editDescription": "Names, sort order, and platform settings. Changing settings re-downloads delivery areas.",
+      "createSubmit": "Add carrier",
+      "save": "Save changes",
+      "saving": "Saving…",
+      "editShort": "Edit",
+      "deleteShort": "Delete",
+      "editAction": "Edit {{name}}",
+      "deleteAction": "Delete {{name}}",
+      "fields": {
+        "platform": "Platform",
+        "platformPlaceholder": "Choose a platform",
+        "code": "Partner code",
+        "nameEn": "English name",
+        "nameAr": "Arabic name",
+        "sortOrder": "Sort order",
+        "baseUrl": "API address (base URL)",
+        "baseUrlHint": "Must start with https:// and end with /graphql",
+        "clientId": "Client id on the platform"
+      },
+      "toast": {
+        "created": "Shipping partner added",
+        "updated": "Shipping partner updated",
+        "deleted": "Shipping partner removed",
+        "deleteFailed": "Could not remove the shipping partner"
+      },
+      "delete": {
+        "title": "Remove shipping partner?",
+        "description": "Remove {{name}} from the catalog. This is only allowed while no merchant has connected it.",
+        "confirm": "Remove",
+        "confirming": "Removing…"
+      }
+    },
     "regions": {
       "metaTitle": "{{name}} coverage — Rawafid Admin",
       "metaDescription": "Review {{name}} cities, zones, and districts, and check where an address would be booked.",
@@ -154,6 +191,8 @@
         "summary": "Added {{added}}, updated {{updated}}, retired {{retired}}. {{total}} districts on file.",
         "unmappedTitle": "Some cities could not be placed",
         "unmappedHint": "{{count}} carrier cities are not inside one of our governorates, so their districts never match an address.",
+        "unmappedTitleAccurate": "Unmapped zone names",
+        "unmappedHintAccurate": "{{count}} lines from the carrier were not placed in a governorate. On Accurate partners, billing zones (for example return invoices) are expected here and are safe to ignore.",
         "showUnmapped": "Show unmapped districts"
       },
       "toolbar": {

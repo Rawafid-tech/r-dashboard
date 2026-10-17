@@ -7,7 +7,13 @@ import {
   XCircle,
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { useExchangePreview } from "@/features/exchanges/hooks/use-exchange-preview";
+import {
+  isExchangeActionAvailable,
+  isReturnActionAvailable,
+} from "@/features/orders/lib/reverse-logistics-availability";
 import type { OrderListRow } from "@/features/orders/types";
+import { useReturnPreview } from "@/features/returns/hooks/use-return-preview";
 import {
   TableRowActionsMenu,
   TableRowActionsMenuContent,
@@ -43,7 +49,24 @@ export function OrderRowActionsMenu({
   const canBookShipment = hasPermission(MerchantPermission.SHIPMENT_MANAGE);
   const canCreateShipment =
     order.status === "PENDING" || order.status === "RETURNED";
-  const canBookReturn = order.status === "DELIVERED";
+  const isDelivered = order.status === "DELIVERED";
+  const previewEnabled = canBookShipment && isDelivered;
+  const returnPreviewQuery = useReturnPreview(
+    { orderId: order.id },
+    { enabled: previewEnabled, staleTime: 120_000 },
+  );
+  const exchangePreviewQuery = useExchangePreview(
+    { orderId: order.id },
+    { enabled: previewEnabled, staleTime: 120_000 },
+  );
+  const showReturnAction =
+    previewEnabled &&
+    returnPreviewQuery.isSuccess &&
+    isReturnActionAvailable(returnPreviewQuery.data);
+  const showExchangeAction =
+    previewEnabled &&
+    exchangePreviewQuery.isSuccess &&
+    isExchangeActionAvailable(exchangePreviewQuery.data);
   const canEditOrCancel =
     order.status === "PENDING" || order.status === "RETURNED";
   return (
@@ -66,7 +89,7 @@ export function OrderRowActionsMenu({
             {t("actions.createShipment")}
           </TableRowActionsMenuItem>
         ) : null}
-        {canBookShipment && canBookReturn ? (
+        {showExchangeAction ? (
           <TableRowActionsMenuItem
             icon={ArrowLeftRight}
             onSelect={() => onAction("bookExchange", order)}
@@ -74,7 +97,7 @@ export function OrderRowActionsMenu({
             {t("actions.bookExchange")}
           </TableRowActionsMenuItem>
         ) : null}
-        {canBookShipment && canBookReturn ? (
+        {showReturnAction ? (
           <TableRowActionsMenuItem
             icon={RotateCcw}
             onSelect={() => onAction("bookReturn", order)}

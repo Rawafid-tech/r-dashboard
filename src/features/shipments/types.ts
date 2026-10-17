@@ -25,6 +25,8 @@ export type ShipmentsListTab =
 
 export type ShipmentsSortField = "CREATED_AT" | "BOOKED_AT";
 
+import type { CarrierCapabilities } from "@/shared/types/carrier-capabilities";
+
 export type ShipmentAddressMethod =
   | "DISTRICT"
   | "ZONE"
@@ -39,6 +41,7 @@ export interface ShipmentConnectionRef {
   carrierNameEn: string;
   carrierNameAr: string;
   active: boolean;
+  capabilities?: CarrierCapabilities;
 }
 
 export interface ShipmentDistrict {

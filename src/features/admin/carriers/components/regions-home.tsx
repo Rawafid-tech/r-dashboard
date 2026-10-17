@@ -171,6 +171,7 @@ export function CarrierRegionsHome() {
           {lastSyncResult.current ? (
             <RegionsSyncSummary
               result={lastSyncResult.current}
+              platform={carrier?.platform ?? null}
               onShowUnmapped={() => handleUnmappedChange(true)}
             />
           ) : null}

@@ -5,6 +5,10 @@ import type {
   ShipmentStatus,
   ShipmentsListTab,
 } from "@/features/shipments/types";
+import {
+  connectionSupportsCancel,
+  connectionSupportsLabels,
+} from "@/shared/types/carrier-capabilities";
 
 const LABEL_STATUSES: ShipmentStatus[] = [
   "BOOKED",
@@ -46,13 +50,15 @@ export function tabCountFromCounts(
   return statusesForTab(tab).reduce((sum, status) => sum + (counts[status] ?? 0), 0);
 }
 
-export function canCancelShipment(status: ShipmentStatus): boolean {
-  return status === "BOOKED";
+type ShipmentActionContext = Pick<Shipment, "status" | "kind" | "connection">;
+
+export function canCancelShipment(shipment: ShipmentActionContext): boolean {
+  if (shipment.status !== "BOOKED") return false;
+  return connectionSupportsCancel(shipment.connection.capabilities);
 }
 
-export function canPrintShipmentLabel(
-  shipment: Pick<Shipment, "status" | "kind">,
-): boolean {
+export function canPrintShipmentLabel(shipment: ShipmentActionContext): boolean {
   if (isReturnPickup(shipment)) return false;
-  return LABEL_STATUSES.includes(shipment.status);
+  if (!LABEL_STATUSES.includes(shipment.status)) return false;
+  return connectionSupportsLabels(shipment.connection.capabilities);
 }

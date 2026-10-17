@@ -5,6 +5,7 @@ import type { ExchangePreviewParams } from "@/features/exchanges/types";
 
 interface UseExchangePreviewOptions {
   enabled?: boolean;
+  staleTime?: number;
 }
 
 export function useExchangePreview(
@@ -17,7 +18,7 @@ export function useExchangePreview(
     queryKey: exchangeKeys.preview(params ?? { orderId: "" }),
     queryFn: ({ signal }) => getExchangePreview(params!, signal),
     enabled,
-    staleTime: 0,
+    staleTime: options.staleTime ?? 0,
     retry: false,
   });
 }

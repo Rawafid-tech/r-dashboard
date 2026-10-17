@@ -1,6 +1,9 @@
-import { ArrowUpRight } from "lucide-react";
+import { useState } from "react";
+import { ArrowUpRight, Pencil, Plus, Trash2 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
+import { CarrierDeleteDialog } from "@/features/admin/carriers/components/carrier-delete-dialog";
+import { CarrierFormDialog } from "@/features/admin/carriers/components/carrier-form-dialog";
 import { CarrierMark } from "@/features/shipping-partners/components/carrier-mark";
 import { carrierDisplayName } from "@/features/shipping-partners/lib/carrier-label";
 import { useAdminCarriers } from "@/features/admin/carriers/hooks/use-admin-carriers";
@@ -10,6 +13,10 @@ import { useAdminMe } from "@/features/admin/auth/hooks/use-admin-me";
 import { PageHeader } from "@/shared/components/layout/page-header";
 import { Badge, Button, Skeleton, Switch } from "@/shared/components/ui";
 import { AdminRole } from "@/shared/types/enums";
+
+function isCatalogManagedCarrier(carrier: AdminCarrier): boolean {
+  return carrier.platform === "ACCURATE";
+}
 
 export function AdminCarriersHome() {
   const { t, i18n } = useTranslation("admin");
@@ -21,6 +28,10 @@ export function AdminCarriersHome() {
   const pendingCode = updateMutation.isPending
     ? (updateMutation.variables?.code ?? null)
     : null;
+
+  const [createOpen, setCreateOpen] = useState(false);
+  const [editCarrier, setEditCarrier] = useState<AdminCarrier | null>(null);
+  const [deleteCarrier, setDeleteCarrier] = useState<AdminCarrier | null>(null);
 
   return (
     <div className="mx-auto flex w-full max-w-5xl flex-col gap-6 px-4 py-6 sm:px-6 sm:py-8">
@@ -34,6 +45,14 @@ export function AdminCarriersHome() {
       <PageHeader
         title={t("carriers.hero.title")}
         description={t("carriers.hero.subtitle")}
+        actions={
+          canManage ? (
+            <Button type="button" size="sm" onClick={() => setCreateOpen(true)}>
+              <Plus aria-hidden="true" />
+              {t("carriers.addCarrier")}
+            </Button>
+          ) : null
+        }
       />
 
       <div id="admin-carriers-main">
@@ -94,11 +113,36 @@ export function AdminCarriersHome() {
                 onToggle={(enabled) =>
                   updateMutation.mutate({ code: carrier.code, enabled })
                 }
+                onEdit={() => setEditCarrier(carrier)}
+                onDelete={() => setDeleteCarrier(carrier)}
               />
             ))}
           </ul>
         ) : null}
       </div>
+
+      <CarrierFormDialog
+        mode="create"
+        carrier={null}
+        open={createOpen}
+        onOpenChange={setCreateOpen}
+      />
+      <CarrierFormDialog
+        mode="edit"
+        carrier={editCarrier}
+        open={Boolean(editCarrier)}
+        onOpenChange={(open) => {
+          if (!open) setEditCarrier(null);
+        }}
+      />
+      <CarrierDeleteDialog
+        carrier={deleteCarrier}
+        locale={i18n.language}
+        open={Boolean(deleteCarrier)}
+        onOpenChange={(open) => {
+          if (!open) setDeleteCarrier(null);
+        }}
+      />
     </div>
   );
 }
@@ -109,12 +153,16 @@ function CarrierRow({
   canManage,
   pending,
   onToggle,
+  onEdit,
+  onDelete,
 }: {
   carrier: AdminCarrier;
   locale: string;
   canManage: boolean;
   pending: boolean;
   onToggle: (enabled: boolean) => void;
+  onEdit: () => void;
+  onDelete: () => void;
 }) {
   const { t } = useTranslation("admin");
   const name = carrierDisplayName(
@@ -127,6 +175,7 @@ function CarrierRow({
   );
   const hintId = `admin-carrier-${carrier.code}-hint`;
   const switchId = `admin-carrier-${carrier.code}-enabled`;
+  const catalogManaged = isCatalogManagedCarrier(carrier);
   const hint = !carrier.running
     ? t("carriers.notRunningHint")
     : canManage
@@ -155,6 +204,9 @@ function CarrierRow({
               </p>
             </div>
             <div className="flex flex-wrap gap-1.5">
+              {carrier.platform ? (
+                <Badge variant="outline">{carrier.platform}</Badge>
+              ) : null}
               <Badge variant={carrier.running ? "success" : "warning"}>
                 {carrier.running
                   ? t("carriers.running")
@@ -177,15 +229,41 @@ function CarrierRow({
       </div>
 
       <div className="mt-auto flex flex-wrap items-center justify-between gap-3 border-t border-border/60 bg-muted/20 px-4 py-3">
-        <Button asChild variant="outline" size="sm">
-          <Link
-            to={`/admin/carriers/${encodeURIComponent(carrier.code)}/regions`}
-            aria-label={t("carriers.viewRegions", { name })}
-          >
-            {t("carriers.viewRegionsShort")}
-            <ArrowUpRight aria-hidden="true" />
-          </Link>
-        </Button>
+        <div className="flex flex-wrap gap-2">
+          <Button asChild variant="outline" size="sm">
+            <Link
+              to={`/admin/carriers/${encodeURIComponent(carrier.code)}/regions`}
+              aria-label={t("carriers.viewRegions", { name })}
+            >
+              {t("carriers.viewRegionsShort")}
+              <ArrowUpRight aria-hidden="true" />
+            </Link>
+          </Button>
+          {canManage && catalogManaged ? (
+            <>
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={onEdit}
+                aria-label={t("carriers.form.editAction", { name })}
+              >
+                <Pencil aria-hidden="true" />
+                {t("carriers.form.editShort")}
+              </Button>
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={onDelete}
+                aria-label={t("carriers.form.deleteAction", { name })}
+              >
+                <Trash2 aria-hidden="true" />
+                {t("carriers.form.deleteShort")}
+              </Button>
+            </>
+          ) : null}
+        </div>
         <Switch
           id={switchId}
           checked={carrier.enabled}

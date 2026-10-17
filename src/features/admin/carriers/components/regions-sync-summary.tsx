@@ -7,11 +7,13 @@ import { useLocaleStore } from "@/stores/locale.store";
 interface RegionsSyncSummaryProps {
   result: CarrierRegionsSyncResult;
   onShowUnmapped: () => void;
+  platform?: string | null;
 }
 
 export function RegionsSyncSummary({
   result,
   onShowUnmapped,
+  platform = null,
 }: RegionsSyncSummaryProps) {
   const { t } = useTranslation("admin");
   const locale = useLocaleStore((state) => state.locale);
@@ -21,6 +23,7 @@ export function RegionsSyncSummary({
     .map((city) => unmappedCityLabel(city, locale))
     .filter((label) => label.length > 0);
   const hasUnmapped = result.unmappedCities.length > 0;
+  const isAccuratePlatform = platform === "ACCURATE";
 
   return (
     <div className="space-y-3">
@@ -38,16 +41,26 @@ export function RegionsSyncSummary({
 
       {hasUnmapped ? (
         <div
-          role="alert"
-          className="rounded-xl border border-warning/40 bg-warning/10 px-4 py-4"
+          role={isAccuratePlatform ? "status" : "alert"}
+          className={
+            isAccuratePlatform
+              ? "rounded-xl border border-border/70 bg-muted/30 px-4 py-4"
+              : "rounded-xl border border-warning/40 bg-warning/10 px-4 py-4"
+          }
         >
           <p className="font-medium text-foreground">
-            {t("carriers.regions.sync.unmappedTitle")}
+            {isAccuratePlatform
+              ? t("carriers.regions.sync.unmappedTitleAccurate")
+              : t("carriers.regions.sync.unmappedTitle")}
           </p>
           <p className="mt-1 text-sm text-muted-foreground">
-            {t("carriers.regions.sync.unmappedHint", {
-              count: formatCount(result.unmappedCities.length),
-            })}
+            {isAccuratePlatform
+              ? t("carriers.regions.sync.unmappedHintAccurate", {
+                  count: formatCount(result.unmappedCities.length),
+                })
+              : t("carriers.regions.sync.unmappedHint", {
+                  count: formatCount(result.unmappedCities.length),
+                })}
           </p>
           {unmappedLabels.length > 0 ? (
             <ul className="mt-3 flex flex-wrap gap-2">

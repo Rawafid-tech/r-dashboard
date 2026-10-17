@@ -37,7 +37,7 @@ export function ShipmentDetailHero({
   const canManage = hasPermission(MerchantPermission.SHIPMENT_MANAGE);
   const canPrint = canPrintShipmentLabel(shipment);
   const kind = getShipmentKind(shipment);
-  const canCancel = canCancelShipment(shipment.status);
+  const canCancel = canCancelShipment(shipment);
 
   return (
     <div className="space-y-4">

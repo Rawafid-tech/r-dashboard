@@ -1,9 +1,48 @@
+export type AdminCarrierPlatform = "ACCURATE" | "BOSTA" | (string & {});
+
+export interface AdminCarrierSettings {
+  baseUrl?: string;
+  clientId?: string;
+}
+
 export interface AdminCarrier {
+  id?: string;
   code: string;
+  platform?: AdminCarrierPlatform;
   nameEn?: string;
   nameAr?: string;
   enabled: boolean;
   running: boolean;
+  sortOrder?: number;
+  settings?: AdminCarrierSettings;
+}
+
+export interface CarrierPlatformField {
+  key: string;
+  required: boolean;
+  label?: string;
+}
+
+export interface CarrierPlatform {
+  platform: AdminCarrierPlatform;
+  carrierFields: CarrierPlatformField[];
+}
+
+export interface CreateAdminCarrierPayload {
+  code: string;
+  platform: AdminCarrierPlatform;
+  nameEn: string;
+  nameAr: string;
+  settings: Record<string, string>;
+  sortOrder?: number;
+  enabled?: boolean;
+}
+
+export interface PatchAdminCarrierPayload {
+  nameEn?: string;
+  nameAr?: string;
+  settings?: Record<string, string>;
+  sortOrder?: number;
 }
 
 export interface CarrierPlaceName {

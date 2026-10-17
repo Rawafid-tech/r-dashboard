@@ -66,7 +66,13 @@ import { useDebounce } from "@/shared/hooks/use-debounce";
 import { cn } from "@/shared/lib/utils";
 import { SenderLocationStatus } from "@/shared/types/enums";
 import { BookExchangeDialog } from "@/features/exchanges";
+import { useExchangePreview } from "@/features/exchanges/hooks/use-exchange-preview";
+import {
+  isExchangeActionAvailable,
+  isReturnActionAvailable,
+} from "@/features/orders/lib/reverse-logistics-availability";
 import { BookReturnDialog } from "@/features/returns";
+import { useReturnPreview } from "@/features/returns/hooks/use-return-preview";
 import {
   MerchantPermission,
   useMerchantPermissions,
@@ -125,7 +131,7 @@ export function OrderFormSheet({
   const { t, i18n } = useTranslation("orders");
   const { t: tCommon } = useTranslation("common");
   const { hasPermission } = useMerchantPermissions();
-  const canBookReturn = hasPermission(MerchantPermission.SHIPMENT_MANAGE);
+  const canManageShipments = hasPermission(MerchantPermission.SHIPMENT_MANAGE);
   const formId = useId();
   const bodyRef = useRef<HTMLDivElement>(null);
   const [step, setStep] = useState<1 | 2>(1);
@@ -153,6 +159,24 @@ export function OrderFormSheet({
     lockedAsDelivered ||
     listRow?.status === "DELIVERED" ||
     orderQuery.data?.status === "DELIVERED";
+  const reversePreviewEnabled =
+    open && Boolean(resolvedId) && isDelivered && canManageShipments;
+  const returnPreviewQuery = useReturnPreview(
+    resolvedId ? { orderId: resolvedId } : null,
+    { enabled: reversePreviewEnabled, staleTime: 60_000 },
+  );
+  const exchangePreviewQuery = useExchangePreview(
+    resolvedId ? { orderId: resolvedId } : null,
+    { enabled: reversePreviewEnabled, staleTime: 60_000 },
+  );
+  const showReturnAction =
+    reversePreviewEnabled &&
+    returnPreviewQuery.isSuccess &&
+    isReturnActionAvailable(returnPreviewQuery.data);
+  const showExchangeAction =
+    reversePreviewEnabled &&
+    exchangePreviewQuery.isSuccess &&
+    isExchangeActionAvailable(exchangePreviewQuery.data);
   const readOnly =
     isView ||
     isBooked ||
@@ -1223,23 +1247,23 @@ export function OrderFormSheet({
             </Button>
           ) : readOnly ? (
             <>
-              {isDelivered && canBookReturn && resolvedId ? (
-                <>
-                  <Button
-                    type="button"
-                    variant="secondary"
-                    onClick={() => setExchangeDialogOpen(true)}
-                  >
-                    {t("actions.bookExchange")}
-                  </Button>
-                  <Button
-                    type="button"
-                    variant="secondary"
-                    onClick={() => setReturnDialogOpen(true)}
-                  >
-                    {t("actions.bookReturn")}
-                  </Button>
-                </>
+              {resolvedId && showExchangeAction ? (
+                <Button
+                  type="button"
+                  variant="secondary"
+                  onClick={() => setExchangeDialogOpen(true)}
+                >
+                  {t("actions.bookExchange")}
+                </Button>
+              ) : null}
+              {resolvedId && showReturnAction ? (
+                <Button
+                  type="button"
+                  variant="secondary"
+                  onClick={() => setReturnDialogOpen(true)}
+                >
+                  {t("actions.bookReturn")}
+                </Button>
               ) : null}
               <Button type="button" onClick={() => onOpenChange(false)}>
                 {tCommon("common.close")}
@@ -1267,7 +1291,7 @@ export function OrderFormSheet({
   );
 
   const returnDialog =
-    resolvedId && canBookReturn ? (
+    resolvedId && canManageShipments ? (
       <BookReturnDialog
         orderId={resolvedId}
         orderNumber={
@@ -1279,7 +1303,7 @@ export function OrderFormSheet({
     ) : null;
 
   const exchangeDialog =
-    resolvedId && canBookReturn ? (
+    resolvedId && canManageShipments ? (
       <BookExchangeDialog
         orderId={resolvedId}
         orderNumber={

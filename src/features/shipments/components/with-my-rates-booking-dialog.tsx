@@ -9,6 +9,7 @@ import { useBatchShipmentLabels } from "@/features/shipments/hooks/use-shipment-
 import { useBulkBookShipments } from "@/features/shipments/hooks/use-bulk-book-shipments";
 import { useBulkShipmentPreview } from "@/features/shipments/hooks/use-bulk-shipment-preview";
 import { groupBookedIdsByConnection } from "@/features/shipments/lib/bulk-book-outcomes";
+import { canPrintShipmentLabel } from "@/features/shipments/lib/shipment-actions";
 import {
   canSubmitBulkBook,
   draftsToBulkBookPayload,
@@ -209,10 +210,18 @@ export function WithMyRatesBookingDialog({
     }
   };
 
+  const printableLastBookedIds = useMemo(() => {
+    if (!bulkMutation.data) return [];
+    return lastBookedIds.filter((id) => {
+      const row = bulkMutation.data.results.find((r) => r.shipment?.id === id);
+      return row?.shipment ? canPrintShipmentLabel(row.shipment) : false;
+    });
+  }, [bulkMutation.data, lastBookedIds]);
+
   const handlePrintLabels = () => {
-    if (lastBookedIds.length === 0) return;
+    if (printableLastBookedIds.length === 0) return;
     const groups = new Map<string, string[]>();
-    for (const id of lastBookedIds) {
+    for (const id of printableLastBookedIds) {
       const row = bulkMutation.data?.results.find(
         (r) => r.shipment?.id === id,
       );
@@ -225,7 +234,15 @@ export function WithMyRatesBookingDialog({
     if (groups.size === 0 && bulkMutation.data) {
       const byConnection = groupBookedIdsByConnection(bulkMutation.data);
       byConnection.forEach((ids) => {
-        void batchLabelsMutation.mutateAsync(ids);
+        const printable = ids.filter((id) => {
+          const row = bulkMutation.data?.results.find(
+            (r) => r.shipment?.id === id,
+          );
+          return row?.shipment ? canPrintShipmentLabel(row.shipment) : false;
+        });
+        if (printable.length > 0) {
+          void batchLabelsMutation.mutateAsync(printable);
+        }
       });
       return;
     }
@@ -233,7 +250,7 @@ export function WithMyRatesBookingDialog({
       toast.error(t("toast.batchMixedConnections"));
       return;
     }
-    void batchLabelsMutation.mutateAsync(lastBookedIds);
+    void batchLabelsMutation.mutateAsync(printableLastBookedIds);
   };
 
   const isBusy =
@@ -375,7 +392,7 @@ export function WithMyRatesBookingDialog({
         </div>
 
         <div className="flex flex-wrap gap-2 sm:justify-end">
-          {lastBookedIds.length > 0 ? (
+          {printableLastBookedIds.length > 0 ? (
             <Button
               type="button"
               variant="outline"

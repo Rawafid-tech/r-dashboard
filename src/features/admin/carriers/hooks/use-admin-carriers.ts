@@ -5,6 +5,7 @@ import type { CarrierRegionsListParams } from "@/features/admin/carriers/types";
 export const adminCarrierKeys = {
   all: ["admin-carriers"] as const,
   list: () => [...adminCarrierKeys.all, "list"] as const,
+  platforms: () => [...adminCarrierKeys.all, "platforms"] as const,
   regions: (code: string) =>
     [...adminCarrierKeys.all, "regions", code] as const,
   regionList: (code: string, params: CarrierRegionsListParams) =>

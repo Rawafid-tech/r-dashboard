@@ -1,3 +1,5 @@
+import type { CarrierCapabilities } from "@/shared/types/carrier-capabilities";
+
 export type CarrierFieldKind =
   | "SECRET"
   | "SELECT"
@@ -24,6 +26,7 @@ export interface Carrier {
   nameEn: string;
   nameAr: string;
   fields: CarrierField[];
+  capabilities?: CarrierCapabilities;
 }
 
 export interface CarrierSummary {
@@ -55,6 +58,7 @@ export interface CarrierConnection {
   /** Resolved name for `options.pickupLocationId` when the API provides it. */
   pickupLocationName?: string | null;
   verifiedAt: string | null;
+  capabilities?: CarrierCapabilities;
   createdAt: string;
   updatedAt: string;
 }

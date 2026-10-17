@@ -1,9 +1,12 @@
 import type {
   AdminCarrier,
+  CarrierPlatform,
   CarrierRegionsListParams,
   CarrierRegionsSyncResult,
   CarrierRegion,
   CarrierUnmappedCity,
+  CreateAdminCarrierPayload,
+  PatchAdminCarrierPayload,
   RegionResolveRequest,
   RegionResolveResult,
 } from "@/features/admin/carriers/types";
@@ -24,6 +27,38 @@ export async function updateAdminCarrier(
     { enabled },
   );
   return data;
+}
+
+export async function getCarrierPlatforms(): Promise<CarrierPlatform[]> {
+  const { data } = await apiClient.get<CarrierPlatform[]>(
+    "/api/admin/carrier-platforms",
+  );
+  return data;
+}
+
+export async function createAdminCarrier(
+  payload: CreateAdminCarrierPayload,
+): Promise<AdminCarrier> {
+  const { data } = await apiClient.post<AdminCarrier>(
+    "/api/admin/carriers",
+    payload,
+  );
+  return data;
+}
+
+export async function patchAdminCarrier(
+  code: string,
+  payload: PatchAdminCarrierPayload,
+): Promise<AdminCarrier> {
+  const { data } = await apiClient.patch<AdminCarrier>(
+    `/api/admin/carriers/${encodeURIComponent(code)}`,
+    payload,
+  );
+  return data;
+}
+
+export async function deleteAdminCarrier(code: string): Promise<void> {
+  await apiClient.delete(`/api/admin/carriers/${encodeURIComponent(code)}`);
 }
 
 function carrierPath(code: string, suffix: string): string {

@@ -131,6 +131,43 @@
     },
     "viewRegions": "تغطية {{name}}",
     "viewRegionsShort": "التغطية",
+    "addCarrier": "إضافة شركة شحن",
+    "form": {
+      "createTitle": "إضافة شريك شحن",
+      "createDescription": "تسجيل شركة على منصة مشتركة. تُنزَّل مناطق التوصيل مباشرة بعد الإنشاء.",
+      "editTitle": "تعديل شريك الشحن",
+      "editDescription": "الأسماء وترتيب العرض وإعدادات المنصة. تغيير الإعدادات يعيد تنزيل مناطق التوصيل.",
+      "createSubmit": "إضافة الشركة",
+      "save": "حفظ التغييرات",
+      "saving": "جارٍ الحفظ…",
+      "editShort": "تعديل",
+      "deleteShort": "حذف",
+      "editAction": "تعديل {{name}}",
+      "deleteAction": "حذف {{name}}",
+      "fields": {
+        "platform": "المنصة",
+        "platformPlaceholder": "اختر منصة",
+        "code": "رمز الشريك",
+        "nameEn": "الاسم بالإنجليزية",
+        "nameAr": "الاسم بالعربية",
+        "sortOrder": "ترتيب العرض",
+        "baseUrl": "عنوان واجهة الـ API",
+        "baseUrlHint": "يجب أن يبدأ بـ https:// وينتهي بـ /graphql",
+        "clientId": "معرّف العميل على المنصة"
+      },
+      "toast": {
+        "created": "تمت إضافة شريك الشحن",
+        "updated": "تم تحديث شريك الشحن",
+        "deleted": "تم حذف شريك الشحن",
+        "deleteFailed": "تعذر حذف شريك الشحن"
+      },
+      "delete": {
+        "title": "حذف شريك الشحن؟",
+        "description": "إزالة {{name}} من دليل الشركاء. مسموح فقط ما دام لا يوجد تاجر متصل به.",
+        "confirm": "حذف",
+        "confirming": "جارٍ الحذف…"
+      }
+    },
     "regions": {
       "metaTitle": "تغطية {{name}} — إدارة روافد",
       "metaDescription": "راجع مدن ومناطق وأحياء {{name}}، وتحقق أين سيُسجَّل العنوان عند الحجز.",
@@ -154,6 +191,8 @@
         "summary": "أُضيف {{added}}، وتحدّث {{updated}}، وتقاعد {{retired}}. الإجمالي {{total}} حيًا.",
         "unmappedTitle": "بعض المدن لم تُربَط بمحافظة",
         "unmappedHint": "{{count}} من مدن الشركة ليست داخل محافظاتنا، لذلك أحياؤها لا تطابق أي عنوان.",
+        "unmappedTitleAccurate": "أسماء مناطق غير مربوطة",
+        "unmappedHintAccurate": "{{count}} سطرًا من الشركة لم يُوضَع داخل محافظة. في شركاء Accurate، مناطق الفوترة (مثل فاتورة المرتجعات) متوقعة هنا ويمكن تجاهلها.",
         "showUnmapped": "عرض الأحياء غير المربوطة"
       },
       "toolbar": {

@@ -12,7 +12,10 @@ import { ShipmentsPageSkeleton } from "@/features/shipments/components/shipments
 import { useBatchShipmentLabels, useShipmentLabel } from "@/features/shipments/hooks/use-shipment-label";
 import { useShipmentCounts } from "@/features/shipments/hooks/use-shipment-counts";
 import { useShipments } from "@/features/shipments/hooks/use-shipments";
-import { statusesForTab } from "@/features/shipments/lib/shipment-actions";
+import {
+  canPrintShipmentLabel,
+  statusesForTab,
+} from "@/features/shipments/lib/shipment-actions";
 import {
   DEFAULT_SHIPMENTS_SORT,
   DEFAULT_SHIPMENTS_TAB,
@@ -235,16 +238,24 @@ export function ShipmentsHome({ scope = "shipments" }: ShipmentsHomeProps) {
     const selectedRows = ids
       .map((id) => shipmentById.get(id))
       .filter((row): row is Shipment => Boolean(row));
+    const printableRows = selectedRows.filter((row) =>
+      canPrintShipmentLabel(row),
+    );
+
+    if (printableRows.length === 0) {
+      toast.error(t("toast.batchEmpty"));
+      return;
+    }
 
     const connectionIds = new Set(
-      selectedRows.map((row) => row.connection.id),
+      printableRows.map((row) => row.connection.id),
     );
     if (connectionIds.size > 1) {
       toast.error(t("toast.batchMixedConnections"));
       return;
     }
 
-    void batchLabelsMutation.mutateAsync(ids);
+    void batchLabelsMutation.mutateAsync(printableRows.map((row) => row.id));
   };
 
   const handleRowAction = (action: ShipmentRowAction, shipment: Shipment) => {

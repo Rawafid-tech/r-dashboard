@@ -5,6 +5,7 @@ import type { ReturnPreviewParams } from "@/features/returns/types";
 
 interface UseReturnPreviewOptions {
   enabled?: boolean;
+  staleTime?: number;
 }
 
 export function useReturnPreview(
@@ -17,7 +18,7 @@ export function useReturnPreview(
     queryKey: returnKeys.preview(params ?? { orderId: "" }),
     queryFn: ({ signal }) => getReturnPreview(params!, signal),
     enabled,
-    staleTime: 0,
+    staleTime: options.staleTime ?? 0,
     retry: false,
   });
 }
