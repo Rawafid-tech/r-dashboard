@@ -131,6 +131,7 @@
     },
     "viewRegions": "Coverage for {{name}}",
     "viewRegionsShort": "Coverage",
+    "returnsOn": "Returns on",
     "addCarrier": "Add carrier",
     "logo": {
       "upload": "Upload logo",
@@ -146,6 +147,7 @@
       "createSubmit": "Add carrier",
       "save": "Save changes",
       "saving": "Saving…",
+      "loadingPlatformFields": "Loading platform settings…",
       "editShort": "Edit",
       "deleteShort": "Delete",
       "editAction": "Edit {{name}}",
@@ -159,7 +161,9 @@
         "sortOrder": "Sort order",
         "baseUrl": "API address (base URL)",
         "baseUrlHint": "Must start with https:// and end with /graphql",
-        "clientId": "Client id on the platform"
+        "clientId": "Client id on the platform",
+        "returns": "Returns on",
+        "returnsHint": "Merchants can book returns through this partner only while this is on."
       },
       "toast": {
         "created": "Shipping partner added",

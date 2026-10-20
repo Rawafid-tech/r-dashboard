@@ -227,6 +227,9 @@ function CarrierRow({
                 ? t("carriers.enabled")
                 : t("carriers.disabled")}
             </Badge>
+            {carrier.settings?.returns === "true" ? (
+              <Badge variant="outline">{t("carriers.returnsOn")}</Badge>
+            ) : null}
           </div>
           <p
             id={hintId}

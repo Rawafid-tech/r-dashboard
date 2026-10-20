@@ -14,7 +14,13 @@ export interface AdminCarrierFormValues {
   settings: Record<string, string>;
 }
 
-const SETTING_FIELD_KEYS = new Set(["baseUrl", "clientId"]);
+const TOP_LEVEL_FIELD_KEYS = new Set([
+  "code",
+  "nameEn",
+  "nameAr",
+  "sortOrder",
+  "platform",
+]);
 
 function assignFieldError(
   fieldName: string,
@@ -29,7 +35,7 @@ function assignFieldError(
     setError(fieldName, { type: "server", message });
     return true;
   }
-  if (SETTING_FIELD_KEYS.has(fieldName)) {
+  if (!TOP_LEVEL_FIELD_KEYS.has(fieldName)) {
     setError(`settings.${fieldName}` as FieldPath<AdminCarrierFormValues>, {
       type: "server",
       message,

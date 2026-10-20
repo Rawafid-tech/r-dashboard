@@ -1,5 +1,6 @@
 import { useEffect, useId, useMemo, useState } from "react";
 import { Loader2 } from "lucide-react";
+import { Controller, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { useAdminCarriers } from "@/features/admin/carriers/hooks/use-admin-carriers";
@@ -17,9 +18,13 @@ import {
   applyAdminCarrierFieldErrors,
   type AdminCarrierFormValues,
 } from "@/features/admin/carriers/lib/admin-carrier-form-errors";
+import {
+  buildSettingsRecord,
+  carrierFieldKind,
+  settingsPayloadFromForm,
+} from "@/features/admin/carriers/lib/admin-carrier-settings";
 import { carrierDisplayName } from "@/features/shipping-partners/lib/carrier-label";
 import type { AdminCarrier, CarrierPlatformField } from "@/features/admin/carriers/types";
-import { useForm } from "react-hook-form";
 import {
   Button,
   Dialog,
@@ -30,6 +35,7 @@ import {
   DialogHeader,
   DialogTitle,
   Field,
+  FieldDescription,
   FieldError,
   FieldGroup,
   FieldLabel,
@@ -39,6 +45,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
+  Switch,
 } from "@/shared/components/ui";
 
 interface CarrierFormDialogProps {
@@ -48,10 +55,6 @@ interface CarrierFormDialogProps {
   onOpenChange: (open: boolean) => void;
 }
 
-function emptySettings(keys: string[]): Record<string, string> {
-  return Object.fromEntries(keys.map((key) => [key, ""]));
-}
-
 function settingLabel(
   field: CarrierPlatformField,
   t: (key: string) => string,
@@ -59,6 +62,7 @@ function settingLabel(
   if (field.label) return field.label;
   if (field.key === "baseUrl") return t("carriers.form.fields.baseUrl");
   if (field.key === "clientId") return t("carriers.form.fields.clientId");
+  if (field.key === "returns") return t("carriers.form.fields.returns");
   return field.key;
 }
 
@@ -72,7 +76,7 @@ export function CarrierFormDialog({
   const { t: tCommon } = useTranslation("common");
   const formId = useId();
   const carriersQuery = useAdminCarriers();
-  const platformsQuery = useCarrierPlatforms({ enabled: open && mode === "create" });
+  const platformsQuery = useCarrierPlatforms({ enabled: open });
   const createMutation = useCreateAdminCarrier();
   const patchMutation = usePatchAdminCarrier();
   const [globalError, setGlobalError] = useState<string | null>(null);
@@ -87,7 +91,7 @@ export function CarrierFormDialog({
       nameEn: "",
       nameAr: "",
       sortOrder: "100",
-      settings: emptySettings(["baseUrl", "clientId"]),
+      settings: {},
     },
   });
 
@@ -96,53 +100,64 @@ export function CarrierFormDialog({
     () => platforms.find((item) => item.platform === selectedPlatform),
     [platforms, selectedPlatform],
   );
+  const editPlatformDef = useMemo(
+    () =>
+      platforms.find(
+        (item) => item.platform === (carrier?.platform ?? "ACCURATE"),
+      ),
+    [platforms, carrier?.platform],
+  );
   const settingFields = useMemo((): CarrierPlatformField[] => {
     if (mode === "edit") {
-      return [
-        { key: "baseUrl", required: true },
-        { key: "clientId", required: true },
-      ];
+      return editPlatformDef?.carrierFields ?? [];
     }
     return platformDef?.carrierFields ?? [];
-  }, [mode, platformDef]);
+  }, [mode, platformDef, editPlatformDef]);
 
   useEffect(() => {
     if (!open) return;
     setGlobalError(null);
     if (mode === "edit" && carrier) {
+      const fields = editPlatformDef?.carrierFields ?? [];
       form.reset({
         code: carrier.code,
         platform: carrier.platform ?? "ACCURATE",
         nameEn: carrier.nameEn ?? "",
         nameAr: carrier.nameAr ?? "",
         sortOrder: String(carrier.sortOrder ?? 100),
-        settings: {
-          baseUrl: carrier.settings?.baseUrl ?? "",
-          clientId: carrier.settings?.clientId ?? "",
-        },
+        settings:
+          fields.length > 0
+            ? buildSettingsRecord(fields, carrier.settings)
+            : {},
       });
       return;
     }
+    const createFields =
+      platforms.find((item) => item.platform === defaultPlatform)
+        ?.carrierFields ?? [];
     form.reset({
       code: "",
       platform: defaultPlatform,
       nameEn: "",
       nameAr: "",
       sortOrder: "100",
-      settings: emptySettings(
-        platforms.find((item) => item.platform === defaultPlatform)
-          ?.carrierFields.map((field) => field.key) ?? ["baseUrl", "clientId"],
-      ),
+      settings:
+        createFields.length > 0 ? buildSettingsRecord(createFields) : {},
     });
-  }, [open, mode, carrier, form, defaultPlatform, platforms]);
+  }, [open, mode, carrier, form, defaultPlatform, platforms, editPlatformDef]);
 
   const isPending = createMutation.isPending || patchMutation.isPending;
+  const settingsReady =
+    settingFields.length > 0 &&
+    !platformsQuery.isLoading &&
+    !platformsQuery.isError;
 
   const handleSubmit = form.handleSubmit(async (values) => {
     setGlobalError(null);
     const sortOrder = values.sortOrder.trim()
       ? Number.parseInt(values.sortOrder, 10)
       : undefined;
+    const settings = settingsPayloadFromForm(settingFields, values.settings);
 
     try {
       if (mode === "create") {
@@ -151,7 +166,7 @@ export function CarrierFormDialog({
           platform: values.platform,
           nameEn: values.nameEn.trim(),
           nameAr: values.nameAr.trim(),
-          settings: values.settings,
+          settings,
           sortOrder: Number.isFinite(sortOrder) ? sortOrder : undefined,
         });
       } else if (carrier) {
@@ -160,7 +175,7 @@ export function CarrierFormDialog({
           payload: {
             nameEn: values.nameEn.trim(),
             nameAr: values.nameAr.trim(),
-            settings: values.settings,
+            settings,
             sortOrder: Number.isFinite(sortOrder) ? sortOrder : undefined,
           },
         });
@@ -237,10 +252,7 @@ export function CarrierFormDialog({
                         const fields =
                           platforms.find((item) => item.platform === value)
                             ?.carrierFields ?? [];
-                        form.setValue(
-                          "settings",
-                          emptySettings(fields.map((field) => field.key)),
-                        );
+                        form.setValue("settings", buildSettingsRecord(fields));
                       }}
                       disabled={platformsQuery.isLoading || isPending}
                     >
@@ -339,11 +351,69 @@ export function CarrierFormDialog({
               </Field>
             </FieldGroup>
 
+            {platformsQuery.isLoading && open ? (
+              <p className="text-sm text-muted-foreground" role="status">
+                {t("carriers.form.loadingPlatformFields")}
+              </p>
+            ) : null}
+
             {settingFields.length > 0 ? (
               <FieldGroup>
                 {settingFields.map((field) => {
                   const inputId = `${formId}-setting-${field.key}`;
+                  const hintId =
+                    field.key === "baseUrl" || field.key === "returns"
+                      ? `${inputId}-hint`
+                      : undefined;
+                  const errorId = `${inputId}-error`;
                   const error = form.formState.errors.settings?.[field.key];
+                  const describedBy = [hintId, error ? errorId : undefined]
+                    .filter(Boolean)
+                    .join(" ");
+
+                  if (carrierFieldKind(field) === "BOOLEAN") {
+                    return (
+                      <Controller
+                        key={field.key}
+                        name={`settings.${field.key}`}
+                        control={form.control}
+                        render={({ field: input }) => (
+                          <Field
+                            orientation="horizontal"
+                            data-invalid={Boolean(error) || undefined}
+                          >
+                            <Switch
+                              id={inputId}
+                              checked={input.value === "true"}
+                              onCheckedChange={(checked) =>
+                                input.onChange(checked ? "true" : "false")
+                              }
+                              disabled={isPending}
+                              aria-invalid={Boolean(error) || undefined}
+                              aria-describedby={
+                                describedBy || undefined
+                              }
+                            />
+                            <div className="space-y-1">
+                              <FieldLabel htmlFor={inputId}>
+                                {settingLabel(field, t)}
+                              </FieldLabel>
+                              {field.key === "returns" ? (
+                                <FieldDescription id={hintId}>
+                                  {t("carriers.form.fields.returnsHint")}
+                                </FieldDescription>
+                              ) : null}
+                              <FieldError
+                                id={errorId}
+                                errors={error ? [error] : undefined}
+                              />
+                            </div>
+                          </Field>
+                        )}
+                      />
+                    );
+                  }
+
                   return (
                     <Field key={field.key}>
                       <FieldLabel htmlFor={inputId}>
@@ -359,13 +429,14 @@ export function CarrierFormDialog({
                         })}
                         aria-invalid={Boolean(error)}
                         aria-required={field.required}
+                        aria-describedby={describedBy || undefined}
                       />
                       {field.key === "baseUrl" ? (
-                        <p className="text-xs text-muted-foreground">
+                        <FieldDescription id={hintId}>
                           {t("carriers.form.fields.baseUrlHint")}
-                        </p>
+                        </FieldDescription>
                       ) : null}
-                      <FieldError errors={[error]} />
+                      <FieldError id={errorId} errors={[error]} />
                     </Field>
                   );
                 })}
@@ -382,7 +453,11 @@ export function CarrierFormDialog({
             >
               {tCommon("common.cancel")}
             </Button>
-            <Button type="submit" form={formId} disabled={isPending}>
+            <Button
+              type="submit"
+              form={formId}
+              disabled={isPending || !settingsReady}
+            >
               {isPending ? (
                 <>
                   <Loader2 className="animate-spin" aria-hidden="true" />

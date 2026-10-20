@@ -3,6 +3,8 @@ export type AdminCarrierPlatform = "ACCURATE" | "BOSTA" | (string & {});
 export interface AdminCarrierSettings {
   baseUrl?: string;
   clientId?: string;
+  returns?: string;
+  [key: string]: string | undefined;
 }
 
 export interface AdminCarrier {
@@ -18,10 +20,14 @@ export interface AdminCarrier {
   settings?: AdminCarrierSettings;
 }
 
+export type CarrierPlatformFieldKind = "TEXT" | "BOOLEAN";
+
 export interface CarrierPlatformField {
   key: string;
   required: boolean;
   label?: string;
+  kind?: CarrierPlatformFieldKind;
+  defaultValue?: string | boolean | null;
 }
 
 export interface CarrierPlatform {

@@ -131,6 +131,7 @@
     },
     "viewRegions": "تغطية {{name}}",
     "viewRegionsShort": "التغطية",
+    "returnsOn": "المرتجعات مفعّلة",
     "addCarrier": "إضافة شركة شحن",
     "logo": {
       "upload": "رفع الشعار",
@@ -146,6 +147,7 @@
       "createSubmit": "إضافة الشركة",
       "save": "حفظ التغييرات",
       "saving": "جارٍ الحفظ…",
+      "loadingPlatformFields": "جارٍ تحميل إعدادات المنصة…",
       "editShort": "تعديل",
       "deleteShort": "حذف",
       "editAction": "تعديل {{name}}",
@@ -159,7 +161,9 @@
         "sortOrder": "ترتيب العرض",
         "baseUrl": "عنوان واجهة الـ API",
         "baseUrlHint": "يجب أن يبدأ بـ https:// وينتهي بـ /graphql",
-        "clientId": "معرّف العميل على المنصة"
+        "clientId": "معرّف العميل على المنصة",
+        "returns": "تفعيل المرتجعات",
+        "returnsHint": "يستطيع التجار حجز المرتجعات عبر هذا الشريك فقط عندما يكون هذا الخيار مفعّلاً."
       },
       "toast": {
         "created": "تمت إضافة شريك الشحن",
