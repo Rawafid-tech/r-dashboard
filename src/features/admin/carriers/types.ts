@@ -11,6 +11,7 @@ export interface AdminCarrier {
   platform?: AdminCarrierPlatform;
   nameEn?: string;
   nameAr?: string;
+  logoUrl?: string | null;
   enabled: boolean;
   running: boolean;
   sortOrder?: number;

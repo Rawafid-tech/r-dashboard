@@ -132,6 +132,7 @@ export function ConnectionsDataTable({
             <CarrierMark
               code={connection.carrier.code}
               name={carrierDisplayName(connection.carrier, i18n.language)}
+              logoUrl={connection.carrier.logoUrl}
               className="size-8"
             />
             <span className="font-medium text-foreground">{connection.name}</span>
@@ -234,7 +235,11 @@ export function ConnectionsDataTable({
           return (
             <article className="flex flex-col gap-3 rounded-xl border border-border/70 bg-card p-4 shadow-sm">
               <div className="flex items-start gap-3">
-                <CarrierMark code={connection.carrier.code} name={carrierName} />
+                <CarrierMark
+                  code={connection.carrier.code}
+                  name={carrierName}
+                  logoUrl={connection.carrier.logoUrl}
+                />
                 <div className="min-w-0 flex-1">
                   <h3 className="font-semibold text-foreground">
                     {connection.name}

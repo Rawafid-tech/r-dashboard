@@ -159,6 +159,7 @@ export function CarrierRegionsHome() {
           <RegionsHero
             name={name}
             code={code}
+            logoUrl={carrier?.logoUrl}
             canManage={canManage}
             isSyncing={syncMutation.isPending}
             totalElements={regionsQuery.data?.totalElements}

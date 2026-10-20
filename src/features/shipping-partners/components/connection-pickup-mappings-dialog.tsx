@@ -187,7 +187,11 @@ export function ConnectionPickupMappingsDialog({
           <DialogTitle>{t("pickupMappings.title")}</DialogTitle>
           {connection ? (
             <div className="flex flex-wrap items-center gap-2 text-sm text-foreground">
-              <CarrierMark code={connection.carrier.code} name={carrierName} />
+              <CarrierMark
+                code={connection.carrier.code}
+                name={carrierName}
+                logoUrl={connection.carrier.logoUrl}
+              />
               <span className="font-medium">{connection.name}</span>
             </div>
           ) : null}

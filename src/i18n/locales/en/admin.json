@@ -132,6 +132,12 @@
     "viewRegions": "Coverage for {{name}}",
     "viewRegionsShort": "Coverage",
     "addCarrier": "Add carrier",
+    "logo": {
+      "upload": "Upload logo",
+      "remove": "Remove logo",
+      "updated": "Partner logo updated",
+      "removed": "Partner logo removed"
+    },
     "form": {
       "createTitle": "Add shipping partner",
       "createDescription": "Register a carrier on a shared platform. Delivery areas download right after it is created.",

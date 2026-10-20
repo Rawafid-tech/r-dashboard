@@ -40,6 +40,7 @@ export interface ShipmentConnectionRef {
   carrierCode: string;
   carrierNameEn: string;
   carrierNameAr: string;
+  carrierLogoUrl?: string | null;
   active: boolean;
   capabilities?: CarrierCapabilities;
 }

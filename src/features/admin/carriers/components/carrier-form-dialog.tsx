@@ -2,6 +2,7 @@ import { useEffect, useId, useMemo, useState } from "react";
 import { Loader2 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
+import { useAdminCarriers } from "@/features/admin/carriers/hooks/use-admin-carriers";
 import { useCarrierPlatforms } from "@/features/admin/carriers/hooks/use-carrier-platforms";
 import {
   createAdminCarrierErrorDetail,
@@ -11,10 +12,12 @@ import {
   patchAdminCarrierErrorDetail,
   usePatchAdminCarrier,
 } from "@/features/admin/carriers/hooks/use-patch-admin-carrier";
+import { CarrierLogoUploader } from "@/features/admin/carriers/components/carrier-logo-uploader";
 import {
   applyAdminCarrierFieldErrors,
   type AdminCarrierFormValues,
 } from "@/features/admin/carriers/lib/admin-carrier-form-errors";
+import { carrierDisplayName } from "@/features/shipping-partners/lib/carrier-label";
 import type { AdminCarrier, CarrierPlatformField } from "@/features/admin/carriers/types";
 import { useForm } from "react-hook-form";
 import {
@@ -65,9 +68,10 @@ export function CarrierFormDialog({
   open,
   onOpenChange,
 }: CarrierFormDialogProps) {
-  const { t } = useTranslation("admin");
+  const { t, i18n } = useTranslation("admin");
   const { t: tCommon } = useTranslation("common");
   const formId = useId();
+  const carriersQuery = useAdminCarriers();
   const platformsQuery = useCarrierPlatforms({ enabled: open && mode === "create" });
   const createMutation = useCreateAdminCarrier();
   const patchMutation = usePatchAdminCarrier();
@@ -177,6 +181,12 @@ export function CarrierFormDialog({
     }
   });
 
+  const editLogoUrl =
+    mode === "edit" && carrier
+      ? (carriersQuery.data?.find((item) => item.code === carrier.code)
+          ?.logoUrl ?? carrier.logoUrl)
+      : null;
+
   const title =
     mode === "create"
       ? t("carriers.form.createTitle")
@@ -268,6 +278,21 @@ export function CarrierFormDialog({
                   </Field>
                 </FieldGroup>
               </>
+            ) : null}
+
+            {mode === "edit" && carrier ? (
+              <CarrierLogoUploader
+                code={carrier.code}
+                name={carrierDisplayName(
+                  {
+                    code: carrier.code,
+                    nameEn: carrier.nameEn ?? "",
+                    nameAr: carrier.nameAr ?? "",
+                  },
+                  i18n.language,
+                )}
+                logoUrl={editLogoUrl}
+              />
             ) : null}
 
             <FieldGroup>

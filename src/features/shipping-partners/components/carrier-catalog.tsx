@@ -51,6 +51,7 @@ export function CarrierCatalog({
                 <CarrierMark
                   code={carrier.code}
                   name={name}
+                  logoUrl={carrier.logoUrl}
                   className="size-12 shrink-0 text-sm"
                 />
                 <div className="min-w-0">

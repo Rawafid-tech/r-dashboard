@@ -71,6 +71,7 @@ export function ShipmentDetailSummary({ shipment }: ShipmentDetailSummaryProps) 
             <CarrierMark
               code={shipment.connection.carrierCode}
               name={shipmentCarrierLabel(shipment.connection, locale)}
+              logoUrl={shipment.connection.carrierLogoUrl}
             />
             {shipment.connection.name}
           </span>

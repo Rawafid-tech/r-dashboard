@@ -255,7 +255,11 @@ export function CreateShipmentFlow({
                             setStep("confirm");
                           }}
                         >
-                          <CarrierMark code={item.carrier.code} name={carrierName} />
+                          <CarrierMark
+                            code={item.carrier.code}
+                            name={carrierName}
+                            logoUrl={item.carrier.logoUrl}
+                          />
                           <span className="min-w-0 flex-1">
                             <span className="block font-medium">{item.name}</span>
                             <span className="block text-xs text-muted-foreground">

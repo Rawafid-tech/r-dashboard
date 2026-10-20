@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import { CarrierDeleteDialog } from "@/features/admin/carriers/components/carrier-delete-dialog";
 import { CarrierFormDialog } from "@/features/admin/carriers/components/carrier-form-dialog";
+import { CarrierLogoUploader } from "@/features/admin/carriers/components/carrier-logo-uploader";
 import { CarrierMark } from "@/features/shipping-partners/components/carrier-mark";
 import { carrierDisplayName } from "@/features/shipping-partners/lib/carrier-label";
 import { useAdminCarriers } from "@/features/admin/carriers/hooks/use-admin-carriers";
@@ -184,44 +185,52 @@ function CarrierRow({
 
   return (
     <li className="flex h-full flex-col overflow-hidden rounded-xl border border-border/70 bg-card shadow-sm">
-      <div className="flex flex-1 gap-3 p-4">
-        <CarrierMark
-          code={carrier.code}
-          name={name}
-          className="size-12 shrink-0 text-sm"
-        />
-        <div className="min-w-0 flex-1">
-          <div className="flex flex-wrap items-start justify-between gap-x-3 gap-y-2">
-            <div className="min-w-0">
-              <p className="truncate text-base font-semibold text-foreground">
-                {name}
-              </p>
-              <p
-                className="mt-0.5 w-fit font-mono text-[11px] uppercase tracking-wide text-muted-foreground"
-                dir="ltr"
-              >
-                {carrier.code}
-              </p>
-            </div>
-            <div className="flex flex-wrap gap-1.5">
-              {carrier.platform ? (
-                <Badge variant="outline">{carrier.platform}</Badge>
-              ) : null}
-              <Badge variant={carrier.running ? "success" : "warning"}>
-                {carrier.running
-                  ? t("carriers.running")
-                  : t("carriers.notRunning")}
-              </Badge>
-              <Badge variant={carrier.enabled ? "success" : "muted"}>
-                {carrier.enabled
-                  ? t("carriers.enabled")
-                  : t("carriers.disabled")}
-              </Badge>
-            </div>
+      <div className="flex flex-1 gap-4 p-4">
+        {canManage ? (
+          <CarrierLogoUploader
+            code={carrier.code}
+            name={name}
+            logoUrl={carrier.logoUrl}
+            stacked
+          />
+        ) : (
+          <CarrierMark
+            code={carrier.code}
+            name={name}
+            logoUrl={carrier.logoUrl}
+            className="size-12 shrink-0 text-sm"
+          />
+        )}
+        <div className="min-w-0 flex-1 space-y-2">
+          <div className="min-w-0">
+            <p className="text-base font-semibold leading-snug text-foreground">
+              {name}
+            </p>
+            <p
+              className="mt-0.5 w-fit font-mono text-[11px] uppercase tracking-wide text-muted-foreground"
+              dir="ltr"
+            >
+              {carrier.code}
+            </p>
+          </div>
+          <div className="flex flex-wrap gap-1.5">
+            {carrier.platform ? (
+              <Badge variant="outline">{carrier.platform}</Badge>
+            ) : null}
+            <Badge variant={carrier.running ? "success" : "warning"}>
+              {carrier.running
+                ? t("carriers.running")
+                : t("carriers.notRunning")}
+            </Badge>
+            <Badge variant={carrier.enabled ? "success" : "muted"}>
+              {carrier.enabled
+                ? t("carriers.enabled")
+                : t("carriers.disabled")}
+            </Badge>
           </div>
           <p
             id={hintId}
-            className="mt-3 text-sm leading-relaxed text-muted-foreground"
+            className="text-sm leading-relaxed text-muted-foreground"
           >
             {hint}
           </p>

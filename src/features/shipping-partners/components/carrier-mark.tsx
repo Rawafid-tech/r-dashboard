@@ -1,9 +1,11 @@
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { resolvePublicMediaUrl } from "@/features/media/lib/resolve-public-media-url";
 import { cn } from "@/shared/lib/utils";
 
 interface CarrierMarkProps {
   code: string;
   name: string;
+  logoUrl?: string | null;
   className?: string;
 }
 
@@ -20,17 +22,34 @@ function carrierMonogram(name: string, code: string): string {
   return name.trim().slice(0, 1) || "?";
 }
 
-export function CarrierMark({ code, name, className }: CarrierMarkProps) {
+export function CarrierMark({
+  code,
+  name,
+  logoUrl,
+  className,
+}: CarrierMarkProps) {
   const [failed, setFailed] = useState(false);
   const initials = carrierMonogram(name, code);
+  const resolvedSrc = useMemo(
+    () => resolvePublicMediaUrl(logoUrl),
+    [logoUrl],
+  );
 
-  if (!failed) {
+  useEffect(() => {
+    setFailed(false);
+  }, [resolvedSrc]);
+
+  const showImage = Boolean(resolvedSrc) && !failed;
+
+  if (showImage) {
     return (
       <img
-        src={`/carriers/${encodeURIComponent(code)}.svg`}
+        src={resolvedSrc!}
         alt=""
         width={40}
         height={40}
+        loading="lazy"
+        decoding="async"
         className={cn(
           "size-10 rounded-lg border border-border/70 bg-card object-contain p-1",
           className,

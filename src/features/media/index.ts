@@ -39,6 +39,7 @@ export {
 } from "./lib/media-validation";
 
 export type { MediaValidationError } from "./lib/media-validation";
+export { resolvePublicMediaUrl } from "./lib/resolve-public-media-url";
 
 // Hooks
 export { useMediaUpload } from "./hooks/use-media-upload";

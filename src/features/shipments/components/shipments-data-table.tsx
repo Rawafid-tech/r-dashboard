@@ -219,6 +219,7 @@ export function ShipmentsDataTable({
             <CarrierMark
               code={shipment.connection.carrierCode}
               name={shipmentCarrierLabel(shipment.connection, locale)}
+              logoUrl={shipment.connection.carrierLogoUrl}
             />
             <div className="min-w-0">
               <p className="truncate text-sm font-medium">

@@ -25,6 +25,7 @@ export interface Carrier {
   code: string;
   nameEn: string;
   nameAr: string;
+  logoUrl: string | null;
   fields: CarrierField[];
   capabilities?: CarrierCapabilities;
 }
@@ -33,6 +34,7 @@ export interface CarrierSummary {
   code: string;
   nameEn: string;
   nameAr: string;
+  logoUrl: string | null;
 }
 
 export interface PickupLocation {

@@ -61,6 +61,29 @@ export async function deleteAdminCarrier(code: string): Promise<void> {
   await apiClient.delete(`/api/admin/carriers/${encodeURIComponent(code)}`);
 }
 
+export async function uploadAdminCarrierLogo(
+  code: string,
+  file: File,
+): Promise<AdminCarrier> {
+  const formData = new FormData();
+  formData.append("file", file);
+  const { data } = await apiClient.put<AdminCarrier>(
+    carrierPath(code, "/logo"),
+    formData,
+    {
+      headers: { "Content-Type": "multipart/form-data" },
+    },
+  );
+  return data;
+}
+
+export async function deleteAdminCarrierLogo(code: string): Promise<AdminCarrier> {
+  const { data } = await apiClient.delete<AdminCarrier>(
+    carrierPath(code, "/logo"),
+  );
+  return data;
+}
+
 function carrierPath(code: string, suffix: string): string {
   return `/api/admin/carriers/${encodeURIComponent(code)}${suffix}`;
 }

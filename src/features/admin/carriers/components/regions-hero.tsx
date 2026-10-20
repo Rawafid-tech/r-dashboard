@@ -11,6 +11,7 @@ import { useLocaleStore } from "@/stores/locale.store";
 interface RegionsHeroProps {
   name: string;
   code: string;
+  logoUrl?: string | null;
   canManage: boolean;
   isSyncing: boolean;
   totalElements?: number;
@@ -20,6 +21,7 @@ interface RegionsHeroProps {
 export function RegionsHero({
   name,
   code,
+  logoUrl,
   canManage,
   isSyncing,
   totalElements,
@@ -46,7 +48,7 @@ export function RegionsHero({
       <PageHeader
         title={
           <span className="flex items-center gap-3">
-            <CarrierMark code={code} name={name} />
+            <CarrierMark code={code} name={name} logoUrl={logoUrl} />
             <span className="min-w-0">{t("carriers.regions.hero.title", { name })}</span>
           </span>
         }
