@@ -1,6 +1,7 @@
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 import LanguageDetector from "i18next-browser-languagedetector";
+import { STORAGE_KEYS } from "@/shared/lib/constants";
 
 import commonAr from "./locales/ar/common.json";
 import commonEn from "./locales/en/common.json";
@@ -89,14 +90,15 @@ i18n
     resources,
     fallbackLng: "ar",
     defaultNS: "common",
-    ns: ["common", "auth", "dashboard", "settings", "billing", "admin", "roles", "users", "locations", "shippingBoxes", "shippingPartners", "products", "wallet", "orders", "shipments", "notifications"],
+    // Derived from the bundled resources so a new namespace can't be missed.
+    ns: Object.keys(resources.en),
     interpolation: {
       escapeValue: false,
     },
     detection: {
       // Prefer stored choice; otherwise fall back to Arabic (not browser language)
       order: ["localStorage"],
-      lookupLocalStorage: "rawafid-locale",
+      lookupLocalStorage: STORAGE_KEYS.LOCALE,
       caches: ["localStorage"],
     },
   });
