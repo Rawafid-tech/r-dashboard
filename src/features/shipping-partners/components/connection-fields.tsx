@@ -70,9 +70,12 @@ export function SecretFields({
         const errorId = `${inputId}-error`;
         const message = nestedMessage(errors, "credentials", field.key);
         const shown = revealed[field.key] === true;
+        // The "paste the key" hint only fits a single-key login, not a user + password pair.
         const placeholder = credentialHint
           ? `••••${credentialHint}`
-          : t("form.secretPlaceholder");
+          : secrets.length === 1
+            ? t("form.secretPlaceholder")
+            : undefined;
 
         return (
           <Controller

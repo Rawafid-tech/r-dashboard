@@ -1,6 +1,7 @@
-import { useCallback, useEffect, useMemo, useRef } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useParams, useSearchParams } from "react-router-dom";
+import { CarrierFormDialog } from "@/features/admin/carriers/components/carrier-form-dialog";
 import { RegionsDataTable } from "@/features/admin/carriers/components/regions-data-table";
 import { RegionsEmptyState } from "@/features/admin/carriers/components/regions-empty-state";
 import { RegionsErrorState } from "@/features/admin/carriers/components/regions-error-state";
@@ -11,6 +12,7 @@ import { useAdminCarriers } from "@/features/admin/carriers/hooks/use-admin-carr
 import { useAdminMe } from "@/features/admin/auth/hooks/use-admin-me";
 import { useCarrierRegions } from "@/features/admin/carriers/hooks/use-carrier-regions";
 import { useSyncCarrierRegions } from "@/features/admin/carriers/hooks/use-sync-carrier-regions";
+import { isCatalogManagedPlatform } from "@/features/admin/carriers/lib/admin-carrier-settings";
 import {
   activeFilterToParam,
   readRegionActiveFilter,
@@ -80,8 +82,15 @@ export function CarrierRegionsHome() {
     [activeParam, debouncedSearch, governorateId, page, unmapped],
   );
 
+  const [settingsOpen, setSettingsOpen] = useState(false);
+  const carrier = carriersQuery.data?.find((item) => item.code === code);
+  const canEditSettings =
+    canManage && isCatalogManagedPlatform(carrier?.platform);
+
   const regionsQuery = useCarrierRegions(code, queryParams);
-  const syncMutation = useSyncCarrierRegions(code);
+  const syncMutation = useSyncCarrierRegions(code, {
+    onAccountRejected: canEditSettings ? () => setSettingsOpen(true) : undefined,
+  });
   const lastSyncResult = useRef(syncMutation.data ?? null);
   if (syncMutation.data) {
     lastSyncResult.current = syncMutation.data;
@@ -103,7 +112,6 @@ export function CarrierRegionsHome() {
     }
   }, [regionsQuery.data, regionsQuery.isFetching, updateParams]);
 
-  const carrier = carriersQuery.data?.find((item) => item.code === code);
   const name = carrier
     ? carrierDisplayName(
         {
@@ -218,6 +226,15 @@ export function CarrierRegionsHome() {
           </div>
         </>
       )}
+
+      {canEditSettings && carrier ? (
+        <CarrierFormDialog
+          mode="edit"
+          carrier={carrier}
+          open={settingsOpen}
+          onOpenChange={setSettingsOpen}
+        />
+      ) : null}
     </div>
   );
 }

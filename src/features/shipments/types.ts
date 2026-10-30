@@ -203,8 +203,18 @@ export interface ShipmentPreviewOrder {
   codAmount: number;
 }
 
+export type ShipmentProblemCode =
+  | "RECEIVER_PHONE"
+  | "ADDRESS_LINE"
+  | "COD_TOO_HIGH"
+  | "COD_NOT_WHOLE"
+  | "PICKUP_LOCATION"
+  | "SENDER_AREA"
+  | "REFUND_NOT_ALLOWED"
+  | (string & {});
+
 export interface ShipmentProblem {
-  code: string;
+  code: ShipmentProblemCode;
   message: string;
 }
 
@@ -213,7 +223,7 @@ export interface ShipmentPickupRef {
   name: string | null;
 }
 
-export type ShipmentPickupSource = "MAPPED" | "DEFAULT";
+export type ShipmentPickupSource = "MAPPED" | "DEFAULT" | "SENDER_LOCATION";
 
 export interface ShipmentPreviewPickup extends ShipmentPickupRef {
   source: ShipmentPickupSource;

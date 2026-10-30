@@ -1,5 +1,8 @@
 import { AxiosError } from "axios";
-import { parseShipmentBookingError } from "@/features/shipments/lib/shipment-booking-errors";
+import {
+  hasBookingProblem,
+  parseShipmentBookingError,
+} from "@/features/shipments/lib/shipment-booking-errors";
 import { parseApiError } from "@/shared/api/error-handler";
 
 export type ReturnErrorAction =
@@ -41,6 +44,14 @@ export function parseReturnBookingError(error: unknown): ReturnErrorPresentation
     typeof body?.refundable === "number" ? body.refundable : undefined;
   const reason =
     typeof body?.reason === "string" ? body.reason : undefined;
+
+  // Refused before anything was saved: the partner gives no refunds.
+  if (
+    apiError.status === 422 &&
+    hasBookingProblem(error, "REFUND_NOT_ALLOWED")
+  ) {
+    return { detail: apiError.detail, action: "retryWithoutRefund" };
+  }
 
   if (apiError.status === 422 && reason === "REJECTED") {
     return {

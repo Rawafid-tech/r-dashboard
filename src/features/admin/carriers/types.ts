@@ -1,4 +1,4 @@
-export type AdminCarrierPlatform = "ACCURATE" | "BOSTA" | (string & {});
+export type AdminCarrierPlatform = "ACCURATE" | "BOSTA" | "MEGA" | (string & {});
 
 export interface AdminCarrierSettings {
   baseUrl?: string;
@@ -18,9 +18,16 @@ export interface AdminCarrier {
   running: boolean;
   sortOrder?: number;
   settings?: AdminCarrierSettings;
+  /** True when the carrier's SECRET settings are saved; they are never returned. */
+  secretsSet?: boolean;
 }
 
-export type CarrierPlatformFieldKind = "TEXT" | "BOOLEAN";
+export type CarrierPlatformFieldKind = "TEXT" | "BOOLEAN" | "SELECT" | "SECRET";
+
+export interface CarrierPlatformFieldOption {
+  value: string;
+  label?: string;
+}
 
 export interface CarrierPlatformField {
   key: string;
@@ -28,6 +35,7 @@ export interface CarrierPlatformField {
   label?: string;
   kind?: CarrierPlatformFieldKind;
   defaultValue?: string | boolean | null;
+  options?: CarrierPlatformFieldOption[];
 }
 
 export interface CarrierPlatform {

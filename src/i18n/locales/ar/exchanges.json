@@ -51,7 +51,8 @@
     "submit": "حجز الاستبدال",
     "submitting": "جاري الحجز…",
     "retryWithoutRefund": "احجز مرة أخرى بدون مبلغ مسترد",
-    "close": "إغلاق"
+    "close": "إغلاق",
+    "refundNotSupported": "شريك الشحن هذا لا يمكنه رد المبالغ للعملاء عبر روافد."
   },
   "toast": {
     "booked": "تم حجز الاستبدال — تتبع {{tracking}}",

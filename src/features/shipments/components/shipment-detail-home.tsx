@@ -5,6 +5,7 @@ import { ShipmentCancelDialog } from "@/features/shipments/components/shipment-c
 import { ShipmentDetailHero } from "@/features/shipments/components/shipment-detail-hero";
 import { ShipmentDetailSkeleton } from "@/features/shipments/components/shipment-detail-skeleton";
 import { ShipmentDetailSummary } from "@/features/shipments/components/shipment-detail-summary";
+import { ShipmentFailureBanner } from "@/features/shipments/components/shipment-failure-banner";
 import { ShipmentExchangeSection } from "@/features/shipments/components/shipment-exchange-section";
 import { ShipmentReturnPickupSection } from "@/features/shipments/components/shipment-return-pickup-section";
 import { ShipmentDetailTimeline } from "@/features/shipments/components/shipment-detail-timeline";
@@ -27,16 +28,20 @@ export function ShipmentDetailHome() {
   });
   const labelMutation = useShipmentLabel();
 
+  const orderNumber = shipmentQuery.data?.order.orderNumber;
   const trackingNumber = shipmentQuery.data?.trackingNumber;
 
   useEffect(() => {
-    if (!trackingNumber) return;
+    if (!orderNumber) return;
     const previousTitle = document.title;
-    document.title = `${trackingNumber} — ${t("hero.title")}`;
+    const heading = t("detail.titleForOrder", { orderNumber });
+    document.title = trackingNumber
+      ? `${heading} · ${trackingNumber} — ${t("hero.title")}`
+      : `${heading} — ${t("hero.title")}`;
     return () => {
       document.title = previousTitle;
     };
-  }, [trackingNumber, t]);
+  }, [orderNumber, trackingNumber, t]);
 
   if (!isValidId) {
     return <Navigate to="/shipments" replace />;
@@ -87,6 +92,7 @@ export function ShipmentDetailHome() {
             onCancel={() => setCancelOpen(true)}
           />
 
+          <ShipmentFailureBanner shipment={shipment} />
           <ShipmentReturnPickupSection shipment={shipment} />
           <ShipmentExchangeSection shipment={shipment} />
 

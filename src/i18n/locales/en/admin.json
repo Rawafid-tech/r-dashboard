@@ -163,7 +163,14 @@
         "baseUrlHint": "Must start with https:// and end with /graphql",
         "clientId": "Client id on the platform",
         "returns": "Returns on",
-        "returnsHint": "Merchants can book returns through this partner only while this is on."
+        "returnsHint": "Merchants can book returns through this partner only while this is on.",
+        "baseUrlHintMega": "Must be https://…/api/shipment.php exactly, with no trailing slash and no query.",
+        "baseUrlInvalidMega": "Enter the full address ending in /api/shipment.php, with no trailing slash or query.",
+        "bookAction": "Booking call",
+        "sectorsBody": "Areas request format",
+        "syncUser": "Sync API user",
+        "syncPassword": "Sync API password",
+        "syncAccountHint": "An API user of this carrier, not a dashboard login. It is used to download delivery areas."
       },
       "toast": {
         "created": "Shipping partner added",
@@ -176,7 +183,12 @@
         "description": "Remove {{name}} from the catalog. This is only allowed while no merchant has connected it.",
         "confirm": "Remove",
         "confirming": "Removing…"
-      }
+      },
+      "advanced": "Advanced",
+      "advancedHint": "Support settings. Most carriers keep the defaults.",
+      "secretSaved": "Saved — leave blank to keep.",
+      "showSecret": "Show {{label}}",
+      "hideSecret": "Hide {{label}}"
     },
     "regions": {
       "metaTitle": "{{name}} coverage — Rawafid Admin",
@@ -203,7 +215,9 @@
         "unmappedHint": "{{count}} carrier cities are not inside one of our governorates, so their districts never match an address.",
         "unmappedTitleAccurate": "Unmapped zone names",
         "unmappedHintAccurate": "{{count}} lines from the carrier were not placed in a governorate. On Accurate partners, billing zones (for example return invoices) are expected here and are safe to ignore.",
-        "showUnmapped": "Show unmapped districts"
+        "showUnmapped": "Show unmapped districts",
+        "accountRejected": "The carrier refused the sync account. Check the carrier settings — retrying will not help.",
+        "openSettings": "Edit carrier settings"
       },
       "toolbar": {
         "title": "Filter districts",

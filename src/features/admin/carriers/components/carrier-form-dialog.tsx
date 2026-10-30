@@ -1,6 +1,6 @@
 import { useEffect, useId, useMemo, useState } from "react";
-import { Loader2 } from "lucide-react";
-import { Controller, useForm } from "react-hook-form";
+import { ChevronDown, Loader2 } from "lucide-react";
+import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { useAdminCarriers } from "@/features/admin/carriers/hooks/use-admin-carriers";
@@ -14,19 +14,23 @@ import {
   usePatchAdminCarrier,
 } from "@/features/admin/carriers/hooks/use-patch-admin-carrier";
 import { CarrierLogoUploader } from "@/features/admin/carriers/components/carrier-logo-uploader";
+import { CarrierSettingField } from "@/features/admin/carriers/components/carrier-setting-field";
 import {
   applyAdminCarrierFieldErrors,
   type AdminCarrierFormValues,
 } from "@/features/admin/carriers/lib/admin-carrier-form-errors";
 import {
+  ADVANCED_SETTING_KEYS,
   buildSettingsRecord,
-  carrierFieldKind,
   settingsPayloadFromForm,
 } from "@/features/admin/carriers/lib/admin-carrier-settings";
 import { carrierDisplayName } from "@/features/shipping-partners/lib/carrier-label";
 import type { AdminCarrier, CarrierPlatformField } from "@/features/admin/carriers/types";
 import {
   Button,
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
   Dialog,
   DialogBody,
   DialogContent,
@@ -35,7 +39,6 @@ import {
   DialogHeader,
   DialogTitle,
   Field,
-  FieldDescription,
   FieldError,
   FieldGroup,
   FieldLabel,
@@ -45,7 +48,6 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-  Switch,
 } from "@/shared/components/ui";
 
 interface CarrierFormDialogProps {
@@ -53,17 +55,6 @@ interface CarrierFormDialogProps {
   carrier: AdminCarrier | null;
   open: boolean;
   onOpenChange: (open: boolean) => void;
-}
-
-function settingLabel(
-  field: CarrierPlatformField,
-  t: (key: string) => string,
-): string {
-  if (field.label) return field.label;
-  if (field.key === "baseUrl") return t("carriers.form.fields.baseUrl");
-  if (field.key === "clientId") return t("carriers.form.fields.clientId");
-  if (field.key === "returns") return t("carriers.form.fields.returns");
-  return field.key;
 }
 
 export function CarrierFormDialog({
@@ -80,8 +71,12 @@ export function CarrierFormDialog({
   const createMutation = useCreateAdminCarrier();
   const patchMutation = usePatchAdminCarrier();
   const [globalError, setGlobalError] = useState<string | null>(null);
+  const [advancedOpen, setAdvancedOpen] = useState(false);
 
-  const platforms = platformsQuery.data ?? [];
+  const platforms = useMemo(
+    () => platformsQuery.data ?? [],
+    [platformsQuery.data],
+  );
   const defaultPlatform = platforms[0]?.platform ?? "ACCURATE";
 
   const form = useForm<AdminCarrierFormValues>({
@@ -113,10 +108,28 @@ export function CarrierFormDialog({
     }
     return platformDef?.carrierFields ?? [];
   }, [mode, platformDef, editPlatformDef]);
+  const basicFields = settingFields.filter(
+    (field) => !ADVANCED_SETTING_KEYS.has(field.key),
+  );
+  const advancedFields = settingFields.filter((field) =>
+    ADVANCED_SETTING_KEYS.has(field.key),
+  );
+  const settingsPlatform =
+    mode === "edit" ? (carrier?.platform ?? "ACCURATE") : selectedPlatform;
+  const secretsSaved = mode === "edit" && carrier?.secretsSet === true;
+  const settingsErrors = form.formState.errors.settings;
+  const advancedHasError = advancedFields.some((field) =>
+    Boolean(settingsErrors?.[field.key]),
+  );
+
+  useEffect(() => {
+    if (advancedHasError) setAdvancedOpen(true);
+  }, [advancedHasError]);
 
   useEffect(() => {
     if (!open) return;
     setGlobalError(null);
+    setAdvancedOpen(false);
     if (mode === "edit" && carrier) {
       const fields = editPlatformDef?.carrierFields ?? [];
       form.reset({
@@ -359,88 +372,55 @@ export function CarrierFormDialog({
 
             {settingFields.length > 0 ? (
               <FieldGroup>
-                {settingFields.map((field) => {
-                  const inputId = `${formId}-setting-${field.key}`;
-                  const hintId =
-                    field.key === "baseUrl" || field.key === "returns"
-                      ? `${inputId}-hint`
-                      : undefined;
-                  const errorId = `${inputId}-error`;
-                  const error = form.formState.errors.settings?.[field.key];
-                  const describedBy = [hintId, error ? errorId : undefined]
-                    .filter(Boolean)
-                    .join(" ");
-
-                  if (carrierFieldKind(field) === "BOOLEAN") {
-                    return (
-                      <Controller
-                        key={field.key}
-                        name={`settings.${field.key}`}
-                        control={form.control}
-                        render={({ field: input }) => (
-                          <Field
-                            orientation="horizontal"
-                            data-invalid={Boolean(error) || undefined}
-                          >
-                            <Switch
-                              id={inputId}
-                              checked={input.value === "true"}
-                              onCheckedChange={(checked) =>
-                                input.onChange(checked ? "true" : "false")
-                              }
-                              disabled={isPending}
-                              aria-invalid={Boolean(error) || undefined}
-                              aria-describedby={
-                                describedBy || undefined
-                              }
-                            />
-                            <div className="space-y-1">
-                              <FieldLabel htmlFor={inputId}>
-                                {settingLabel(field, t)}
-                              </FieldLabel>
-                              {field.key === "returns" ? (
-                                <FieldDescription id={hintId}>
-                                  {t("carriers.form.fields.returnsHint")}
-                                </FieldDescription>
-                              ) : null}
-                              <FieldError
-                                id={errorId}
-                                errors={error ? [error] : undefined}
-                              />
-                            </div>
-                          </Field>
-                        )}
-                      />
-                    );
-                  }
-
-                  return (
-                    <Field key={field.key}>
-                      <FieldLabel htmlFor={inputId}>
-                        {settingLabel(field, t)}
-                      </FieldLabel>
-                      <Input
-                        id={inputId}
-                        dir="ltr"
-                        autoComplete="off"
-                        disabled={isPending}
-                        {...form.register(`settings.${field.key}`, {
-                          required: field.required,
-                        })}
-                        aria-invalid={Boolean(error)}
-                        aria-required={field.required}
-                        aria-describedby={describedBy || undefined}
-                      />
-                      {field.key === "baseUrl" ? (
-                        <FieldDescription id={hintId}>
-                          {t("carriers.form.fields.baseUrlHint")}
-                        </FieldDescription>
-                      ) : null}
-                      <FieldError id={errorId} errors={[error]} />
-                    </Field>
-                  );
-                })}
+                {basicFields.map((field) => (
+                  <CarrierSettingField
+                    key={field.key}
+                    field={field}
+                    form={form}
+                    formId={formId}
+                    platform={settingsPlatform}
+                    secretsSaved={secretsSaved}
+                    disabled={isPending}
+                  />
+                ))}
               </FieldGroup>
+            ) : null}
+
+            {advancedFields.length > 0 ? (
+              <Collapsible open={advancedOpen} onOpenChange={setAdvancedOpen}>
+                <CollapsibleTrigger asChild>
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    className="group px-0"
+                  >
+                    {t("carriers.form.advanced")}
+                    <ChevronDown
+                      aria-hidden="true"
+                      className="transition-transform group-data-[state=open]:rotate-180 motion-reduce:transition-none"
+                    />
+                  </Button>
+                </CollapsibleTrigger>
+                <CollapsibleContent className="mt-3 space-y-3 rounded-lg border border-border/60 p-3">
+                  <p className="text-xs text-muted-foreground">
+                    {t("carriers.form.advancedHint")}
+                  </p>
+                  <FieldGroup>
+                    {advancedFields.map((field) => (
+                      <CarrierSettingField
+                        key={field.key}
+                        field={field}
+                        form={form}
+                        formId={formId}
+                        platform={settingsPlatform}
+                        secretsSaved={secretsSaved}
+                        disabled={isPending}
+                      />
+                    ))}
+                  </FieldGroup>
+                </CollapsibleContent>
+              </Collapsible>
             ) : null}
           </DialogBody>
 

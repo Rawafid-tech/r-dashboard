@@ -56,8 +56,11 @@ export function ShipmentDetailHero({
       <PageHeader
         title={
           <span className="flex flex-wrap items-center gap-3">
+            {/* Waybill numbers can be reused by the carrier, so the order leads. */}
             <span className="tabular-nums">
-              {shipment.trackingNumber ?? t("detail.noTracking")}
+              {t("detail.titleForOrder", {
+                orderNumber: shipment.order.orderNumber,
+              })}
             </span>
             <ShipmentStatusBadge
               status={shipment.status}
@@ -73,13 +76,27 @@ export function ShipmentDetailHero({
           </span>
         }
         description={
-          shipment.carrierState?.label ? (
-            <span className="text-sm text-muted-foreground">
-              {t("detail.carrierState", {
-                label: shipment.carrierState.label,
-              })}
+          <span className="flex flex-wrap gap-x-4 gap-y-1 text-sm text-muted-foreground">
+            <span>
+              {shipment.trackingNumber ? (
+                <>
+                  {t("detail.waybill")}{" "}
+                  <span dir="ltr" className="font-medium tabular-nums text-foreground">
+                    {shipment.trackingNumber}
+                  </span>
+                </>
+              ) : (
+                t("detail.noTracking")
+              )}
             </span>
-          ) : undefined
+            {shipment.carrierState?.label ? (
+              <span>
+                {t("detail.carrierState", {
+                  label: shipment.carrierState.label,
+                })}
+              </span>
+            ) : null}
+          </span>
         }
         actions={
           <div className="flex flex-wrap gap-2">

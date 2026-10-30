@@ -167,6 +167,13 @@
       "sourceWebhook": "Carrier",
       "sourcePoll": "Polled",
       "pollHint": "Time shown is when we last asked the carrier, not necessarily when the event happened."
+    },
+    "titleForOrder": "Order {{orderNumber}}",
+    "waybill": "Tracking number",
+    "failure": {
+      "title": "This booking failed",
+      "notConfirmedTitle": "The parcel may exist at the shipping partner",
+      "notConfirmedHint": "Check the shipping partner’s dashboard before booking this order again, or it may be shipped twice."
     }
   },
   "empty": {
@@ -229,7 +236,9 @@
     "bookAgainBlocked": "Do not book again until we know the outcome.",
     "collectedFrom": "Collected from {{name}}",
     "defaultPickupWarning": "Not mapped: collected from this connection's default.",
-    "openPickupMappings": "Pickup locations"
+    "openPickupMappings": "Pickup locations",
+    "senderLocationFallback": "your sender location",
+    "openSenderLocations": "Fix sender locations"
   },
   "pagination": {
     "label": "Shipments pagination",
@@ -273,7 +282,9 @@
     "confirmingRow": "Confirming with carrier…",
     "rowRejected": "This order was not booked.",
     "bookFailed": "Could not complete bulk booking",
-    "resultToast": "{{booked}} booked, {{rejected}} need attention"
+    "resultToast": "{{booked}} booked, {{rejected}} need attention",
+    "skippedRows_one": "{{count}} order can’t be booked as it is and will be skipped.",
+    "skippedRows_other": "{{count}} orders can’t be booked as they are and will be skipped."
   },
   "wizard": {
     "title": "Create shipment",

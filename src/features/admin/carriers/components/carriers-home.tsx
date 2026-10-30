@@ -8,6 +8,7 @@ import { CarrierLogoUploader } from "@/features/admin/carriers/components/carrie
 import { CarrierMark } from "@/features/shipping-partners/components/carrier-mark";
 import { carrierDisplayName } from "@/features/shipping-partners/lib/carrier-label";
 import { useAdminCarriers } from "@/features/admin/carriers/hooks/use-admin-carriers";
+import { isCatalogManagedPlatform } from "@/features/admin/carriers/lib/admin-carrier-settings";
 import { useUpdateAdminCarrier } from "@/features/admin/carriers/hooks/use-update-admin-carrier";
 import type { AdminCarrier } from "@/features/admin/carriers/types";
 import { useAdminMe } from "@/features/admin/auth/hooks/use-admin-me";
@@ -16,7 +17,7 @@ import { Badge, Button, Skeleton, Switch } from "@/shared/components/ui";
 import { AdminRole } from "@/shared/types/enums";
 
 function isCatalogManagedCarrier(carrier: AdminCarrier): boolean {
-  return carrier.platform === "ACCURATE";
+  return isCatalogManagedPlatform(carrier.platform);
 }
 
 export function AdminCarriersHome() {

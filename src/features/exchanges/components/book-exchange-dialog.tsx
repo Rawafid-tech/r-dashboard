@@ -41,6 +41,7 @@ import {
   Textarea,
 } from "@/shared/components/ui";
 import { cn } from "@/shared/lib/utils";
+import { connectionSupportsRefunds } from "@/shared/types/carrier-capabilities";
 import { useLocaleStore } from "@/stores/locale.store";
 
 interface BookExchangeDialogProps {
@@ -148,13 +149,22 @@ export function BookExchangeDialog({
     });
   }, [preview?.order.items]);
 
+  const activeConnectionId = connectionId ?? preview?.connection?.id ?? "";
+  const activeConnection =
+    preview?.connections.find((item) => item.id === activeConnectionId) ??
+    preview?.connection;
+  const refundsAllowed = connectionSupportsRefunds(
+    activeConnection?.capabilities,
+  );
+
   const effectiveMoneyMode: ExchangeMoneyMode =
-    skipRefund && moneyMode === "refund" ? "none" : moneyMode;
+    (skipRefund || !refundsAllowed) && moneyMode === "refund"
+      ? "none"
+      : moneyMode;
 
   const refundable = preview?.order.refundable ?? 0;
 
   const governorateId = orderQuery.data?.address.governorate.id ?? "";
-  const activeConnectionId = connectionId ?? preview?.connection?.id ?? "";
   const address = preview?.address;
   const needsDistrict = address?.method === "NONE";
   const suggestions = address?.suggestions ?? [];
@@ -287,7 +297,9 @@ export function BookExchangeDialog({
   const moneyModes: { value: ExchangeMoneyMode; label: string }[] = [
     { value: "none", label: t("dialog.moneyNone") },
     { value: "collect", label: t("dialog.moneyCollect") },
-    { value: "refund", label: t("dialog.moneyRefund") },
+    ...(refundsAllowed
+      ? [{ value: "refund" as const, label: t("dialog.moneyRefund") }]
+      : []),
   ];
 
   return (
@@ -561,6 +573,11 @@ export function BookExchangeDialog({
                       </label>
                     ))}
                   </div>
+                  {!refundsAllowed ? (
+                    <p className="text-xs text-muted-foreground">
+                      {t("dialog.refundNotSupported")}
+                    </p>
+                  ) : null}
                 </fieldset>
 
                 {effectiveMoneyMode === "collect" ? (

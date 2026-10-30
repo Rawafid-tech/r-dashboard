@@ -167,6 +167,13 @@
       "sourceWebhook": "من الناقل",
       "sourcePoll": "استعلام",
       "pollHint": "الوقت المعروض هو وقت آخر استعلام منّا، وليس بالضرورة وقت الحدث."
+    },
+    "titleForOrder": "الطلب {{orderNumber}}",
+    "waybill": "رقم التتبع",
+    "failure": {
+      "title": "فشل هذا الحجز",
+      "notConfirmedTitle": "قد تكون الشحنة موجودة لدى شريك الشحن",
+      "notConfirmedHint": "راجع لوحة تحكم شريك الشحن قبل حجز هذا الطلب مرة أخرى، وإلا فقد يُشحن مرتين."
     }
   },
   "empty": {
@@ -229,7 +236,9 @@
     "bookAgainBlocked": "لا تحجز مرة أخرى حتى نعرف النتيجة.",
     "collectedFrom": "يُستلم من {{name}}",
     "defaultPickupWarning": "غير مربوط: الاستلام من الافتراضي لهذا الاتصال.",
-    "openPickupMappings": "أماكن الاستلام"
+    "openPickupMappings": "أماكن الاستلام",
+    "senderLocationFallback": "موقع الإرسال الخاص بك",
+    "openSenderLocations": "تعديل مواقع الإرسال"
   },
   "pagination": {
     "label": "ترقيم الشحنات",
@@ -273,7 +282,9 @@
     "confirmingRow": "جاري التأكيد مع شركة الشحن…",
     "rowRejected": "لم يُحجز هذا الطلب.",
     "bookFailed": "تعذّر إتمام الحجز الجماعي",
-    "resultToast": "{{booked}} محجوز، {{rejected}} يحتاج متابعة"
+    "resultToast": "{{booked}} محجوز، {{rejected}} يحتاج متابعة",
+    "skippedRows_one": "لا يمكن حجز طلب واحد بوضعه الحالي، وسيتم تخطيه.",
+    "skippedRows_other": "لا يمكن حجز {{count}} طلبات بوضعها الحالي، وسيتم تخطيها."
   },
   "wizard": {
     "title": "إنشاء شحنة",

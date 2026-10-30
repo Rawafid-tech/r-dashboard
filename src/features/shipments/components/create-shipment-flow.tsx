@@ -7,7 +7,7 @@ import { getShipment } from "@/features/shipments/api/shipments.api";
 import { ShipmentDistrictCombobox } from "@/features/shipments/components/shipment-district-combobox";
 import {
   ShipmentPickupInfo,
-  ShipmentPickupProblemLink,
+  ShipmentProblemAction,
 } from "@/features/shipments/components/shipment-pickup-info";
 import { useBookShipment } from "@/features/shipments/hooks/use-book-shipment";
 import { shipmentKeys } from "@/features/shipments/hooks/query-keys";
@@ -433,15 +433,11 @@ export function CreateShipmentFlow({
                       <ul className="mt-2 list-disc space-y-1 ps-4 text-muted-foreground">
                         {preview.problems.map((problem) => (
                           <li key={problem.code}>
-                            {problem.message}
-                            {problem.code === "PICKUP_LOCATION" ? (
-                              <>
-                                {" "}
-                                <ShipmentPickupProblemLink
-                                  connectionId={connection.id}
-                                />
-                              </>
-                            ) : null}
+                            {problem.message}{" "}
+                            <ShipmentProblemAction
+                              code={problem.code}
+                              connectionId={connection.id}
+                            />
                           </li>
                         ))}
                       </ul>

@@ -9,7 +9,7 @@ dist-ssr/
 .vscode/*
 !.vscode/extensions.json
 .idea/
-
+rawafid-video
 # OS
 .DS_Store
 Thumbs.db

@@ -39,6 +39,7 @@ import {
   SelectValue,
   Textarea,
 } from "@/shared/components/ui";
+import { connectionSupportsRefunds } from "@/shared/types/carrier-capabilities";
 import { useLocaleStore } from "@/stores/locale.store";
 
 interface BookReturnDialogProps {
@@ -152,6 +153,12 @@ export function BookReturnDialog({
 
   const governorateId = orderQuery.data?.address.governorate.id ?? "";
   const activeConnectionId = connectionId ?? preview?.connection?.id ?? "";
+  const activeConnection =
+    preview?.connections.find((item) => item.id === activeConnectionId) ??
+    preview?.connection;
+  const refundsAllowed = connectionSupportsRefunds(
+    activeConnection?.capabilities,
+  );
   const address = preview?.address;
   const needsDistrict = address?.method === "NONE";
   const suggestions = address?.suggestions ?? [];
@@ -175,6 +182,7 @@ export function BookReturnDialog({
   const handleSubmit = async (forceWithoutRefund = false) => {
     if (!preview) return;
     setSubmitError(null);
+    const withoutRefund = forceWithoutRefund || skipRefund || !refundsAllowed;
 
     if (!hasReturnItemsSelected(quantities)) {
       setSubmitError(t("validation.selectItems"));
@@ -184,7 +192,7 @@ export function BookReturnDialog({
     const parsed = schema.safeParse({
       reason,
       notes,
-      refundAmount: forceWithoutRefund || skipRefund ? undefined : refundAmount,
+      refundAmount: withoutRefund ? undefined : refundAmount,
       addressLine: addressLine || undefined,
       buildingNumber: buildingNumber || undefined,
       floor: floor || undefined,
@@ -222,7 +230,7 @@ export function BookReturnDialog({
         : undefined;
 
     let refund: number | undefined;
-    if (!forceWithoutRefund && !skipRefund && refundAmount.trim()) {
+    if (!withoutRefund && refundAmount.trim()) {
       refund = Number(refundAmount);
     }
 
@@ -509,30 +517,36 @@ export function BookReturnDialog({
                     onChange={(event) => setNotes(event.target.value)}
                   />
                 </div>
-                <div className="space-y-1.5">
-                  <Label htmlFor={`${formId}-refund`}>{t("dialog.refundLabel")}</Label>
-                  <Input
-                    id={`${formId}-refund`}
-                    inputMode="decimal"
-                    dir="ltr"
-                    className="tabular-nums"
-                    value={skipRefund ? "" : refundAmount}
-                    disabled={isBusy || skipRefund}
-                    placeholder="0.00"
-                    onChange={(event) => {
-                      setSkipRefund(false);
-                      setRefundAmount(event.target.value);
-                    }}
-                  />
-                  <p className="text-xs text-muted-foreground">
-                    {t("dialog.refundHint", {
-                      max: refundable.toLocaleString(intlLocale, {
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 2,
-                      }),
-                    })}
+                {refundsAllowed ? (
+                  <div className="space-y-1.5">
+                    <Label htmlFor={`${formId}-refund`}>{t("dialog.refundLabel")}</Label>
+                    <Input
+                      id={`${formId}-refund`}
+                      inputMode="decimal"
+                      dir="ltr"
+                      className="tabular-nums"
+                      value={skipRefund ? "" : refundAmount}
+                      disabled={isBusy || skipRefund}
+                      placeholder="0.00"
+                      onChange={(event) => {
+                        setSkipRefund(false);
+                        setRefundAmount(event.target.value);
+                      }}
+                    />
+                    <p className="text-xs text-muted-foreground">
+                      {t("dialog.refundHint", {
+                        max: refundable.toLocaleString(intlLocale, {
+                          minimumFractionDigits: 2,
+                          maximumFractionDigits: 2,
+                        }),
+                      })}
+                    </p>
+                  </div>
+                ) : (
+                  <p className="self-end text-xs text-muted-foreground">
+                    {t("dialog.refundNotSupported")}
                   </p>
-                </div>
+                )}
               </div>
 
               <Collapsible open={addressOpen} onOpenChange={setAddressOpen}>

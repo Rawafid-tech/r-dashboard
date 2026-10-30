@@ -1,4 +1,5 @@
 import { AxiosError } from "axios";
+import type { ShipmentProblemCode } from "@/features/shipments/types";
 import { parseApiError } from "@/shared/api/error-handler";
 
 export type ShipmentErrorAction =
@@ -21,6 +22,29 @@ function readProblemBody(error: unknown): Record<string, unknown> | null {
     return data as Record<string, unknown>;
   }
   return null;
+}
+
+/**
+ * Whether a refused booking names this preview problem. The problem body may
+ * carry it as `reason`, `code`, or inside `problems[]`.
+ */
+export function hasBookingProblem(
+  error: unknown,
+  code: ShipmentProblemCode,
+): boolean {
+  const body = readProblemBody(error);
+  if (!body) return false;
+  if (body.reason === code || body.code === code) return true;
+  const problems = body.problems;
+  return (
+    Array.isArray(problems) &&
+    problems.some(
+      (problem: unknown) =>
+        typeof problem === "object" &&
+        problem !== null &&
+        (problem as { code?: unknown }).code === code,
+    )
+  );
 }
 
 export function parseShipmentBookingError(

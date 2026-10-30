@@ -51,7 +51,8 @@
     "submit": "Book exchange",
     "submitting": "Booking…",
     "retryWithoutRefund": "Book again without refund",
-    "close": "Close"
+    "close": "Close",
+    "refundNotSupported": "This shipping partner can’t refund customers through Rawafid."
   },
   "toast": {
     "booked": "Exchange booked — track {{tracking}}",

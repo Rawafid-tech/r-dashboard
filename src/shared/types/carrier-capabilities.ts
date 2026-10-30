@@ -4,6 +4,7 @@ export interface CarrierCapabilities {
   tracking: boolean;
   returns: boolean;
   exchanges: boolean;
+  refunds: boolean;
 }
 
 export const DEFAULT_CARRIER_CAPABILITIES: CarrierCapabilities = {
@@ -12,6 +13,7 @@ export const DEFAULT_CARRIER_CAPABILITIES: CarrierCapabilities = {
   tracking: true,
   returns: true,
   exchanges: true,
+  refunds: true,
 };
 
 export function normalizeCarrierCapabilities(
@@ -27,6 +29,7 @@ export function normalizeCarrierCapabilities(
     tracking: value.tracking ?? DEFAULT_CARRIER_CAPABILITIES.tracking,
     returns: value.returns ?? DEFAULT_CARRIER_CAPABILITIES.returns,
     exchanges: value.exchanges ?? DEFAULT_CARRIER_CAPABILITIES.exchanges,
+    refunds: value.refunds ?? DEFAULT_CARRIER_CAPABILITIES.refunds,
   };
 }
 
@@ -40,4 +43,10 @@ export function connectionSupportsCancel(
   capabilities: Partial<CarrierCapabilities> | null | undefined,
 ): boolean {
   return normalizeCarrierCapabilities(capabilities).cancel;
+}
+
+export function connectionSupportsRefunds(
+  capabilities: Partial<CarrierCapabilities> | null | undefined,
+): boolean {
+  return normalizeCarrierCapabilities(capabilities).refunds;
 }

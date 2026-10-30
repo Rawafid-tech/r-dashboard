@@ -69,8 +69,9 @@ export function applyAdminCarrierFieldErrors(
     if (hasField) return undefined;
   }
 
-  if (isApiError(error, 400) || isApiError(error, 409) || isApiError(error, 422)) {
-    return parsed.detail;
+  if (isApiError(error, 409)) {
+    // A duplicate partner code: mark the field, and keep the alert.
+    setError("code", { type: "server", message: parsed.detail });
   }
 
   return parsed.detail;

@@ -4,7 +4,7 @@ import { getGovernorateLabel } from "@/features/locations/lib/location-form-erro
 import { ShipmentDistrictCombobox } from "@/features/shipments/components/shipment-district-combobox";
 import {
   ShipmentPickupInfo,
-  ShipmentPickupProblemLink,
+  ShipmentProblemAction,
 } from "@/features/shipments/components/shipment-pickup-info";
 import { getShipmentDistrictLabel } from "@/features/shipments/lib/district-label";
 import type {
@@ -248,16 +248,11 @@ export function BulkBookingRow({
               <ul className="mt-2 list-disc space-y-1 ps-4 text-muted-foreground">
                 {previewLine!.problems.map((problem) => (
                   <li key={problem.code}>
-                    {problem.message}
-                    {problem.code === "PICKUP_LOCATION" &&
-                    previewLine?.connection ? (
-                      <>
-                        {" "}
-                        <ShipmentPickupProblemLink
-                          connectionId={previewLine.connection.id}
-                        />
-                      </>
-                    ) : null}
+                    {problem.message}{" "}
+                    <ShipmentProblemAction
+                      code={problem.code}
+                      connectionId={previewLine?.connection?.id}
+                    />
                   </li>
                 ))}
               </ul>

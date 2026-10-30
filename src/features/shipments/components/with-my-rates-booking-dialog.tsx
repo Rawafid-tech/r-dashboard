@@ -13,6 +13,7 @@ import { canPrintShipmentLabel } from "@/features/shipments/lib/shipment-actions
 import {
   canSubmitBulkBook,
   draftsToBulkBookPayload,
+  unbookableOrderIds,
   MAX_BULK_BOOKING_LINES,
 } from "@/features/shipments/lib/bulk-preview-lines";
 import type {
@@ -112,6 +113,10 @@ export function WithMyRatesBookingDialog({
     return map;
   }, [previewQuery.data?.lines]);
 
+  const skippedOrderIds = useMemo(
+    () => unbookableOrderIds(drafts, previewByOrderId),
+    [drafts, previewByOrderId],
+  );
   const activeDrafts = drafts.filter((line) => !line.removed);
   const showIndex = activeDrafts.length > 1;
   const quota = previewQuery.data?.quota ?? null;
@@ -155,7 +160,7 @@ export function WithMyRatesBookingDialog({
   };
 
   const handleBulkBook = async () => {
-    const payload = draftsToBulkBookPayload(drafts);
+    const payload = draftsToBulkBookPayload(drafts, skippedOrderIds);
     if (payload.length === 0) return;
 
     try {
@@ -258,7 +263,7 @@ export function WithMyRatesBookingDialog({
     previewQuery.isFetching ||
     previewQuery.isDebouncing;
   const canSubmit =
-    canSubmitBulkBook(drafts) &&
+    canSubmitBulkBook(drafts, skippedOrderIds) &&
     !bulkMutation.isPending &&
     quota !== null;
 
@@ -381,6 +386,11 @@ export function WithMyRatesBookingDialog({
           {quotaExceeded ? (
             <p role="alert" className="text-xs text-destructive">
               {t("bulkBooking.quotaWarning")}
+            </p>
+          ) : null}
+          {skippedOrderIds.size > 0 ? (
+            <p className="text-xs text-amber-700 dark:text-amber-400">
+              {t("bulkBooking.skippedRows", { count: skippedOrderIds.size })}
             </p>
           ) : null}
           {bulkMutation.isPending ? (
