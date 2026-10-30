@@ -1,6 +1,6 @@
 import { CircleCheck, Package, RefreshCcw, Wallet } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { RawafidLogoMark } from "@/shared/components/layout/rawafid-logo-mark";
+import { RawafidLogo } from "@/shared/components/layout/rawafid-logo-mark";
 
 const POINTS = [
   { key: "shipments", icon: Package },
@@ -18,14 +18,9 @@ export function AuthBrandPanel() {
       aria-label={t("brand.eyebrow")}
     >
       <div className="flex flex-1 flex-col justify-between px-10 py-10 md:px-12 md:py-12">
-        <div className="flex items-center gap-3">
-          <RawafidLogoMark className="auth-brand-icon-chip size-10 ring-1 ring-[var(--auth-brand-border)]" />
-          <div>
-            <p className="text-base font-semibold tracking-tight">
-              {t("brand.eyebrow")}
-            </p>
-            <p className="auth-brand-muted text-xs">{t("common:app.tagline")}</p>
-          </div>
+        <div className="space-y-3">
+          <RawafidLogo tone="onDark" className="h-12" />
+          <p className="auth-brand-muted text-xs">{t("common:app.tagline")}</p>
         </div>
 
         <div className="max-w-md py-10">
