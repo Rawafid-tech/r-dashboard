@@ -72,5 +72,15 @@
     "description": "This page couldn't be displayed. Reload the page, and contact support if the problem continues.",
     "reload": "Reload page",
     "tryAgain": "Try again"
+  },
+  "media": {
+    "uploadImage": "Upload image",
+    "selectImageFile": "Select an image file",
+    "errors": {
+      "noFile": "No file selected",
+      "emptyFile": "The selected file is empty",
+      "tooLarge": "The file is larger than the {{maxMb}} MB limit",
+      "invalidFormat": "Only PNG, JPEG and WebP images are allowed"
+    }
   }
 }

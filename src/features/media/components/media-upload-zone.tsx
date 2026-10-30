@@ -22,18 +22,24 @@ export function MediaUploadZone({
   className,
 }: MediaUploadZoneProps) {
   const { t } = useTranslation("settings");
+  const { t: tCommon } = useTranslation("common");
   const [isDragging, setIsDragging] = useState(false);
 
   const handleFile = useCallback(
     (file: File) => {
       const validationError = validateMediaFile(file);
       if (validationError) {
-        onValidationError?.(validationError);
+        onValidationError?.({
+          ...validationError,
+          message: tCommon(validationError.messageKey, {
+            maxMb: MAX_MEDIA_SIZE_MB,
+          }),
+        });
         return;
       }
       onFileSelect(file);
     },
-    [onFileSelect, onValidationError],
+    [onFileSelect, onValidationError, tCommon],
   );
 
   const handleDragEnter = useCallback(
