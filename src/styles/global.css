@@ -30,6 +30,10 @@
   --color-success-foreground: var(--success-foreground);
   --color-warning: var(--warning);
   --color-warning-foreground: var(--warning-foreground);
+  /* Status text on tinted surfaces (badges); darker in light mode for AA contrast. */
+  --color-destructive-text: var(--destructive-text);
+  --color-success-text: var(--success-text);
+  --color-warning-text: var(--warning-text);
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
@@ -84,6 +88,9 @@
   --success-foreground: #ffffff;
   --warning: #d97706;
   --warning-foreground: #ffffff;
+  --destructive-text: #b91c1c;
+  --success-text: #166534;
+  --warning-text: #92400e;
   --border: #e2e8f0;
   --input: #e2e8f0;
   --ring: #1d4ed8;
@@ -137,6 +144,9 @@
   --success-foreground: #052e16;
   --warning: #fbbf24;
   --warning-foreground: #451a03;
+  --destructive-text: var(--destructive);
+  --success-text: var(--success);
+  --warning-text: var(--warning);
   --border: #1e293b;
   --input: #1e293b;
   --ring: #3b82f6;
