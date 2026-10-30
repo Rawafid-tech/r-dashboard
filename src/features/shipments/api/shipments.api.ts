@@ -47,11 +47,13 @@ function serializeShipmentsListParams(params: ShipmentsListParams): string {
 
 export async function getShipments(
   params: ShipmentsListParams = {},
+  signal?: AbortSignal,
 ): Promise<PaginatedResponse<Shipment>> {
   const { data } = await apiClient.get<PaginatedResponse<Shipment>>(
     "/api/shipments",
     {
       params,
+      signal,
       paramsSerializer: () => serializeShipmentsListParams(params),
     },
   );

@@ -18,7 +18,7 @@ export function useProductByBarcode(
 
   return useQuery({
     queryKey: productKeys.byBarcode(trimmed),
-    queryFn: () => getProductsByBarcode(trimmed),
+    queryFn: ({ signal }) => getProductsByBarcode(trimmed, signal),
     enabled,
     staleTime: 0,
     gcTime: 0,

@@ -13,10 +13,11 @@ export async function getWallet(): Promise<Wallet> {
 
 export async function getWalletTransactions(
   params: WalletTransactionsListParams = {},
+  signal?: AbortSignal,
 ): Promise<PaginatedResponse<WalletTransaction>> {
   const { data } = await apiClient.get<PaginatedResponse<WalletTransaction>>(
     "/api/wallet/transactions",
-    { params },
+    { params, signal },
   );
   return data;
 }

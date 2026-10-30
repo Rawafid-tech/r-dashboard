@@ -11,10 +11,11 @@ import type { PaginatedResponse } from "@/shared/types/api";
 
 export async function getProducts(
   params: ProductsListParams = {},
+  signal?: AbortSignal,
 ): Promise<PaginatedResponse<Product>> {
   const { data } = await apiClient.get<PaginatedResponse<Product>>(
     "/api/products",
-    { params },
+    { params, signal },
   );
   return data;
 }
@@ -26,10 +27,12 @@ export async function getProduct(id: string): Promise<Product> {
 
 export async function getProductsByBarcode(
   barcode: string,
+  signal?: AbortSignal,
 ): Promise<Product[]> {
   const trimmed = barcode.trim();
   const { data } = await apiClient.get<Product[]>(
     `/api/products/by-barcode/${encodeURIComponent(trimmed)}`,
+    { signal },
   );
   return data;
 }

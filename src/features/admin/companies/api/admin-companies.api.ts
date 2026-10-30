@@ -18,10 +18,11 @@ import type {
 
 export async function getAdminCompanies(
   params: AdminCompaniesListParams = {},
+  signal?: AbortSignal,
 ): Promise<PaginatedResponse<AdminCompany>> {
   const { data } = await apiClient.get<PaginatedResponse<AdminCompany>>(
     "/api/admin/companies",
-    { params },
+    { params, signal },
   );
   return data;
 }
@@ -74,10 +75,14 @@ export async function getAdminCompanyWallet(
 export async function getAdminCompanyWalletTransactions(
   companyId: string,
   params: WalletTransactionsListParams = {},
+  signal?: AbortSignal,
 ): Promise<PaginatedResponse<AdminWalletTransaction>> {
   const { data } = await apiClient.get<
     PaginatedResponse<AdminWalletTransaction>
-  >(`/api/admin/companies/${companyId}/wallet/transactions`, { params });
+  >(`/api/admin/companies/${companyId}/wallet/transactions`, {
+    params,
+    signal,
+  });
   return data;
 }
 

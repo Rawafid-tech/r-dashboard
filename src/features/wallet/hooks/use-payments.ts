@@ -21,7 +21,7 @@ export function usePayments(
 ) {
   return useQuery({
     queryKey: paymentsKeys.list(params),
-    queryFn: () => getPayments(params),
+    queryFn: ({ signal }) => getPayments(params, signal),
     placeholderData: keepPreviousData,
     enabled: options.enabled ?? true,
   });

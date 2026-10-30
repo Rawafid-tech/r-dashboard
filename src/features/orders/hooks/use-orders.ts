@@ -21,7 +21,7 @@ export function useOrders(
 ) {
   return useQuery({
     queryKey: orderKeys.list(params),
-    queryFn: () => getOrders(params),
+    queryFn: ({ signal }) => getOrders(params, signal),
     placeholderData: keepPreviousData,
     enabled: options.enabled ?? true,
   });

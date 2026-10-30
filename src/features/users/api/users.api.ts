@@ -12,10 +12,11 @@ import type {
 
 export async function getCompanyUsers(
   params: UsersListParams = {},
+  signal?: AbortSignal,
 ): Promise<PaginatedResponse<CompanyUser>> {
   const { data } = await apiClient.get<PaginatedResponse<CompanyUser>>(
     "/api/users",
-    { params },
+    { params, signal },
   );
   return data;
 }

@@ -21,7 +21,7 @@ export function useShippingBoxes(
 ) {
   return useQuery({
     queryKey: shippingBoxKeys.list(params),
-    queryFn: () => getShippingBoxes(params),
+    queryFn: ({ signal }) => getShippingBoxes(params, signal),
     placeholderData: keepPreviousData,
     enabled: options.enabled ?? true,
   });

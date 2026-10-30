@@ -13,7 +13,7 @@ export function useWalletTransactions(
 ) {
   return useQuery({
     queryKey: walletKeys.transactionsList(params),
-    queryFn: () => getWalletTransactions(params),
+    queryFn: ({ signal }) => getWalletTransactions(params, signal),
     placeholderData: keepPreviousData,
     enabled: options.enabled ?? true,
   });

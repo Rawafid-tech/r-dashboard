@@ -8,10 +8,11 @@ import type { PaginatedResponse } from "@/shared/types/api";
 
 export async function getShippingBoxes(
   params: ShippingBoxesListParams = {},
+  signal?: AbortSignal,
 ): Promise<PaginatedResponse<ShippingBox>> {
   const { data } = await apiClient.get<PaginatedResponse<ShippingBox>>(
     "/api/shipping-boxes",
-    { params },
+    { params, signal },
   );
   return data;
 }

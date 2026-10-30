@@ -21,7 +21,7 @@ export function useSenderLocations(
 ) {
   return useQuery({
     queryKey: senderLocationKeys.list(params),
-    queryFn: () => getSenderLocations(params),
+    queryFn: ({ signal }) => getSenderLocations(params, signal),
     placeholderData: keepPreviousData,
     enabled: options.enabled ?? true,
   });

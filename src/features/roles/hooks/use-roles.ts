@@ -21,7 +21,7 @@ export function useRoles(
 ) {
   return useQuery({
     queryKey: rolesQueryKeys.list(params),
-    queryFn: () => getRoles(params),
+    queryFn: ({ signal }) => getRoles(params, signal),
     placeholderData: keepPreviousData,
     enabled: options.enabled ?? true,
   });

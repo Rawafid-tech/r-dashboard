@@ -8,10 +8,11 @@ import type {
 
 export async function getAdminUsers(
   params: AdminUsersListParams = {},
+  signal?: AbortSignal,
 ): Promise<PaginatedResponse<AdminUser>> {
   const { data } = await apiClient.get<PaginatedResponse<AdminUser>>(
     "/api/admin/users",
-    { params },
+    { params, signal },
   );
   return data;
 }

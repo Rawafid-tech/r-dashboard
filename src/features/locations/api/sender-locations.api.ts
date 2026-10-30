@@ -8,10 +8,11 @@ import type {
 
 export async function getSenderLocations(
   params: LocationsListParams = {},
+  signal?: AbortSignal,
 ): Promise<PaginatedResponse<SenderLocation>> {
   const { data } = await apiClient.get<PaginatedResponse<SenderLocation>>(
     "/api/sender-locations",
-    { params },
+    { params, signal },
   );
   return data;
 }
