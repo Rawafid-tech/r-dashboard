@@ -15,6 +15,10 @@ import {
   Wallet,
   type LucideIcon,
 } from "lucide-react";
+import {
+  MerchantPermission,
+  type MerchantPermissionCode,
+} from "@/shared/hooks/use-merchant-permissions";
 
 /** Sidebar sections, rendered in this order. `overview` has no heading. */
 export const MERCHANT_NAV_GROUPS = [
@@ -34,8 +38,11 @@ export interface MerchantNavItem {
   icon: LucideIcon;
   enabled: boolean;
   group: MerchantNavGroup;
-  /** PAGE permission from GET /api/auth/me → permissions (e.g. page:users). */
-  permissionCode?: string;
+  /**
+   * All required to show the item: the screen's `page:*` code plus the read
+   * permission its PermissionGate checks, so a visible item always opens.
+   */
+  permissions?: MerchantPermissionCode[];
 }
 
 export interface MerchantNavSection {
@@ -52,7 +59,7 @@ export const MERCHANT_NAV_ITEMS: MerchantNavItem[] = [
     icon: ClipboardList,
     enabled: true,
     group: "operations",
-    permissionCode: "page:orders",
+    permissions: [MerchantPermission.PAGE_ORDERS, MerchantPermission.ORDER_READ],
   },
   {
     key: "shipments",
@@ -60,7 +67,7 @@ export const MERCHANT_NAV_ITEMS: MerchantNavItem[] = [
     icon: Package,
     enabled: true,
     group: "operations",
-    permissionCode: "page:shipments",
+    permissions: [MerchantPermission.PAGE_SHIPMENTS, MerchantPermission.SHIPMENT_READ],
   },
   {
     key: "returns",
@@ -68,7 +75,7 @@ export const MERCHANT_NAV_ITEMS: MerchantNavItem[] = [
     icon: RefreshCcw,
     enabled: true,
     group: "operations",
-    permissionCode: "page:shipments",
+    permissions: [MerchantPermission.PAGE_SHIPMENTS, MerchantPermission.SHIPMENT_READ],
   },
   {
     key: "exchanges",
@@ -76,7 +83,7 @@ export const MERCHANT_NAV_ITEMS: MerchantNavItem[] = [
     icon: ArrowLeftRight,
     enabled: true,
     group: "operations",
-    permissionCode: "page:shipments",
+    permissions: [MerchantPermission.PAGE_SHIPMENTS, MerchantPermission.SHIPMENT_READ],
   },
 
   {
@@ -85,7 +92,7 @@ export const MERCHANT_NAV_ITEMS: MerchantNavItem[] = [
     icon: ShoppingBag,
     enabled: true,
     group: "catalog",
-    permissionCode: "page:products",
+    permissions: [MerchantPermission.PAGE_PRODUCTS, MerchantPermission.PRODUCT_READ],
   },
   {
     key: "shippingBoxes",
@@ -93,7 +100,7 @@ export const MERCHANT_NAV_ITEMS: MerchantNavItem[] = [
     icon: Box,
     enabled: true,
     group: "catalog",
-    permissionCode: "page:shippingBoxes",
+    permissions: [MerchantPermission.PAGE_SHIPPING_BOXES, MerchantPermission.SHIPPING_BOX_READ],
   },
 
   {
@@ -102,7 +109,7 @@ export const MERCHANT_NAV_ITEMS: MerchantNavItem[] = [
     icon: Truck,
     enabled: true,
     group: "shipping",
-    permissionCode: "page:shippingPartners",
+    permissions: [MerchantPermission.PAGE_SHIPPING_PARTNERS, MerchantPermission.CARRIER_CONNECTION_READ],
   },
   {
     key: "locations",
@@ -110,7 +117,7 @@ export const MERCHANT_NAV_ITEMS: MerchantNavItem[] = [
     icon: MapPin,
     enabled: true,
     group: "shipping",
-    permissionCode: "page:senderLocations",
+    permissions: [MerchantPermission.PAGE_SENDER_LOCATIONS, MerchantPermission.SENDER_LOCATION_READ],
   },
 
   {
@@ -119,7 +126,7 @@ export const MERCHANT_NAV_ITEMS: MerchantNavItem[] = [
     icon: Wallet,
     enabled: true,
     group: "finance",
-    permissionCode: "page:wallet",
+    permissions: [MerchantPermission.PAGE_WALLET, MerchantPermission.WALLET_READ],
   },
   {
     key: "billing",
@@ -127,7 +134,7 @@ export const MERCHANT_NAV_ITEMS: MerchantNavItem[] = [
     icon: CreditCard,
     enabled: true,
     group: "finance",
-    permissionCode: "page:subscription",
+    permissions: [MerchantPermission.PAGE_SUBSCRIPTION, MerchantPermission.SUBSCRIPTION_READ],
   },
 
   {
@@ -136,7 +143,7 @@ export const MERCHANT_NAV_ITEMS: MerchantNavItem[] = [
     icon: Users,
     enabled: true,
     group: "account",
-    permissionCode: "page:users",
+    permissions: [MerchantPermission.PAGE_USERS, MerchantPermission.USER_READ],
   },
   {
     key: "roles",
@@ -144,7 +151,7 @@ export const MERCHANT_NAV_ITEMS: MerchantNavItem[] = [
     icon: Shield,
     enabled: true,
     group: "account",
-    permissionCode: "page:roles",
+    permissions: [MerchantPermission.PAGE_ROLES, MerchantPermission.ROLE_READ],
   },
   { key: "settings", href: "/settings", icon: Settings, enabled: true, group: "account" },
 ];
