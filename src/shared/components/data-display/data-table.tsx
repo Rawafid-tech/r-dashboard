@@ -292,7 +292,7 @@ function DefaultPagination({
             aria-label={labels?.previous ?? t("common.previous")}
             className="rounded-md"
           >
-            <ChevronLeft aria-hidden="true" />
+            <ChevronLeft className="rtl:-scale-x-100" aria-hidden="true" />
             <span className="hidden sm:inline">
               {labels?.previous ?? t("common.previous")}
             </span>
@@ -315,7 +315,7 @@ function DefaultPagination({
             <span className="hidden sm:inline">
               {labels?.next ?? t("common.next")}
             </span>
-            <ChevronRight aria-hidden="true" />
+            <ChevronRight className="rtl:-scale-x-100" aria-hidden="true" />
           </Button>
         </div>
       ) : null}

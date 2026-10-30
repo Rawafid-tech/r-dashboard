@@ -111,7 +111,7 @@ export function ForgotPasswordForm() {
             to="/login"
             className="inline-flex items-center gap-1.5 font-medium text-primary underline-offset-4 hover:underline focus-visible:rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/40"
           >
-            <ArrowLeft className="size-3.5" aria-hidden="true" />
+            <ArrowLeft className="rtl:-scale-x-100 size-3.5" aria-hidden="true" />
             {t("forgotPassword.backToLogin")}
           </Link>
         </p>

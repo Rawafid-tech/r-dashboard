@@ -35,7 +35,7 @@ export function CompanyDetailHero({
         className="-ms-2 w-fit text-muted-foreground hover:text-foreground"
       >
         <Link to="/admin/companies">
-          <ArrowLeft aria-hidden="true" />
+          <ArrowLeft className="rtl:-scale-x-100" aria-hidden="true" />
           {t("companies.detail.backToDirectory")}
         </Link>
       </Button>
