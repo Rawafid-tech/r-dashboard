@@ -44,21 +44,35 @@ export const apiClient = axios.create({
   },
 });
 
-let isRefreshing = false;
-let failedQueue: Array<{
-  resolve: (token: string) => void;
-  reject: (error: unknown) => void;
-}> = [];
+const REFRESH_TIMEOUT_MS = 15_000;
 
-function processQueue(error: unknown, token: string | null = null) {
-  failedQueue.forEach((prom) => {
-    if (error) {
-      prom.reject(error);
-    } else {
-      prom.resolve(token!);
-    }
-  });
-  failedQueue = [];
+/** One in-flight refresh per plane; concurrent 401s wait on the same one. */
+const pendingRefresh: Partial<Record<AuthPlane, Promise<string>>> = {};
+
+function refreshAccessToken(plane: AuthPlane, refreshToken: string) {
+  const pending = pendingRefresh[plane];
+  if (pending) return pending;
+
+  const refreshUrl =
+    plane === "admin" ? "/api/admin/auth/refresh" : "/api/auth/refresh";
+
+  const request = axios
+    .post<TokenResponse>(
+      `${API_BASE_URL || ""}${refreshUrl}`,
+      { refreshToken },
+      { timeout: REFRESH_TIMEOUT_MS },
+    )
+    .then(({ data }) => {
+      setAuthTokens(plane, data.accessToken, data.refreshToken, data.expiresIn);
+      syncAuthStore(plane, data.accessToken, data.refreshToken);
+      return data.accessToken;
+    })
+    .finally(() => {
+      delete pendingRefresh[plane];
+    });
+
+  pendingRefresh[plane] = request;
+  return request;
 }
 
 function syncAuthStore(plane: AuthPlane, accessToken: string, refreshToken: string) {
@@ -106,53 +120,33 @@ apiClient.interceptors.response.use(
     }
 
     const plane = resolveAuthPlane(originalRequest.url);
-
-    if (isRefreshing) {
-      return new Promise((resolve, reject) => {
-        failedQueue.push({ resolve, reject });
-      }).then((token) => {
-        originalRequest.headers.Authorization = `Bearer ${token}`;
-        return apiClient(originalRequest);
-      });
-    }
-
     originalRequest._retry = true;
-    isRefreshing = true;
+
+    // Another request (or tab, via the shared cookie) may already have
+    // rotated the token since this one was sent; retry with it directly.
+    const sentToken = String(originalRequest.headers?.Authorization ?? "").replace(
+      /^Bearer /,
+      "",
+    );
+    const currentToken = getAccessToken(plane);
+    if (currentToken && currentToken !== sentToken) {
+      originalRequest.headers.Authorization = `Bearer ${currentToken}`;
+      return apiClient(originalRequest);
+    }
 
     const refreshToken = getRefreshToken(plane);
     if (!refreshToken) {
-      isRefreshing = false;
       redirectToLogin(plane);
       return Promise.reject(error);
     }
 
     try {
-      const refreshUrl =
-        plane === "admin" ? "/api/admin/auth/refresh" : "/api/auth/refresh";
-
-      const { data } = await axios.post<TokenResponse>(
-        `${API_BASE_URL || ""}${refreshUrl}`,
-        { refreshToken },
-      );
-
-      setAuthTokens(
-        plane,
-        data.accessToken,
-        data.refreshToken,
-        data.expiresIn,
-      );
-      syncAuthStore(plane, data.accessToken, data.refreshToken);
-
-      processQueue(null, data.accessToken);
-
-      originalRequest.headers.Authorization = `Bearer ${data.accessToken}`;
+      const accessToken = await refreshAccessToken(plane, refreshToken);
+      originalRequest.headers.Authorization = `Bearer ${accessToken}`;
       return apiClient(originalRequest);
     } catch (refreshError) {
-      processQueue(refreshError, null);
       redirectToLogin(plane);
       return Promise.reject(refreshError);
-    } finally {
-      isRefreshing = false;
     }
   },
 );
