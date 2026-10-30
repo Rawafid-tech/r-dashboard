@@ -4,6 +4,33 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="روافد — منصة إدارة الطلبات والشحن للتجار. Rawafid — order and shipping management for merchants." />
+    <meta name="theme-color" content="#050810" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#f8fafc" media="(prefers-color-scheme: light)" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Rawafid — روافد" />
+    <meta property="og:title" content="Rawafid — روافد" />
+    <meta property="og:description" content="منصة إدارة الطلبات والشحن للتجار — Order and shipping management for merchants." />
+    <script>
+      // Apply the stored theme and language before first paint to avoid a
+      // flash of the wrong theme/direction. Keys mirror STORAGE_KEYS.
+      (function () {
+        try {
+          var root = document.documentElement;
+          var theme = localStorage.getItem("rawafid-theme");
+          if (theme === "light" || theme === "dark") {
+            root.setAttribute("data-theme", theme);
+            root.classList.toggle("dark", theme === "dark");
+          }
+          root.style.colorScheme = root.classList.contains("dark") ? "dark" : "light";
+          var locale = localStorage.getItem("rawafid-locale");
+          if (locale === "ar" || locale === "en") {
+            root.setAttribute("lang", locale);
+            root.setAttribute("dir", locale === "ar" ? "rtl" : "ltr");
+          }
+        } catch (e) {}
+      })();
+    </script>
     <title>Rawafid — روافد</title>
   </head>
   <body>
