@@ -119,7 +119,10 @@ export function ShipmentDetailTimeline({
                 </Badge>
               </div>
               {entry.carrierState?.label ? (
-                <p className="text-xs leading-relaxed text-muted-foreground break-words">
+                <p
+                  dir="auto"
+                  className="text-xs leading-relaxed text-muted-foreground break-words"
+                >
                   {entry.carrierState.label}
                 </p>
               ) : null}

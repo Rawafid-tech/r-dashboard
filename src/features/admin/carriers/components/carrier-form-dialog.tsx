@@ -1,4 +1,4 @@
-import { useEffect, useId, useMemo, useState } from "react";
+import { useEffect, useId, useMemo, useRef, useState } from "react";
 import { ChevronDown, Loader2 } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
@@ -22,6 +22,7 @@ import {
 import {
   ADVANCED_SETTING_KEYS,
   buildSettingsRecord,
+  settingsPayloadChanged,
   settingsPayloadFromForm,
 } from "@/features/admin/carriers/lib/admin-carrier-settings";
 import { carrierDisplayName } from "@/features/shipping-partners/lib/carrier-label";
@@ -72,6 +73,15 @@ export function CarrierFormDialog({
   const patchMutation = usePatchAdminCarrier();
   const [globalError, setGlobalError] = useState<string | null>(null);
   const [advancedOpen, setAdvancedOpen] = useState(false);
+  // The admin may close the dialog while a save runs, and the edit dialog is
+  // reused across carriers: a save only closes, or marks errors on, the form
+  // it was sent from.
+  const formKey = mode === "edit" ? (carrier?.code ?? null) : "create";
+  const shownFormRef = useRef<string | null>(null);
+
+  useEffect(() => {
+    shownFormRef.current = open ? formKey : null;
+  }, [open, formKey]);
 
   const platforms = useMemo(
     () => platformsQuery.data ?? [],
@@ -159,7 +169,16 @@ export function CarrierFormDialog({
     });
   }, [open, mode, carrier, form, defaultPlatform, platforms, editPlatformDef]);
 
-  const isPending = createMutation.isPending || patchMutation.isPending;
+  const isPending =
+    mode === "create"
+      ? createMutation.isPending
+      : patchMutation.isPending &&
+        patchMutation.variables?.code === carrier?.code;
+  // Saving settings re-downloads the carrier's areas, which can take a while.
+  const isSyncingAreas =
+    isPending &&
+    (mode === "create" ||
+      patchMutation.variables?.payload.settings !== undefined);
   const settingsReady =
     settingFields.length > 0 &&
     !platformsQuery.isLoading &&
@@ -171,6 +190,7 @@ export function CarrierFormDialog({
       ? Number.parseInt(values.sortOrder, 10)
       : undefined;
     const settings = settingsPayloadFromForm(settingFields, values.settings);
+    const savedFormKey = formKey;
 
     try {
       if (mode === "create") {
@@ -188,17 +208,27 @@ export function CarrierFormDialog({
           payload: {
             nameEn: values.nameEn.trim(),
             nameAr: values.nameAr.trim(),
-            settings,
+            settings: settingsPayloadChanged(
+              settingFields,
+              carrier.settings,
+              settings,
+            )
+              ? settings
+              : undefined,
             sortOrder: Number.isFinite(sortOrder) ? sortOrder : undefined,
           },
         });
       }
-      onOpenChange(false);
+      if (shownFormRef.current === savedFormKey) onOpenChange(false);
     } catch (error) {
       const message =
         mode === "create"
           ? createAdminCarrierErrorDetail(error)
           : patchAdminCarrierErrorDetail(error);
+      if (shownFormRef.current !== savedFormKey) {
+        if (message) toast.error(message);
+        return;
+      }
       const global = applyAdminCarrierFieldErrors(error, form.setError);
       if (global) {
         setGlobalError(global);
@@ -221,17 +251,10 @@ export function CarrierFormDialog({
       : t("carriers.form.editTitle");
 
   return (
-    <Dialog
-      open={open}
-      onOpenChange={(next) => {
-        if (isPending) return;
-        onOpenChange(next);
-      }}
-    >
+    <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent
         size="w3"
         className="gap-0 overflow-hidden p-0"
-        showCloseButton={!isPending}
         closeLabel={tCommon("common.close")}
       >
         <DialogHeader className="border-b border-border/60 pe-10">
@@ -424,11 +447,19 @@ export function CarrierFormDialog({
             ) : null}
           </DialogBody>
 
+          {isSyncingAreas ? (
+            <p
+              role="status"
+              className="border-t border-border/60 px-4 pt-3 text-sm text-muted-foreground"
+            >
+              {t("carriers.form.savingAreas")}
+            </p>
+          ) : null}
+
           <DialogFooter className="gap-2 border-t border-border/60 px-4 py-4">
             <Button
               type="button"
               variant="outline"
-              disabled={isPending}
               onClick={() => onOpenChange(false)}
             >
               {tCommon("common.cancel")}

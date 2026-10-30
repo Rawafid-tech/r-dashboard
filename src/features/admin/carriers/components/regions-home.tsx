@@ -12,7 +12,7 @@ import { useAdminCarriers } from "@/features/admin/carriers/hooks/use-admin-carr
 import { useAdminMe } from "@/features/admin/auth/hooks/use-admin-me";
 import { useCarrierRegions } from "@/features/admin/carriers/hooks/use-carrier-regions";
 import { useSyncCarrierRegions } from "@/features/admin/carriers/hooks/use-sync-carrier-regions";
-import { isCatalogManagedPlatform } from "@/features/admin/carriers/lib/admin-carrier-settings";
+import { useIsCatalogManagedPlatform } from "@/features/admin/carriers/hooks/use-catalog-managed-platform";
 import {
   activeFilterToParam,
   readRegionActiveFilter,
@@ -37,6 +37,7 @@ export function CarrierRegionsHome() {
   const { data: admin } = useAdminMe();
   const carriersQuery = useAdminCarriers();
   const canManage = admin?.role === AdminRole.SUPER_ADMIN;
+  const isCatalogManaged = useIsCatalogManagedPlatform({ enabled: canManage });
   const [searchParams, setSearchParams] = useSearchParams();
 
   const updateParams = useCallback(
@@ -85,7 +86,7 @@ export function CarrierRegionsHome() {
   const [settingsOpen, setSettingsOpen] = useState(false);
   const carrier = carriersQuery.data?.find((item) => item.code === code);
   const canEditSettings =
-    canManage && isCatalogManagedPlatform(carrier?.platform);
+    canManage && isCatalogManaged(carrier?.platform);
 
   const regionsQuery = useCarrierRegions(code, queryParams);
   const syncMutation = useSyncCarrierRegions(code, {

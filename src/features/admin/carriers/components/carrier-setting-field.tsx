@@ -74,7 +74,9 @@ function settingHint(
     const parts = [
       secretsSaved ? t("carriers.form.secretSaved") : null,
       SECRET_HINT_KEYS.has(field.key)
-        ? t("carriers.form.fields.syncAccountHint")
+        ? platform === "WINGEZZ"
+          ? t("carriers.form.fields.syncAccountHintWingezz")
+          : t("carriers.form.fields.syncAccountHint")
         : null,
     ].filter(Boolean);
     return parts.length > 0 ? parts.join(" ") : null;

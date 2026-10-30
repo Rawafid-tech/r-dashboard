@@ -147,6 +147,7 @@
       "createSubmit": "Add carrier",
       "save": "Save changes",
       "saving": "Saving…",
+      "savingAreas": "Downloading this partner's delivery areas can take a minute. You can close this window; a message will tell you when it is saved.",
       "loadingPlatformFields": "Loading platform settings…",
       "editShort": "Edit",
       "deleteShort": "Delete",
@@ -170,7 +171,8 @@
         "sectorsBody": "Areas request format",
         "syncUser": "Sync API user",
         "syncPassword": "Sync API password",
-        "syncAccountHint": "An API user of this carrier, not a dashboard login. It is used to download delivery areas."
+        "syncAccountHint": "An API user of this carrier, not a dashboard login. It is used to download delivery areas.",
+        "syncAccountHintWingezz": "A Wingezz account login. Wingezz needs it even to list its delivery areas."
       },
       "toast": {
         "created": "Shipping partner added",

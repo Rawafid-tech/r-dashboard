@@ -8,7 +8,7 @@ import { CarrierLogoUploader } from "@/features/admin/carriers/components/carrie
 import { CarrierMark } from "@/features/shipping-partners/components/carrier-mark";
 import { carrierDisplayName } from "@/features/shipping-partners/lib/carrier-label";
 import { useAdminCarriers } from "@/features/admin/carriers/hooks/use-admin-carriers";
-import { isCatalogManagedPlatform } from "@/features/admin/carriers/lib/admin-carrier-settings";
+import { useIsCatalogManagedPlatform } from "@/features/admin/carriers/hooks/use-catalog-managed-platform";
 import { useUpdateAdminCarrier } from "@/features/admin/carriers/hooks/use-update-admin-carrier";
 import type { AdminCarrier } from "@/features/admin/carriers/types";
 import { useAdminMe } from "@/features/admin/auth/hooks/use-admin-me";
@@ -16,16 +16,13 @@ import { PageHeader } from "@/shared/components/layout/page-header";
 import { Badge, Button, Skeleton, Switch } from "@/shared/components/ui";
 import { AdminRole } from "@/shared/types/enums";
 
-function isCatalogManagedCarrier(carrier: AdminCarrier): boolean {
-  return isCatalogManagedPlatform(carrier.platform);
-}
-
 export function AdminCarriersHome() {
   const { t, i18n } = useTranslation("admin");
   const carriersQuery = useAdminCarriers();
   const updateMutation = useUpdateAdminCarrier();
   const { data: admin } = useAdminMe();
   const canManage = admin?.role === AdminRole.SUPER_ADMIN;
+  const isCatalogManaged = useIsCatalogManagedPlatform({ enabled: canManage });
   const carriers = carriersQuery.data ?? [];
   const pendingCode = updateMutation.isPending
     ? (updateMutation.variables?.code ?? null)
@@ -111,6 +108,7 @@ export function AdminCarriersHome() {
                 carrier={carrier}
                 locale={i18n.language}
                 canManage={canManage}
+                catalogManaged={isCatalogManaged(carrier.platform)}
                 pending={pendingCode === carrier.code}
                 onToggle={(enabled) =>
                   updateMutation.mutate({ code: carrier.code, enabled })
@@ -153,6 +151,7 @@ function CarrierRow({
   carrier,
   locale,
   canManage,
+  catalogManaged,
   pending,
   onToggle,
   onEdit,
@@ -161,6 +160,8 @@ function CarrierRow({
   carrier: AdminCarrier;
   locale: string;
   canManage: boolean;
+  /** An admin can edit and delete this carrier from the catalog form. */
+  catalogManaged: boolean;
   pending: boolean;
   onToggle: (enabled: boolean) => void;
   onEdit: () => void;
@@ -177,7 +178,6 @@ function CarrierRow({
   );
   const hintId = `admin-carrier-${carrier.code}-hint`;
   const switchId = `admin-carrier-${carrier.code}-enabled`;
-  const catalogManaged = isCatalogManagedCarrier(carrier);
   const hint = !carrier.running
     ? t("carriers.notRunningHint")
     : canManage

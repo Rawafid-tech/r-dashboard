@@ -1,4 +1,9 @@
-export type AdminCarrierPlatform = "ACCURATE" | "BOSTA" | "MEGA" | (string & {});
+export type AdminCarrierPlatform =
+  | "ACCURATE"
+  | "BOSTA"
+  | "MEGA"
+  | "WINGEZZ"
+  | (string & {});
 
 export interface AdminCarrierSettings {
   baseUrl?: string;

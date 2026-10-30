@@ -1,6 +1,7 @@
 import type {
   AdminCarrierPlatform,
   AdminCarrierSettings,
+  CarrierPlatform,
   CarrierPlatformField,
   CarrierPlatformFieldKind,
   CarrierPlatformFieldOption,
@@ -13,10 +14,14 @@ const KNOWN_FIELD_KINDS: ReadonlySet<CarrierPlatformFieldKind> = new Set([
   "SECRET",
 ]);
 
-/** Platforms whose carriers an admin adds, edits and removes from the catalog form. */
-const CATALOG_MANAGED_PLATFORMS: ReadonlySet<string> = new Set([
+/**
+ * Platforms whose carriers an admin adds, edits and removes from the catalog
+ * form, used only until `GET /api/admin/carrier-platforms` answers (or when it fails).
+ */
+const FALLBACK_CATALOG_PLATFORMS: ReadonlySet<string> = new Set([
   "ACCURATE",
   "MEGA",
+  "WINGEZZ",
 ]);
 
 /** The API does not list SELECT options yet (Mega Technology Part 1 §2). */
@@ -33,10 +38,17 @@ export const ADVANCED_SETTING_KEYS: ReadonlySet<string> = new Set([
 
 const MEGA_BASE_URL_PATTERN = /^https:\/\/[^/?#\s]+(?:\/[^?#\s]*)?\/api\/shipment\.php$/;
 
+/**
+ * A platform is catalog-managed when the API lists it as one carriers can be
+ * added on (Bosta never is). Without that list, the fallback set decides.
+ */
 export function isCatalogManagedPlatform(
   platform: AdminCarrierPlatform | undefined,
+  platforms?: readonly CarrierPlatform[],
 ): boolean {
-  return platform !== undefined && CATALOG_MANAGED_PLATFORMS.has(platform);
+  if (platform === undefined) return false;
+  if (platforms) return platforms.some((item) => item.platform === platform);
+  return FALLBACK_CATALOG_PLATFORMS.has(platform);
 }
 
 export function carrierFieldKind(
@@ -118,4 +130,25 @@ export function settingsPayloadFromForm(
     }
   }
   return record;
+}
+
+/**
+ * Whether an edit changes the carrier's settings. Saving settings re-downloads
+ * the carrier's areas, so an edit of names or sort order alone leaves them out.
+ * A typed SECRET always counts as a change.
+ */
+export function settingsPayloadChanged(
+  fields: CarrierPlatformField[],
+  savedSettings: AdminCarrierSettings | undefined,
+  payload: Record<string, string>,
+): boolean {
+  const saved = settingsPayloadFromForm(
+    fields,
+    buildSettingsRecord(fields, savedSettings),
+  );
+  const keys = new Set([...Object.keys(saved), ...Object.keys(payload)]);
+  for (const key of keys) {
+    if (saved[key] !== payload[key]) return true;
+  }
+  return false;
 }
