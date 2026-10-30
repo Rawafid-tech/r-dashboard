@@ -1,36 +1,14 @@
-import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { AuthBrandPanel } from "@/features/auth/components/auth-brand-panel";
 import { MerchantAuthPageBrand } from "@/features/auth/components/auth-page-brand";
 import { AuthPageLayout } from "@/features/auth/components/auth-page-layout";
 import { LoginForm } from "@/features/auth/login";
+import { useDocumentMeta } from "@/shared/hooks/use-document-meta";
 
 export function LoginPage() {
   const { t } = useTranslation("auth");
 
-  useEffect(() => {
-    const previousTitle = document.title;
-    document.title = t("login.metaTitle");
-
-    const description = t("login.metaDescription");
-    let meta = document.querySelector<HTMLMetaElement>(
-      'meta[name="description"]',
-    );
-
-    if (!meta) {
-      meta = document.createElement("meta");
-      meta.name = "description";
-      document.head.appendChild(meta);
-    }
-
-    const previousDescription = meta.content;
-    meta.content = description;
-
-    return () => {
-      document.title = previousTitle;
-      meta!.content = previousDescription;
-    };
-  }, [t]);
+  useDocumentMeta(t("login.metaTitle"), t("login.metaDescription"));
 
   return (
     <AuthPageLayout
