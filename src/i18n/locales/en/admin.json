@@ -171,8 +171,10 @@
         "sectorsBody": "Areas request format",
         "syncUser": "Sync API user",
         "syncPassword": "Sync API password",
+        "syncToken": "Sync API token",
         "syncAccountHint": "An API user of this carrier, not a dashboard login. It is used to download delivery areas.",
-        "syncAccountHintWingezz": "A Wingezz account login. Wingezz needs it even to list its delivery areas."
+        "syncAccountHintWingezz": "A Wingezz account login. Wingezz needs it even to list its delivery areas.",
+        "syncAccountHintWavex": "Any Wavex seller API token. Wavex needs it even to list its delivery areas."
       },
       "toast": {
         "created": "Shipping partner added",

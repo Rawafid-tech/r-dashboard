@@ -1,6 +1,7 @@
 import { Pencil, Trash2 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { getGovernorateLabel } from "@/features/locations/lib/location-form-errors";
+import { ShipmentCodFeeNote } from "@/features/shipments/components/shipment-cod-fee-note";
 import { ShipmentDistrictCombobox } from "@/features/shipments/components/shipment-district-combobox";
 import {
   ShipmentPickupInfo,
@@ -12,6 +13,7 @@ import type {
   BulkPreviewLine,
   ShipmentDistrict,
 } from "@/features/shipments/types";
+import { carrierAddsCodFee } from "@/features/shipping-partners/lib/carrier-cod-fee";
 import { carrierDisplayName } from "@/features/shipping-partners/lib/carrier-label";
 import type { CarrierConnection } from "@/features/shipping-partners/types";
 import {
@@ -23,6 +25,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/shared/components/ui";
+import { formatCurrency } from "@/shared/lib/formatters";
 import { useLocaleStore } from "@/stores/locale.store";
 
 interface BulkBookingRowProps {
@@ -84,6 +87,12 @@ export function BulkBookingRow({
   const rowError = draft.bulkError ?? previewLine?.error?.message ?? null;
   const hasProblems = (previewLine?.problems.length ?? 0) > 0;
   const connectionId = draft.connectionId ?? "";
+  // The chosen connection, known before its preview answers.
+  const selectedConnection = connections.find((item) => item.id === connectionId);
+  const showCodFeeNote = carrierAddsCodFee(
+    selectedConnection?.carrier.code,
+    order?.codAmount,
+  );
 
   const weightText =
     previewLine != null
@@ -170,6 +179,19 @@ export function BulkBookingRow({
                 <span className="text-muted-foreground">
                   {t("orders:table.weightUnit")}
                 </span>
+              </dd>
+            </div>
+            <div className="text-start">
+              <dt className="text-muted-foreground">{t("bulkBooking.colCod")}</dt>
+              <dd className="mt-0.5 space-y-1 font-medium text-foreground">
+                <span className="block tabular-nums">
+                  {order ? formatCurrency(order.codAmount, "EGP", intlLocale) : "—"}
+                </span>
+                {showCodFeeNote && selectedConnection ? (
+                  <ShipmentCodFeeNote
+                    carrierName={carrierDisplayName(selectedConnection.carrier, locale)}
+                  />
+                ) : null}
               </dd>
             </div>
           </dl>

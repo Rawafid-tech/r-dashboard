@@ -3,6 +3,8 @@ import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import { orderViewPath } from "@/features/orders/lib/order-view-link";
 import { CarrierMark } from "@/features/shipping-partners/components/carrier-mark";
+import { carrierAddsCodFee } from "@/features/shipping-partners/lib/carrier-cod-fee";
+import { ShipmentCodFeeNote } from "@/features/shipments/components/shipment-cod-fee-note";
 import { ShipmentIssueBadge } from "@/features/shipments/components/shipment-issue-badge";
 import { formatPickupLocationLabel } from "@/features/shipments/lib/pickup-label";
 import { shipmentCarrierLabel } from "@/features/shipments/lib/shipment-connection-label";
@@ -100,7 +102,21 @@ export function ShipmentDetailSummary({ shipment }: ShipmentDetailSummaryProps) 
           ) : null
         ) : (
           <DetailRow label={t("detail.summary.cod")}>
-            {formatCurrency(shipment.codAmount, "EGP", intlLocale)}
+            {carrierAddsCodFee(
+              shipment.connection.carrierCode,
+              shipment.codAmount,
+            ) ? (
+              <div className="space-y-1">
+                <span className="block tabular-nums">
+                  {formatCurrency(shipment.codAmount, "EGP", intlLocale)}
+                </span>
+                <ShipmentCodFeeNote
+                  carrierName={shipmentCarrierLabel(shipment.connection, locale)}
+                />
+              </div>
+            ) : (
+              formatCurrency(shipment.codAmount, "EGP", intlLocale)
+            )}
           </DetailRow>
         )}
         {typeof shipment.attempts === "number" ? (

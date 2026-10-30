@@ -205,6 +205,7 @@
     "batchTooMany": "يمكنك طباعة حتى 50 بوليصة دفعة واحدة."
   },
   "booking": {
+    "carrierCodFeeNote": "تضيف {{carrier}} رسوم التوصيل الخاصة بها إلى المبلغ الذي يدفعه العميل.",
     "connectionTitle": "اختر اتصالاً",
     "connectionDescription": "حدّد حساب شريك الشحن الذي سيحجز هذا الطلب.",
     "confirmTitle": "تأكيد الشحنة",
@@ -254,6 +255,7 @@
     "colConnection": "شركة التوصيل",
     "colBoxes": "عدد الصناديق",
     "colWeight": "وزن الصناديق (كجم)",
+    "colCod": "المبلغ المطلوب تحصيله",
     "colDistrict": "المنطقة / المشاكل",
     "colActions": "إجراءات الصف",
     "connectionLabel": "شركة التوصيل للطلب {{order}}",

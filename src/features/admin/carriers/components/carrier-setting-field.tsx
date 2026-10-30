@@ -27,7 +27,13 @@ import {
   Switch,
 } from "@/shared/components/ui";
 
-const SECRET_HINT_KEYS = new Set(["syncUser", "syncPassword"]);
+const SECRET_HINT_KEYS = new Set(["syncUser", "syncPassword", "syncToken"]);
+
+/** Platforms whose sync account is a merchant login rather than an API user. */
+const SYNC_ACCOUNT_HINT_KEYS: Partial<Record<AdminCarrierPlatform, string>> = {
+  WAVEX: "carriers.form.fields.syncAccountHintWavex",
+  WINGEZZ: "carriers.form.fields.syncAccountHintWingezz",
+};
 
 interface CarrierSettingFieldProps {
   field: CarrierPlatformField;
@@ -52,6 +58,7 @@ function settingLabel(
     case "sectorsBody":
     case "syncUser":
     case "syncPassword":
+    case "syncToken":
       return t(`carriers.form.fields.${field.key}`);
     default:
       return field.key;
@@ -74,9 +81,10 @@ function settingHint(
     const parts = [
       secretsSaved ? t("carriers.form.secretSaved") : null,
       SECRET_HINT_KEYS.has(field.key)
-        ? platform === "WINGEZZ"
-          ? t("carriers.form.fields.syncAccountHintWingezz")
-          : t("carriers.form.fields.syncAccountHint")
+        ? t(
+            (platform && SYNC_ACCOUNT_HINT_KEYS[platform]) ??
+              "carriers.form.fields.syncAccountHint",
+          )
         : null,
     ].filter(Boolean);
     return parts.length > 0 ? parts.join(" ") : null;

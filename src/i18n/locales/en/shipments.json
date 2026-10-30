@@ -205,6 +205,7 @@
     "batchTooMany": "You can print up to 50 labels at once."
   },
   "booking": {
+    "carrierCodFeeNote": "{{carrier}} adds its delivery fee to what the customer pays.",
     "connectionTitle": "Choose a connection",
     "connectionDescription": "Pick which shipping partner account should book this order.",
     "confirmTitle": "Confirm shipment",
@@ -254,6 +255,7 @@
     "colConnection": "Delivery company",
     "colBoxes": "Box count",
     "colWeight": "Box weight (kg)",
+    "colCod": "Amount to collect",
     "colDistrict": "District / issues",
     "colActions": "Row actions",
     "connectionLabel": "Delivery company for {{order}}",

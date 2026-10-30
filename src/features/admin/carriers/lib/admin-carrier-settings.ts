@@ -21,6 +21,7 @@ const KNOWN_FIELD_KINDS: ReadonlySet<CarrierPlatformFieldKind> = new Set([
 const FALLBACK_CATALOG_PLATFORMS: ReadonlySet<string> = new Set([
   "ACCURATE",
   "MEGA",
+  "WAVEX",
   "WINGEZZ",
 ]);
 

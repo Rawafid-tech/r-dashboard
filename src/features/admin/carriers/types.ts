@@ -2,6 +2,7 @@ export type AdminCarrierPlatform =
   | "ACCURATE"
   | "BOSTA"
   | "MEGA"
+  | "WAVEX"
   | "WINGEZZ"
   | (string & {});
 
