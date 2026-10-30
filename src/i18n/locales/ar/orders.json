@@ -100,7 +100,8 @@
     "cancel": "إلغاء الطلب",
     "createShipment": "إنشاء شحنة",
     "bookReturn": "مرتجع",
-    "bookExchange": "استبدال"
+    "bookExchange": "استبدال",
+    "checkingReverse": "جارٍ التحقق من خيارات الإرجاع…"
   },
   "cancel": {
     "title": "إلغاء هذا الطلب؟",

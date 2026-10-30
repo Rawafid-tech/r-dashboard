@@ -100,7 +100,8 @@
     "cancel": "Cancel order",
     "createShipment": "Create shipment",
     "bookReturn": "Return",
-    "bookExchange": "Exchange"
+    "bookExchange": "Exchange",
+    "checkingReverse": "Checking return options…"
   },
   "cancel": {
     "title": "Cancel this order?",

@@ -1,6 +1,7 @@
 import {
   ArrowLeftRight,
   Eye,
+  Loader2,
   PackagePlus,
   Pencil,
   RotateCcw,
@@ -49,24 +50,8 @@ export function OrderRowActionsMenu({
   const canBookShipment = hasPermission(MerchantPermission.SHIPMENT_MANAGE);
   const canCreateShipment =
     order.status === "PENDING" || order.status === "RETURNED";
-  const isDelivered = order.status === "DELIVERED";
-  const previewEnabled = canBookShipment && isDelivered;
-  const returnPreviewQuery = useReturnPreview(
-    { orderId: order.id },
-    { enabled: previewEnabled, staleTime: 120_000 },
-  );
-  const exchangePreviewQuery = useExchangePreview(
-    { orderId: order.id },
-    { enabled: previewEnabled, staleTime: 120_000 },
-  );
-  const showReturnAction =
-    previewEnabled &&
-    returnPreviewQuery.isSuccess &&
-    isReturnActionAvailable(returnPreviewQuery.data);
-  const showExchangeAction =
-    previewEnabled &&
-    exchangePreviewQuery.isSuccess &&
-    isExchangeActionAvailable(exchangePreviewQuery.data);
+  const canBookReverse =
+    canBookShipment && order.status === "DELIVERED";
   const canEditOrCancel =
     order.status === "PENDING" || order.status === "RETURNED";
   return (
@@ -89,21 +74,8 @@ export function OrderRowActionsMenu({
             {t("actions.createShipment")}
           </TableRowActionsMenuItem>
         ) : null}
-        {showExchangeAction ? (
-          <TableRowActionsMenuItem
-            icon={ArrowLeftRight}
-            onSelect={() => onAction("bookExchange", order)}
-          >
-            {t("actions.bookExchange")}
-          </TableRowActionsMenuItem>
-        ) : null}
-        {showReturnAction ? (
-          <TableRowActionsMenuItem
-            icon={RotateCcw}
-            onSelect={() => onAction("bookReturn", order)}
-          >
-            {t("actions.bookReturn")}
-          </TableRowActionsMenuItem>
+        {canBookReverse ? (
+          <ReverseLogisticsItems order={order} onAction={onAction} />
         ) : null}
         {canManage && canEditOrCancel ? (
           <TableRowActionsMenuItem
@@ -127,5 +99,65 @@ export function OrderRowActionsMenu({
         ) : null}
       </TableRowActionsMenuContent>
     </TableRowActionsMenu>
+  );
+}
+
+/**
+ * Rendered inside the menu content, which Radix mounts only while the menu is
+ * open — so the return/exchange previews are fetched per opened row instead of
+ * for every delivered row on the page.
+ */
+function ReverseLogisticsItems({
+  order,
+  onAction,
+}: OrderRowActionsMenuProps) {
+  const { t } = useTranslation("orders");
+  const returnPreviewQuery = useReturnPreview(
+    { orderId: order.id },
+    { staleTime: 120_000 },
+  );
+  const exchangePreviewQuery = useExchangePreview(
+    { orderId: order.id },
+    { staleTime: 120_000 },
+  );
+
+  if (returnPreviewQuery.isPending || exchangePreviewQuery.isPending) {
+    return (
+      <TableRowActionsMenuItem
+        icon={Loader2}
+        disabled
+        className="[&_svg]:animate-spin"
+      >
+        {t("actions.checkingReverse")}
+      </TableRowActionsMenuItem>
+    );
+  }
+
+  const showExchangeAction =
+    exchangePreviewQuery.isSuccess &&
+    isExchangeActionAvailable(exchangePreviewQuery.data);
+  const showReturnAction =
+    returnPreviewQuery.isSuccess &&
+    isReturnActionAvailable(returnPreviewQuery.data);
+
+  return (
+    <>
+      {showExchangeAction ? (
+        <TableRowActionsMenuItem
+          icon={ArrowLeftRight}
+          onSelect={() => onAction("bookExchange", order)}
+        >
+          {t("actions.bookExchange")}
+        </TableRowActionsMenuItem>
+      ) : null}
+      {showReturnAction ? (
+        <TableRowActionsMenuItem
+          icon={RotateCcw}
+          onSelect={() => onAction("bookReturn", order)}
+        >
+          {t("actions.bookReturn")}
+        </TableRowActionsMenuItem>
+      ) : null}
+    </>
   );
 }
