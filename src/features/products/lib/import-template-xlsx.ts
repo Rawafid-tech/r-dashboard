@@ -1,4 +1,4 @@
-import ExcelJS from "exceljs";
+import type ExcelJS from "exceljs";
 import { enumDisplayValue } from "@/features/products/lib/import-handling-labels";
 import { getImportVariantColumns } from "@/features/products/lib/import-variant-columns";
 import { IMPORT_MAX_ROWS } from "@/features/products/types";
@@ -62,7 +62,9 @@ export async function downloadImportTemplate(
   locale: SupportedLocale,
   t: TFunction<"products">,
 ): Promise<void> {
-  const workbook = new ExcelJS.Workbook();
+  // Loaded on demand so ExcelJS stays out of the products page chunk.
+  const { Workbook } = (await import("exceljs")).default;
+  const workbook = new Workbook();
   workbook.creator = "Rawafid";
   const variantColumns = getImportVariantColumns(t);
 
