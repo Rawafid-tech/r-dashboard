@@ -1,21 +1,70 @@
+import { lazy } from "react";
 import type { RouteObject } from "react-router-dom";
 import { MerchantLayout } from "@/app/merchant/MerchantLayout";
-import { BillingPage } from "@/app/merchant/billing-page";
-import { DashboardPage } from "@/app/merchant/dashboard-page";
-import { LocationsPage } from "@/app/merchant/locations-page";
-import { OrdersPage } from "@/app/merchant/orders-page";
-import { ProductsPage } from "@/app/merchant/products-page";
-import { RolesPage } from "@/app/merchant/roles-page";
-import { ShippingBoxesPage } from "@/app/merchant/shipping-boxes-page";
-import { ShippingPartnersPage } from "@/app/merchant/shipping-partners-page";
-import { ShipmentDetailPage } from "@/app/merchant/shipment-detail-page";
-import { ExchangesPage } from "@/app/merchant/exchanges-page";
-import { ReturnsPage } from "@/app/merchant/returns-page";
-import { ShipmentsPage } from "@/app/merchant/shipments-page";
-import { NotificationsPage } from "@/app/merchant/notifications-page";
-import { SettingsPage } from "@/app/merchant/settings-page";
-import { UsersPage } from "@/app/merchant/users-page";
-import { WalletPage } from "@/app/merchant/wallet-page";
+
+const BillingPage = lazy(() =>
+  import("@/app/merchant/billing-page").then((m) => ({ default: m.BillingPage })),
+);
+
+const DashboardPage = lazy(() =>
+  import("@/app/merchant/dashboard-page").then((m) => ({ default: m.DashboardPage })),
+);
+
+const LocationsPage = lazy(() =>
+  import("@/app/merchant/locations-page").then((m) => ({ default: m.LocationsPage })),
+);
+
+const OrdersPage = lazy(() =>
+  import("@/app/merchant/orders-page").then((m) => ({ default: m.OrdersPage })),
+);
+
+const ProductsPage = lazy(() =>
+  import("@/app/merchant/products-page").then((m) => ({ default: m.ProductsPage })),
+);
+
+const RolesPage = lazy(() =>
+  import("@/app/merchant/roles-page").then((m) => ({ default: m.RolesPage })),
+);
+
+const ShippingBoxesPage = lazy(() =>
+  import("@/app/merchant/shipping-boxes-page").then((m) => ({ default: m.ShippingBoxesPage })),
+);
+
+const ShippingPartnersPage = lazy(() =>
+  import("@/app/merchant/shipping-partners-page").then((m) => ({ default: m.ShippingPartnersPage })),
+);
+
+const ShipmentDetailPage = lazy(() =>
+  import("@/app/merchant/shipment-detail-page").then((m) => ({ default: m.ShipmentDetailPage })),
+);
+
+const ExchangesPage = lazy(() =>
+  import("@/app/merchant/exchanges-page").then((m) => ({ default: m.ExchangesPage })),
+);
+
+const ReturnsPage = lazy(() =>
+  import("@/app/merchant/returns-page").then((m) => ({ default: m.ReturnsPage })),
+);
+
+const ShipmentsPage = lazy(() =>
+  import("@/app/merchant/shipments-page").then((m) => ({ default: m.ShipmentsPage })),
+);
+
+const NotificationsPage = lazy(() =>
+  import("@/app/merchant/notifications-page").then((m) => ({ default: m.NotificationsPage })),
+);
+
+const SettingsPage = lazy(() =>
+  import("@/app/merchant/settings-page").then((m) => ({ default: m.SettingsPage })),
+);
+
+const UsersPage = lazy(() =>
+  import("@/app/merchant/users-page").then((m) => ({ default: m.UsersPage })),
+);
+
+const WalletPage = lazy(() =>
+  import("@/app/merchant/wallet-page").then((m) => ({ default: m.WalletPage })),
+);
 
 export const merchantRoutes: RouteObject[] = [
   {
