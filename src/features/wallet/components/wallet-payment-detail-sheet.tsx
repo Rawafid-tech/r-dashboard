@@ -51,7 +51,7 @@ export function WalletPaymentDetailSheet({
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetContent side="bottom" className="max-h-[85vh] overflow-y-auto">
+      <SheetContent side="bottom" className="max-h-[85dvh] overflow-y-auto">
         <div className="px-4 pb-6 sm:px-6">
           <SheetHeader className="p-0 pt-4">
             <SheetTitle>{t("payments.detail.title")}</SheetTitle>

@@ -377,7 +377,7 @@ export function CompanyAssignSubscriptionPanel({
       </Card>
 
       <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
-        <SheetContent side="bottom" className="max-h-[85vh] overflow-y-auto">
+        <SheetContent side="bottom" className="max-h-[85dvh] overflow-y-auto">
           <SheetHeader>
             <SheetTitle>
               {t("admin:companies.detail.assign.confirmTitle")}

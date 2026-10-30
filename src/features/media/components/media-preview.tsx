@@ -58,7 +58,7 @@ export function MediaPreview({
       <img
         src={previewUrl}
         alt={alt}
-        className="h-32 w-32 rounded-lg object-cover ring-1 ring-gray-200"
+        className="h-32 w-32 rounded-lg object-cover ring-1 ring-border"
       />
 
       {showRemoveButton && onRemove && (
@@ -67,7 +67,7 @@ export function MediaPreview({
           variant="destructive"
           size="icon"
           onClick={onRemove}
-          className="absolute -right-2 -top-2 h-6 w-6 rounded-full shadow-md"
+          className="absolute -end-2 -top-2 h-6 w-6 rounded-full shadow-md"
           aria-label={removeLabel}
         >
           <X className="h-4 w-4" aria-hidden="true" />
