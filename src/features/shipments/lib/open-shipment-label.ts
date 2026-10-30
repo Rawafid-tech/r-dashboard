@@ -1,20 +1,37 @@
 const PDF_MIME = "application/pdf";
 
-export function openPdfBlob(blob: Blob, _filename: string): boolean {
-  if (typeof window === "undefined") return false;
+/**
+ * Opens an empty tab while the click's user activation is still valid, so the
+ * PDF can be shown in it after the (async) download without being blocked.
+ * `noopener` is not passed because it makes `window.open` return null.
+ */
+export function reservePdfWindow(): Window | null {
+  if (typeof window === "undefined") return null;
 
-  const pdfBlob =
-    blob.type === PDF_MIME || blob.type === ""
-      ? blob
-      : new Blob([blob], { type: PDF_MIME });
+  const reserved = window.open("", "_blank");
+  if (reserved) reserved.opener = null;
+  return reserved;
+}
 
-  const url = URL.createObjectURL(pdfBlob);
-  const opened = window.open(url, "_blank", "noopener,noreferrer");
-
-  if (!opened) {
-    URL.revokeObjectURL(url);
+/**
+ * Shows the PDF in the reserved tab, or downloads it when no tab could be
+ * opened. Returns false when it had to fall back to downloading.
+ */
+export function showPdfBlob(
+  blob: Blob,
+  filename: string,
+  reserved: Window | null,
+): boolean {
+  if (!reserved || reserved.closed) {
+    downloadPdfBlob(blob, filename);
     return false;
   }
+
+  const pdfBlob =
+    blob.type === PDF_MIME ? blob : new Blob([blob], { type: PDF_MIME });
+
+  const url = URL.createObjectURL(pdfBlob);
+  reserved.location.href = url;
 
   window.setTimeout(() => {
     URL.revokeObjectURL(url);
@@ -30,7 +47,8 @@ export function downloadPdfBlob(blob: Blob, filename: string): void {
   anchor.download = filename;
   anchor.rel = "noopener";
   anchor.click();
-  window.setTimeout(() => URL.revokeObjectURL(url), 0);
+  // Some browsers cancel the download if the URL is revoked immediately.
+  window.setTimeout(() => URL.revokeObjectURL(url), 10_000);
 }
 
 export function shipmentLabelFilename(trackingNumber: string | null): string {

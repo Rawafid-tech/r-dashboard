@@ -199,7 +199,7 @@
     "cancelled": "Shipment cancelled for order {{number}}",
     "cancelFailed": "Could not cancel shipment",
     "labelFailed": "Could not open label",
-    "labelPopupBlocked": "Allow pop-ups to open the label PDF",
+    "labelPopupBlocked": "Pop-ups are blocked, so the label PDF was downloaded instead",
     "batchMixedConnections": "Select shipments from one connection only, or print in separate batches (up to 50 each).",
     "batchEmpty": "Select at least one shipment with a printable label.",
     "batchTooMany": "You can print up to 50 labels at once."
