@@ -19,6 +19,8 @@ function applyTheme(theme: ThemeMode) {
   const root = document.documentElement;
   root.setAttribute("data-theme", theme);
   root.classList.toggle("dark", theme === "dark");
+  // Native controls (scrollbars, date inputs, autofill) follow the theme.
+  root.style.colorScheme = theme;
   localStorage.setItem(STORAGE_KEYS.THEME, theme);
 }
 

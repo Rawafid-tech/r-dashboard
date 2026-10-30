@@ -66,5 +66,11 @@
     "notFound": "The requested page was not found.",
     "serverError": "A server error occurred. Please try again later.",
     "rateLimited": "Too many attempts. Please try again later."
+  },
+  "errorBoundary": {
+    "title": "Something went wrong",
+    "description": "This page couldn't be displayed. Reload the page, and contact support if the problem continues.",
+    "reload": "Reload page",
+    "tryAgain": "Try again"
   }
 }
