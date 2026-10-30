@@ -2,6 +2,7 @@ import { useTranslation } from "react-i18next";
 import { Button } from "@/shared/components/ui";
 import type { PlanStatusFilter } from "@/features/admin/plans/schema";
 import { cn } from "@/shared/lib/utils";
+import { handleTablistKeyDown } from "@/shared/lib/tablist-keyboard";
 
 const FILTERS: PlanStatusFilter[] = ["ALL", "ACTIVE", "ARCHIVED"];
 
@@ -36,6 +37,7 @@ export function PlansToolbar({
       <div
         className="flex flex-wrap gap-2"
         role="tablist"
+        onKeyDown={handleTablistKeyDown}
         aria-label={t("plans.toolbar.filterLabel")}
       >
         {FILTERS.map((filter) => {
