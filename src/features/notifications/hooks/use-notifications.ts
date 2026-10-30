@@ -19,6 +19,7 @@ export function useNotifications(
     queryKey: notificationKeys.list(params, i18n.language),
     queryFn: ({ signal }) => getNotifications(params, signal),
     enabled: options.enabled ?? true,
-    staleTime: options.staleTime,
+    // Only override when given; an explicit undefined would replace the default.
+    ...(options.staleTime !== undefined && { staleTime: options.staleTime }),
   });
 }
