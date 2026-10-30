@@ -32,7 +32,8 @@ export function NotificationBell() {
   const unreadQuery = useUnreadNotificationCount();
   const listQuery = useNotifications(
     { page: 0, size: DROPDOWN_SIZE },
-    { enabled: open },
+    // Refetch on every open so new notifications behind the badge show up.
+    { enabled: open, staleTime: 0 },
   );
   const markReadMutation = useMarkNotificationRead();
   const markAllMutation = useMarkAllNotificationsRead();
