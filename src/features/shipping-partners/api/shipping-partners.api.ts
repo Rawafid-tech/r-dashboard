@@ -31,10 +31,11 @@ export async function testCarrierConnection(
 
 export async function getCarrierConnections(
   params: CarrierConnectionsListParams = {},
+  signal?: AbortSignal,
 ): Promise<PaginatedResponse<CarrierConnection>> {
   const { data } = await apiClient.get<PaginatedResponse<CarrierConnection>>(
     "/api/carrier-connections",
-    { params },
+    { params, signal },
   );
   return data;
 }

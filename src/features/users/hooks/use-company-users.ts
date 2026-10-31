@@ -21,7 +21,7 @@ export function useCompanyUsers(
 ) {
   return useQuery({
     queryKey: usersQueryKeys.list(params),
-    queryFn: () => getCompanyUsers(params),
+    queryFn: ({ signal }) => getCompanyUsers(params, signal),
     placeholderData: keepPreviousData,
     enabled: options.enabled ?? true,
   });

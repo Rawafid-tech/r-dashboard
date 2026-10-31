@@ -13,7 +13,7 @@ export function useCarrierConnections(
 ) {
   return useQuery({
     queryKey: carrierConnectionKeys.list(params),
-    queryFn: () => getCarrierConnections(params),
+    queryFn: ({ signal }) => getCarrierConnections(params, signal),
     placeholderData: keepPreviousData,
     enabled: options.enabled ?? true,
   });

@@ -1,11 +1,13 @@
 import { useRef, type ChangeEvent } from "react";
 import { Upload } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { Button } from "@/shared/components/ui/button";
 import {
   getAcceptedFileTypes,
   validateMediaFile,
 } from "@/features/media/lib/media-validation";
 import type { MediaValidationError } from "@/features/media/lib/media-validation";
+import { MAX_MEDIA_SIZE_MB } from "@/features/media/types";
 
 export interface MediaUploadButtonProps {
   onFileSelect: (file: File) => void;
@@ -30,6 +32,7 @@ export function MediaUploadButton({
   children,
   className,
 }: MediaUploadButtonProps) {
+  const { t } = useTranslation("common");
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleButtonClick = () => {
@@ -42,7 +45,10 @@ export function MediaUploadButton({
     // Validate file
     const validationError = validateMediaFile(file);
     if (validationError) {
-      onValidationError?.(validationError);
+      onValidationError?.({
+        ...validationError,
+        message: t(validationError.messageKey, { maxMb: MAX_MEDIA_SIZE_MB }),
+      });
       // Reset input to allow selecting the same file again
       if (fileInputRef.current) {
         fileInputRef.current.value = "";
@@ -68,12 +74,11 @@ export function MediaUploadButton({
         onClick={handleButtonClick}
         disabled={disabled}
         className={className}
-        aria-label="Upload image"
       >
         {children || (
           <>
             <Upload className="h-4 w-4" aria-hidden="true" />
-            <span>Upload Image</span>
+            <span>{t("media.uploadImage")}</span>
           </>
         )}
       </Button>
@@ -84,7 +89,7 @@ export function MediaUploadButton({
         accept={getAcceptedFileTypes()}
         onChange={handleFileChange}
         className="sr-only"
-        aria-label="Select image file"
+        aria-label={t("media.selectImageFile")}
         tabIndex={-1}
       />
     </>

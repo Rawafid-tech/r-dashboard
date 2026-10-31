@@ -178,7 +178,7 @@ export function CompanyWalletLedgerSheet({
     <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetContent
         side="bottom"
-        className="flex max-h-[92vh] flex-col overflow-hidden p-0"
+        className="flex max-h-[92dvh] flex-col overflow-hidden p-0"
       >
         <SheetHeader className="border-b border-border/60 px-6 py-4 text-start">
           <SheetTitle>{t("companies.detail.wallet.ledgerTitle")}</SheetTitle>

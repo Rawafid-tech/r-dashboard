@@ -3,7 +3,10 @@ import { NavLink } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { Badge, Tooltip, TooltipContent, TooltipTrigger } from "@/shared/components/ui";
 import { cn } from "@/shared/lib/utils";
-import type { MerchantNavItem } from "@/shared/components/layout/merchant-nav";
+import {
+  groupMerchantNavItems,
+  type MerchantNavItem,
+} from "@/shared/components/layout/merchant-nav";
 import {
   sidebarNavActiveClassName,
   sidebarNavItemClassName,
@@ -112,6 +115,7 @@ export function MerchantSidebarNavList({
   id = "merchant-sidebar-nav",
 }: MerchantSidebarNavListProps) {
   const { t } = useTranslation("dashboard");
+  const sections = groupMerchantNavItems(items);
 
   return (
     <nav
@@ -119,18 +123,44 @@ export function MerchantSidebarNavList({
       className={cn("flex-1 overflow-y-auto px-2 py-3", className)}
       aria-label={t("shell.sidebarLabel")}
     >
-      <ul className="space-y-1">
-        {items.map((item) => (
-          <li key={item.key}>
-            <MerchantSidebarNavItem
-              item={item}
-              collapsed={collapsed}
-              tooltipSide={tooltipSide}
-              onNavigate={onNavigate}
-            />
-          </li>
-        ))}
-      </ul>
+      {sections.map((section, index) => {
+        const headingId = `${id}-${section.group}`;
+        const showHeading = section.group !== "overview";
+
+        return (
+          <div key={section.group} className={cn(index > 0 && "mt-4")}>
+            {showHeading && !collapsed ? (
+              <p
+                id={headingId}
+                className="mb-1 px-2.5 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground/80"
+              >
+                {t(`shell.navGroups.${section.group}`)}
+              </p>
+            ) : null}
+            {showHeading && collapsed ? (
+              <div
+                className="mx-auto mb-2 h-px w-6 bg-sidebar-border"
+                aria-hidden="true"
+              />
+            ) : null}
+            <ul
+              className="space-y-1"
+              aria-labelledby={showHeading && !collapsed ? headingId : undefined}
+            >
+              {section.items.map((item) => (
+                <li key={item.key}>
+                  <MerchantSidebarNavItem
+                    item={item}
+                    collapsed={collapsed}
+                    tooltipSide={tooltipSide}
+                    onNavigate={onNavigate}
+                  />
+                </li>
+              ))}
+            </ul>
+          </div>
+        );
+      })}
     </nav>
   );
 }

@@ -186,12 +186,18 @@ export function OrderFormSheet({
   const createMutation = useCreateOrder();
   const updateMutation = useUpdateOrder(resolvedId ?? "");
 
-  const locationsQuery = useSenderLocations({
-    page: 0,
-    size: 100,
-    status: SenderLocationStatus.ACTIVE,
-  });
-  const shippingBoxesQuery = useShippingBoxes({ page: 0, size: 100 });
+  const locationsQuery = useSenderLocations(
+    {
+      page: 0,
+      size: 100,
+      status: SenderLocationStatus.ACTIVE,
+    },
+    { enabled: open },
+  );
+  const shippingBoxesQuery = useShippingBoxes(
+    { page: 0, size: 100 },
+    { enabled: open },
+  );
   const productsQuery = useProducts(
     { page: 0, size: 20, search: debouncedProductSearch || undefined },
     { enabled: open && debouncedProductSearch.length > 0 },
@@ -238,8 +244,13 @@ export function OrderFormSheet({
     remove: removePackage,
   } = useFieldArray({ control, name: "packages" });
 
+  // Order id the form was last filled from. Background refetches (window
+  // focus, invalidation after booking) must not overwrite unsaved edits.
+  const hydratedOrderIdRef = useRef<string | null>(null);
+
   useEffect(() => {
     if (!open) {
+      hydratedOrderIdRef.current = null;
       reset(EMPTY_ORDER_FORM_VALUES);
       setStep(1);
       setSubmitError(null);
@@ -257,7 +268,8 @@ export function OrderFormSheet({
     }
 
     const source = orderQuery.data;
-    if (!source) return;
+    if (!source || hydratedOrderIdRef.current === source.id) return;
+    hydratedOrderIdRef.current = source.id;
     reset(toOrderFormValues(source));
     setStep(initialFormStep ?? 1);
   }, [open, mode, orderQuery.data, reset, initialFormStep]);

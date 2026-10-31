@@ -26,7 +26,7 @@ export const adminCompaniesQueryKeys = {
 export function useAdminCompanies(params: AdminCompaniesListParams) {
   return useQuery({
     queryKey: adminCompaniesQueryKeys.list(params),
-    queryFn: () => getAdminCompanies(params),
+    queryFn: ({ signal }) => getAdminCompanies(params, signal),
     placeholderData: keepPreviousData,
   });
 }

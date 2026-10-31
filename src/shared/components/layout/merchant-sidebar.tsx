@@ -21,9 +21,9 @@ function useMerchantNavItems() {
   return useMemo(
     () =>
       MERCHANT_NAV_ITEMS.filter((item) => {
-        if (!item.permissionCode) return true;
+        if (!item.permissions) return true;
         if (isLoading) return false;
-        return hasPermission(item.permissionCode);
+        return item.permissions.every(hasPermission);
       }),
     [hasPermission, isLoading],
   );

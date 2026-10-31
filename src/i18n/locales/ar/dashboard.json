@@ -73,6 +73,13 @@
     "collapseSidebar": "طي القائمة الجانبية",
     "openNavigation": "فتح القائمة",
     "closeNavigation": "إغلاق القائمة",
+    "navGroups": {
+      "operations": "العمليات",
+      "catalog": "الكتالوج",
+      "shipping": "إعدادات الشحن",
+      "finance": "المالية",
+      "account": "الفريق والحساب"
+    },
     "currentPlan": "خطتك الحالية",
     "currentPlanValue": "الخطة: {{plan}}",
     "userMenuLabel": "قائمة {{name}}",

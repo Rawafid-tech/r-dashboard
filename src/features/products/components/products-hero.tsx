@@ -6,6 +6,7 @@ import { PageStat } from "@/shared/components/layout/page-stat";
 import { useLocaleStore } from "@/stores/locale.store";
 import { cn } from "@/shared/lib/utils";
 import type { ProductsTab } from "@/features/products/types";
+import { handleTablistKeyDown } from "@/shared/lib/tablist-keyboard";
 
 interface ProductsHeroProps {
   totalElements?: number;
@@ -94,6 +95,7 @@ export function ProductsHero({
         <div
           className="flex flex-wrap gap-2"
           role="tablist"
+          onKeyDown={handleTablistKeyDown}
           aria-label={t("tabs.label")}
         >
           {tabs.map((tab) => {

@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { cn } from "@/shared/lib/utils";
+import { handleTablistKeyDown } from "@/shared/lib/tablist-keyboard";
 
 export const SETTINGS_SECTIONS = [
   "profile",
@@ -158,6 +159,7 @@ export function SettingsNav({ showCompany, className }: SettingsNavProps) {
       <div className="sticky top-14 z-20 -mx-1 bg-background pb-1 lg:hidden">
         <div
           role="tablist"
+          onKeyDown={handleTablistKeyDown}
           aria-label={t("nav.label")}
           className="flex gap-2 overflow-x-auto [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
         >

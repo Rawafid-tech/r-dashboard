@@ -6,8 +6,9 @@ import {
   getShipmentLabel,
 } from "@/features/shipments/api/shipments.api";
 import {
-  openPdfBlob,
+  reservePdfWindow,
   shipmentLabelFilename,
+  showPdfBlob,
 } from "@/features/shipments/lib/open-shipment-label";
 import { isApiError, parseApiError } from "@/shared/api/error-handler";
 
@@ -26,13 +27,19 @@ export function useShipmentLabel() {
       const blob = await getShipmentLabel(id);
       return { blob, trackingNumber };
     },
-    onSuccess: ({ blob, trackingNumber }) => {
-      const opened = openPdfBlob(blob, shipmentLabelFilename(trackingNumber));
+    onMutate: () => ({ reserved: reservePdfWindow() }),
+    onSuccess: ({ blob, trackingNumber }, _variables, context) => {
+      const opened = showPdfBlob(
+        blob,
+        shipmentLabelFilename(trackingNumber),
+        context.reserved,
+      );
       if (!opened) {
-        toast.error(t("toast.labelPopupBlocked"));
+        toast.info(t("toast.labelPopupBlocked"));
       }
     },
-    onError: (error) => {
+    onError: (error, _variables, context) => {
+      context?.reserved?.close();
       if (isApiError(error, 403)) {
         toast.error(tCommon("errors.forbidden"));
         return;
@@ -49,13 +56,15 @@ export function useBatchShipmentLabels() {
   return useMutation({
     mutationFn: (shipmentIds: string[]) =>
       getBatchShipmentLabels({ shipmentIds }),
-    onSuccess: (blob) => {
-      const opened = openPdfBlob(blob, "labels-batch.pdf");
+    onMutate: () => ({ reserved: reservePdfWindow() }),
+    onSuccess: (blob, _variables, context) => {
+      const opened = showPdfBlob(blob, "labels-batch.pdf", context.reserved);
       if (!opened) {
-        toast.error(t("toast.labelPopupBlocked"));
+        toast.info(t("toast.labelPopupBlocked"));
       }
     },
-    onError: (error) => {
+    onError: (error, _variables, context) => {
+      context?.reserved?.close();
       if (isApiError(error, 403)) {
         toast.error(tCommon("errors.forbidden"));
         return;

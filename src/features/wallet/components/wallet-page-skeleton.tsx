@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import {
   Card,
   CardContent,
@@ -16,8 +17,10 @@ export function WalletHeroSkeleton() {
 }
 
 export function WalletPageSkeleton() {
+  const { t } = useTranslation("common");
+
   return (
-    <div className="space-y-6" aria-busy="true" aria-label="Loading">
+    <div className="space-y-6" aria-busy="true" aria-label={t("common.loading")}>
       <WalletHeroSkeleton />
       <WalletBalanceCardSkeleton />
       <Card>

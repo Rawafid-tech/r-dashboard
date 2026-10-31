@@ -217,7 +217,7 @@ export function ImportPreviewGrid({
               onClick={() => setPage((current) => Math.max(0, current - 1))}
               aria-label={tCommon("common.previous")}
             >
-              <ChevronLeft aria-hidden="true" />
+              <ChevronLeft className="rtl:-scale-x-100" aria-hidden="true" />
               <span className="hidden sm:inline">{tCommon("common.previous")}</span>
             </Button>
             <span className="min-w-16 text-center text-sm tabular-nums" dir="ltr">
@@ -237,7 +237,7 @@ export function ImportPreviewGrid({
               aria-label={tCommon("common.next")}
             >
               <span className="hidden sm:inline">{tCommon("common.next")}</span>
-              <ChevronRight aria-hidden="true" />
+              <ChevronRight className="rtl:-scale-x-100" aria-hidden="true" />
             </Button>
           </div>
         </nav>

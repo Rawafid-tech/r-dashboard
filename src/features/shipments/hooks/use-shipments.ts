@@ -13,7 +13,7 @@ export function useShipments(
 ) {
   return useQuery({
     queryKey: shipmentKeys.list(params),
-    queryFn: () => getShipments(params),
+    queryFn: ({ signal }) => getShipments(params, signal),
     placeholderData: keepPreviousData,
     enabled: options.enabled ?? true,
   });

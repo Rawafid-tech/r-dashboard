@@ -2,6 +2,7 @@ import { useTranslation } from "react-i18next";
 import type { ShipmentCounts, ShipmentsListTab } from "@/features/shipments/types";
 import { tabCountFromCounts } from "@/features/shipments/lib/shipment-actions";
 import { cn } from "@/shared/lib/utils";
+import { handleTablistKeyDown } from "@/shared/lib/tablist-keyboard";
 
 export type ShipmentsHeroScope = "shipments" | "returns" | "exchanges";
 
@@ -55,6 +56,7 @@ export function ShipmentsHero({
       <div
         className="-mb-px flex w-full gap-1 overflow-x-auto border-b border-border"
         role="tablist"
+        onKeyDown={handleTablistKeyDown}
         aria-label={
           listScope ? t("list.tabs.label") : t("tabs.label")
         }

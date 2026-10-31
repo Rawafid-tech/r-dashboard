@@ -9,7 +9,7 @@ export function useCarrierRegions(
 ) {
   return useQuery({
     queryKey: adminCarrierKeys.regionList(code, params),
-    queryFn: () => getCarrierRegions(code, params),
+    queryFn: ({ signal }) => getCarrierRegions(code, params, signal),
     enabled: code.length > 0,
     placeholderData: keepPreviousData,
     staleTime: 30_000,

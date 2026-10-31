@@ -1,4 +1,4 @@
-import * as XLSX from "xlsx";
+import type { WorkBook } from "xlsx";
 import { resolveHandlingValue } from "@/features/products/lib/import-handling-labels";
 import { getMappedKeys, type ColumnMapping } from "@/features/products/lib/import-map-columns";
 import {
@@ -35,6 +35,9 @@ export interface ParsedSheet {
   truncated: boolean;
 }
 
+/** SheetJS is loaded on demand so it stays out of the products page chunk. */
+type XlsxModule = typeof import("xlsx");
+
 export interface ParsedWorkbook {
   products: ParsedSheet | null;
   variants: ParsedSheet | null;
@@ -49,7 +52,7 @@ function normalizeSheetName(value: string): string {
 }
 
 function findSheetName(
-  workbook: XLSX.WorkBook,
+  workbook: WorkBook,
   candidates: string[],
 ): string | undefined {
   for (const candidate of candidates) {
@@ -62,14 +65,15 @@ function findSheetName(
 }
 
 function extractSheetFromWorkbook(
-  workbook: XLSX.WorkBook,
+  xlsx: XlsxModule,
+  workbook: WorkBook,
   sheetName: string,
   maxRows: number,
 ): ParsedSheet | null {
   const sheet = workbook.Sheets[sheetName];
   if (!sheet) return null;
 
-  const matrix = XLSX.utils.sheet_to_json<unknown[]>(sheet, {
+  const matrix = xlsx.utils.sheet_to_json<unknown[]>(sheet, {
     header: 1,
     raw: false,
     defval: "",
@@ -122,18 +126,19 @@ function extractSheetFromWorkbook(
   };
 }
 
-function parseWorkbook(workbook: XLSX.WorkBook): ParsedWorkbook {
+function parseWorkbook(xlsx: XlsxModule, workbook: WorkBook): ParsedWorkbook {
   const variantsSheet = findSheetName(workbook, VARIANTS_SHEET_NAMES);
   const productsSheet =
     findSheetName(workbook, PRODUCTS_SHEET_NAMES) ??
     workbook.SheetNames.find((name) => name !== variantsSheet);
 
   const products = productsSheet
-    ? extractSheetFromWorkbook(workbook, productsSheet, IMPORT_MAX_ROWS)
+    ? extractSheetFromWorkbook(xlsx, workbook, productsSheet, IMPORT_MAX_ROWS)
     : null;
 
   const variants = variantsSheet
     ? extractSheetFromWorkbook(
+        xlsx,
         workbook,
         variantsSheet,
         IMPORT_MAX_VARIANT_ROWS,
@@ -178,8 +183,8 @@ function toCellValue(cell: unknown): string | number {
   return String(cell ?? "");
 }
 
-function extractSheet(workbook: XLSX.WorkBook): ParsedSheet {
-  const parsed = parseWorkbook(workbook);
+function extractSheet(xlsx: XlsxModule, workbook: WorkBook): ParsedSheet {
+  const parsed = parseWorkbook(xlsx, workbook);
   if (!parsed.products?.rows.length) {
     throw new SpreadsheetParseError("empty");
   }
@@ -194,18 +199,19 @@ export async function parseSpreadsheetWorkbook(
   }
 
   try {
+    const xlsx = await import("xlsx");
     const name = file.name.toLowerCase();
-    let workbook: XLSX.WorkBook;
+    let workbook: WorkBook;
 
     if (name.endsWith(".csv")) {
       const text = await file.text();
-      workbook = XLSX.read(text, {
+      workbook = xlsx.read(text, {
         type: "string",
         FS: detectCsvSeparator(text),
         raw: false,
       });
 
-      const products = extractSheet(workbook);
+      const products = extractSheet(xlsx, workbook);
       return {
         products,
         variants: null,
@@ -214,8 +220,8 @@ export async function parseSpreadsheetWorkbook(
     }
 
     const buffer = await file.arrayBuffer();
-    workbook = XLSX.read(buffer, { type: "array", raw: false });
-    return parseWorkbook(workbook);
+    workbook = xlsx.read(buffer, { type: "array", raw: false });
+    return parseWorkbook(xlsx, workbook);
   } catch (error) {
     if (error instanceof SpreadsheetParseError) {
       throw error;

@@ -35,7 +35,7 @@ export function PlanCreateHome() {
       <div className="space-y-4">
         <Button asChild variant="ghost" size="sm" className="-ms-2 w-fit">
           <Link to="/admin/plans">
-            <ArrowLeft aria-hidden="true" />
+            <ArrowLeft className="rtl:-scale-x-100" aria-hidden="true" />
             {t("plans.detail.backToCatalog")}
           </Link>
         </Button>

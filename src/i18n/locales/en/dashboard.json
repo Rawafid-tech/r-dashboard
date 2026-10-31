@@ -73,6 +73,13 @@
     "collapseSidebar": "Collapse sidebar",
     "openNavigation": "Open navigation",
     "closeNavigation": "Close navigation",
+    "navGroups": {
+      "operations": "Operations",
+      "catalog": "Catalog",
+      "shipping": "Shipping setup",
+      "finance": "Finance",
+      "account": "Team & account"
+    },
     "currentPlan": "Current plan",
     "currentPlanValue": "Plan: {{plan}}",
     "userMenuLabel": "Menu for {{name}}",

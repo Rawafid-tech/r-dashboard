@@ -23,7 +23,7 @@ export function useProducts(
 ) {
   return useQuery({
     queryKey: productKeys.list(params),
-    queryFn: () => getProducts(params),
+    queryFn: ({ signal }) => getProducts(params, signal),
     placeholderData: keepPreviousData,
     enabled: options.enabled ?? true,
   });

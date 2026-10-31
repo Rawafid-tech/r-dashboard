@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { ArrowUpRight, Building2, CreditCard, Truck, Users } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -14,6 +13,7 @@ import { PageHeader } from "@/shared/components/layout/page-header";
 import { useAdminMe } from "@/features/admin/auth/hooks/use-admin-me";
 import { AdminRole } from "@/shared/types/enums";
 import { cn } from "@/shared/lib/utils";
+import { useDocumentMeta } from "@/shared/hooks/use-document-meta";
 
 const MODULES = [
   { key: "plans", icon: CreditCard, href: "/admin/plans" },
@@ -26,28 +26,7 @@ export function AdminHomePage() {
   const { t } = useTranslation("admin");
   const { data: admin } = useAdminMe();
 
-  useEffect(() => {
-    const previousTitle = document.title;
-    document.title = t("home.metaTitle");
-
-    let meta = document.querySelector<HTMLMetaElement>(
-      'meta[name="description"]',
-    );
-
-    if (!meta) {
-      meta = document.createElement("meta");
-      meta.name = "description";
-      document.head.appendChild(meta);
-    }
-
-    const previousDescription = meta.content;
-    meta.content = t("home.metaDescription");
-
-    return () => {
-      document.title = previousTitle;
-      meta!.content = previousDescription;
-    };
-  }, [t]);
+  useDocumentMeta(t("home.metaTitle"), t("home.metaDescription"));
 
   const isReadOnly = admin?.role === AdminRole.SUPPORT;
 

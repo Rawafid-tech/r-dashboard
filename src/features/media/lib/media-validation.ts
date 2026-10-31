@@ -7,7 +7,9 @@ import {
 
 export interface MediaValidationError {
   type: "size" | "format" | "empty";
+  /** English fallback; show `t(messageKey, { maxMb })` to users instead. */
   message: string;
+  messageKey: `media.errors.${"noFile" | "emptyFile" | "tooLarge" | "invalidFormat"}`;
 }
 
 /**
@@ -22,6 +24,7 @@ export function validateMediaFile(
     return {
       type: "empty",
       message: "No file selected",
+      messageKey: "media.errors.noFile",
     };
   }
 
@@ -30,6 +33,7 @@ export function validateMediaFile(
     return {
       type: "empty",
       message: "The uploaded file is empty",
+      messageKey: "media.errors.emptyFile",
     };
   }
 
@@ -38,6 +42,7 @@ export function validateMediaFile(
     return {
       type: "size",
       message: `The file exceeds the maximum allowed size of ${MAX_MEDIA_SIZE_MB} MB`,
+      messageKey: "media.errors.tooLarge",
     };
   }
 
@@ -47,6 +52,7 @@ export function validateMediaFile(
     return {
       type: "format",
       message: "Only PNG, JPEG and WebP images are allowed",
+      messageKey: "media.errors.invalidFormat",
     };
   }
 

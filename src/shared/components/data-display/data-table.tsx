@@ -292,7 +292,7 @@ function DefaultPagination({
             aria-label={labels?.previous ?? t("common.previous")}
             className="rounded-md"
           >
-            <ChevronLeft aria-hidden="true" />
+            <ChevronLeft className="rtl:-scale-x-100" aria-hidden="true" />
             <span className="hidden sm:inline">
               {labels?.previous ?? t("common.previous")}
             </span>
@@ -315,7 +315,7 @@ function DefaultPagination({
             <span className="hidden sm:inline">
               {labels?.next ?? t("common.next")}
             </span>
-            <ChevronRight aria-hidden="true" />
+            <ChevronRight className="rtl:-scale-x-100" aria-hidden="true" />
           </Button>
         </div>
       ) : null}
@@ -456,7 +456,7 @@ export function DataTable<T>({
         emptyState
       ) : (
         <>
-          {mobile !== false && mobile ? (
+          {mobile ? (
             <div className={cn("grid gap-3 md:hidden", mobile.className)}>
               {data.map((row) => (
                 <div key={getRowKey(row)}>{mobile.renderRow(row)}</div>
@@ -467,7 +467,9 @@ export function DataTable<T>({
           <div
             className={cn(
               "relative overflow-hidden rounded-lg border border-border bg-card",
-              mobile !== false ? "hidden md:block" : undefined,
+              // Without a card renderer, keep the (horizontally scrollable)
+              // table visible on small screens instead of rendering nothing.
+              mobile ? "hidden md:block" : undefined,
               tableClassName,
             )}
           >

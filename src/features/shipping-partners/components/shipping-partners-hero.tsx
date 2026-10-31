@@ -5,6 +5,7 @@ import { PageStat } from "@/shared/components/layout/page-stat";
 import type { ShippingPartnersTab } from "@/features/shipping-partners/lib/list-params";
 import { cn } from "@/shared/lib/utils";
 import { useLocaleStore } from "@/stores/locale.store";
+import { handleTablistKeyDown } from "@/shared/lib/tablist-keyboard";
 
 interface ShippingPartnersHeroProps {
   activeTab: ShippingPartnersTab;
@@ -39,6 +40,7 @@ export function ShippingPartnersHero({
         <div
           className="flex flex-wrap gap-2"
           role="tablist"
+          onKeyDown={handleTablistKeyDown}
           aria-label={t("tabs.label")}
         >
           {TABS.map((tab) => {

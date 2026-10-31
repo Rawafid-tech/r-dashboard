@@ -19,6 +19,7 @@ import { NotificationBell } from "@/features/notifications/components/notificati
 import { WalletHeaderPopover } from "@/features/wallet/components/wallet-header-popover";
 import { SidebarExpandButton } from "@/shared/components/layout/sidebar-toggle-button";
 import { MerchantAppBreadcrumbs } from "@/shared/components/layout/app-breadcrumbs";
+import { RawafidLogoMark } from "@/shared/components/layout/rawafid-logo-mark";
 import { useSidebar } from "@/shared/components/layout/sidebar-provider";
 import { cn } from "@/shared/lib/utils";
 
@@ -74,7 +75,8 @@ export function MerchantHeader({
         <SidebarExpandButton />
       ) : null}
 
-      <div className="min-w-0 flex-1 md:hidden">
+      <div className="flex min-w-0 flex-1 items-center gap-2 md:hidden">
+        <RawafidLogoMark className="size-7" />
         <p className="truncate text-sm font-semibold">{t("common:app.name")}</p>
       </div>
 

@@ -24,7 +24,7 @@ export function UserDetailHero({ user }: UserDetailHeroProps) {
         className="-ms-2 w-fit text-muted-foreground hover:text-foreground"
       >
         <Link to="/admin/users">
-          <ArrowLeft aria-hidden="true" />
+          <ArrowLeft className="rtl:-scale-x-100" aria-hidden="true" />
           {t("users.detail.backToDirectory")}
         </Link>
       </Button>

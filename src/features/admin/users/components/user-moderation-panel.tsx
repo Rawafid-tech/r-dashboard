@@ -123,7 +123,7 @@ export function UserModerationPanel({
           if (!open) closeSheet();
         }}
       >
-        <SheetContent side="bottom" className="max-h-[85vh] overflow-y-auto">
+        <SheetContent side="bottom" className="max-h-[85dvh] overflow-y-auto">
           <SheetHeader>
             <SheetTitle>
               {sheetMode === "suspend"

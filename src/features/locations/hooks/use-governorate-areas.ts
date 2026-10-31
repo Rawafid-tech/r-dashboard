@@ -38,7 +38,7 @@ export function useAreaSearch(
 
   return useQuery({
     queryKey: geoQueryKeys.areas(id, term),
-    queryFn: () => getGovernorateAreas(id, term),
+    queryFn: ({ signal }) => getGovernorateAreas(id, term, signal),
     enabled: (options.enabled ?? true) && id.length > 0 && term.length > 0,
     staleTime: GEO_STALE_TIME,
     gcTime: GEO_STALE_TIME * 2,

@@ -91,10 +91,11 @@ function carrierPath(code: string, suffix: string): string {
 export async function getCarrierRegions(
   code: string,
   params: CarrierRegionsListParams,
+  signal?: AbortSignal,
 ): Promise<PaginatedResponse<CarrierRegion>> {
   const { data } = await apiClient.get<PaginatedResponse<CarrierRegion>>(
     carrierPath(code, "/regions"),
-    { params },
+    { params, signal },
   );
   return data;
 }

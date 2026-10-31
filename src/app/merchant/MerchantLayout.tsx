@@ -1,7 +1,9 @@
-import { useEffect } from "react";
+import { Suspense, useEffect } from "react";
 import { Outlet, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { Sheet, SheetContent, SheetTitle, TooltipProvider } from "@/shared/components/ui";
+import { ErrorBoundary } from "@/shared/components/feedback/error-boundary";
+import { PageLoader } from "@/shared/components/feedback/page-loader";
 import { MerchantHeader } from "@/shared/components/layout/merchant-header";
 import {
   MerchantMobileSidebar,
@@ -47,7 +49,11 @@ function MerchantLayoutShell() {
         />
 
         <main id="merchant-main" className="flex-1">
-          <Outlet />
+          <ErrorBoundary resetKey={location.pathname}>
+            <Suspense fallback={<PageLoader />}>
+              <Outlet />
+            </Suspense>
+          </ErrorBoundary>
         </main>
       </div>
 

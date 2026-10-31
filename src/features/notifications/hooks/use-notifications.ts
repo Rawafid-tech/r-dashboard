@@ -6,6 +6,7 @@ import type { NotificationsListParams } from "@/features/notifications/types";
 
 interface UseNotificationsOptions {
   enabled?: boolean;
+  staleTime?: number;
 }
 
 export function useNotifications(
@@ -18,5 +19,7 @@ export function useNotifications(
     queryKey: notificationKeys.list(params, i18n.language),
     queryFn: ({ signal }) => getNotifications(params, signal),
     enabled: options.enabled ?? true,
+    // Only override when given; an explicit undefined would replace the default.
+    ...(options.staleTime !== undefined && { staleTime: options.staleTime }),
   });
 }

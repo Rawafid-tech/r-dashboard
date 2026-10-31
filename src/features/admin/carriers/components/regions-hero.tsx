@@ -40,7 +40,7 @@ export function RegionsHero({
         className="-ms-2 w-fit text-muted-foreground hover:text-foreground"
       >
         <Link to="/admin/carriers">
-          <ArrowLeft aria-hidden="true" />
+          <ArrowLeft className="rtl:-scale-x-100" aria-hidden="true" />
           {t("carriers.regions.back")}
         </Link>
       </Button>

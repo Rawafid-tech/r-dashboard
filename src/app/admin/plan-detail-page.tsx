@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
 import { PlanDetailHome } from "@/features/admin/plans/components/plan-detail-home";
@@ -7,6 +6,7 @@ import {
   getPlanDisplayName,
 } from "@/features/admin/plans/lib/plan-label";
 import { useLocaleStore } from "@/stores/locale.store";
+import { useDocumentMeta } from "@/shared/hooks/use-document-meta";
 
 export function AdminPlanDetailPage() {
   const { t } = useTranslation("admin");
@@ -14,36 +14,18 @@ export function AdminPlanDetailPage() {
   const locale = useLocaleStore((state) => state.locale);
   const planQuery = useAdminPlan(planId);
 
-  useEffect(() => {
-    const previousTitle = document.title;
-    const planName = planQuery.data
-      ? getPlanDisplayName(planQuery.data.name, locale)
-      : null;
+  const planName = planQuery.data
+    ? getPlanDisplayName(planQuery.data.name, locale)
+    : null;
 
-    document.title = planName
+  useDocumentMeta(
+    planName
       ? t("plans.detail.metaTitle", { name: planName })
-      : t("plans.detail.metaTitleFallback");
-
-    let meta = document.querySelector<HTMLMetaElement>(
-      'meta[name="description"]',
-    );
-
-    if (!meta) {
-      meta = document.createElement("meta");
-      meta.name = "description";
-      document.head.appendChild(meta);
-    }
-
-    const previousDescription = meta.content;
-    meta.content = planName
+      : t("plans.detail.metaTitleFallback"),
+    planName
       ? t("plans.detail.metaDescription", { name: planName })
-      : t("plans.detail.metaDescriptionFallback");
-
-    return () => {
-      document.title = previousTitle;
-      meta!.content = previousDescription;
-    };
-  }, [t, planQuery.data, locale]);
+      : t("plans.detail.metaDescriptionFallback"),
+  );
 
   return <PlanDetailHome />;
 }

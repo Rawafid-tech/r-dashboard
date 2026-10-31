@@ -4,6 +4,7 @@ import { Button } from "@/shared/components/ui";
 import { PageStat } from "@/shared/components/layout/page-stat";
 import { useLocaleStore } from "@/stores/locale.store";
 import { cn } from "@/shared/lib/utils";
+import { handleTablistKeyDown } from "@/shared/lib/tablist-keyboard";
 
 interface NotificationsHeroProps {
   unreadOnly: boolean;
@@ -74,6 +75,7 @@ export function NotificationsHero({
       <div
         className="-mb-px flex w-full gap-1 overflow-x-auto border-b border-border"
         role="tablist"
+        onKeyDown={handleTablistKeyDown}
         aria-label={t("filters.label")}
       >
         {filters.map((filter) => {

@@ -34,10 +34,11 @@ export async function createTopUp(body: TopUpRequest): Promise<TopUpResponse> {
  */
 export async function getPayments(
   params: PaymentsListParams = {},
+  signal?: AbortSignal,
 ): Promise<PaginatedResponse<Payment>> {
   const { data } = await apiClient.get<PaginatedResponse<Payment>>(
     "/api/payments",
-    { params },
+    { params, signal },
   );
   return data;
 }

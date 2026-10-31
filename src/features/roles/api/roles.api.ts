@@ -9,10 +9,11 @@ import type {
 
 export async function getRoles(
   params: RolesListParams = {},
+  signal?: AbortSignal,
 ): Promise<PaginatedResponse<RoleListItem>> {
   const { data } = await apiClient.get<PaginatedResponse<RoleListItem>>(
     "/api/roles",
-    { params },
+    { params, signal },
   );
   return data;
 }

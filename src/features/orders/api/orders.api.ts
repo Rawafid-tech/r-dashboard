@@ -11,10 +11,11 @@ import type { PaginatedResponse } from "@/shared/types/api";
 
 export async function getOrders(
   params: OrdersListParams = {},
+  signal?: AbortSignal,
 ): Promise<PaginatedResponse<OrderListRow>> {
   const { data } = await apiClient.get<PaginatedResponse<OrderListRow>>(
     "/api/orders",
-    { params },
+    { params, signal },
   );
   return data;
 }

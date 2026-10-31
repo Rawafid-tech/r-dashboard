@@ -48,7 +48,7 @@ export function ShipmentDetailHero({
         className="-ms-2 w-fit text-muted-foreground hover:text-foreground"
       >
         <Link to="/shipments">
-          <ArrowLeft aria-hidden="true" />
+          <ArrowLeft className="rtl:-scale-x-100" aria-hidden="true" />
           {t("detail.backToList")}
         </Link>
       </Button>

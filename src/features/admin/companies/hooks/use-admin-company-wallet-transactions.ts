@@ -14,7 +14,8 @@ export function useAdminCompanyWalletTransactions(
 ) {
   return useQuery({
     queryKey: adminCompaniesQueryKeys.walletTransactions(companyId ?? "", params),
-    queryFn: () => getAdminCompanyWalletTransactions(companyId!, params),
+    queryFn: ({ signal }) =>
+      getAdminCompanyWalletTransactions(companyId!, params, signal),
     placeholderData: keepPreviousData,
     enabled: Boolean(companyId) && (options.enabled ?? true),
   });

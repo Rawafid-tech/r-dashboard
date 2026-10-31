@@ -1,4 +1,3 @@
-import ExcelJS from "exceljs";
 import { getProductCategories } from "@/features/products/api/product-categories.api";
 import { getProducts } from "@/features/products/api/products.api";
 import { enumDisplayValue } from "@/features/products/lib/import-handling-labels";
@@ -111,7 +110,9 @@ export async function downloadProductCatalog(
   const columnByKey = new Map(columns.map((column) => [column.key, column]));
   const orderedKeys = IMPORT_FIELD_KEYS.filter((key) => columnByKey.has(key));
 
-  const workbook = new ExcelJS.Workbook();
+  // Loaded on demand so ExcelJS stays out of the products page chunk.
+  const { Workbook } = (await import("exceljs")).default;
+  const workbook = new Workbook();
   workbook.creator = "Rawafid";
 
   const sheet = workbook.addWorksheet("Products", {

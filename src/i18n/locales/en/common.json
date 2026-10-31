@@ -18,7 +18,7 @@
     "notifications": "Notifications",
     "integrations": "Integrations",
     "locations": "Sender locations",
-    "shippingBoxes": "Shipping Boxes",
+    "shippingBoxes": "Shipping boxes",
     "shippingPartners": "Shipping partners",
     "shippingRates": "Shipping Rates"
   },
@@ -66,5 +66,21 @@
     "notFound": "The requested page was not found.",
     "serverError": "A server error occurred. Please try again later.",
     "rateLimited": "Too many attempts. Please try again later."
+  },
+  "errorBoundary": {
+    "title": "Something went wrong",
+    "description": "This page couldn't be displayed. Reload the page, and contact support if the problem continues.",
+    "reload": "Reload page",
+    "tryAgain": "Try again"
+  },
+  "media": {
+    "uploadImage": "Upload image",
+    "selectImageFile": "Select an image file",
+    "errors": {
+      "noFile": "No file selected",
+      "emptyFile": "The selected file is empty",
+      "tooLarge": "The file is larger than the {{maxMb}} MB limit",
+      "invalidFormat": "Only PNG, JPEG and WebP images are allowed"
+    }
   }
 }

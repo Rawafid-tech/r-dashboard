@@ -19,10 +19,11 @@ export async function getGovernorates(
 export async function getGovernorateAreas(
   governorateId: string,
   search?: string,
+  signal?: AbortSignal,
 ): Promise<GeoArea[]> {
   const { data } = await apiClient.get<GeoArea[]>(
     `/api/public/geo/governorates/${governorateId}/areas`,
-    { params: search ? { search } : undefined },
+    { params: search ? { search } : undefined, signal },
   );
   return data;
 }

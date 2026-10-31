@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import type { OrderCounts, OrdersListTab } from "@/features/orders/types";
 import { Button } from "@/shared/components/ui";
 import { cn } from "@/shared/lib/utils";
+import { handleTablistKeyDown } from "@/shared/lib/tablist-keyboard";
 
 interface OrdersHeroProps {
   activeTab: OrdersListTab;
@@ -81,6 +82,7 @@ export function OrdersHero({
       <div
         className="-mb-px flex w-full gap-1 overflow-x-auto border-b border-border"
         role="tablist"
+        onKeyDown={handleTablistKeyDown}
         aria-label={t("tabs.label")}
       >
         {tabs.map((tab) => {

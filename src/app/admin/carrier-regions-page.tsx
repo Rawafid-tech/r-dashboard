@@ -1,9 +1,9 @@
-import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
 import { CarrierRegionsHome } from "@/features/admin/carriers/components/regions-home";
 import { useAdminCarriers } from "@/features/admin/carriers/hooks/use-admin-carriers";
 import { carrierDisplayName } from "@/features/shipping-partners/lib/carrier-label";
+import { useDocumentMeta } from "@/shared/hooks/use-document-meta";
 
 export function AdminCarrierRegionsPage() {
   const { code = "" } = useParams();
@@ -21,28 +21,7 @@ export function AdminCarrierRegionsPage() {
       )
     : code || t("carriers.regions.hero.titleFallback");
 
-  useEffect(() => {
-    const previousTitle = document.title;
-    document.title = t("carriers.regions.metaTitle", { name });
-
-    let meta = document.querySelector<HTMLMetaElement>(
-      'meta[name="description"]',
-    );
-
-    if (!meta) {
-      meta = document.createElement("meta");
-      meta.name = "description";
-      document.head.appendChild(meta);
-    }
-
-    const previousDescription = meta.content;
-    meta.content = t("carriers.regions.metaDescription", { name });
-
-    return () => {
-      document.title = previousTitle;
-      meta!.content = previousDescription;
-    };
-  }, [name, t]);
+  useDocumentMeta(t("carriers.regions.metaTitle", { name }), t("carriers.regions.metaDescription", { name }));
 
   return <CarrierRegionsHome key={code} />;
 }
