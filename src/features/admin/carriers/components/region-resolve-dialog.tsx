@@ -31,9 +31,17 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/shared/components/ui";
+import { joinDistinctNames } from "@/shared/lib/name-parts";
 import { useLocaleStore } from "@/stores/locale.store";
 
-const METHODS: RegionResolveMethod[] = ["DISTRICT", "ZONE", "HEAD", "ALIAS", "NONE"];
+const METHODS: RegionResolveMethod[] = [
+  "DISTRICT",
+  "ZONE",
+  "HEAD",
+  "ALIAS",
+  "GOVERNORATE",
+  "NONE",
+];
 
 function isResolveMethod(value: string): value is RegionResolveMethod {
   return METHODS.includes(value as RegionResolveMethod);
@@ -284,7 +292,7 @@ function ResolveResult({ result }: { result: RegionResolveResult }) {
     result.fallbackCity?.nameAr,
     locale,
   );
-  const path = [cityName, zoneName, districtName].filter(Boolean).join(" · ");
+  const path = joinDistinctNames([cityName, zoneName, districtName], " · ");
 
   return (
     <div className="rounded-lg border border-border/70 bg-muted/20 px-4 py-3">

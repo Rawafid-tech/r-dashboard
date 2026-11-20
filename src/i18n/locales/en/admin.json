@@ -176,6 +176,7 @@
         "syncToken": "Sync API token",
         "syncAccountHint": "An API user of this carrier, not a dashboard login. It is used to download delivery areas.",
         "syncAccountHintWingezz": "A Wingezz account login. Wingezz needs it even to list its delivery areas.",
+        "syncAccountHintQpExpress": "A QP Express account login. QP needs it to download its city list.",
         "syncAccountHintWavex": "Any Wavex seller API token. Wavex needs it even to list its delivery areas."
       },
       "toast": {
@@ -294,6 +295,7 @@
           "ZONE": "Zone name",
           "HEAD": "Shared name",
           "ALIAS": "Other name",
+          "GOVERNORATE": "Whole governorate",
           "NONE": "No confident match"
         },
         "methodHelp": {
@@ -301,6 +303,7 @@
           "ZONE": "The text is a zone name. A district in that zone stands in for it.",
           "HEAD": "The text starts district names that all sit in one zone.",
           "ALIAS": "The text is another name the carrier lists for one district in this governorate.",
+          "GOVERNORATE": "The carrier lists governorates only and the text is not one of its names, so the governorate's own entry is used.",
           "NONE": "Candidates were not confident enough to pick one hub. We never guess between two zones."
         }
       }

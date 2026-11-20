@@ -3,6 +3,7 @@ export type AdminCarrierPlatform =
   | "BOSTA"
   | "MEGA"
   | "MYLERZ"
+  | "QP_EXPRESS"
   /** Seeded like Bosta (code `turbo`); never added from the catalog form. */
   | "TURBO"
   | "WAVEX"
@@ -116,7 +117,13 @@ export interface CarrierRegionsSyncResult {
   unmappedCities: CarrierUnmappedCity[];
 }
 
-export type RegionResolveMethod = "DISTRICT" | "ZONE" | "HEAD" | "ALIAS" | "NONE";
+export type RegionResolveMethod =
+  | "DISTRICT"
+  | "ZONE"
+  | "HEAD"
+  | "ALIAS"
+  | "GOVERNORATE"
+  | "NONE";
 
 export interface RegionResolveDistrict {
   districtId?: string;

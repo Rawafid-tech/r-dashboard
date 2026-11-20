@@ -22,6 +22,7 @@ const FALLBACK_CATALOG_PLATFORMS: ReadonlySet<string> = new Set([
   "ACCURATE",
   "MEGA",
   "MYLERZ",
+  "QP_EXPRESS",
   "WAVEX",
   "WINGEZZ",
 ]);

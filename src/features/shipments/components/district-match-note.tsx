@@ -12,11 +12,20 @@ interface DistrictMatchNoteProps {
 }
 
 /**
- * Says which typed area became the shown district when the carrier knows it
- * by another name (`ALIAS`), e.g. "روكسي" → مصر الجديدة.
+ * Explains a match the merchant may not expect:
+ * - `ALIAS`: which typed area became the shown district ("روكسي" → مصر الجديدة).
+ * - `GOVERNORATE`: the carrier covers whole governorates only (QP Express).
  */
 export function DistrictMatchNote({ method, area }: DistrictMatchNoteProps) {
   const { t } = useTranslation("shipments");
+  if (method === "GOVERNORATE") {
+    return (
+      <p className="mt-0.5 text-xs text-muted-foreground">
+        {t("booking.governorateMatched")}
+      </p>
+    );
+  }
+
   const typed = area?.trim();
   if (method !== "ALIAS" || !typed) return null;
 

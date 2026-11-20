@@ -229,6 +229,7 @@
     "districtPlaceholder": "Type to search districts…",
     "matchedDistrict": "Matched area",
     "aliasMatched": "Matched from “{{area}}”, another name the shipping partner uses for this area.",
+    "governorateMatched": "This shipping partner covers whole governorates only, so the order is delivered at governorate level.",
     "suggestions": "Suggested districts",
     "problemsTitle": "Fix before booking",
     "editOrder": "Edit order",

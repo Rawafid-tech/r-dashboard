@@ -1,11 +1,17 @@
 import type { ShipmentDistrict } from "@/features/shipments/types";
+import { joinDistinctNames } from "@/shared/lib/name-parts";
 
+/** "District — Zone", or one name when they match (a governorate-wide entry). */
 export function getShipmentDistrictLabel(
-  district: ShipmentDistrict,
+  district: Pick<
+    ShipmentDistrict,
+    "nameEn" | "nameAr" | "zoneNameEn" | "zoneNameAr"
+  >,
   locale: "ar" | "en",
 ): string {
-  if (locale === "ar") {
-    return `${district.nameAr} — ${district.zoneNameAr}`;
-  }
-  return `${district.nameEn} — ${district.zoneNameEn}`;
+  const parts =
+    locale === "ar"
+      ? [district.nameAr, district.zoneNameAr]
+      : [district.nameEn, district.zoneNameEn];
+  return joinDistinctNames(parts, " — ");
 }

@@ -31,6 +31,7 @@ const SECRET_HINT_KEYS = new Set(["syncUser", "syncPassword", "syncToken"]);
 
 /** Platforms whose sync account is a merchant login rather than an API user. */
 const SYNC_ACCOUNT_HINT_KEYS: Partial<Record<AdminCarrierPlatform, string>> = {
+  QP_EXPRESS: "carriers.form.fields.syncAccountHintQpExpress",
   WAVEX: "carriers.form.fields.syncAccountHintWavex",
   WINGEZZ: "carriers.form.fields.syncAccountHintWingezz",
 };

@@ -34,7 +34,9 @@ export type ShipmentAddressMethod =
   | "NONE"
   | "CHOSEN"
   /** The area text is another name the carrier lists for that district. */
-  | "ALIAS";
+  | "ALIAS"
+  /** The carrier lists only governorates (QP Express): its entry for it. */
+  | "GOVERNORATE";
 
 export interface ShipmentConnectionRef {
   id: string;
