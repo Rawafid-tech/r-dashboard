@@ -1,10 +1,11 @@
 import { useEffect, useId, useMemo, useState } from "react";
-import { Loader2 } from "lucide-react";
+import { AlertTriangle, Loader2 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
 import { getShipment } from "@/features/shipments/api/shipments.api";
 import { ShipmentDistrictCombobox } from "@/features/shipments/components/shipment-district-combobox";
+import { DistrictMatchNote } from "@/features/shipments/components/district-match-note";
 import {
   ShipmentPickupInfo,
   ShipmentProblemAction,
@@ -14,6 +15,7 @@ import { shipmentKeys } from "@/features/shipments/hooks/query-keys";
 import { useShipmentPreview } from "@/features/shipments/hooks/use-shipment-preview";
 import { getShipmentDistrictLabel } from "@/features/shipments/lib/district-label";
 import { parseShipmentBookingError } from "@/features/shipments/lib/shipment-booking-errors";
+import { isHeldForSupport } from "@/features/shipments/lib/shipment-held";
 import type { ShipmentDistrict } from "@/features/shipments/types";
 import { CarrierMark } from "@/features/shipping-partners/components/carrier-mark";
 import { useSenderLocations } from "@/features/locations/hooks/use-sender-locations";
@@ -38,7 +40,13 @@ import { useLocaleStore } from "@/stores/locale.store";
 const BOOKING_POLL_MS = 5_000;
 const BOOKING_MAX_POLLS = 24;
 
-type FlowStep = "connection" | "confirm" | "polling";
+type FlowStep = "connection" | "confirm" | "polling" | "held";
+
+/** A booking held for support: it exists, so it must not be booked again. */
+interface HeldNotice {
+  message: string;
+  shipmentId: string | null;
+}
 
 interface CreateShipmentFlowProps {
   order: OrderListRow | null;
@@ -69,6 +77,7 @@ export function CreateShipmentFlow({
   );
   const [pollingStatus, setPollingStatus] = useState<string>("BOOKING");
   const [bookError, setBookError] = useState<string | null>(null);
+  const [heldNotice, setHeldNotice] = useState<HeldNotice | null>(null);
 
   const connectionsQuery = useCarrierConnections(
     { active: true, size: 100 },
@@ -103,6 +112,7 @@ export function CreateShipmentFlow({
       setPollingShipmentId(null);
       setPollingStatus("BOOKING");
       setBookError(null);
+      setHeldNotice(null);
     }
   }, [open]);
 
@@ -130,6 +140,19 @@ export function CreateShipmentFlow({
           queryFn: ({ signal }) => getShipment(pollingShipmentId, signal),
         });
         setPollingStatus(shipment.status);
+
+        if (isHeldForSupport(shipment)) {
+          finishPolling();
+          void queryClient.invalidateQueries({ queryKey: shipmentKeys.all });
+          void queryClient.invalidateQueries({ queryKey: orderKeys.all });
+          setHeldNotice({
+            message: shipment.failure?.message ?? "",
+            shipmentId: shipment.id,
+          });
+          setStep("held");
+          setPollingShipmentId(null);
+          return;
+        }
 
         if (shipment.status !== "BOOKING") {
           finishPolling();
@@ -195,6 +218,14 @@ export function CreateShipmentFlow({
       onOpenChange(false);
     } catch (error) {
       const parsed = parseShipmentBookingError(error);
+      if (parsed.action === "heldForSupport") {
+        setHeldNotice({
+          message: parsed.detail,
+          shipmentId: parsed.shipmentId ?? null,
+        });
+        setStep("held");
+        return;
+      }
       setBookError(parsed.detail || parseApiError(error).detail);
     }
   };
@@ -382,6 +413,10 @@ export function CreateShipmentFlow({
                           locale,
                         )}
                       </p>
+                      <DistrictMatchNote
+                        method={preview.address.method}
+                        area={order.area}
+                      />
                     </div>
                   ) : null}
 
@@ -520,6 +555,50 @@ export function CreateShipmentFlow({
                 {t("booking.confirmingLive", { status: pollingStatus })}
               </p>
             </div>
+          </>
+        ) : null}
+
+        {step === "held" && heldNotice ? (
+          <>
+            <DialogHeader className="border-b border-border/60 pe-10">
+              <DialogTitle>{t("booking.heldTitle")}</DialogTitle>
+              <DialogDescription>{t("booking.heldDescription")}</DialogDescription>
+            </DialogHeader>
+
+            <div className="px-6 py-4">
+              <div
+                role="status"
+                className="flex gap-3 rounded-lg border border-warning/40 bg-warning/10 p-3 text-sm"
+              >
+                <AlertTriangle
+                  className="mt-0.5 size-4 shrink-0 text-amber-700 dark:text-amber-400"
+                  aria-hidden="true"
+                />
+                <p dir="auto" className="min-w-0 text-foreground">
+                  {heldNotice.message || t("booking.heldDescription")}
+                </p>
+              </div>
+            </div>
+
+            <DialogFooter className="flex-wrap gap-2">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => handleClose(false)}
+              >
+                {t("booking.close")}
+              </Button>
+              {heldNotice.shipmentId ? (
+                <Button type="button" asChild>
+                  <Link
+                    to={`/shipments/${encodeURIComponent(heldNotice.shipmentId)}`}
+                    onClick={() => onOpenChange(false)}
+                  >
+                    {t("booking.viewShipment")}
+                  </Link>
+                </Button>
+              ) : null}
+            </DialogFooter>
           </>
         ) : null}
       </DialogContent>

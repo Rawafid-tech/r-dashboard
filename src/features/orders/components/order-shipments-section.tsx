@@ -6,6 +6,7 @@ import { ShipmentKindBadge } from "@/features/shipments/components/shipment-kind
 import { ShipmentStatusBadge } from "@/features/shipments/components/shipment-status-badge";
 import { canPrintShipmentLabel } from "@/features/shipments/lib/shipment-actions";
 import { getShipmentKind } from "@/features/shipments/lib/shipment-kind";
+import { isHeldForSupport } from "@/features/shipments/lib/shipment-held";
 import { useShipmentLabel } from "@/features/shipments/hooks/use-shipment-label";
 import { useShipments } from "@/features/shipments/hooks/use-shipments";
 import {
@@ -88,6 +89,7 @@ export function OrderShipmentsSection({ orderId }: OrderShipmentsSectionProps) {
                     status={shipment.status}
                     kind={getShipmentKind(shipment)}
                     swappedAt={shipment.exchange?.swappedAt}
+                    held={isHeldForSupport(shipment)}
                   />
                   {shipment.issue ? (
                     <ShipmentIssueBadge issue={shipment.issue} />

@@ -32,7 +32,9 @@ export type ShipmentAddressMethod =
   | "ZONE"
   | "HEAD"
   | "NONE"
-  | "CHOSEN";
+  | "CHOSEN"
+  /** The area text is another name the carrier lists for that district. */
+  | "ALIAS";
 
 export interface ShipmentConnectionRef {
   id: string;
@@ -64,7 +66,8 @@ export interface ShipmentOrderRef {
 
 export interface ShipmentCarrierState {
   code: string;
-  label: string;
+  /** Null when Rawafid set the state itself (e.g. `NUMBER_REUSED`). */
+  label: string | null;
 }
 
 export interface ShipmentFailure {
@@ -93,7 +96,7 @@ export const SHIPMENT_TIMELINE_STATE_VALUES = [
 export type ShipmentTimelineState =
   (typeof SHIPMENT_TIMELINE_STATE_VALUES)[number];
 
-export type ShipmentTimelineSource = "WEBHOOK" | "POLL";
+export type ShipmentTimelineSource = "WEBHOOK" | "POLL" | "BOOKING";
 
 export interface ShipmentTimelineEntry {
   state: ShipmentTimelineState;
@@ -385,5 +388,6 @@ export interface BulkBookingLineDraft {
   removed?: boolean;
   /** Set after bulk submit for rows still in the modal. */
   bulkError?: string | null;
-  bulkOutcome?: BulkBookOutcome | null;
+  /** `HELD`: the line was booked but is held for support. */
+  bulkOutcome?: BulkBookOutcome | "HELD" | null;
 }

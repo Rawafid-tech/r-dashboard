@@ -11,6 +11,8 @@ export type ReturnErrorAction =
   | "editOrder"
   | "retry"
   | "retryWithoutRefund"
+  /** Booked but held for support: the shipment exists, open it. */
+  | "heldForSupport"
   | "none";
 
 export interface ReturnErrorPresentation {
@@ -85,6 +87,7 @@ export function parseReturnBookingError(error: unknown): ReturnErrorPresentation
     shippingPartners: "shippingPartners",
     editOrder: "editOrder",
     retry: "retry",
+    heldForSupport: "heldForSupport",
     none: "none",
   };
 

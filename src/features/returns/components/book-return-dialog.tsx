@@ -14,6 +14,7 @@ import { useOrder } from "@/features/orders/hooks/use-order";
 import { ShipmentDistrictCombobox } from "@/features/shipments/components/shipment-district-combobox";
 import { ShipmentPickupInfo } from "@/features/shipments/components/shipment-pickup-info";
 import { getShipmentDistrictLabel } from "@/features/shipments/lib/district-label";
+import { DistrictMatchNote } from "@/features/shipments/components/district-match-note";
 import { shipmentCarrierLabel } from "@/features/shipments/lib/shipment-connection-label";
 import type { ShipmentDistrict } from "@/features/shipments/types";
 import { useSenderLocations } from "@/features/locations/hooks/use-sender-locations";
@@ -254,6 +255,16 @@ export function BookReturnDialog({
       }
     } catch (error) {
       const parsedError = parseReturnBookingError(error);
+      if (parsedError.action === "heldForSupport" && parsedError.shipmentId) {
+        // Booked but held for support: show the shipment, like a booking.
+        onOpenChange(false);
+        if (onBooked) {
+          onBooked(parsedError.shipmentId);
+        } else {
+          navigate(`/shipments/${encodeURIComponent(parsedError.shipmentId)}`);
+        }
+        return;
+      }
       setSubmitError(parsedError.detail);
       if (parsedError.action === "retryWithoutRefund") {
         setSkipRefund(true);
@@ -409,6 +420,10 @@ export function BookReturnDialog({
                   <p className="text-sm text-muted-foreground">
                     {getShipmentDistrictLabel(address.district, locale)}
                   </p>
+                  <DistrictMatchNote
+                    method={address.method}
+                    area={preview?.order.area}
+                  />
                 </div>
               ) : null}
 

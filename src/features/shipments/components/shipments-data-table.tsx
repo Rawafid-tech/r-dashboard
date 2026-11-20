@@ -11,6 +11,7 @@ import type { ShipmentRowAction } from "@/features/shipments/components/shipment
 import { ShipmentKindBadge } from "@/features/shipments/components/shipment-kind-badge";
 import { ShipmentStatusBadge } from "@/features/shipments/components/shipment-status-badge";
 import { getShipmentKind } from "@/features/shipments/lib/shipment-kind";
+import { carrierStateText, isHeldForSupport } from "@/features/shipments/lib/shipment-held";
 import { ShipmentsToolbar } from "@/features/shipments/components/shipments-toolbar";
 import type {
   ShipmentsKindFilter,
@@ -241,26 +242,34 @@ export function ShipmentsDataTable({
       {
         id: "status",
         header: t("table.status"),
-        cell: (shipment) => (
-          <div className="space-y-1">
-            <div className="flex flex-wrap items-center gap-1">
-              <ShipmentKindBadge shipment={shipment} />
-              <ShipmentStatusBadge
-                status={shipment.status}
-                kind={getShipmentKind(shipment)}
-                swappedAt={shipment.exchange?.swappedAt}
-              />
+        cell: (shipment) => {
+          const carrierText = carrierStateText(shipment.carrierState, t);
+          return (
+            <div className="space-y-1">
+              <div className="flex flex-wrap items-center gap-1">
+                <ShipmentKindBadge shipment={shipment} />
+                <ShipmentStatusBadge
+                  status={shipment.status}
+                  kind={getShipmentKind(shipment)}
+                  swappedAt={shipment.exchange?.swappedAt}
+                  held={isHeldForSupport(shipment)}
+                />
+              </div>
+              {shipment.issue ? (
+                <ShipmentIssueBadge issue={shipment.issue} />
+              ) : null}
+              {carrierText ? (
+                <p
+                  dir="auto"
+                  title={carrierText}
+                  className="max-w-48 truncate text-xs text-muted-foreground"
+                >
+                  {carrierText}
+                </p>
+              ) : null}
             </div>
-            {shipment.issue ? (
-              <ShipmentIssueBadge issue={shipment.issue} />
-            ) : null}
-            {shipment.carrierState?.label ? (
-              <p className="max-w-48 truncate text-xs text-muted-foreground">
-                {shipment.carrierState.label}
-              </p>
-            ) : null}
-          </div>
-        ),
+          );
+        },
       },
       {
         id: "bookedAt",

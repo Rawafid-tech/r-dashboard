@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useId, useMemo, useState } from "react";
-import { Loader2 } from "lucide-react";
+import { AlertTriangle, Loader2 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import { toast } from "sonner";
@@ -8,7 +8,11 @@ import { OrderPackagesEditDialog } from "@/features/shipments/components/order-p
 import { useBatchShipmentLabels } from "@/features/shipments/hooks/use-shipment-label";
 import { useBulkBookShipments } from "@/features/shipments/hooks/use-bulk-book-shipments";
 import { useBulkShipmentPreview } from "@/features/shipments/hooks/use-bulk-shipment-preview";
-import { groupBookedIdsByConnection } from "@/features/shipments/lib/bulk-book-outcomes";
+import {
+  groupBookedIdsByConnection,
+  heldBulkLine,
+  type HeldBulkLine,
+} from "@/features/shipments/lib/bulk-book-outcomes";
 import { canPrintShipmentLabel } from "@/features/shipments/lib/shipment-actions";
 import {
   canSubmitBulkBook,
@@ -80,6 +84,9 @@ export function WithMyRatesBookingDialog({
     orderNumber?: string;
   } | null>(null);
   const [lastBookedIds, setLastBookedIds] = useState<string[]>([]);
+  const [heldLines, setHeldLines] = useState<
+    (HeldBulkLine & { orderNumber: string })[]
+  >([]);
 
   const connectionsQuery = useCarrierConnections(
     { active: true, size: 100 },
@@ -98,11 +105,13 @@ export function WithMyRatesBookingDialog({
       setDistrictByOrderId({});
       setPackagesEdit(null);
       setLastBookedIds([]);
+      setHeldLines([]);
       return;
     }
     setDrafts(initialDrafts(orderIds));
     setDistrictByOrderId({});
     setLastBookedIds([]);
+    setHeldLines([]);
   }, [open, orderIds]);
 
   const previewByOrderId = useMemo(() => {
@@ -166,11 +175,27 @@ export function WithMyRatesBookingDialog({
     try {
       const response = await bulkMutation.mutateAsync({ lines: payload });
       const bookedIds: string[] = [];
+      const held = response.results.flatMap((row) => {
+        const line = heldBulkLine(row);
+        if (!line) return [];
+        // Read now: the line leaves the preview once it is removed.
+        const orderNumber =
+          previewByOrderId.get(line.orderId)?.order?.orderNumber ?? line.orderId;
+        return [{ ...line, orderNumber }];
+      });
+      const heldOrderIds = new Set(held.map((line) => line.orderId));
+      const heldFromRejected = response.results.filter(
+        (row) => row.outcome === "REJECTED" && heldOrderIds.has(row.orderId),
+      ).length;
 
       setDrafts((current) =>
         current.map((line) => {
           const result = response.results.find((r) => r.orderId === line.orderId);
           if (!result) return line;
+          // Held lines exist at the carrier: never offer to book them again.
+          if (heldOrderIds.has(line.orderId)) {
+            return { ...line, removed: true, bulkOutcome: "HELD", bulkError: null };
+          }
           if (result.outcome === "BOOKED" && result.shipment) {
             bookedIds.push(result.shipment.id);
             return { ...line, removed: true, bulkOutcome: "BOOKED", bulkError: null };
@@ -203,13 +228,19 @@ export function WithMyRatesBookingDialog({
       );
 
       setLastBookedIds(bookedIds);
+      if (held.length > 0) {
+        setHeldLines((current) => [...current, ...held]);
+      }
 
       toast.success(
         t("bulkBooking.resultToast", {
           booked: response.booked,
-          rejected: response.rejected,
+          rejected: Math.max(0, response.rejected - heldFromRejected),
         }),
       );
+      if (held.length > 0) {
+        toast.warning(t("bulkBooking.resultToastHeld", { count: held.length }));
+      }
     } catch (error) {
       toast.error(parseApiError(error).detail || t("bulkBooking.bookFailed"));
     }
@@ -302,6 +333,52 @@ export function WithMyRatesBookingDialog({
           >
             {parseApiError(previewQuery.error).detail}
           </div>
+        ) : null}
+
+        {heldLines.length > 0 ? (
+          <section
+            role="status"
+            aria-labelledby={`${formId}-held`}
+            className="flex gap-3 rounded-lg border border-warning/40 bg-warning/10 p-3 text-sm"
+          >
+            <AlertTriangle
+              className="mt-0.5 size-4 shrink-0 text-amber-700 dark:text-amber-400"
+              aria-hidden="true"
+            />
+            <div className="min-w-0 space-y-2">
+              <h3 id={`${formId}-held`} className="font-medium text-foreground">
+                {t("bulkBooking.heldTitle", { count: heldLines.length })}
+              </h3>
+              <p className="text-muted-foreground">{t("booking.heldDescription")}</p>
+              <ul className="space-y-1.5">
+                {heldLines.map((line) => {
+                  const orderNumber = line.orderNumber;
+                  return (
+                    <li key={line.orderId} className="space-y-0.5">
+                      {line.shipmentId ? (
+                        <Link
+                          to={`/shipments/${encodeURIComponent(line.shipmentId)}`}
+                          onClick={() => onOpenChange(false)}
+                          className="font-medium text-primary underline-offset-4 hover:underline focus-visible:rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/40"
+                        >
+                          {t("bulkBooking.heldRow", { order: orderNumber })}
+                        </Link>
+                      ) : (
+                        <span className="font-medium text-foreground">
+                          {t("bulkBooking.heldRow", { order: orderNumber })}
+                        </span>
+                      )}
+                      {line.message ? (
+                        <p dir="auto" className="text-xs text-muted-foreground">
+                          {line.message}
+                        </p>
+                      ) : null}
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          </section>
         ) : null}
 
         {previewQuery.isLoading && !previewQuery.data ? (

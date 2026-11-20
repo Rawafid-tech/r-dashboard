@@ -52,7 +52,8 @@
   },
   "toast": {
     "booked": "Return booked — tracking {{tracking}}",
-    "booking": "Return sent to the carrier — confirming shortly"
+    "booking": "Return sent to the carrier — confirming shortly",
+    "held": "Held for support: the shipping partner gave this shipment a tracking number another shipment still holds."
   },
   "stepper": {
     "decrease": "Decrease quantity",

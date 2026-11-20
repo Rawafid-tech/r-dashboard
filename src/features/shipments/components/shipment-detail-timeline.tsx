@@ -12,8 +12,10 @@ import {
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { ShipmentIssueBadge } from "@/features/shipments/components/shipment-issue-badge";
+import { carrierStateText } from "@/features/shipments/lib/shipment-held";
 import type {
   ShipmentTimelineEntry,
+  ShipmentTimelineSource,
   ShipmentTimelineState,
 } from "@/features/shipments/types";
 import { Badge } from "@/shared/components/ui";
@@ -25,6 +27,12 @@ import { cn } from "@/shared/lib/utils";
 interface ShipmentDetailTimelineProps {
   entries: ShipmentTimelineEntry[] | null | undefined;
 }
+
+const SOURCE_LABEL_KEYS: Record<ShipmentTimelineSource, string> = {
+  WEBHOOK: "detail.timeline.sourceWebhook",
+  POLL: "detail.timeline.sourcePoll",
+  BOOKING: "detail.timeline.sourceBooking",
+};
 
 function timelineIcon(state: ShipmentTimelineState) {
   switch (state) {
@@ -77,6 +85,8 @@ export function ShipmentDetailTimeline({
         const Icon = timelineIcon(entry.state);
         const isLatest = index === 0;
         const isLast = index === visibleEntries.length - 1;
+        const carrierText = carrierStateText(entry.carrierState, t);
+        const sourceKey = SOURCE_LABEL_KEYS[entry.source];
 
         return (
           <li
@@ -112,18 +122,18 @@ export function ShipmentDetailTimeline({
                 <p className="text-sm font-medium leading-snug">
                   {t(`timeline.states.${entry.state}`)}
                 </p>
-                <Badge variant="outline" className="shrink-0 text-xs font-normal">
-                  {entry.source === "WEBHOOK"
-                    ? t("detail.timeline.sourceWebhook")
-                    : t("detail.timeline.sourcePoll")}
-                </Badge>
+                {sourceKey ? (
+                  <Badge variant="outline" className="shrink-0 text-xs font-normal">
+                    {t(sourceKey)}
+                  </Badge>
+                ) : null}
               </div>
-              {entry.carrierState?.label ? (
+              {carrierText ? (
                 <p
                   dir="auto"
                   className="text-xs leading-relaxed text-muted-foreground break-words"
                 >
-                  {entry.carrierState.label}
+                  {carrierText}
                 </p>
               ) : null}
               {entry.issue ? (

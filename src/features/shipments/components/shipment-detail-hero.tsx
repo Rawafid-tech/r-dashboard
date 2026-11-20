@@ -8,6 +8,7 @@ import {
 } from "@/features/shipments/lib/shipment-actions";
 import { ShipmentKindBadge } from "@/features/shipments/components/shipment-kind-badge";
 import { getShipmentKind } from "@/features/shipments/lib/shipment-kind";
+import { carrierStateText, isHeldForSupport } from "@/features/shipments/lib/shipment-held";
 import type { Shipment } from "@/features/shipments/types";
 import { PageHeader } from "@/shared/components/layout/page-header";
 import { Button } from "@/shared/components/ui";
@@ -38,6 +39,7 @@ export function ShipmentDetailHero({
   const canPrint = canPrintShipmentLabel(shipment);
   const kind = getShipmentKind(shipment);
   const canCancel = canCancelShipment(shipment);
+  const carrierText = carrierStateText(shipment.carrierState, t);
 
   return (
     <div className="space-y-4">
@@ -66,6 +68,7 @@ export function ShipmentDetailHero({
               status={shipment.status}
               kind={kind}
               swappedAt={shipment.exchange?.swappedAt}
+              held={isHeldForSupport(shipment)}
             />
             <ShipmentKindBadge shipment={shipment} />
             {isFetching ? (
@@ -89,12 +92,8 @@ export function ShipmentDetailHero({
                 t("detail.noTracking")
               )}
             </span>
-            {shipment.carrierState?.label ? (
-              <span>
-                {t("detail.carrierState", {
-                  label: shipment.carrierState.label,
-                })}
-              </span>
+            {carrierText ? (
+              <span>{t("detail.carrierState", { label: carrierText })}</span>
             ) : null}
           </span>
         }

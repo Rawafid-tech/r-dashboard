@@ -56,7 +56,8 @@
   },
   "toast": {
     "booked": "Exchange booked — track {{tracking}}",
-    "booking": "Exchange sent to the carrier — confirmation soon"
+    "booking": "Exchange sent to the carrier — confirmation soon",
+    "held": "Held for support: the shipping partner gave this shipment a tracking number another shipment still holds."
   },
   "stepper": {
     "decrease": "Decrease quantity",

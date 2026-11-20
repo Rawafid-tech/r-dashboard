@@ -1,4 +1,38 @@
+import {
+  isHeldForSupport,
+  TRACKING_NUMBER_TAKEN,
+} from "@/features/shipments/lib/shipment-held";
 import type { BulkBookResponse, BulkBookResultRow } from "@/features/shipments/types";
+
+export interface HeldBulkLine {
+  orderId: string;
+  shipmentId: string | null;
+  message: string;
+}
+
+/**
+ * A bulk line held for support (`shipment.trackingNumberTaken`), whether the
+ * API answers it as a rejected line or as a `BOOKING` shipment with a failure.
+ */
+export function heldBulkLine(row: BulkBookResultRow): HeldBulkLine | null {
+  if (row.error?.code === TRACKING_NUMBER_TAKEN) {
+    const detailsId = row.error.details?.shipmentId;
+    return {
+      orderId: row.orderId,
+      shipmentId:
+        typeof detailsId === "string" ? detailsId : (row.shipment?.id ?? null),
+      message: row.error.message,
+    };
+  }
+  if (row.shipment && isHeldForSupport(row.shipment)) {
+    return {
+      orderId: row.orderId,
+      shipmentId: row.shipment.id,
+      message: row.shipment.failure?.message ?? "",
+    };
+  }
+  return null;
+}
 
 export function bookedShipmentIds(response: BulkBookResponse): string[] {
   return response.results

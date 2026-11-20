@@ -56,6 +56,7 @@ function settingLabel(
     case "returns":
     case "bookAction":
     case "sectorsBody":
+    case "reusesNumbers":
     case "syncUser":
     case "syncPassword":
     case "syncToken":
@@ -77,6 +78,9 @@ function settingHint(
       : t("carriers.form.fields.baseUrlHint");
   }
   if (field.key === "returns") return t("carriers.form.fields.returnsHint");
+  if (field.key === "reusesNumbers") {
+    return t("carriers.form.fields.reusesNumbersHint");
+  }
   if (carrierFieldKind(field) === "SECRET") {
     const parts = [
       secretsSaved ? t("carriers.form.secretSaved") : null,

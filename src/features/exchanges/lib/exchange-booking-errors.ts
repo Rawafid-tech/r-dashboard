@@ -11,6 +11,8 @@ export type ExchangeErrorAction =
   | "editOrder"
   | "retry"
   | "retryWithoutRefund"
+  /** Booked but held for support: the shipment exists, open it. */
+  | "heldForSupport"
   | "none";
 
 export interface ExchangeErrorPresentation {
@@ -87,6 +89,7 @@ export function parseExchangeBookingError(
     shippingPartners: "shippingPartners",
     editOrder: "editOrder",
     retry: "retry",
+    heldForSupport: "heldForSupport",
     none: "none",
   };
 

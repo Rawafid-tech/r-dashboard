@@ -113,7 +113,7 @@ export interface CarrierRegionsSyncResult {
   unmappedCities: CarrierUnmappedCity[];
 }
 
-export type RegionResolveMethod = "DISTRICT" | "ZONE" | "HEAD" | "NONE";
+export type RegionResolveMethod = "DISTRICT" | "ZONE" | "HEAD" | "ALIAS" | "NONE";
 
 export interface RegionResolveDistrict {
   districtId?: string;

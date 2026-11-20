@@ -33,7 +33,7 @@ import {
 } from "@/shared/components/ui";
 import { useLocaleStore } from "@/stores/locale.store";
 
-const METHODS: RegionResolveMethod[] = ["DISTRICT", "ZONE", "HEAD", "NONE"];
+const METHODS: RegionResolveMethod[] = ["DISTRICT", "ZONE", "HEAD", "ALIAS", "NONE"];
 
 function isResolveMethod(value: string): value is RegionResolveMethod {
   return METHODS.includes(value as RegionResolveMethod);

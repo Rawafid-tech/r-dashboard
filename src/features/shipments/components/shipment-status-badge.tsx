@@ -7,14 +7,21 @@ interface ShipmentStatusBadgeProps {
   status: ShipmentStatus;
   kind?: ShipmentKind;
   swappedAt?: string | null;
+  /** A `BOOKING` shipment with a failure: show "Held for support". */
+  held?: boolean;
 }
 
 export function ShipmentStatusBadge({
   status,
   kind = "DELIVERY",
   swappedAt,
+  held = false,
 }: ShipmentStatusBadgeProps) {
   const { t } = useTranslation("shipments");
+  if (held && status === "BOOKING") {
+    return <Badge variant="warning">{t("status.HELD")}</Badge>;
+  }
+
   const variant =
     status === "DELIVERED"
       ? "success"

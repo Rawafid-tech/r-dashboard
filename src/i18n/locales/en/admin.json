@@ -169,6 +169,8 @@
         "baseUrlInvalidMega": "Enter the full address ending in /api/shipment.php, with no trailing slash or query.",
         "bookAction": "Booking call",
         "sectorsBody": "Areas request format",
+        "reusesNumbers": "Reuses tracking numbers of cancelled parcels",
+        "reusesNumbersHint": "Only Aman is known to do this. Leave it off for other partners.",
         "syncUser": "Sync API user",
         "syncPassword": "Sync API password",
         "syncToken": "Sync API token",
@@ -291,12 +293,14 @@
           "DISTRICT": "Exact district",
           "ZONE": "Zone name",
           "HEAD": "Shared name",
+          "ALIAS": "Other name",
           "NONE": "No confident match"
         },
         "methodHelp": {
           "DISTRICT": "The text is a district's own name.",
           "ZONE": "The text is a zone name. A district in that zone stands in for it.",
           "HEAD": "The text starts district names that all sit in one zone.",
+          "ALIAS": "The text is another name the carrier lists for one district in this governorate.",
           "NONE": "Candidates were not confident enough to pick one hub. We never guess between two zones."
         }
       }

@@ -1,4 +1,5 @@
 import { AxiosError } from "axios";
+import { TRACKING_NUMBER_TAKEN } from "@/features/shipments/lib/shipment-held";
 import type { ShipmentProblemCode } from "@/features/shipments/types";
 import { parseApiError } from "@/shared/api/error-handler";
 
@@ -7,6 +8,8 @@ export type ShipmentErrorAction =
   | "shippingPartners"
   | "editOrder"
   | "retry"
+  /** The booking exists and is held for support; never book it again. */
+  | "heldForSupport"
   | "none";
 
 export interface ShipmentErrorPresentation {
@@ -47,6 +50,18 @@ export function hasBookingProblem(
   );
 }
 
+/**
+ * Whether a booking answered `409 shipment.trackingNumberTaken`: the shipment
+ * was created and stays in booking until support checks it.
+ */
+export function isTrackingNumberTakenError(error: unknown): boolean {
+  if (parseApiError(error).status !== 409) return false;
+  const body = readProblemBody(error);
+  return (
+    body?.code === TRACKING_NUMBER_TAKEN || body?.reason === TRACKING_NUMBER_TAKEN
+  );
+}
+
 export function parseShipmentBookingError(
   error: unknown,
 ): ShipmentErrorPresentation {
@@ -56,6 +71,10 @@ export function parseShipmentBookingError(
     typeof body?.reason === "string" ? body.reason : undefined;
   const shipmentId =
     typeof body?.shipmentId === "string" ? body.shipmentId : undefined;
+
+  if (isTrackingNumberTakenError(error)) {
+    return { detail: apiError.detail, action: "heldForSupport", shipmentId };
+  }
 
   if (apiError.status === 409) {
     const detail = apiError.detail.toLowerCase();

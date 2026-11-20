@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { getGovernorateLabel } from "@/features/locations/lib/location-form-errors";
 import { ShipmentCodFeeNote } from "@/features/shipments/components/shipment-cod-fee-note";
 import { ShipmentDistrictCombobox } from "@/features/shipments/components/shipment-district-combobox";
+import { DistrictMatchNote } from "@/features/shipments/components/district-match-note";
 import {
   ShipmentPickupInfo,
   ShipmentProblemAction,
@@ -224,6 +225,7 @@ export function BulkBookingRow({
               <p className="text-sm text-muted-foreground">
                 {getShipmentDistrictLabel(address.district, locale)}
               </p>
+              <DistrictMatchNote method={address.method} area={previewLine?.to.area} />
             </div>
           ) : null}
 

@@ -40,6 +40,13 @@ export function useBookShipment() {
       }
 
       const parsed = parseShipmentBookingError(error);
+      if (parsed.action === "heldForSupport") {
+        // The shipment was created and its order is now booked.
+        void queryClient.invalidateQueries({ queryKey: shipmentKeys.all });
+        void queryClient.invalidateQueries({ queryKey: orderKeys.all });
+        toast.warning(parsed.detail || t("booking.heldTitle"));
+        return;
+      }
       toast.error(parsed.detail || parseApiError(error).detail);
     },
   });

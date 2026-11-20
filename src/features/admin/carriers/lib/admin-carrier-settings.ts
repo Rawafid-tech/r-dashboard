@@ -35,6 +35,7 @@ const SELECT_FALLBACK_OPTIONS: Record<string, readonly string[]> = {
 export const ADVANCED_SETTING_KEYS: ReadonlySet<string> = new Set([
   "bookAction",
   "sectorsBody",
+  "reusesNumbers",
 ]);
 
 const MEGA_BASE_URL_PATTERN = /^https:\/\/[^/?#\s]+(?:\/[^?#\s]*)?\/api\/shipment\.php$/;

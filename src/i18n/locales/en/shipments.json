@@ -75,6 +75,7 @@
     "LOST": "Lost",
     "FAILED": "Failed",
     "CANCELLED": "Cancelled",
+    "HELD": "Held for support",
     "returnPickup": {
       "BOOKING": "Booking…",
       "BOOKED": "Awaiting pickup",
@@ -118,6 +119,9 @@
       "CANCELLED": "Cancelled",
       "IGNORED": "Carrier update"
     }
+  },
+  "carrierCodes": {
+    "NUMBER_REUSED": "Cancelled: the shipping partner gave its tracking number to a later shipment"
   },
   "detail": {
     "skipToContent": "Skip to shipment details",
@@ -166,6 +170,7 @@
       "empty": "No tracking events yet. Check again after the carrier reports an update.",
       "sourceWebhook": "Carrier",
       "sourcePoll": "Polled",
+      "sourceBooking": "Rawafid",
       "pollHint": "Time shown is when we last asked the carrier, not necessarily when the event happened."
     },
     "titleForOrder": "Order {{orderNumber}}",
@@ -173,7 +178,9 @@
     "failure": {
       "title": "This booking failed",
       "notConfirmedTitle": "The parcel may exist at the shipping partner",
-      "notConfirmedHint": "Check the shipping partner’s dashboard before booking this order again, or it may be shipped twice."
+      "notConfirmedHint": "Check the shipping partner’s dashboard before booking this order again, or it may be shipped twice.",
+      "heldTitle": "Held for support",
+      "heldHint": "Support is checking both shipments with the shipping partner. You don’t need to do anything; don’t book this order again."
     }
   },
   "empty": {
@@ -217,6 +224,7 @@
     "districtHint": "Search the carrier's districts for this governorate.",
     "districtPlaceholder": "Type to search districts…",
     "matchedDistrict": "Matched area",
+    "aliasMatched": "Matched from “{{area}}”, another name the shipping partner uses for this area.",
     "suggestions": "Suggested districts",
     "problemsTitle": "Fix before booking",
     "editOrder": "Edit order",
@@ -239,7 +247,10 @@
     "defaultPickupWarning": "Not mapped: collected from this connection's default.",
     "openPickupMappings": "Pickup locations",
     "senderLocationFallback": "your sender location",
-    "openSenderLocations": "Fix sender locations"
+    "openSenderLocations": "Fix sender locations",
+    "heldTitle": "Held for support",
+    "heldDescription": "The shipping partner gave this shipment a tracking number another of your shipments still holds. It stays in booking until support checks both with the shipping partner.",
+    "viewShipment": "View shipment"
   },
   "pagination": {
     "label": "Shipments pagination",
@@ -286,7 +297,12 @@
     "bookFailed": "Could not complete bulk booking",
     "resultToast": "{{booked}} booked, {{rejected}} need attention",
     "skippedRows_one": "{{count}} order can’t be booked as it is and will be skipped.",
-    "skippedRows_other": "{{count}} orders can’t be booked as they are and will be skipped."
+    "skippedRows_other": "{{count}} orders can’t be booked as they are and will be skipped.",
+    "heldTitle_one": "{{count}} booking is held for support",
+    "heldTitle_other": "{{count}} bookings are held for support",
+    "heldRow": "Order {{order}}",
+    "resultToastHeld_one": "{{count}} booking is held for support",
+    "resultToastHeld_other": "{{count}} bookings are held for support"
   },
   "wizard": {
     "title": "Create shipment",

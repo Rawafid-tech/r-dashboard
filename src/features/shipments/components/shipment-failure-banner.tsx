@@ -1,6 +1,7 @@
 import { AlertTriangle, CircleX } from "lucide-react";
 import { useId } from "react";
 import { useTranslation } from "react-i18next";
+import { isHeldForSupport } from "@/features/shipments/lib/shipment-held";
 import type { Shipment } from "@/features/shipments/types";
 
 /** The booking's answer was lost; the parcel may still exist at the carrier. */
@@ -15,7 +16,32 @@ export function ShipmentFailureBanner({ shipment }: ShipmentFailureBannerProps) 
   const headingId = useId();
   const failure = shipment.failure;
 
-  if (shipment.status !== "FAILED" || !failure) return null;
+  if (!failure) return null;
+
+  if (isHeldForSupport(shipment)) {
+    return (
+      <section
+        aria-labelledby={headingId}
+        className="flex gap-3 rounded-xl border border-warning/40 bg-warning/10 px-4 py-4"
+      >
+        <AlertTriangle
+          className="mt-0.5 size-5 shrink-0 text-amber-700 dark:text-amber-400"
+          aria-hidden="true"
+        />
+        <div className="min-w-0 space-y-1">
+          <h2 id={headingId} className="font-semibold text-foreground">
+            {t("detail.failure.heldTitle")}
+          </h2>
+          <p className="text-sm text-foreground">{failure.message}</p>
+          <p className="text-sm font-medium text-amber-800 dark:text-amber-300">
+            {t("detail.failure.heldHint")}
+          </p>
+        </div>
+      </section>
+    );
+  }
+
+  if (shipment.status !== "FAILED") return null;
 
   if (failure.code === NOT_CONFIRMED_FAILURE) {
     return (
