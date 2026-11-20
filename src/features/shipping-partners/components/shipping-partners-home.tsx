@@ -7,6 +7,7 @@ import { ConnectionFormDialog } from "@/features/shipping-partners/components/co
 import { ConnectionPickupMappingsDialog } from "@/features/shipping-partners/components/connection-pickup-mappings-dialog";
 import type { ConnectionRowAction } from "@/features/shipping-partners/components/connection-row-actions-menu";
 import { ConnectionsDataTable } from "@/features/shipping-partners/components/connections-data-table";
+import { carrierHasPickup } from "@/features/shipping-partners/lib/carrier-pickup";
 import { ConnectionsEmptyState } from "@/features/shipping-partners/components/connections-empty-state";
 import { ShippingPartnersErrorState } from "@/features/shipping-partners/components/shipping-partners-error-state";
 import { ShippingPartnersHero } from "@/features/shipping-partners/components/shipping-partners-hero";
@@ -116,6 +117,11 @@ export function ShippingPartnersHome() {
     [carriers],
   );
   const catalogReady = carriersQuery.isSuccess;
+
+  const hasPickup = useCallback(
+    (code: string) => carrierHasPickup(carrierByCode.get(code)),
+    [carrierByCode],
+  );
 
   const isCarrierAvailable = useCallback(
     (code: string) => {
@@ -304,6 +310,7 @@ export function ShippingPartnersHome() {
               toggleMutation.mutate({ id: connection.id, active })
             }
             isCarrierAvailable={isCarrierAvailable}
+            hasPickup={hasPickup}
             pendingToggleId={
               toggleMutation.isPending
                 ? (toggleMutation.variables?.id ?? null)

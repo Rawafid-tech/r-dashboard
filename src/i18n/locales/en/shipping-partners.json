@@ -120,6 +120,8 @@
     "nameRequired": "Enter a name for this connection",
     "nameTooLong": "Use at most {{max}} characters",
     "textTooLong": "Use at most {{max}} characters",
+    "mobileInvalid": "Enter an Egyptian mobile number, e.g. 01012345678.",
+    "mobileHint": "Egyptian mobile number, 11 digits starting with 010, 011, 012 or 015.",
     "invalidOption": "Choose one of the listed values",
     "invalidPickup": "Choose a pickup location from this account",
     "active": "Active",

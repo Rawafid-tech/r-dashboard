@@ -38,6 +38,8 @@ interface ConnectionsDataTableProps {
   ) => void;
   onToggle: (connection: CarrierConnection, active: boolean) => void;
   isCarrierAvailable: (code: string) => boolean;
+  /** False for carriers that collect from their own account address. */
+  hasPickup: (code: string) => boolean;
   pendingToggleId?: string | null;
   canManage?: boolean;
   isFetching?: boolean;
@@ -115,6 +117,7 @@ export function ConnectionsDataTable({
   onRowAction,
   onToggle,
   isCarrierAvailable,
+  hasPickup,
   pendingToggleId,
   canManage = false,
   isFetching,
@@ -275,16 +278,18 @@ export function ConnectionsDataTable({
                 onToggle={onToggle}
               />
               <div className="flex flex-wrap gap-2">
-                <Button
-                  type="button"
-                  variant="outline"
-                  size="sm"
-                  onClick={(event) =>
-                    onRowAction("pickupLocations", connection, event.currentTarget)
-                  }
-                >
-                  {t("actions.pickupLocations")}
-                </Button>
+                {hasPickup(connection.carrier.code) ? (
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={(event) =>
+                      onRowAction("pickupLocations", connection, event.currentTarget)
+                    }
+                  >
+                    {t("actions.pickupLocations")}
+                  </Button>
+                ) : null}
                 {canManage ? (
                   <>
                     {canEdit ? (
@@ -323,6 +328,7 @@ export function ConnectionsDataTable({
           connection={connection}
           canEdit={isCarrierAvailable(connection.carrier.code)}
           canManage={canManage}
+          hasPickup={hasPickup(connection.carrier.code)}
           onAction={(action, row) => {
             const opener = document.activeElement;
             onRowAction(

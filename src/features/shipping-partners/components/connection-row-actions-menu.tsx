@@ -15,6 +15,8 @@ interface ConnectionRowActionsMenuProps {
   connection: CarrierConnection;
   canEdit: boolean;
   canManage: boolean;
+  /** False when the carrier has no pickup location to map. */
+  hasPickup: boolean;
   onAction: (action: ConnectionRowAction, connection: CarrierConnection) => void;
 }
 
@@ -22,9 +24,12 @@ export function ConnectionRowActionsMenu({
   connection,
   canEdit,
   canManage,
+  hasPickup,
   onAction,
 }: ConnectionRowActionsMenuProps) {
   const { t } = useTranslation("shippingPartners");
+  const showEdit = canManage && canEdit;
+  if (!hasPickup && !canManage) return null;
 
   return (
     <TableRowActionsMenu>
@@ -32,14 +37,16 @@ export function ConnectionRowActionsMenu({
         ariaLabel={t("table.openMenu", { name: connection.name })}
       />
       <TableRowActionsMenuContent>
-        <TableRowActionsMenuItem
-          icon={MapPin}
-          onSelect={() => onAction("pickupLocations", connection)}
-        >
-          {t("actions.pickupLocations")}
-        </TableRowActionsMenuItem>
-        {canManage && canEdit ? <TableRowActionsMenuSeparator /> : null}
-        {canManage && canEdit ? (
+        {hasPickup ? (
+          <TableRowActionsMenuItem
+            icon={MapPin}
+            onSelect={() => onAction("pickupLocations", connection)}
+          >
+            {t("actions.pickupLocations")}
+          </TableRowActionsMenuItem>
+        ) : null}
+        {hasPickup && showEdit ? <TableRowActionsMenuSeparator /> : null}
+        {showEdit ? (
           <TableRowActionsMenuItem
             icon={Pencil}
             onSelect={() => onAction("edit", connection)}
@@ -47,7 +54,9 @@ export function ConnectionRowActionsMenu({
             {t("actions.edit")}
           </TableRowActionsMenuItem>
         ) : null}
-        {canManage ? <TableRowActionsMenuSeparator /> : null}
+        {canManage && (hasPickup || showEdit) ? (
+          <TableRowActionsMenuSeparator />
+        ) : null}
         {canManage ? (
           <TableRowActionsMenuItem
             icon={Unplug}

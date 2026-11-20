@@ -2,6 +2,7 @@ import { Eye, EyeOff } from "lucide-react";
 import type { FieldErrors, FieldPath } from "react-hook-form";
 import { Controller, type Control } from "react-hook-form";
 import { useTranslation } from "react-i18next";
+import { isMobileOptionField } from "@/features/shipping-partners/lib/carrier-mobile";
 import {
   PICKUP_NONE,
   SELECT_NONE,
@@ -224,6 +225,11 @@ export function OptionFields({
         }
 
         if (field.kind === "TEXT") {
+          const isMobile = isMobileOptionField(field);
+          const hintId = isMobile ? `${inputId}-hint` : undefined;
+          const describedBy =
+            [hintId, message ? errorId : undefined].filter(Boolean).join(" ") ||
+            undefined;
           return (
             <Controller
               key={field.key}
@@ -239,12 +245,27 @@ export function OptionFields({
                     onBlur={input.onBlur}
                     name={input.name}
                     ref={input.ref}
-                    maxLength={500}
+                    maxLength={isMobile ? 20 : 500}
                     disabled={disabled}
                     aria-invalid={Boolean(message) || undefined}
-                    aria-describedby={message ? errorId : undefined}
+                    aria-describedby={describedBy}
                     aria-required={field.required || undefined}
+                    {...(isMobile
+                      ? {
+                          type: "tel",
+                          inputMode: "tel" as const,
+                          autoComplete: "tel",
+                          dir: "ltr",
+                          placeholder: "01012345678",
+                          className: "text-start rtl:text-end",
+                        }
+                      : {})}
                   />
+                  {isMobile ? (
+                    <FieldDescription id={hintId}>
+                      {t("form.mobileHint")}
+                    </FieldDescription>
+                  ) : null}
                   <FieldError
                     id={errorId}
                     errors={message ? [{ message }] : undefined}

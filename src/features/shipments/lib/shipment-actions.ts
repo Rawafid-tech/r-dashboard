@@ -57,6 +57,17 @@ export function canCancelShipment(shipment: ShipmentActionContext): boolean {
   return connectionSupportsCancel(shipment.connection.capabilities);
 }
 
+/**
+ * A booked shipment whose carrier can't cancel through Rawafid (e.g. Turbo):
+ * the merchant has to cancel with the carrier directly.
+ */
+export function cancelsWithCarrierOnly(
+  shipment: ShipmentActionContext,
+): boolean {
+  if (shipment.status !== "BOOKED") return false;
+  return !connectionSupportsCancel(shipment.connection.capabilities);
+}
+
 export function canPrintShipmentLabel(shipment: ShipmentActionContext): boolean {
   if (isReturnPickup(shipment)) return false;
   if (!LABEL_STATUSES.includes(shipment.status)) return false;

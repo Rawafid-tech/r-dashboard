@@ -1,3 +1,7 @@
+import {
+  isMobileOptionField,
+  normalizeMobile,
+} from "@/features/shipping-partners/lib/carrier-mobile";
 import type {
   CarrierConnection,
   CarrierField,
@@ -106,7 +110,9 @@ export function toOptionsMap(
     }
 
     if (typeof value === "string") {
-      const trimmed = value.trim();
+      const trimmed = isMobileOptionField(field)
+        ? normalizeMobile(value)
+        : value.trim();
       if (
         trimmed &&
         trimmed !== PICKUP_NONE &&

@@ -5,13 +5,16 @@ import { ShipmentStatusBadge } from "@/features/shipments/components/shipment-st
 import {
   canCancelShipment,
   canPrintShipmentLabel,
+  cancelsWithCarrierOnly,
 } from "@/features/shipments/lib/shipment-actions";
+import { shipmentCarrierLabel } from "@/features/shipments/lib/shipment-connection-label";
 import { ShipmentKindBadge } from "@/features/shipments/components/shipment-kind-badge";
 import { getShipmentKind } from "@/features/shipments/lib/shipment-kind";
 import { carrierStateText, isHeldForSupport } from "@/features/shipments/lib/shipment-held";
 import type { Shipment } from "@/features/shipments/types";
 import { PageHeader } from "@/shared/components/layout/page-header";
 import { Button } from "@/shared/components/ui";
+import { useLocaleStore } from "@/stores/locale.store";
 import {
   MerchantPermission,
   useMerchantPermissions,
@@ -40,6 +43,8 @@ export function ShipmentDetailHero({
   const kind = getShipmentKind(shipment);
   const canCancel = canCancelShipment(shipment);
   const carrierText = carrierStateText(shipment.carrierState, t);
+  const locale = useLocaleStore((state) => state.locale);
+  const showCancelWithCarrier = canManage && cancelsWithCarrierOnly(shipment);
 
   return (
     <div className="space-y-4">
@@ -124,6 +129,14 @@ export function ShipmentDetailHero({
           </div>
         }
       />
+
+      {showCancelWithCarrier ? (
+        <p className="text-pretty text-sm text-muted-foreground">
+          {t("detail.cancelWithCarrier", {
+            carrier: shipmentCarrierLabel(shipment.connection, locale),
+          })}
+        </p>
+      ) : null}
     </div>
   );
 }

@@ -2,6 +2,8 @@ export type AdminCarrierPlatform =
   | "ACCURATE"
   | "BOSTA"
   | "MEGA"
+  /** Seeded like Bosta (code `turbo`); never added from the catalog form. */
+  | "TURBO"
   | "WAVEX"
   | "WINGEZZ"
   | (string & {});

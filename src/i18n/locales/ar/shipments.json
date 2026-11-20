@@ -130,6 +130,7 @@
     "backToList": "العودة إلى الشحنات",
     "noTracking": "لا يوجد رقم تتبع بعد",
     "carrierState": "الناقل: {{label}}",
+    "cancelWithCarrier": "للإلغاء، تواصل مع {{carrier}} مباشرة. لا يمكن إلغاء شحنات هذا الشريك من روافد.",
     "refreshing": "جاري التحديث…",
     "summary": {
       "title": "ملخص",

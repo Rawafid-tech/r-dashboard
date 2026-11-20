@@ -130,6 +130,7 @@
     "backToList": "Back to shipments",
     "noTracking": "No tracking number yet",
     "carrierState": "Carrier: {{label}}",
+    "cancelWithCarrier": "To cancel, contact {{carrier}} directly. This shipping partner can’t be cancelled from Rawafid.",
     "refreshing": "Updating…",
     "summary": {
       "title": "Summary",
