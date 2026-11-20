@@ -1,5 +1,8 @@
 import { describe, expect, it } from "vitest";
-import { carrierHasPickup } from "@/features/shipping-partners/lib/carrier-pickup";
+import {
+  carrierHasPickup,
+  needsPickupChoice,
+} from "@/features/shipping-partners/lib/carrier-pickup";
 import type { CarrierField } from "@/features/shipping-partners/types";
 
 function field(key: string, kind: CarrierField["kind"]): CarrierField {
@@ -31,5 +34,28 @@ describe("carrierHasPickup", () => {
   it("keeps the action while the carrier is unknown", () => {
     expect(carrierHasPickup(undefined)).toBe(true);
     expect(carrierHasPickup(null)).toBe(true);
+  });
+});
+
+describe("needsPickupChoice", () => {
+  const warehouse = (isDefault: boolean) => ({ isDefault });
+
+  it("warns for several warehouses, none default, nothing picked", () => {
+    expect(needsPickupChoice([warehouse(false), warehouse(false)], "")).toBe(true);
+  });
+
+  it("stays quiet once a warehouse is picked", () => {
+    expect(
+      needsPickupChoice([warehouse(false), warehouse(false)], "Giza Store"),
+    ).toBe(false);
+  });
+
+  it("stays quiet when the account marks a default", () => {
+    expect(needsPickupChoice([warehouse(true), warehouse(false)], "")).toBe(false);
+  });
+
+  it("stays quiet for a single warehouse or before the test", () => {
+    expect(needsPickupChoice([warehouse(false)], "")).toBe(false);
+    expect(needsPickupChoice([], "")).toBe(false);
   });
 });

@@ -5,6 +5,8 @@ export interface CarrierCapabilities {
   returns: boolean;
   exchanges: boolean;
   refunds: boolean;
+  /** The carrier can push tracking to Rawafid. No screen uses it yet. */
+  pushUrl?: boolean;
 }
 
 export const DEFAULT_CARRIER_CAPABILITIES: CarrierCapabilities = {

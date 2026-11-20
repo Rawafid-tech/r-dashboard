@@ -40,12 +40,15 @@ export interface CarrierSummary {
 export interface PickupLocation {
   id: string;
   name: string;
-  address: string;
+  /** Null when the carrier keeps no address for it (e.g. a Mylerz warehouse). */
+  address: string | null;
   isDefault: boolean;
 }
 
 export interface TestConnectionResult {
   pickupLocations: PickupLocation[];
+  /** Notes about the account the merchant should know; usually empty. */
+  warnings?: string[];
 }
 
 export type ConnectionOptionValue = string | boolean | null;

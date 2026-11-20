@@ -13,6 +13,39 @@ export function reservePdfWindow(): Window | null {
   return reserved;
 }
 
+export interface PdfWindowMessage {
+  title: string;
+  message: string;
+  lang: string;
+  dir: "ltr" | "rtl";
+}
+
+/**
+ * Says what the reserved tab is waiting for, instead of a blank page: a print
+ * of many labels can take a while for carriers that print one label per call.
+ * Best effort — some browsers hand back a tab the page can't write to.
+ */
+export function writePdfWindowMessage(
+  reserved: Window | null,
+  { title, message, lang, dir }: PdfWindowMessage,
+): void {
+  if (!reserved || reserved.closed) return;
+  try {
+    const doc = reserved.document;
+    doc.title = title;
+    doc.documentElement.lang = lang;
+    doc.documentElement.dir = dir;
+    const paragraph = doc.createElement("p");
+    paragraph.setAttribute("role", "status");
+    paragraph.textContent = message;
+    paragraph.style.cssText =
+      "font: 16px/1.5 system-ui, sans-serif; margin: 2rem; color: #444;";
+    doc.body.replaceChildren(paragraph);
+  } catch {
+    // The tab is still usable for the PDF; only the message is lost.
+  }
+}
+
 /**
  * Shows the PDF in the reserved tab, or downloads it when no tab could be
  * opened. Returns false when it had to fall back to downloading.

@@ -1,9 +1,9 @@
 import type { TFunction } from "i18next";
 import { z } from "zod";
 import {
-  isEgyptianMobile,
-  isMobileOptionField,
-} from "@/features/shipping-partners/lib/carrier-mobile";
+  matchesOptionFormat,
+  optionFormat,
+} from "@/features/shipping-partners/lib/carrier-option-formats";
 import type { CarrierField } from "@/features/shipping-partners/types";
 
 export interface ConnectionValidationContext {
@@ -78,16 +78,18 @@ export function createConnectionFormSchema(
               path: ["options", field.key],
               message: t("form.textTooLong", { max: TEXT_MAX }),
             });
-          } else if (
-            isMobileOptionField(field) &&
-            text.trim() &&
-            !isEgyptianMobile(text)
-          ) {
-            ctx.addIssue({
-              code: z.ZodIssueCode.custom,
-              path: ["options", field.key],
-              message: t("form.mobileInvalid"),
-            });
+          } else if (text.trim()) {
+            const format = optionFormat(field);
+            if (!matchesOptionFormat(format, text)) {
+              ctx.addIssue({
+                code: z.ZodIssueCode.custom,
+                path: ["options", field.key],
+                message:
+                  format === "mobile"
+                    ? t("form.mobileInvalid")
+                    : t("form.digitsInvalid"),
+              });
+            }
           }
         }
 

@@ -208,6 +208,9 @@
     "cancelFailed": "Could not cancel shipment",
     "labelFailed": "Could not open label",
     "labelPopupBlocked": "Pop-ups are blocked, so the label PDF was downloaded instead",
+    "labelsPreparing_one": "Preparing {{count}} label…",
+    "labelsPreparing_other": "Preparing {{count}} labels… Some shipping partners take longer for big prints.",
+    "labelsPreparingTitle": "Preparing labels…",
     "batchMixedConnections": "Select shipments from one connection only, or print in separate batches (up to 50 each).",
     "batchEmpty": "Select at least one shipment with a printable label.",
     "batchTooMany": "You can print up to 50 labels at once."

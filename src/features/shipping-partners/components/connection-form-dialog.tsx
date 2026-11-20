@@ -1,6 +1,6 @@
 import { useEffect, useId, useMemo, useRef, useState } from "react";
 import type { FormEvent, RefObject } from "react";
-import { Loader2 } from "lucide-react";
+import { AlertTriangle, Loader2 } from "lucide-react";
 import { Controller } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
@@ -79,6 +79,8 @@ interface TestErrorState {
 
 interface SuccessfulTest {
   locations: PickupLocation[];
+  /** Account notes from the carrier, shown under the test result. */
+  warnings: string[];
   fingerprint: string;
 }
 
@@ -258,7 +260,11 @@ export function ConnectionFormDialog({
       const result = await test(carrier.code, credentials);
       const locations = result.pickupLocations ?? [];
       const nextFingerprint = credentialFingerprint(getValues("credentials"));
-      setSuccessfulTest({ locations, fingerprint: nextFingerprint });
+      const warnings = (result.warnings ?? []).filter(
+        (warning): warning is string =>
+          typeof warning === "string" && warning.trim() !== "",
+      );
+      setSuccessfulTest({ locations, warnings, fingerprint: nextFingerprint });
 
       const key = pickupFieldKey(carrier.fields);
       if (key) {
@@ -535,6 +541,33 @@ export function ConnectionFormDialog({
                             })
                           : t("form.testSuccessNone")}
                       </p>
+                    ) : null}
+
+                    {testIsCurrent && successfulTest.warnings.length > 0 ? (
+                      <section
+                        aria-labelledby={`${formId}-test-warnings`}
+                        className="flex gap-3 rounded-lg border border-warning/40 bg-warning/10 p-3 text-sm"
+                      >
+                        <AlertTriangle
+                          className="mt-0.5 size-4 shrink-0 text-amber-700 dark:text-amber-400"
+                          aria-hidden="true"
+                        />
+                        <div className="min-w-0 space-y-1">
+                          <h3
+                            id={`${formId}-test-warnings`}
+                            className="font-medium text-foreground"
+                          >
+                            {t("form.testWarningsTitle")}
+                          </h3>
+                          <ul className="list-disc space-y-1 ps-4 text-foreground">
+                            {successfulTest.warnings.map((warning, index) => (
+                              <li key={`${index}-${warning}`} dir="auto">
+                                {warning}
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      </section>
                     ) : null}
 
                     <Field data-invalid={Boolean(errors.name) || undefined}>

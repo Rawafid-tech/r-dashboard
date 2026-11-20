@@ -9,6 +9,7 @@ import {
   reservePdfWindow,
   shipmentLabelFilename,
   showPdfBlob,
+  writePdfWindowMessage,
 } from "@/features/shipments/lib/open-shipment-label";
 import { isApiError, parseApiError } from "@/shared/api/error-handler";
 
@@ -49,14 +50,31 @@ export function useShipmentLabel() {
   });
 }
 
+const BATCH_LABELS_TOAST_ID = "shipments-batch-labels";
+
 export function useBatchShipmentLabels() {
-  const { t } = useTranslation("shipments");
+  const { t, i18n } = useTranslation("shipments");
   const { t: tCommon } = useTranslation("common");
 
   return useMutation({
     mutationFn: (shipmentIds: string[]) =>
       getBatchShipmentLabels({ shipmentIds }),
-    onMutate: () => ({ reserved: reservePdfWindow() }),
+    onMutate: (shipmentIds) => {
+      const reserved = reservePdfWindow();
+      const message = t("toast.labelsPreparing", { count: shipmentIds.length });
+      writePdfWindowMessage(reserved, {
+        title: t("toast.labelsPreparingTitle"),
+        message,
+        lang: i18n.language,
+        dir: i18n.dir(),
+      });
+      // Carriers that print one label per call make big prints slow.
+      toast.loading(message, { id: BATCH_LABELS_TOAST_ID });
+      return { reserved };
+    },
+    onSettled: () => {
+      toast.dismiss(BATCH_LABELS_TOAST_ID);
+    },
     onSuccess: (blob, _variables, context) => {
       const opened = showPdfBlob(blob, "labels-batch.pdf", context.reserved);
       if (!opened) {

@@ -1,7 +1,7 @@
 import {
-  isMobileOptionField,
-  normalizeMobile,
-} from "@/features/shipping-partners/lib/carrier-mobile";
+  optionFormat,
+  optionValueToSend,
+} from "@/features/shipping-partners/lib/carrier-option-formats";
 import type {
   CarrierConnection,
   CarrierField,
@@ -110,9 +110,7 @@ export function toOptionsMap(
     }
 
     if (typeof value === "string") {
-      const trimmed = isMobileOptionField(field)
-        ? normalizeMobile(value)
-        : value.trim();
+      const trimmed = optionValueToSend(optionFormat(field), value);
       if (
         trimmed &&
         trimmed !== PICKUP_NONE &&
