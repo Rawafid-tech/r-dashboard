@@ -9,6 +9,7 @@ import { API_BASE_URL, STORAGE_KEYS } from "@/shared/lib/constants";
 import type { TokenResponse } from "@/shared/types/api";
 import { useAdminAuthStore } from "@/stores/admin-auth.store";
 import { useAuthStore } from "@/stores/auth.store";
+import { loginUrlReturningHere } from "@/features/auth/lib/return-to";
 
 /** Auth endpoints that must never trigger the token-refresh interceptor. */
 const NO_REFRESH_URLS = [
@@ -49,6 +50,16 @@ const REFRESH_TIMEOUT_MS = 15_000;
 /** One in-flight refresh per plane; concurrent 401s wait on the same one. */
 const pendingRefresh: Partial<Record<AuthPlane, Promise<string>>> = {};
 
+/**
+ * The access token another tab produced, if it already rotated the refresh token we hold. Refresh
+ * tokens are single-use, so the second tab's refresh would be refused and must not log anyone out.
+ */
+function tokenRotatedElsewhere(plane: AuthPlane, refreshToken: string): string | null {
+  const latest = getRefreshToken(plane);
+  if (!latest || latest === refreshToken) return null;
+  return getAccessToken(plane) ?? null;
+}
+
 function refreshAccessToken(plane: AuthPlane, refreshToken: string) {
   const pending = pendingRefresh[plane];
   if (pending) return pending;
@@ -56,23 +67,36 @@ function refreshAccessToken(plane: AuthPlane, refreshToken: string) {
   const refreshUrl =
     plane === "admin" ? "/api/admin/auth/refresh" : "/api/auth/refresh";
 
-  const request = axios
-    .post<TokenResponse>(
+  const doRefresh = async () => {
+    // Another tab may have refreshed while this one waited for the lock.
+    const rotated = tokenRotatedElsewhere(plane, refreshToken);
+    if (rotated) return rotated;
+
+    const { data } = await axios.post<TokenResponse>(
       `${API_BASE_URL || ""}${refreshUrl}`,
       { refreshToken },
       { timeout: REFRESH_TIMEOUT_MS },
-    )
-    .then(({ data }) => {
-      setAuthTokens(plane, data.accessToken, data.refreshToken, data.expiresIn);
-      syncAuthStore(plane, data.accessToken, data.refreshToken);
-      return data.accessToken;
-    })
-    .finally(() => {
-      delete pendingRefresh[plane];
-    });
+    );
+    setAuthTokens(plane, data.accessToken, data.refreshToken, data.expiresIn);
+    syncAuthStore(plane, data.accessToken, data.refreshToken);
+    return data.accessToken;
+  };
+
+  // One refresh at a time across all tabs of this browser (the cookies are shared).
+  const locks = typeof navigator !== "undefined" ? navigator.locks : undefined;
+  const request = (locks ? locks.request(`rawafid-refresh-${plane}`, doRefresh) : doRefresh()).finally(() => {
+    delete pendingRefresh[plane];
+  });
 
   pendingRefresh[plane] = request;
   return request;
+}
+
+/** True when the refresh endpoint itself refused the token (the session is really over). */
+function refreshWasRefused(error: unknown): boolean {
+  if (!axios.isAxiosError(error)) return false;
+  const status = error.response?.status;
+  return status === 400 || status === 401 || status === 403;
 }
 
 function syncAuthStore(plane: AuthPlane, accessToken: string, refreshToken: string) {
@@ -145,7 +169,17 @@ apiClient.interceptors.response.use(
       originalRequest.headers.Authorization = `Bearer ${accessToken}`;
       return apiClient(originalRequest);
     } catch (refreshError) {
-      redirectToLogin(plane);
+      if (refreshWasRefused(refreshError)) {
+        // Last chance: another tab may have rotated the token just before ours was refused.
+        const rotated = tokenRotatedElsewhere(plane, refreshToken);
+        if (rotated) {
+          originalRequest.headers.Authorization = `Bearer ${rotated}`;
+          return apiClient(originalRequest);
+        }
+        redirectToLogin(plane);
+      }
+      // A timeout, offline, 5xx or 429 is not the end of the session: keep the tokens (and any
+      // half-filled form) and let this request fail; the next one refreshes again.
       return Promise.reject(refreshError);
     }
   },
@@ -163,5 +197,6 @@ function redirectToLogin(plane: AuthPlane) {
   useAuthStore.getState().clearTokens();
   const loginPath = "/login";
   if (window.location.pathname === loginPath) return;
-  window.location.href = loginPath;
+  // Come back to this page (query included) after signing in again.
+  window.location.href = loginUrlReturningHere(loginPath);
 }

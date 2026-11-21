@@ -1,5 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { returnPathFrom } from "@/features/auth/lib/return-to";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { loginUser, registerUser } from "@/features/auth/api/auth.api";
@@ -37,6 +38,7 @@ function toRegisterPayload(values: RegisterFormValues): RegisterRequest {
 
 export function useRegister() {
   const navigate = useNavigate();
+  const location = useLocation();
   const { t } = useTranslation("auth");
   const { t: tCommon } = useTranslation("common");
   const setTokens = useAuthStore((state) => state.setTokens);
@@ -50,7 +52,8 @@ export function useRegister() {
     onSuccess: (tokens) => {
       setTokens(tokens.accessToken, tokens.refreshToken, tokens.expiresIn);
       toast.success(t("register.success"));
-      navigate("/", { replace: true });
+      // A new merchant who came from e.g. /connect?… lands back there, query included.
+      navigate(returnPathFrom(location.state, location.search), { replace: true });
     },
     onError: (error) => {
       if (isApiError(error, 429)) {

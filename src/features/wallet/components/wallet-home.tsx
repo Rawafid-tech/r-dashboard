@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSearchParams } from "react-router-dom";
 import { useSettings } from "@/features/account/hooks/use-settings";
@@ -97,8 +97,9 @@ export function WalletHome() {
   });
 
   // Load payment history only for users with wallet:read
+  const [paymentsPage, setPaymentsPage] = useState(0);
   const paymentsQuery = usePayments(
-    { size: PAYMENTS_PAGE_SIZE },
+    { size: PAYMENTS_PAGE_SIZE, page: paymentsPage },
     { enabled: walletQuery.isSuccess && canReadWallet },
   );
 
@@ -127,6 +128,8 @@ export function WalletHome() {
 
       void walletQuery.refetch();
       void paymentsQuery.refetch();
+      // The ledger too, so the new balance comes with its TOP_UP row.
+      void transactionsQuery.refetch();
 
       if (pollCountRef.current >= POST_REDIRECT_MAX_POLLS) {
         if (pollTimerRef.current !== null) {
@@ -183,9 +186,7 @@ export function WalletHome() {
   };
 
   const handlePaymentsPageChange = (nextPage: number) => {
-    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-    paymentsQuery; // kept for future pagination — currently uses default page 0
-    void nextPage;
+    setPaymentsPage(Math.max(0, nextPage));
   };
 
   const isInitialLoading =

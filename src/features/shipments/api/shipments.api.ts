@@ -14,6 +14,7 @@ import type {
   ShipmentsListParams,
 } from "@/features/shipments/types";
 import { apiClient } from "@/shared/api/client";
+import { withJsonErrorBody } from "@/shared/api/error-handler";
 import type { PaginatedResponse } from "@/shared/types/api";
 
 function serializeShipmentsListParams(params: ShipmentsListParams): string {
@@ -150,13 +151,12 @@ export async function getShipmentLabel(
   id: string,
   signal?: AbortSignal,
 ): Promise<Blob> {
-  const { data } = await apiClient.get<Blob>(
-    `/api/shipments/${encodeURIComponent(id)}/label`,
-    {
+  const { data } = await apiClient
+    .get<Blob>(`/api/shipments/${encodeURIComponent(id)}/label`, {
       responseType: "blob",
       signal,
-    },
-  );
+    })
+    .catch(withJsonErrorBody);
   return data;
 }
 
@@ -164,9 +164,11 @@ export async function getBatchShipmentLabels(
   payload: BatchLabelsPayload,
   signal?: AbortSignal,
 ): Promise<Blob> {
-  const { data } = await apiClient.post<Blob>("/api/shipments/labels", payload, {
-    responseType: "blob",
-    signal,
-  });
+  const { data } = await apiClient
+    .post<Blob>("/api/shipments/labels", payload, {
+      responseType: "blob",
+      signal,
+    })
+    .catch(withJsonErrorBody);
   return data;
 }

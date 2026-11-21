@@ -1,5 +1,5 @@
 import { useId, useMemo, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { Eye, EyeOff, Loader2 } from "lucide-react";
 import {
@@ -19,6 +19,8 @@ import { applyLoginFieldErrors, useLogin } from "@/features/auth/login/use-login
 
 export function LoginForm() {
   const { t, i18n } = useTranslation("auth");
+  // Kept on the link to sign-up, so a new merchant still returns to where they started.
+  const location = useLocation();
   const formId = useId();
   const [showPassword, setShowPassword] = useState(false);
   const loginMutation = useLogin();
@@ -164,7 +166,8 @@ export function LoginForm() {
         <p className="text-center text-sm text-muted-foreground">
           {t("login.noAccount")}{" "}
           <Link
-            to="/register"
+            to={{ pathname: "/register", search: location.search }}
+            state={location.state}
             className="font-medium text-primary underline-offset-4 hover:underline focus-visible:rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/40"
           >
             {t("login.registerLink")}

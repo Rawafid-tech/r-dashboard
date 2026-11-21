@@ -8,11 +8,7 @@ import { OrderPackagesEditDialog } from "@/features/shipments/components/order-p
 import { useBatchShipmentLabels } from "@/features/shipments/hooks/use-shipment-label";
 import { useBulkBookShipments } from "@/features/shipments/hooks/use-bulk-book-shipments";
 import { useBulkShipmentPreview } from "@/features/shipments/hooks/use-bulk-shipment-preview";
-import {
-  groupBookedIdsByConnection,
-  heldBulkLine,
-  type HeldBulkLine,
-} from "@/features/shipments/lib/bulk-book-outcomes";
+import { heldBulkLine, type HeldBulkLine } from "@/features/shipments/lib/bulk-book-outcomes";
 import { canPrintShipmentLabel } from "@/features/shipments/lib/shipment-actions";
 import {
   canSubmitBulkBook,
@@ -87,6 +83,10 @@ export function WithMyRatesBookingDialog({
   const [heldLines, setHeldLines] = useState<
     (HeldBulkLine & { orderNumber: string })[]
   >([]);
+  /** Bookings the carrier has not confirmed yet (202 / BOOKING): shown, never offered again. */
+  const [confirmingLines, setConfirmingLines] = useState<
+    { orderId: string; orderNumber: string; shipmentId: string | null }[]
+  >([]);
 
   const connectionsQuery = useCarrierConnections(
     { active: true, size: 100 },
@@ -99,20 +99,27 @@ export function WithMyRatesBookingDialog({
   const bulkMutation = useBulkBookShipments();
   const batchLabelsMutation = useBatchShipmentLabels();
 
+  // Reset only when the dialog opens/closes or the set of orders really changes. Callers often pass
+  // a new array on every render (e.g. `orderIds={[orderId]}`); keying on the array itself wiped the
+  // merchant's carrier and district picks, the booked rows and "Print labels" on any parent re-render.
+  const orderIdsKey = orderIds.join(",");
   useEffect(() => {
+    const ids = orderIdsKey ? orderIdsKey.split(",") : [];
     if (!open) {
-      setDrafts(initialDrafts(orderIds));
+      setDrafts(initialDrafts(ids));
       setDistrictByOrderId({});
       setPackagesEdit(null);
       setLastBookedIds([]);
       setHeldLines([]);
+      setConfirmingLines([]);
       return;
     }
-    setDrafts(initialDrafts(orderIds));
+    setDrafts(initialDrafts(ids));
     setDistrictByOrderId({});
     setLastBookedIds([]);
     setHeldLines([]);
-  }, [open, orderIds]);
+    setConfirmingLines([]);
+  }, [open, orderIdsKey]);
 
   const previewByOrderId = useMemo(() => {
     const map = new Map<string, BulkPreviewLine>();
@@ -174,7 +181,6 @@ export function WithMyRatesBookingDialog({
 
     try {
       const response = await bulkMutation.mutateAsync({ lines: payload });
-      const bookedIds: string[] = [];
       const held = response.results.flatMap((row) => {
         const line = heldBulkLine(row);
         if (!line) return [];
@@ -188,6 +194,26 @@ export function WithMyRatesBookingDialog({
         (row) => row.outcome === "REJECTED" && heldOrderIds.has(row.orderId),
       ).length;
 
+      // Worked out from the response first: state updaters must stay free of side effects (they
+      // can run twice in development) and must not depend on running in a particular order.
+      const bookedIds = response.results
+        .filter((row) => !heldOrderIds.has(row.orderId) && row.outcome === "BOOKED" && row.shipment)
+        .map((row) => row.shipment!.id);
+      const confirming = response.results
+        .filter((row) => !heldOrderIds.has(row.orderId) && row.outcome === "BOOKING")
+        .map((row) => ({
+          orderId: row.orderId,
+          orderNumber: previewByOrderId.get(row.orderId)?.order?.orderNumber ?? row.orderId,
+          shipmentId: row.shipment?.id ?? null,
+        }));
+      // A district the carrier suggested after refusing the area: shown selected AND sent with the
+      // next booking, so what the merchant sees is what gets booked.
+      const suggestedDistricts = new Map<string, ShipmentDistrict>();
+      for (const row of response.results) {
+        const first = row.outcome === "REJECTED" ? row.error?.details?.suggestions?.[0] : undefined;
+        if (first) suggestedDistricts.set(row.orderId, first);
+      }
+
       setDrafts((current) =>
         current.map((line) => {
           const result = response.results.find((r) => r.orderId === line.orderId);
@@ -197,28 +223,17 @@ export function WithMyRatesBookingDialog({
             return { ...line, removed: true, bulkOutcome: "HELD", bulkError: null };
           }
           if (result.outcome === "BOOKED" && result.shipment) {
-            bookedIds.push(result.shipment.id);
             return { ...line, removed: true, bulkOutcome: "BOOKED", bulkError: null };
           }
           if (result.outcome === "BOOKING") {
-            return {
-              ...line,
-              removed: true,
-              bulkOutcome: "BOOKING",
-              bulkError: null,
-            };
+            // Listed under "confirming" below; booking it again would be refused (409).
+            return { ...line, removed: true, bulkOutcome: "BOOKING", bulkError: null };
           }
           if (result.outcome === "REJECTED") {
-            const suggestions = result.error?.details?.suggestions;
-            if (suggestions?.length) {
-              const first = suggestions[0]!;
-              setDistrictByOrderId((prev) => ({
-                ...prev,
-                [line.orderId]: first,
-              }));
-            }
+            const suggested = suggestedDistricts.get(line.orderId);
             return {
               ...line,
+              ...(suggested ? { districtId: suggested.id } : {}),
               bulkOutcome: "REJECTED",
               bulkError: result.error?.message ?? t("bulkBooking.rowRejected"),
             };
@@ -226,10 +241,16 @@ export function WithMyRatesBookingDialog({
           return line;
         }),
       );
+      if (suggestedDistricts.size > 0) {
+        setDistrictByOrderId((prev) => ({ ...prev, ...Object.fromEntries(suggestedDistricts) }));
+      }
 
       setLastBookedIds(bookedIds);
       if (held.length > 0) {
         setHeldLines((current) => [...current, ...held]);
+      }
+      if (confirming.length > 0) {
+        setConfirmingLines((current) => [...current, ...confirming]);
       }
 
       toast.success(
@@ -238,6 +259,9 @@ export function WithMyRatesBookingDialog({
           rejected: Math.max(0, response.rejected - heldFromRejected),
         }),
       );
+      if (confirming.length > 0) {
+        toast.info(t("bulkBooking.resultToastConfirming", { count: confirming.length }));
+      }
       if (held.length > 0) {
         toast.warning(t("bulkBooking.resultToastHeld", { count: held.length }));
       }
@@ -256,6 +280,7 @@ export function WithMyRatesBookingDialog({
 
   const handlePrintLabels = () => {
     if (printableLastBookedIds.length === 0) return;
+    // Rawafid prints one connection per request (bulk-booking.md §2): one PDF per carrier account.
     const groups = new Map<string, string[]>();
     for (const id of printableLastBookedIds) {
       const row = bulkMutation.data?.results.find(
@@ -267,26 +292,9 @@ export function WithMyRatesBookingDialog({
       list.push(id);
       groups.set(connectionId, list);
     }
-    if (groups.size === 0 && bulkMutation.data) {
-      const byConnection = groupBookedIdsByConnection(bulkMutation.data);
-      byConnection.forEach((ids) => {
-        const printable = ids.filter((id) => {
-          const row = bulkMutation.data?.results.find(
-            (r) => r.shipment?.id === id,
-          );
-          return row?.shipment ? canPrintShipmentLabel(row.shipment) : false;
-        });
-        if (printable.length > 0) {
-          void batchLabelsMutation.mutateAsync(printable);
-        }
-      });
-      return;
-    }
-    if (groups.size > 1) {
-      toast.error(t("toast.batchMixedConnections"));
-      return;
-    }
-    void batchLabelsMutation.mutateAsync(printableLastBookedIds);
+    groups.forEach((ids) => {
+      void batchLabelsMutation.mutateAsync(ids);
+    });
   };
 
   const isBusy =
@@ -333,6 +341,41 @@ export function WithMyRatesBookingDialog({
           >
             {parseApiError(previewQuery.error).detail}
           </div>
+        ) : null}
+
+        {confirmingLines.length > 0 ? (
+          <section
+            role="status"
+            aria-labelledby={`${formId}-confirming`}
+            className="flex gap-3 rounded-lg border border-border bg-muted/40 p-3 text-sm"
+          >
+            <Loader2 className="mt-0.5 size-4 shrink-0 animate-spin text-muted-foreground" aria-hidden="true" />
+            <div className="min-w-0 space-y-2">
+              <h3 id={`${formId}-confirming`} className="font-medium text-foreground">
+                {t("bulkBooking.confirmingTitle", { count: confirmingLines.length })}
+              </h3>
+              <p className="text-muted-foreground">{t("bulkBooking.confirmingDescription")}</p>
+              <ul className="space-y-1.5">
+                {confirmingLines.map((line) => (
+                  <li key={line.orderId}>
+                    {line.shipmentId ? (
+                      <Link
+                        to={`/shipments/${encodeURIComponent(line.shipmentId)}`}
+                        onClick={() => onOpenChange(false)}
+                        className="font-medium text-primary underline-offset-4 hover:underline focus-visible:rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/40"
+                      >
+                        {t("bulkBooking.heldRow", { order: line.orderNumber })}
+                      </Link>
+                    ) : (
+                      <span className="font-medium text-foreground">
+                        {t("bulkBooking.heldRow", { order: line.orderNumber })}
+                      </span>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </section>
         ) : null}
 
         {heldLines.length > 0 ? (
@@ -445,7 +488,9 @@ export function WithMyRatesBookingDialog({
 
       <DialogFooter className="flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div className="min-w-0 space-y-1 text-start sm:flex-1" aria-live="polite">
-          {quota === null ? (
+          {/* "No subscription" only once the preview has answered with quota: null; while it loads
+              or after it failed, there is simply no quota line yet. */}
+          {!previewQuery.data ? null : quota === null ? (
             <>
               <p className="text-sm font-medium">{t("booking.subscriptionRequired")}</p>
               <Button type="button" size="sm" variant="outline" asChild className="mt-1">

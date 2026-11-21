@@ -9,7 +9,9 @@ export function useBulkBookShipments() {
 
   return useMutation({
     mutationFn: (payload: BulkBookPayload) => postBulkShipments(payload),
-    onSuccess: () => {
+    // On error too: a timeout or a dropped connection may still have booked orders on the server,
+    // and a 422 REJECTED leaves a FAILED shipment behind. Lists and counts must not stay stale.
+    onSettled: () => {
       void queryClient.invalidateQueries({ queryKey: shipmentKeys.all });
       void queryClient.invalidateQueries({ queryKey: orderKeys.all });
     },

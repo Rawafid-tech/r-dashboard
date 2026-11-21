@@ -127,7 +127,9 @@ export function WalletTopUpDialog({
     );
   };
 
-  const isSubmitting = mutation.isPending;
+  // Stays busy after success too: the browser is on its way to the payment page, and a second click
+  // would create a second pending payment.
+  const isSubmitting = mutation.isPending || mutation.isSuccess;
 
   const minimumLabel = serverMinimum !== null
     ? t("topup.errorBelowMinimum", {
@@ -139,7 +141,14 @@ export function WalletTopUpDialog({
   const hasFieldError = Boolean(fieldError);
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog
+      open={open}
+      onOpenChange={(next) => {
+        // Closing (e.g. Esc) mid-request would still redirect to the payment page afterwards.
+        if (!next && isSubmitting) return;
+        setOpen(next);
+      }}
+    >
       <DialogTrigger asChild>
         <Button
           type="button"

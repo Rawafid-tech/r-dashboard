@@ -109,7 +109,17 @@ export function OrderPackagesEditDialog({
   const onSubmit = handleSubmit(async (values) => {
     if (!orderId) return;
     const parsed = packageSchema.safeParse(values);
-    if (!parsed.success) return;
+    if (!parsed.success) {
+      // Show what is wrong instead of a Save button that silently does nothing.
+      for (const issue of parsed.error.issues) {
+        const path = issue.path.join(".");
+        if (path.startsWith("packages.")) {
+          setError(path as `packages.${number}.weightKg`, { type: "validate", message: issue.message });
+        }
+      }
+      setError("root", { type: "validate", message: parsed.error.issues[0]?.message ?? "" });
+      return;
+    }
 
     const packages = parsed.data.packages.map((pkg) => ({
       boxName: pkg.boxName?.trim() || undefined,
