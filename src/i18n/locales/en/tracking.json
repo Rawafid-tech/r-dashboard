@@ -20,6 +20,17 @@
     "LOST": "There's a problem with this shipment. Please contact the store",
     "CANCELLED": "This shipment was cancelled. Please contact the store"
   },
+  "statusHint": {
+    "BOOKING": "The store is booking your shipment with the shipping company.",
+    "BOOKED": "The shipping company will pick up your order from the store soon.",
+    "IN_TRANSIT": "Your order is with the shipping company and on its way to you.",
+    "RETURNING": "The order could not be delivered and is going back to the store.",
+    "DELIVERED": "Your order has been delivered. Enjoy!",
+    "RETURNED": "The order went back to the store. Contact the store for details.",
+    "LOST": "The store has been told and will contact you.",
+    "FAILED": "The store will contact you about your order.",
+    "CANCELLED": "The store will contact you about your order."
+  },
   "steps": {
     "BOOKED": "Shipment created",
     "PICKED_UP": "Picked up",
@@ -34,6 +45,7 @@
   "trackingNumberPending": "Not assigned yet",
   "copy": "Copy",
   "copied": "Tracking number copied",
+  "copiedShort": "Copied",
   "copyFailed": "Could not copy. Select the number and copy it.",
   "attempts": "Delivery attempts: {{count}}",
   "lastUpdate": "Last update",
