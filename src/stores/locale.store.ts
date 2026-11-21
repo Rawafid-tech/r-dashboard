@@ -12,6 +12,11 @@ interface LocaleState {
 function getInitialLocale(): SupportedLocale {
   const stored = localStorage.getItem(STORAGE_KEYS.LOCALE) as SupportedLocale | null;
   if (stored === "ar" || stored === "en") return stored;
+  // A customer opening a tracking link (/track/…) gets their browser's language, not the
+  // dashboard's Arabic default (docs/2026-11-21-public-tracking-page.md §2).
+  if (typeof window !== "undefined" && window.location.pathname.startsWith("/track/")) {
+    return navigator.language?.toLowerCase().startsWith("ar") ? "ar" : "en";
+  }
   return DEFAULT_LOCALE;
 }
 

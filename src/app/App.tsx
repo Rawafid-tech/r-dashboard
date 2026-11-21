@@ -48,9 +48,9 @@ export default function App() {
             <Routes>
               <Route path="/accept-invite" element={<AcceptInvitePage />} />
 
-              {/* Guest-only: register / login / pricing */}
+              {/* Public: guest-only auth pages (layout group) and open pages such as /track/:code */}
               {publicRoutes.map((route, index) => (
-                <Route key={route.path ?? `public-${index}`} element={route.element}>
+                <Route key={route.path ?? `public-${index}`} path={route.path} element={route.element}>
                   {route.children?.map((child) => (
                     <Route
                       key={child.path}

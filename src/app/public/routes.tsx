@@ -26,11 +26,23 @@ const ResetPasswordPage = lazy(() =>
   })),
 );
 
+const TrackPage = lazy(() =>
+  import("@/app/public/track-page").then((m) => ({
+    default: m.TrackPage,
+  })),
+);
+
 /**
  * Public auth/marketing pages.
  * Page shells live under `app/public`; domain UI/logic stays in `features/*`.
  */
 export const publicRoutes: RouteObject[] = [
+  // Customer tracking: open to everyone, signed in or not (not under GuestRoute, which would send a
+  // signed-in merchant away from a customer's link).
+  {
+    path: "/track/:code",
+    element: <TrackPage />,
+  },
   {
     element: <GuestRoute />,
     children: [
