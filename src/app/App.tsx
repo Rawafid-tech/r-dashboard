@@ -1,5 +1,5 @@
 import { lazy, Suspense } from "react";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { queryClient } from "@/shared/api/query-client";
 import { Toaster } from "sonner";
@@ -8,6 +8,7 @@ import { LoadingSpinner } from "@/shared/components/feedback/LoadingSpinner";
 import { merchantRoutes } from "@/app/merchant/routes";
 import { AdminRouteTree } from "@/app/admin/routes";
 import { publicRoutes } from "@/app/public/routes";
+import { NotFoundPage } from "@/app/public/not-found-page";
 import { ProtectedRoute } from "@/features/auth/components/protected-route";
 import { useLocaleStore } from "@/stores/locale.store";
 import { useThemeStore } from "@/stores/theme.store";
@@ -47,9 +48,9 @@ export default function App() {
             <Routes>
               <Route path="/accept-invite" element={<AcceptInvitePage />} />
 
-              {/* Guest-only: register / login / pricing */}
+              {/* Public: guest-only auth pages (layout group) and open pages such as /track/:code */}
               {publicRoutes.map((route, index) => (
-                <Route key={route.path ?? `public-${index}`} element={route.element}>
+                <Route key={route.path ?? `public-${index}`} path={route.path} element={route.element}>
                   {route.children?.map((child) => (
                     <Route
                       key={child.path}
@@ -84,7 +85,7 @@ export default function App() {
 
               {AdminRouteTree()}
 
-              <Route path="*" element={<Navigate to="/" replace />} />
+              <Route path="*" element={<NotFoundPage />} />
             </Routes>
           </Suspense>
         </ErrorBoundary>

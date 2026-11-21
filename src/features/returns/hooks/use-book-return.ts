@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { bookReturn } from "@/features/returns/api/returns.api";
 import { returnKeys } from "@/features/returns/hooks/query-keys";
+import { exchangeKeys } from "@/features/exchanges/hooks/query-keys";
 import { parseReturnBookingError } from "@/features/returns/lib/return-booking-errors";
 import type { BookReturnPayload } from "@/features/returns/types";
 import { orderKeys } from "@/features/orders/hooks/use-orders";
@@ -21,6 +22,8 @@ export function useBookReturn() {
       void queryClient.invalidateQueries({ queryKey: shipmentKeys.counts() });
       void queryClient.invalidateQueries({ queryKey: orderKeys.lists() });
       void queryClient.invalidateQueries({ queryKey: returnKeys.previews() });
+      // A booked return rules out an exchange for the same items: do not keep offering it.
+      void queryClient.invalidateQueries({ queryKey: exchangeKeys.previews() });
       queryClient.setQueryData(
         shipmentKeys.detail(result.shipment.id),
         result.shipment,

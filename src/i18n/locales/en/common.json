@@ -65,7 +65,11 @@
     "forbidden": "You do not have permission for this action.",
     "notFound": "The requested page was not found.",
     "serverError": "A server error occurred. Please try again later.",
-    "rateLimited": "Too many attempts. Please try again later."
+    "rateLimited": "Too many attempts. Please try again later.",
+    "unexpected": "An unexpected error occurred. Please try again."
+  },
+  "notFound": {
+    "home": "Go to the dashboard"
   },
   "errorBoundary": {
     "title": "Something went wrong",

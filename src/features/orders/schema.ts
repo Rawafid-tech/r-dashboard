@@ -36,6 +36,18 @@ export function normalizeNumericInput(value: string): string {
   return out;
 }
 
+/**
+ * A money amount typed by the merchant ("٥٠", "50,5", " 50.555 ") as a number rounded to 2 decimals,
+ * or undefined when empty or not a number. Use it on what the payload sends, not only in validation:
+ * Number("٥٠") is NaN, which JSON turns into null.
+ */
+export function parseMoneyInput(value: string | undefined | null): number | undefined {
+  if (value == null || value.trim() === "") return undefined;
+  const parsed = Number(normalizeNumericInput(value));
+  if (!Number.isFinite(parsed)) return undefined;
+  return Math.round(parsed * 100) / 100;
+}
+
 function limitDecimals(value: string, places: number): string {
   const normalized = normalizeNumericInput(value);
   if (!normalized.includes(".")) return normalized;
@@ -226,7 +238,8 @@ export function createOrderStep2Schema(t: TFunction<"orders">) {
       }
 
       if (values.paymentMethod === "COD" && values.codAmount?.trim()) {
-        const cod = Number(values.codAmount);
+        // Same normalisation as the payload ("٤٥٠" and "450,5" are valid amounts).
+        const cod = Number(normalizeNumericInput(values.codAmount));
         if (!Number.isFinite(cod) || cod <= 0) {
           ctx.addIssue({
             code: z.ZodIssueCode.custom,

@@ -39,6 +39,8 @@ import returnsAr from "./locales/ar/returns.json";
 import returnsEn from "./locales/en/returns.json";
 import exchangesAr from "./locales/ar/exchanges.json";
 import exchangesEn from "./locales/en/exchanges.json";
+import trackingAr from "./locales/ar/tracking.json";
+import trackingEn from "./locales/en/tracking.json";
 
 const resources = {
   ar: {
@@ -60,6 +62,7 @@ const resources = {
     notifications: notificationsAr,
     returns: returnsAr,
     exchanges: exchangesAr,
+    tracking: trackingAr,
   },
   en: {
     common: commonEn,
@@ -80,6 +83,7 @@ const resources = {
     notifications: notificationsEn,
     returns: returnsEn,
     exchanges: exchangesEn,
+    tracking: trackingEn,
   },
 };
 

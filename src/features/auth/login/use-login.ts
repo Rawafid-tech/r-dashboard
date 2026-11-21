@@ -11,6 +11,7 @@ import {
 } from "@/shared/api/error-handler";
 import { getApiErrorCode } from "@/features/roles/lib/role-form-errors";
 import { useAuthStore } from "@/stores/auth.store";
+import { returnPathFrom } from "@/features/auth/lib/return-to";
 
 export function useLogin() {
   const navigate = useNavigate();
@@ -34,11 +35,8 @@ export function useLogin() {
       setTokens(tokens.accessToken, tokens.refreshToken, tokens.expiresIn);
       toast.success(t("login.success"));
 
-      const redirectTo =
-        (location.state as { from?: { pathname?: string } } | null)?.from
-          ?.pathname ?? "/";
-
-      navigate(redirectTo, { replace: true });
+      // Back to the page they came from, query string included (e.g. /connect?client_id=…).
+      navigate(returnPathFrom(location.state, location.search), { replace: true });
     },
     onError: (error) => {
       if (isApiError(error, 429)) {

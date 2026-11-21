@@ -255,6 +255,7 @@ export function OrderFormSheet({
       setStep(1);
       setSubmitError(null);
       setLockedAsBooked(false);
+      setLockedAsDelivered(false);
       setProductSearch("");
       return;
     }
@@ -264,6 +265,7 @@ export function OrderFormSheet({
       setStep(initialFormStep ?? 1);
       setSubmitError(null);
       setLockedAsBooked(false);
+      setLockedAsDelivered(false);
       return;
     }
 
@@ -275,7 +277,9 @@ export function OrderFormSheet({
   }, [open, mode, orderQuery.data, reset, initialFormStep]);
 
   useEffect(() => {
+    // One order being delivered or booked must not make every later form on the page read-only.
     setLockedAsBooked(false);
+    setLockedAsDelivered(false);
   }, [resolvedId]);
 
   const applyProductToRow = useCallback(

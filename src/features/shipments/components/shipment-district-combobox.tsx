@@ -11,6 +11,7 @@ import { useShipmentDistricts } from "@/features/shipments/hooks/use-shipment-di
 import { getShipmentDistrictLabel } from "@/features/shipments/lib/district-label";
 import type { ShipmentDistrict, ShipmentKind } from "@/features/shipments/types";
 import {
+  Button,
   FieldDescription,
   Input,
   Popover,
@@ -125,8 +126,9 @@ export function ShipmentDistrictCombobox({
     }
   };
 
-  const showList =
-    open && debouncedSearch.length > 0 && (districtsQuery.isFetching || suggestions.length > 0);
+  // Open whenever there is a search, so "no matches" and errors are shown instead of nothing.
+  const showList = open && debouncedSearch.length > 0;
+  const noMatches = !districtsQuery.isFetching && !districtsQuery.isError && suggestions.length === 0;
 
   const activeDescendantId =
     activeIndex >= 0 && suggestions[activeIndex]
@@ -184,9 +186,22 @@ export function ShipmentDistrictCombobox({
               <p className="px-3 py-2 text-sm text-muted-foreground" role="status">
                 {t("common:common.loading")}
               </p>
-            ) : suggestions.length === 0 ? (
+            ) : districtsQuery.isError ? (
+              <div className="space-y-2 px-3 py-2 text-sm" role="alert">
+                <p className="text-destructive">{t("booking.districtSearchFailed")}</p>
+                <Button
+                  type="button"
+                  size="sm"
+                  variant="outline"
+                  onMouseDown={(event) => event.preventDefault()}
+                  onClick={() => void districtsQuery.refetch()}
+                >
+                  {t("booking.districtRetry")}
+                </Button>
+              </div>
+            ) : noMatches ? (
               <p className="px-3 py-2 text-sm text-muted-foreground" role="status">
-                {t("booking.districtPlaceholder")}
+                {t("booking.districtNoResults", { query: debouncedSearch })}
               </p>
             ) : (
               suggestions.map((district, index) => {
@@ -219,9 +234,13 @@ export function ShipmentDistrictCombobox({
       </Popover>
 
       <p className="sr-only" aria-live="polite" aria-atomic="true">
-        {showList && !districtsQuery.isFetching && suggestions.length > 0
-          ? String(suggestions.length)
-          : ""}
+        {!showList || districtsQuery.isFetching
+          ? ""
+          : districtsQuery.isError
+            ? t("booking.districtSearchFailed")
+            : noMatches
+              ? t("booking.districtNoResults", { query: debouncedSearch })
+              : t("booking.districtResultsCount", { count: suggestions.length })}
       </p>
     </div>
   );

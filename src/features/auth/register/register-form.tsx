@@ -1,5 +1,5 @@
 import { useId, useMemo, useState, startTransition } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { Loader2, ArrowRight, ArrowLeft } from "lucide-react";
 import { Button } from "@/shared/components/ui";
@@ -19,6 +19,8 @@ import {
 
 export function RegisterForm() {
   const { t, i18n } = useTranslation("auth");
+  // Kept on the link to login, so the user still returns to where they started.
+  const location = useLocation();
   const formId = useId();
   const [step, setStep] = useState<1 | 2>(1);
   const registerMutation = useRegister();
@@ -193,7 +195,8 @@ export function RegisterForm() {
         <p className="text-center text-sm text-muted-foreground">
           {t("register.haveAccount")}{" "}
           <Link
-            to="/login"
+            to={{ pathname: "/login", search: location.search }}
+            state={location.state}
             className="font-medium text-primary underline-offset-4 hover:underline focus-visible:rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/40"
           >
             {t("register.loginLink")}

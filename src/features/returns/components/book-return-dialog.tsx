@@ -11,6 +11,7 @@ import {
   hasReturnItemsSelected,
 } from "@/features/returns/schema";
 import { useOrder } from "@/features/orders/hooks/use-order";
+import { parseMoneyInput } from "@/features/orders/schema";
 import { ShipmentDistrictCombobox } from "@/features/shipments/components/shipment-district-combobox";
 import { ShipmentPickupInfo } from "@/features/shipments/components/shipment-pickup-info";
 import { getShipmentDistrictLabel } from "@/features/shipments/lib/district-label";
@@ -230,10 +231,8 @@ export function BookReturnDialog({
           }
         : undefined;
 
-    let refund: number | undefined;
-    if (!withoutRefund && refundAmount.trim()) {
-      refund = Number(refundAmount);
-    }
+    // From the validated, normalised value: the raw text may hold Arabic digits or a comma.
+    const refund = withoutRefund ? undefined : parseMoneyInput(parsed.data.refundAmount);
 
     try {
       const result = await bookMutation.mutateAsync({

@@ -64,6 +64,9 @@ export function useBulkShipmentPreview(
       queryKey: shipmentKeys.bulkPreview(debouncedLines),
       queryFn: ({ signal }) =>
         postShipmentPreview({ lines: debouncedLines }, signal),
+      // Always ask again (e.g. after editing boxes): the app-wide 60 s default would return the
+      // cached preview and keep showing the old box count and weight.
+      staleTime: 0,
     }) as Promise<BulkPreviewResponse>;
   };
 

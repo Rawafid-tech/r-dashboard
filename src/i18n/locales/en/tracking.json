@@ -1,0 +1,51 @@
+{
+  "meta": {
+    "title": "Track your shipment",
+    "titleFor": "Track your order from {{company}}",
+    "description": "Follow your shipment's progress."
+  },
+  "loading": "Loading your shipment…",
+  "orderFrom": "Your order from",
+  "progressLabel": "Shipment progress",
+  "detailsLabel": "Shipment details",
+  "stepDone": "done",
+  "stepPending": "not yet",
+  "status": {
+    "BOOKING": "Preparing your shipment",
+    "BOOKED": "Waiting for pickup",
+    "IN_TRANSIT": "On the way",
+    "RETURNING": "On its way back to the store",
+    "DELIVERED": "Delivered",
+    "RETURNED": "Returned to the store",
+    "LOST": "There's a problem with this shipment. Please contact the store",
+    "CANCELLED": "This shipment was cancelled. Please contact the store"
+  },
+  "steps": {
+    "BOOKED": "Shipment created",
+    "PICKED_UP": "Picked up",
+    "PICKED_UP_FROM_YOU": "Picked up from you",
+    "DELIVERED": "Delivered",
+    "SWAPPED": "Exchanged",
+    "RETURNED": "Returned to the store"
+  },
+  "issue": "The courier had a problem with the last delivery attempt. The store may contact you.",
+  "carrier": "Shipping company",
+  "trackingNumber": "Tracking number",
+  "trackingNumberPending": "Not assigned yet",
+  "copy": "Copy",
+  "copied": "Tracking number copied",
+  "copyFailed": "Could not copy. Select the number and copy it.",
+  "attempts": "Delivery attempts: {{count}}",
+  "lastUpdate": "Last update",
+  "noUpdateYet": "No update from the shipping company yet",
+  "refresh": "Refresh",
+  "notFound": {
+    "title": "We couldn't find this shipment",
+    "body": "Check the link in your message, or contact the store."
+  },
+  "error": {
+    "title": "Tracking is not available right now",
+    "body": "Please try again in a moment."
+  },
+  "poweredBy": "Shipping by Rawafid"
+}

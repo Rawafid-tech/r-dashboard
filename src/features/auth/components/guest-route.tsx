@@ -1,5 +1,6 @@
 import { Navigate, Outlet, useLocation } from "react-router-dom";
 import { useAuthStore } from "@/stores/auth.store";
+import { returnPathFrom } from "@/features/auth/lib/return-to";
 
 /**
  * Guest-only shell — login/register/pricing.
@@ -10,11 +11,7 @@ export function GuestRoute() {
   const location = useLocation();
 
   if (isAuthenticated) {
-    const redirectTo =
-      (location.state as { from?: { pathname?: string } } | null)?.from
-        ?.pathname ?? "/";
-
-    return <Navigate to={redirectTo} replace />;
+    return <Navigate to={returnPathFrom(location.state, location.search)} replace />;
   }
 
   return <Outlet />;

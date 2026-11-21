@@ -11,6 +11,7 @@ import {
   type ExchangeMoneyMode,
 } from "@/features/exchanges/schema";
 import { useOrder } from "@/features/orders/hooks/use-order";
+import { parseMoneyInput } from "@/features/orders/schema";
 import { ReturnItemQuantityStepper } from "@/features/returns/components/return-item-quantity-stepper";
 import { ShipmentDistrictCombobox } from "@/features/shipments/components/shipment-district-combobox";
 import { ShipmentPickupInfo } from "@/features/shipments/components/shipment-pickup-info";
@@ -246,13 +247,10 @@ export function BookExchangeDialog({
           }
         : undefined;
 
-    let collectAmount: number | undefined;
-    let refundAmount: number | undefined;
-    if (mode === "collect" && moneyAmount.trim()) {
-      collectAmount = Number(moneyAmount);
-    } else if (mode === "refund" && moneyAmount.trim()) {
-      refundAmount = Number(moneyAmount);
-    }
+    // From the validated, normalised value: the raw text may hold Arabic digits or a comma.
+    const amount = parseMoneyInput(parsed.data.moneyAmount);
+    const collectAmount = mode === "collect" ? amount : undefined;
+    const refundAmount = mode === "refund" ? amount : undefined;
 
     try {
       const result = await bookMutation.mutateAsync({
